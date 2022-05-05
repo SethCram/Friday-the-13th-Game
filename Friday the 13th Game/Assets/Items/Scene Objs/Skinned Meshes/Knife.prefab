@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6834692396885055769}
   - component: {fileID: -177601488916458901}
   m_Layer: 0
-  m_Name: Knife 1
+  m_Name: Knife
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -79,6 +79,6 @@ SkinnedMeshRenderer:
   m_BlendShapeWeights: []
   m_RootBone: {fileID: 0}
   m_AABB:
-    m_Center: {x: 0, y: 0, z: 0}
-    m_Extent: {x: 0, y: 0, z: 0}
-  m_DirtyAABB: 1
+    m_Center: {x: -0.0005659049, y: 0.000000005122274, z: 0.022264123}
+    m_Extent: {x: 0.0062412247, y: 0.004100835, z: 0.040053613}
+  m_DirtyAABB: 0

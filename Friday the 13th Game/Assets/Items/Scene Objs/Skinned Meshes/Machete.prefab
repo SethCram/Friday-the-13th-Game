@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1159055057360266215}
   - component: {fileID: -1056773678210964156}
   m_Layer: 0
-  m_Name: Machete 1
+  m_Name: Machete
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -50,6 +50,7 @@ SkinnedMeshRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: f231ef3a12b6f774dad3c3149133472c, type: 2}
+  - {fileID: 2100000, guid: 9ffcf5f7aca108648b69c90b89595fc5, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -80,5 +81,5 @@ SkinnedMeshRenderer:
   m_RootBone: {fileID: 0}
   m_AABB:
     m_Center: {x: 0, y: 0, z: 0}
-    m_Extent: {x: 0, y: 0, z: 0}
-  m_DirtyAABB: 1
+    m_Extent: {x: 0.83672255, y: 3.6263943, z: 21.924515}
+  m_DirtyAABB: 0

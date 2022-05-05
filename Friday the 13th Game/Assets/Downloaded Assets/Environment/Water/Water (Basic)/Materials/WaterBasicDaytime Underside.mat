@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: WaterBasicDaytime
+  m_Name: WaterBasicDaytime Underside
   m_Shader: {fileID: 4800000, guid: 9dccc8e8f0da4494991c26ef59019551, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4

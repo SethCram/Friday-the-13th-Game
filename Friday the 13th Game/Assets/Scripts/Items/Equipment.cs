@@ -9,6 +9,8 @@ public class Equipment : Item
     //public int equipSlot; //could be used to identify which equipment slot this piece is used in (head or chest, etc.), but not intuitive
     public EquipmentSlot equipSlot; //what slot this piece meant for
 
+    //can't bc init order random: new public dynamic description = name;
+
     public SkinnedMeshRenderer mesh; //each item's 3d obj
     public EquipmentMeshRegion[] coveredMeshRegions;
 

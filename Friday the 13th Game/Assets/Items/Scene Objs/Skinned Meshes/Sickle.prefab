@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 8967176722343743075}
   - component: {fileID: -3696772772240671400}
   m_Layer: 0
-  m_Name: Sickle 1
+  m_Name: Sickle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -50,6 +50,9 @@ SkinnedMeshRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: 34566749978f6ce478cd45f6727fdc15, type: 2}
+  - {fileID: 2100000, guid: fce9ca0dc34ea92469b535e9910424c3, type: 2}
+  - {fileID: 2100000, guid: 52e54f8af94751c4ab020cf0244adf4b, type: 2}
+  - {fileID: 2100000, guid: 652c4dda15de3f94d8009b5d517b61cd, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
