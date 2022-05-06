@@ -63,7 +63,7 @@ public class ItemPickup : Interactable //this class is now derived from/a child 
         //if photon view not setup yet:
         if(photonView == null)
         {
-            Debug.LogError("Photon view not yet setup.");
+            Debug.LogWarning("Photon view not yet setup, so " + item.name + " not destroyed.");
 
             return;
         }

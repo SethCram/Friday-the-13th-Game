@@ -121,7 +121,7 @@ public class PlayerManager : MonoBehaviourPunCallbacks
             //transfer ownership to us:
             destroyingView.TransferOwnership(photonView.Owner);
 
-            Debug.LogError("Ownership transfer to: " + photonView.name);
+            Debug.Log("Ownership transfer to: " + photonView.name);
 
             //delay obj destruction for ownership transfer to occur:
             StartCoroutine(DelayedNetworkDestroy(destroyingView.gameObject));
@@ -149,7 +149,7 @@ public class PlayerManager : MonoBehaviourPunCallbacks
         //destroy object after a second:
         PhotonNetwork.Destroy(destroyingObj);
 
-        Debug.LogError("successfully destroyed network gameobj w/ delay");
+        Debug.Log("successfully destroyed network gameobj w/ delay");
     }
 
     [PunRPC]
@@ -161,7 +161,7 @@ public class PlayerManager : MonoBehaviourPunCallbacks
         //deactivate gameobj:
         deactivatingView.gameObject.SetActive(false);
 
-        Debug.LogError(deactivatingView.gameObject.name + " set deactive");
+        Debug.Log(deactivatingView.gameObject.name + " set deactive");
     }
 
     //called w/ another client leaves room:

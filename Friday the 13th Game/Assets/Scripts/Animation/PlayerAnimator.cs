@@ -60,7 +60,7 @@ public class PlayerAnimator : CharacterAnimator //IPunObservable
         } //check if new item not a weapon, but old one was (for w/ unequipping):
         else if (newEquip == null && oldEquip != null && oldEquip.equipSlot == EquipmentSlot.Mainhand)
         {
-            Debug.LogError("Atk anims reset.");
+            Debug.Log("Atk anims reset.");
 
             if(PhotonNetwork.IsConnected)
             {
@@ -78,7 +78,7 @@ public class PlayerAnimator : CharacterAnimator //IPunObservable
     [PunRPC]
     private void SyncAttackAnim(string equipName)
     {
-        Debug.LogError("Sync atk anim to: " + equipName);
+        Debug.Log("Sync atk anim to: " + equipName);
 
         currAtkAnimSet = weaponAnimsDict[equipName];
     }

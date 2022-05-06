@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: -8934213015825363025}
   - component: {fileID: -6191459422193232904}
   m_Layer: 0
-  m_Name: Helm 1
+  m_Name: Helm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -101,6 +101,6 @@ SkinnedMeshRenderer:
   m_BlendShapeWeights: []
   m_RootBone: {fileID: 0}
   m_AABB:
-    m_Center: {x: 0, y: 0, z: 0}
-    m_Extent: {x: 0, y: 0, z: 0}
-  m_DirtyAABB: 1
+    m_Center: {x: -0.000000078231096, y: 0.0027568638, z: 0.008033372}
+    m_Extent: {x: 0.11735909, y: 0.14855751, z: 0.12737522}
+  m_DirtyAABB: 0

@@ -49,7 +49,7 @@ public class WeaponCollision : MonoBehaviour
                 return;
             }
 
-            Debug.LogError("Weapon hit: " + other.name);
+            Debug.Log("Weapon hit: " + other.name);
 
             myPlayerCombat.DoDamage(hitStats);
 

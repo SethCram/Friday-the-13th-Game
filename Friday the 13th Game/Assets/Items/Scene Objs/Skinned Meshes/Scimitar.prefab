@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3513370746925582734}
   - component: {fileID: 1927359773879185685}
   m_Layer: 0
-  m_Name: Tutorial Scimitar 1
+  m_Name: Scimitar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -79,6 +79,6 @@ SkinnedMeshRenderer:
   m_BlendShapeWeights: []
   m_RootBone: {fileID: 0}
   m_AABB:
-    m_Center: {x: 0, y: 0, z: 0}
-    m_Extent: {x: 0, y: 0, z: 0}
-  m_DirtyAABB: 1
+    m_Center: {x: 0.4034263, y: -0.08596887, z: 0.5347406}
+    m_Extent: {x: 0.024319991, y: 0.13593037, z: 0.5106978}
+  m_DirtyAABB: 0
