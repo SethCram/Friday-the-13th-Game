@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Knife
   description: Coming Soon
-  carrySize: 0
+  carrySize: 1
   maxStack: 1
   itemAmount: 1
   itemPickup: {fileID: 2311485456154352087, guid: 53f2d1d27384cfc4ba102a31bb15b130,

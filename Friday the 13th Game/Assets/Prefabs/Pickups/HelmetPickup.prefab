@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 9002858636594496520}
   - component: {fileID: 9002858636594496521}
   - component: {fileID: -3057785945944368950}
+  - component: {fileID: -1120212137204412815}
   m_Layer: 0
   m_Name: HelmetPickup
   m_TagString: Untagged
@@ -76,6 +77,7 @@ MonoBehaviour:
   interactionRadius: 2
   interactionTransform: {fileID: 9002858636594496523}
   item: {fileID: 11400000, guid: e96b0d178d4d29c49bb36efb5a3abbb6, type: 2}
+  shouldDelete: 0
 --- !u!54 &-3057785945944368950
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -92,6 +94,28 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &-1120212137204412815
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9002858636594496524}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1001 &9002858638100437004
 PrefabInstance:
   m_ObjectHideFlags: 0
