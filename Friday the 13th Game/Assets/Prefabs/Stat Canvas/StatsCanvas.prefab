@@ -122,6 +122,17 @@ MonoBehaviour:
   rightPanel: {fileID: 6003939082166194034}
   statVals: 
   playerStats: {fileID: 0}
+  notImplementedStats:
+  - Swimming
+  - Medical
+  - Construction
+  - Mechanical
+  - Perception
+  - Paranoia
+  - Communication
+  - Stealth
+  - Agility
+  - Ranged
 --- !u!1 &6003939080714018660
 GameObject:
   m_ObjectHideFlags: 0

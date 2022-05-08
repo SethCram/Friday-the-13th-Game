@@ -4,6 +4,8 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 using System.Linq; //needed for '.Concat()'
+using System.Globalization;
+using System;
 
 public class GetSetStats : MonoBehaviour
 {
@@ -30,6 +32,9 @@ public class GetSetStats : MonoBehaviour
 
     public PlayerStats playerStats; //used to set Stat names, and fill player stat vals  (init w/ created?)
 
+    //arr of not yet implemented stats: (filled in inspector)
+    public string[] notImplementedStats;
+
     //pause game before any 'Start()' called (pausing time scale wont stop start from bein called tho, only update)
     private void Awake()
     {
@@ -55,7 +60,22 @@ public class GetSetStats : MonoBehaviour
         //set stat names from player stats 'name' field:
         for (int i = 0; i < combinedStatArray.Length; i++)
         {
+            //set stat names from player stats 'name' field
             combinedStatArray[i].statName.text = playerStats.allStats[i].name;
+
+            //if stat not yet implemented, should be highlighted in red
+            foreach (string uselessStat in notImplementedStats)
+            {
+                //if stat is a useless one
+                // perform case-insensitive string comparison, turning symbols + whitespace into nothing: (merges chars)
+                if (String.Compare(playerStats.allStats[i].name, uselessStat, CultureInfo.CurrentCulture,
+                    CompareOptions.IgnoreCase | CompareOptions.IgnoreSymbols) == 0)
+                {
+                    //turn display name red
+                    combinedStatArray[i].statName.color = Color.red;
+                }
+            }
+
         }
     }
 
