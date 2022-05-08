@@ -26,7 +26,7 @@ public class SpawnItems : MonoBehaviour
         //spawn every obj
         foreach (GameObject spawnableObj in spawnObjs)
         {
-            SpawnObjAtRandom(spawnableObj);
+            SpawnObjAtRandom(transform.position, spawnableObj, spawnRadius);
         }
 
         /*
@@ -48,10 +48,10 @@ public class SpawnItems : MonoBehaviour
     }
 
     //Spawn obj inside specified radius
-    void SpawnObjAtRandom(GameObject spawnableObj)
+    public void SpawnObjAtRandom(Vector3 spawnPos, GameObject spawnableObj, float radius)
     {
         //random pos around spawner obj
-        Vector3 randomPos = transform.position + Random.insideUnitSphere * spawnRadius;
+        Vector3 randomPos = spawnPos + Random.insideUnitSphere * radius;
 
         print("Spawned " + spawnableObj.name + " at " + randomPos);
 
