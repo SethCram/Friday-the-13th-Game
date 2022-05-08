@@ -773,7 +773,6 @@ MonoBehaviour:
     baseValue: 0
   - name: Defense
     baseValue: 0
-  playerManager: {fileID: 7413788013251121924}
   equipManager: {fileID: 7413788013251121930}
   statApply: {fileID: 7413788013251121929}
 --- !u!114 &7413788013251121929
@@ -827,6 +826,9 @@ MonoBehaviour:
     type: 3}
   hurtClip: {fileID: -203655887218126122, guid: 8d46fd4ae064c7f4ab62f8684f9180df,
     type: 3}
+  deathClip: {fileID: -203655887218126122, guid: 922c501dfc8f50343b8329ca7741d534,
+    type: 3}
+  playerManager: {fileID: 7413788013251121924}
   photonView: {fileID: -2933026003536563205}
   equipmentManager: {fileID: 7413788013251121930}
   weaponAnims:

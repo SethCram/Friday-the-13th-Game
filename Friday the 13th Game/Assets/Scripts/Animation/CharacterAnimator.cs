@@ -20,6 +20,11 @@ public class CharacterAnimator : MonoBehaviour
 
     public AnimationClip hurtClip; //*******init in inspector*******
 
+    public AnimationClip deathClip; //*******init in inspector*******
+
+    //inited beforehand:
+    public PlayerManager playerManager;
+
     //vars to find player's velocity:
     Vector3 previousPos;
     Vector3 velocity;
@@ -277,7 +282,10 @@ public class CharacterAnimator : MonoBehaviour
     //called by 'CharacterStats' to activate death anim:
     public void Die()
     {
-        Debug.LogWarning("Player should animate dying.");
+        //set dodge clip length:
+        float deathClipLen = deathClip.length;
+
+        Debug.Log("Player should animate dying.");
 
         //cut motion controls
         movement.cutMotionControls = true;
@@ -285,6 +293,9 @@ public class CharacterAnimator : MonoBehaviour
         //apply root motion + set trigger to anim
         animator.applyRootMotion = true;
         animator.SetTrigger("dead");
+
+        //delay scene reset by _ secs so player death anim can play out
+        playerManager.Invoke("ResetToMainMenu", deathClipLen + 0.3f);
 
     }
 }

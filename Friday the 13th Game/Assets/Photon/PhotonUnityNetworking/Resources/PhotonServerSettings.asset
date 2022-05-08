@@ -52,6 +52,7 @@ MonoBehaviour:
   - RPC_AnimateAttack
   - ResetAttackAnim
   - Die
+  - RPC_Die
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1
