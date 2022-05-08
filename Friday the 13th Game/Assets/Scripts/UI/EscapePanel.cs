@@ -24,7 +24,7 @@ public class EscapePanel : MonoBehaviour
     }
 
     //disconnect client and load main menu:
-    private IEnumerator DisconnectAndLoad()
+    public IEnumerator DisconnectAndLoad()
     {
         //disconnect client from server:
         PhotonNetwork.Disconnect();

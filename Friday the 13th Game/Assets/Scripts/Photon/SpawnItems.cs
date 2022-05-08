@@ -47,7 +47,7 @@ public class SpawnItems : MonoBehaviour
         */
     }
 
-    //Spawn obj inside specified radius
+    //Spawn only 1 obj regardless of player count inside specified radius 
     public void SpawnObjAtRandom(Vector3 spawnPos, GameObject spawnableObj, float radius)
     {
         //random pos around spawner obj
@@ -58,15 +58,15 @@ public class SpawnItems : MonoBehaviour
         //if photon network connected:
         if (PhotonNetwork.IsConnected)
         {
-            //create only 1 scimitar regardless of player count:
+            //create only 1 obj regardless of player count:
             PhotonNetwork.InstantiateRoomObject(spawnableObj.name, randomPos, spawnableObj.transform.rotation);
 
-            //create a scimitar for every new player joining, when they load in:
+            //create an obj for every new player joining, when they load in:
             //PhotonNetwork.Instantiate(scimitar.name, spawnPnt.position, scimitar.transform.rotation);
         }
         else
         {
-            //create a local scimitar:
+            //create a local obj:
             Instantiate(spawnableObj, randomPos, spawnableObj.transform.rotation);
         }
     }

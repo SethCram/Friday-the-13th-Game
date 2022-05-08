@@ -27,6 +27,15 @@ public class PlayerManager : MonoBehaviourPunCallbacks
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex); //reloads current scene using its 'buildIndex'
     }
 
+    //reset player to main menu:
+    public void ResetToMainMenu()
+    {
+        //use escape panel's disconnect + load
+        EscapePanel escapePanel = FindObjectOfType<EscapePanel>();
+
+        StartCoroutine(escapePanel.DisconnectAndLoad());
+    }
+
     //let player control character:
     public void EnablePlayerControl()
     {

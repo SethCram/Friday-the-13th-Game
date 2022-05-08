@@ -52,16 +52,16 @@ public class SpawnPlayers : MonoBehaviour
         }
         */
 
-        //use SpawnItems script
-        // to spawn in players randomly within sphere
-        SpawnItems spawnScript = FindObjectOfType<SpawnItems>();
-        spawnScript.SpawnObjAtRandom(transform.position, playerPrefab, spawnRadius);
+            //use SpawnItems script
+            // to spawn in players randomly within sphere
+            //SpawnItems spawnScript = FindObjectOfType<SpawnItems>();
+            //spawnScript.SpawnObjAtRandom(transform.position, playerPrefab, spawnRadius);
 
-        //SpawnObjAtRandom(transform.position, playerPrefab, radius:spawnRadius);
+        SpawnObjAtRandom(transform.position, playerPrefab, radius:spawnRadius);
     }
 
-    /*
-    //Spawn obj inside specified radius
+
+    //Spawn obj inside specified radius for every new player joining
     private void SpawnObjAtRandom(Vector3 spawnPos, GameObject spawnableObj, float radius)
     {
         //random pos around spawner obj
@@ -72,11 +72,11 @@ public class SpawnPlayers : MonoBehaviour
         //if photon network connected:
         if (PhotonNetwork.IsConnected)
         {
-            //create only 1 scimitar regardless of player count:
-            PhotonNetwork.InstantiateRoomObject(spawnableObj.name, randomPos, spawnableObj.transform.rotation);
+            //create only 1 obj regardless of player count:
+            //PhotonNetwork.InstantiateRoomObject(spawnableObj.name, randomPos, spawnableObj.transform.rotation);
 
-            //create a scimitar for every new player joining, when they load in:
-            //PhotonNetwork.Instantiate(scimitar.name, spawnPnt.position, scimitar.transform.rotation);
+            //create a obj for every new player joining, when they load in:
+            PhotonNetwork.Instantiate(spawnableObj.name, randomPos, spawnableObj.transform.rotation);
 
             print("Photon obj inst'd");
         }
@@ -88,7 +88,7 @@ public class SpawnPlayers : MonoBehaviour
             print("local obj inst'd");
         }
     }
-    */
+    
 
     private void OnDrawGizmos()
     {
