@@ -35,6 +35,13 @@ public class Item : ScriptableObject
     {
         playerInventory.RemoveItemFromInventoryList(this);
     }
+
+    //add this item to inventory
+    public bool AddToInventory(Inventory playerInventory)
+    {
+        // return whether added to inventory
+        return playerInventory.AddItemToInventoryList(this);
+    }
 }
 
 public enum CarrySize { Tiny, Medium}

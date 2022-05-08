@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
+using System;
+using System.Text.RegularExpressions;
+using System.Globalization;
 
 public class EquipmentManager : MonoBehaviourPun
 {
@@ -62,8 +65,13 @@ public class EquipmentManager : MonoBehaviourPun
 
         EquipAllDefaultItems();
     }
-    
-    //equip new item if possible by;       using its equip slot's index, calling the equipChangedCallback, activating equip in scene, both equip and mesh arrays, and deforming the correct body part:
+    /*
+    equip new item if possible by;       
+        using its equip slot's index, 
+        calling the equipChangedCallback, 
+        activating equip in scene, both equip and mesh arrays, 
+        and deforming the correct body part:
+    */
     public bool Equip(Equipment newEquip) //equip passed in 'newItem', but placement matters
     {
         int slotIndex = (int)newEquip.equipSlot; //enum converted to int to find its correct placement slot (add 1 bc added 'none' field?)
@@ -74,7 +82,7 @@ public class EquipmentManager : MonoBehaviourPun
         //don't equip new item if can't unequip previous item:
         if(oldItem == null && currEquipment[slotIndex] != null)
         {
-            Debug.Log("Couldn't unequip previous equipment");
+            Debug.LogWarning("Couldn't unequip previous equipment");
 
             return false;
         }
@@ -93,6 +101,8 @@ public class EquipmentManager : MonoBehaviourPun
             //enable item locally:
             ChangeMeshActive(newEquip.mesh.name, playerMesh.transform.parent, true);
         }
+
+        print("invert active state of " + newEquip.mesh.name);
 
         //fill mesh array w/ equipt mesh:
         currMeshes[slotIndex] = newMesh;
@@ -247,13 +257,18 @@ public class EquipmentManager : MonoBehaviourPun
     {
         foreach (Transform child in parent)
         {
-            //debug: print("child name: " + child.name + " and new mesh name: " + newMesh.name);
+            //debug: print("child name: " + child.name + " and new mesh name: " + objName);
 
-            if (child.name == objName)
+            //normalize strings to compare by removing whitespace
+            //objName = Regex.Replace(objName, @"\s", "");
+
+                //do case insensitive string comparison
+            //perform case-insensitive string comparison, turning symbols + whitespace into nothing: (merges chars)
+            if ( String.Compare(child.name, objName, CultureInfo.CurrentCulture, CompareOptions.IgnoreCase | CompareOptions.IgnoreSymbols) == 0 ) //child.name.Equals(objName, StringComparison.OrdinalIgnoreCase) )//child.name == objName)
             {
                 child.gameObject.SetActive(itemState);
 
-                //check: Debug.LogError(child.name + " had visibility set to: " + itemState);
+                //check: Debug.LogWarning(child.name + " had visibility set to: " + itemState);
 
                 break; //stop looking after mesh found
             }

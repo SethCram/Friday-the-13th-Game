@@ -42,6 +42,18 @@ public class Equipment : Item
         {
             properlyEquipt = true;
         }
+        //if equip failed, re-add removed item back to inventory
+        else
+        {
+            //if cant add to inventory
+            if( !AddToInventory(playerInventory) )
+            {
+                //throw error
+                Debug.LogError("Couldn't add " + this.name + " back to inventory after removing it.");
+            }
+
+            properlyEquipt = false;
+        }
     }
 }
 
