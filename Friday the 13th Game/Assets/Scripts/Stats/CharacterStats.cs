@@ -23,6 +23,9 @@ public class CharacterStats : MonoBehaviourPun
     //declare a dict of index type string and return type Stat:
     public Dictionary<string, Stat> statDict;
 
+    //inited beforehand:
+    public PlayerManager playerManager;
+
     //awake happens before 'Start()', need filling of 'allStats' array here bc it's used in another script's start
     private void Awake()
     {
@@ -40,12 +43,19 @@ public class CharacterStats : MonoBehaviourPun
         currHealth = maxHealth;
     }
 
-    public virtual void Die() //Meant to be overwritten
+    //public virtual void Die() 
+    [PunRPC]
+    public void Die()
     {
-        //start death anim by calling die() in character animator:
+        //start death by animating death:
         if (GetComponent<CharacterAnimator>() != null)
         {
-            //GetComponent<CharacterAnimator>().Die();
+            //anim dying
+            GetComponent<CharacterAnimator>().Die();
+
+            //disable player control (also unlocks cursor so bad)
+            // playerManager.DisablePlayerControl();
+
         }
         else
         {
@@ -53,6 +63,9 @@ public class CharacterStats : MonoBehaviourPun
         }
 
         Debug.Log( transform.name + "<color=red> died. </color>");
+
+        //delay scene reset by _ secs so player death anim can play out
+        playerManager.Invoke("ResetToMainMenu", deathAnimDelay); //within player manager
     }
     
     //take damage based on enemy atk and my def:
@@ -95,7 +108,16 @@ public class CharacterStats : MonoBehaviourPun
 
         if(currHealth <= 0)
         {
-            //Die();
+            if( PhotonNetwork.IsConnected)
+            {
+                //tell all clients to die
+                photonView.RPC("Die", RpcTarget.Others);
+            }
+            else
+            {
+                //die locally
+                Die();
+            }
         }
     }
     

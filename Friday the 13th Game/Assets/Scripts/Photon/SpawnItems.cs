@@ -7,8 +7,6 @@ public class SpawnItems : MonoBehaviour
 {
     public Transform spawnPnt;
 
-    //public GameObject scimitar;
-
     public List<GameObject> spawnObjs;
 
     public float spawnRadius = 1;

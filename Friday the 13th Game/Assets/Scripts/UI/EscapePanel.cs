@@ -19,6 +19,8 @@ public class EscapePanel : MonoBehaviour
     //called by main menu button:
     public void MainMenuButton()
     {
+        //PlayerManager playerManager = FindObjectOfType<PlayerManager>();
+
         //disconnect client and load main menu:
         StartCoroutine(DisconnectAndLoad());
     }

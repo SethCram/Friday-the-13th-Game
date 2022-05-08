@@ -277,9 +277,14 @@ public class CharacterAnimator : MonoBehaviour
     //called by 'CharacterStats' to activate death anim:
     public void Die()
     {
-        Debug.LogWarning("Player should die.");
+        Debug.LogWarning("Player should animate dying.");
 
-        //animator.applyRootMotion = true;
-        //animator.SetTrigger("dead");
+        //cut motion controls
+        movement.cutMotionControls = true;
+
+        //apply root motion + set trigger to anim
+        animator.applyRootMotion = true;
+        animator.SetTrigger("dead");
+
     }
 }

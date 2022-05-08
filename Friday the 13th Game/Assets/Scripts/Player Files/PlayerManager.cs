@@ -31,9 +31,27 @@ public class PlayerManager : MonoBehaviourPunCallbacks
     public void ResetToMainMenu()
     {
         //use escape panel's disconnect + load
-        EscapePanel escapePanel = FindObjectOfType<EscapePanel>();
+        //EscapePanel escapePanel = GameObject.FindObjectOfType(typeof(EscapePanel), true); //GameObject.FindObjectOfType(typeof(EscapePanel), true);
 
-        StartCoroutine(escapePanel.DisconnectAndLoad());
+        StartCoroutine(DisconnectAndLoad());
+    }
+
+    //disconnect client and load main menu:
+    public IEnumerator DisconnectAndLoad()
+    {
+
+        //load main menu if no longer connected:
+        SceneManager.LoadScene(0);
+
+        //disconnect client from server:
+        PhotonNetwork.Disconnect();
+
+        //while still connected to network:
+        while (PhotonNetwork.IsConnected)
+        {
+            //dont yet load scene:
+            yield return null;
+        }
     }
 
     //let player control character:

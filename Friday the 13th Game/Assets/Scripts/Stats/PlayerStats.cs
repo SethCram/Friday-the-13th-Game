@@ -5,10 +5,12 @@ using UnityEngine;
 public class PlayerStats : CharacterStats
 {
     //inited beforehand:
-    public PlayerManager playerManager; 
+        //public PlayerManager playerManager; //unneeded?
     public EquipmentManager equipManager;
     public StatApplication statApply;
 
+    /*
+    //currently does nothing new
     public override void Die()
     {
         //says who died in console:
@@ -23,13 +25,17 @@ public class PlayerStats : CharacterStats
             // playerManager.Invoke("ResetScene", deathAnimDelay); 
 
         //delay scene reset by _ secs so player death anim can play out
-        playerManager.Invoke("ResetToMainMenu", deathAnimDelay); 
+        //playerManager.Invoke("ResetToMainMenu", deathAnimDelay); 
     }
+    */
 
     // Start is called before the first frame update
     void Start()
     {
         equipManager.onEquipmentChangedCallback += EquipmentModsChanged;
+
+        //test this player dying:
+        //Invoke("Die", 5);
     }
 
     // add/remove stat effects granted/subtracted by worn equipment:

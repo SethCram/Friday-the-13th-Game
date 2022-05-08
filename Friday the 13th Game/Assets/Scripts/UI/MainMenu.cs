@@ -5,6 +5,14 @@ using UnityEngine.SceneManagement; //needed to change scenes
 
 public class MainMenu : MonoBehaviour
 {
+    //make sure cursor is unlocked
+    private void Start()
+    {
+        //unlock cursor and make visible:
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+    }
+
     //play button method to load next lvl:
     public void PlayGame()
     {
