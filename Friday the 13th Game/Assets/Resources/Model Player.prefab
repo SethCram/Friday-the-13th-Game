@@ -743,7 +743,6 @@ MonoBehaviour:
   maxHealth: 50
   currHealth: 0
   baseHealth: 50
-  deathAnimDelay: 2
   allStats:
   - name: Melee
     baseValue: 0
@@ -773,6 +772,19 @@ MonoBehaviour:
     baseValue: 0
   - name: Defense
     baseValue: 0
+  numberModels:
+  - {fileID: 7095136857273911971, guid: 16b9b9c139d7c074684b9a4fbae0b8ac, type: 3}
+  - {fileID: 212609259747198408, guid: ce1b440553f72be41a6b300366f0e2ed, type: 3}
+  - {fileID: 2392491180802093626, guid: 5791cb2ec4ae7e045b0d88570f1babf1, type: 3}
+  - {fileID: 8129184547623194788, guid: 552412598e8193c42b7209d5e8b080ae, type: 3}
+  - {fileID: 4464225504131163439, guid: 7aae6fb41ac505c4fbdc25c597288421, type: 3}
+  - {fileID: 9128063417995234199, guid: c4ffcf4513937724ab1f3d5a9bad7a06, type: 3}
+  - {fileID: 7511090269806135752, guid: 3201515c9ad717c40a8267f4fa450fab, type: 3}
+  - {fileID: 7676618884222507395, guid: aa92aa005dab1a5419c29331d9578162, type: 3}
+  - {fileID: 1372288187360735332, guid: 25db515b623decb4d8d1f96455513019, type: 3}
+  - {fileID: 4959903486083431757, guid: 156d363193bcd6b45b20b764cac5f545, type: 3}
+  numSpawnHeight: 3
+  numSpacing: 2
   equipManager: {fileID: 7413788013251121930}
   statApply: {fileID: 7413788013251121929}
 --- !u!114 &7413788013251121929

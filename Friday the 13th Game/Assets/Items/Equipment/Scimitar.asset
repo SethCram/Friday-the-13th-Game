@@ -17,7 +17,7 @@ MonoBehaviour:
   carrySize: 1
   maxStack: 1
   itemAmount: 1
-  itemPickup: {fileID: 2311485456154352087, guid: 6424b3e9586eb004fb58ccf71001e70c,
+  itemPickup: {fileID: 2311485456154352087, guid: 3136c039330a7b742b2eb2efc0d51437,
     type: 3}
   icon: {fileID: 21300000, guid: 07602584446ad864bbbe49f3db2d441c, type: 3}
   isDefaultItem: 0

@@ -103,6 +103,11 @@ public class StatApplication : MonoBehaviour
                 //set what the prev bulk stat is for w/ we call this method again:
                 lastSetBulkStat = statVal;
 
+                //explicitly spawn numbers when bulk changes
+                GetComponent<CharacterStats>().SpawnNumbers(playerStats.maxHealth, playerStats.currHealth);
+                
+                // GetComponent<CharacterStats>().OnHealthChangedCallback(playerStats.maxHealth, playerStats.currHealth);
+
                 break;
 
             case "Stealth":

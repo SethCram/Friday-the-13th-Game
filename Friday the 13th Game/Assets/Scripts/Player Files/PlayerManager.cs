@@ -19,6 +19,9 @@ public class PlayerManager : MonoBehaviourPunCallbacks
     private void Start()
     {
         playerMovement = GetComponent<ThirdPersonMovement>();
+
+        //just incase disabled for some reason
+        EnableCamControl();
     }
 
     //reload the scene:
