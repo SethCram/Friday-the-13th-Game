@@ -785,6 +785,7 @@ MonoBehaviour:
   - {fileID: 4959903486083431757, guid: 156d363193bcd6b45b20b764cac5f545, type: 3}
   numSpawnHeight: 3
   numSpacing: 2
+  playerManager: {fileID: 7413788013251121924}
   equipManager: {fileID: 7413788013251121930}
   statApply: {fileID: 7413788013251121929}
 --- !u!114 &7413788013251121929
@@ -875,6 +876,8 @@ MonoBehaviour:
   player: {fileID: 7413788013251121923}
   thirdPersonCamController: {fileID: 748000913362258575, guid: 6d04efeff66552e499953611b04eeec4,
     type: 3}
+  inventory: {fileID: 7413788013251121933}
+  equipmentManager: {fileID: 7413788013251121930}
 --- !u!114 &7413788013251121925
 MonoBehaviour:
   m_ObjectHideFlags: 0

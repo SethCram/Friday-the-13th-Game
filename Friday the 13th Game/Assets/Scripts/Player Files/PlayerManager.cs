@@ -13,8 +13,15 @@ public class PlayerManager : MonoBehaviourPunCallbacks
 
     public GameObject thirdPersonCamController; //need to activate/deactivate camera controls
 
+    public Inventory inventory;
+    public EquipmentManager equipmentManager;
+
     //cache so dont use 'getcomp' more than once:
     private ThirdPersonMovement playerMovement;
+
+        //for item replacement on leave
+        //private PlayerManager[] playerManagers;
+        //private int playerCount = 0;
 
     private void Start()
     {
@@ -22,6 +29,9 @@ public class PlayerManager : MonoBehaviourPunCallbacks
 
         //just incase disabled for some reason
         EnableCamControl();
+
+            //store player pos's every 3rd arg starting at 2nd arg
+            // InvokeRepeating("StorePlayers", 1, 5);
     }
 
     //reload the scene:
@@ -194,9 +204,50 @@ public class PlayerManager : MonoBehaviourPunCallbacks
         Debug.Log(deactivatingView.gameObject.name + " set deactive");
     }
 
+    //drop all equipment and inventory items
+    public void DropEverything()
+    {        
+        //wait till drop all inventory
+        while(!inventory.DropInventory());
+
+        //wait till drop all equipment
+        while(!equipmentManager.DropEquipment() );
+    }
+
+    /*
+    private void StorePlayers()
+    {
+
+        //stor all player manager's
+        playerManagers = FindObjectsOfType<PlayerManager>();
+
+        //if less player's than before
+        if( playerManagers.Length < playerCount)
+        {
+
+        }
+
+        //step thru all player manager's
+        foreach (PlayerManager manager in playerManagers)
+        {
+
+        }
+    }
+
+    //respawn lost items
+    private void RestoreLostPickups()
+    {
+        ItemPickup[] items = FindObjectsOfType<ItemPickup>();
+    }
+    */
+
     //called w/ another client leaves room:
     public override void OnPlayerLeftRoom(Player otherPlayer)
     {
+        //dont do anything if not my photon view
+        //if (!photonView.IsMine)
+            //return;
+
         base.OnPlayerLeftRoom(otherPlayer);
 
         Debug.LogWarning(otherPlayer.NickName + " left the game.");

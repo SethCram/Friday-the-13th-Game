@@ -14,7 +14,7 @@ public class EquipmentManager : MonoBehaviourPun
     public OnEquipmentChanged onEquipmentChangedCallback; //other methods can subscribe to this
 
     //to keep track of currently worn equip:
-    public Equipment[] currEquipment; //array of equipment slots
+    public Equipment[] currEquipment; 
     public SkinnedMeshRenderer[] currMeshes; //array of currently equipt meshes
     public List<Weapon> currWeapons; //at most will have 2 weapons, 1 in mainhand and 1 in offhand     (will have to have 2 in scene, one obj for mainhand and 1 for offhand)
     public List<Shield> currShields; //at most will have 2 shields, 1 in mainhand and 1 in offhand     (will have to have 2 in scene, one obj for mainhand and 1 for offhand)
@@ -102,7 +102,7 @@ public class EquipmentManager : MonoBehaviourPun
             ChangeMeshActive(newEquip.mesh.name, playerMesh.transform.parent, true);
         }
 
-        print("invert active state of " + newEquip.mesh.name);
+        //print("invert active state of " + newEquip.mesh.name);
 
         //fill mesh array w/ equipt mesh:
         currMeshes[slotIndex] = newMesh;
@@ -361,5 +361,63 @@ public class EquipmentManager : MonoBehaviourPun
             atkArmObject.SetActive(true);
         }
         */
+    }
+
+    //drops item over photon network
+    private void DropEquippedItem(GameObject spawnObj, Vector3 spawnPnt)
+    {
+
+        //if photon network connected:
+        if (PhotonNetwork.IsConnected)
+        {
+            /*
+            //create only 1 obj regardless of player count:
+            PhotonNetwork.InstantiateRoomObject(numberModels[digit].name,
+                spawnPoint,
+                numberModels[digit].transform.rotation);
+            */
+
+            //create an obj for every new player joining, when they load in:
+            PhotonNetwork.Instantiate(spawnObj.name, spawnPnt, spawnObj.transform.rotation);
+
+            Debug.Log("Should have instantiated " + spawnObj.name);
+
+        }
+        //local gameplay
+        else
+        {
+            //locally create item
+            Instantiate(spawnObj, spawnPnt, spawnObj.transform.rotation);
+        }
+    }
+
+    //drop all items in equip manager, true when done
+    public bool DropEquipment()
+    {
+        //set vector as right in front of which way player facing: 
+        Vector3 inFrontOfPlayer = transform.forward.normalized; //use '.forwar' to get player's local coord syst, and normalized bc we only need direction not magnitude
+
+        //set spawn pnt right in front of player, and up a bit bc otherwise spawns in ground:
+        Vector3 spawnPnt = transform.position + inFrontOfPlayer + Vector3.up;
+
+        //if bag not empty
+        if (currEquipment != null && currEquipment.Length != 0)
+        {
+            // for each item
+            foreach (Item item in currEquipment)
+            {
+                //only drop non-default items
+                if(item != null && !item.isDefaultItem)
+                {
+                    Debug.LogWarning(item.name + " lost, so recreated.");
+
+                    //recreate item
+                    DropEquippedItem(item.itemPickup, spawnPnt);
+                }
+                
+            }
+        }
+
+        return true;
     }
 }

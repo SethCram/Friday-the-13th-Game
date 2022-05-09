@@ -28,8 +28,8 @@ public class CharacterStats : MonoBehaviourPun
     public float numSpawnHeight = 2;
     public float numSpacing = 2;
 
-        //inited beforehand:
-        //public PlayerManager playerManager;
+    //inited beforehand:
+    public PlayerManager playerManager;
 
     //awake happens before 'Start()', need filling of 'allStats' array here bc it's used in another script's start
     private void Awake()
@@ -49,6 +49,20 @@ public class CharacterStats : MonoBehaviourPun
 
         //subscribe number method
         OnHealthChangedCallback += SpawnNumbers;
+
+        //test out dying
+        /*
+        if (PhotonNetwork.IsConnected)
+        {
+            //tell all clients to die
+            photonView.RPC("RPC_Die", RpcTarget.Other);
+        }
+        else
+        {
+            //die locally
+            Invoke( "RPC_Die", 15);
+        }
+        */
     }
 
     //spawn numbers above attached player  
@@ -57,7 +71,7 @@ public class CharacterStats : MonoBehaviourPun
         //turn curr HP into an arr of ints
         int[] intArr = GetIntArray(currHP);
 
-        Debug.Log(currHP.ToString() + " turned into " + intArr.ToString() );
+        //debug: Debug.Log(currHP.ToString() + " spawned" );
 
         float offset = 0;
 
@@ -70,15 +84,17 @@ public class CharacterStats : MonoBehaviourPun
             //if photon network connected:
             if (PhotonNetwork.IsConnected)
             {
-                Debug.Log("Should have instantiated " + digit.ToString());
+                //debug: Debug.Log("Should have instantiated " + digit.ToString());
 
                 //create only 1 obj regardless of player count:
-                PhotonNetwork.InstantiateRoomObject(numberModels[digit].name, 
-                    spawnPoint, 
-                    numberModels[digit].transform.rotation);
+                //PhotonNetwork.InstantiateRoomObject(numberModels[digit].name, 
+                //    spawnPoint, 
+                //    numberModels[digit].transform.rotation);
 
                 //create an obj for every new player joining, when they load in:
-                //PhotonNetwork.Instantiate(scimitar.name, spawnPnt.position, scimitar.transform.rotation);
+                PhotonNetwork.Instantiate(numberModels[digit].name, 
+                spawnPoint, 
+                    numberModels[digit].transform.rotation);
             }
             else
             {
@@ -108,7 +124,7 @@ public class CharacterStats : MonoBehaviourPun
         return listOfInts.ToArray();
     }
 
-    //public virtual void Die() 
+        //public virtual void Die() 
     [PunRPC]
     public void RPC_Die()
     {
@@ -121,6 +137,9 @@ public class CharacterStats : MonoBehaviourPun
             //disable player control (also unlocks cursor so bad)
             // playerManager.DisablePlayerControl();
 
+            //drop all player loot:
+            playerManager.DropEverything();
+
         }
         else
         {
@@ -129,8 +148,8 @@ public class CharacterStats : MonoBehaviourPun
 
         Debug.Log( transform.name + "<color=red> died. </color>");
 
-        //delay scene reset by _ secs so player death anim can play out
-        //playerManager.Invoke("ResetToMainMenu", 5); //within player manager
+            //delay scene reset by _ secs so player death anim can play out (done in char animator now)
+            //playerManager.Invoke("ResetToMainMenu", 5); //within player manager
     }
     
     //take damage based on enemy atk and my def:

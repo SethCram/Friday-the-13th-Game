@@ -51,7 +51,7 @@ public class SpawnItems : MonoBehaviour
         //random pos around spawner obj
         Vector3 randomPos = spawnPos + Random.insideUnitSphere * radius;
 
-        print("Spawned " + spawnableObj.name + " at " + randomPos);
+        //print("Spawned " + spawnableObj.name + " at " + randomPos);
 
         //if photon network connected:
         if (PhotonNetwork.IsConnected)

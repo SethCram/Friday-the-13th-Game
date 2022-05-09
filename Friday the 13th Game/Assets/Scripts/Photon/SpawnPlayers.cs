@@ -78,14 +78,14 @@ public class SpawnPlayers : MonoBehaviour
             //create a obj for every new player joining, when they load in:
             PhotonNetwork.Instantiate(spawnableObj.name, randomPos, spawnableObj.transform.rotation);
 
-            print("Photon obj inst'd");
+            //print("Photon obj inst'd");
         }
         else
         {
             //create a local scimitar:
             Instantiate(spawnableObj, randomPos, spawnableObj.transform.rotation);
 
-            print("local obj inst'd");
+            //print("local obj inst'd");
         }
     }
     

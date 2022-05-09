@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Photon.Pun;
+using System.Collections;
 using System.Collections.Generic; //needed for 'list' type
 using UnityEngine;
 
@@ -19,6 +20,17 @@ public class Inventory : MonoBehaviour
     //max slots: ****init in inspector****
     public int maxBagSlots = 2;
     public int maxTinySlots = 1;
+
+        //public bool destroyed { get; private set; }
+
+        //DropItemsOnDestroy[] dropItemsOnDestroys;
+
+    /*
+    private void Start()
+    {
+        InvokeRepeating("StoreDropItems", 1, 5);
+    }
+    */
 
     //add item to inventory list by verifying that it's not a default item and there's enough room:
     public bool AddItemToInventoryList(Item item)
@@ -141,7 +153,20 @@ public class Inventory : MonoBehaviour
 
         return false;
     }
+    /*
+    private void StoreDropItems()
+    {
+        //stor drop items on destroy
+        dropItemsOnDestroys = FindObjectsOfType<DropItemsOnDestroy>();
+    }
+    
 
+        //check if any inventories needa be destroyed 
+        private void Update()
+    {
+        
+    }
+    */
 
     //remove item from inventory list:
     public void RemoveItemFromInventoryList(Item item)
@@ -164,4 +189,86 @@ public class Inventory : MonoBehaviour
         }
     }
 
+    //drops item over photon network
+    private void DropInventoryItem(GameObject spawnObj, Vector3 spawnPnt)
+    {
+
+        //if photon network connected:
+        if (PhotonNetwork.IsConnected)
+        {
+            /*
+            //create only 1 obj regardless of player count:
+            PhotonNetwork.InstantiateRoomObject(numberModels[digit].name,
+                spawnPoint,
+                numberModels[digit].transform.rotation);
+            */
+
+            //create an obj for every new player joining, when they load in:
+            PhotonNetwork.Instantiate(spawnObj.name, spawnPnt, spawnObj.transform.rotation);
+
+            Debug.Log("Should have instantiated " + spawnObj.name);
+
+        }
+        //local gameplay
+        else
+        {
+            //locally create item
+            Instantiate(spawnObj, spawnPnt, spawnObj.transform.rotation);
+        }
+    }
+
+    //drop all items in invetory, true when done
+    public bool DropInventory()
+    {
+        //set vector as right in front of which way player facing: 
+        Vector3 inFrontOfPlayer = transform.forward.normalized; //use '.forwar' to get player's local coord syst, and normalized bc we only need direction not magnitude
+
+        //set spawn pnt right in front of player, and up a bit bc otherwise spawns in ground:
+        Vector3 spawnPnt = transform.position + inFrontOfPlayer + Vector3.up;
+
+        //if bag not empty
+        if (bagList.Count != 0)
+        {
+            // for each item
+            foreach (Item item in bagList)
+            {
+                Debug.LogWarning(item.name + " lost, so recreated.");
+
+                //recreate item
+                DropInventoryItem(item.itemPickup, spawnPnt);
+            }
+        }
+
+        //if bag not empty
+        if (tinyList.Count != 0)
+        {
+            // for each item
+            foreach (Item item in tinyList)
+            {
+                Debug.LogWarning(item.name + " lost.");
+
+                //recreate item
+                DropInventoryItem(item.itemPickup, spawnPnt);
+            }
+        }
+
+        return true;
+    }
+
+    //drop all items in inventory on ground
+    private void OnDestroy()
+    {
+       // destroyed = true;
+        /*
+        //store items going to be destroyed
+        foreach (DropItemsOnDestroy dropItemScript in dropItemsOnDestroys)
+        {
+            dropItemScript.GiveDestroyedItems(bagItems: bagList, tinyItems: tinyList);
+        }
+
+        //debug: Debug.Log("Destroy " + this.name);
+
+        //fails: Debug.Log("Other inventory: " + FindObjectOfType<Inventory>().name);
+        */
+    }
 }
