@@ -2202,7 +2202,7 @@ PrefabInstance:
     - target: {fileID: 5514810632280257453, guid: ba6d5a6a8e56fb64c94546c2c1734bbd,
         type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 5514810632280257453, guid: ba6d5a6a8e56fb64c94546c2c1734bbd,
         type: 3}
@@ -2371,7 +2371,7 @@ PrefabInstance:
     - target: {fileID: 2508006345402333454, guid: 8efac8f9663cfb945a4caf5f44eb3769,
         type: 3}
       propertyPath: m_RootOrder
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 2508006345402333454, guid: 8efac8f9663cfb945a4caf5f44eb3769,
         type: 3}
@@ -2493,6 +2493,51 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 202726458}
+    - target: {fileID: 4077280359341139321, guid: 8efac8f9663cfb945a4caf5f44eb3769,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 74.29999
+      objectReference: {fileID: 0}
+    - target: {fileID: 4077280359341139321, guid: 8efac8f9663cfb945a4caf5f44eb3769,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -8
+      objectReference: {fileID: 0}
+    - target: {fileID: 4170466058034764805, guid: 8efac8f9663cfb945a4caf5f44eb3769,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4170466058034764805, guid: 8efac8f9663cfb945a4caf5f44eb3769,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4170466058034764805, guid: 8efac8f9663cfb945a4caf5f44eb3769,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4170466058034764805, guid: 8efac8f9663cfb945a4caf5f44eb3769,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4170466058034764805, guid: 8efac8f9663cfb945a4caf5f44eb3769,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4170466058034764805, guid: 8efac8f9663cfb945a4caf5f44eb3769,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5615637230365490000, guid: 8efac8f9663cfb945a4caf5f44eb3769,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6813835370542122515, guid: 8efac8f9663cfb945a4caf5f44eb3769,
         type: 3}
       propertyPath: m_AnchorMax.y
