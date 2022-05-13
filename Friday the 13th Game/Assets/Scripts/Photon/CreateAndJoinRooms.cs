@@ -10,19 +10,33 @@ using Photon.Realtime; //for room options
 public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
 {
     public TMP_InputField createInput;
+    public TMP_Text errorCreate;
     public TMP_InputField joinInput;
+    public TMP_Text errorJoin;
 
-    //public int maxPlayers = 2;
+    //public int maxPlayers = 4;
 
     //create room w/ corresponding input as room name w/ create button pressed:
     public void CreateRoom()
     {
+        //output msg if empty room field
+        if ( string.IsNullOrEmpty( createInput.text) )
+        {
+            AssignErrorText(errorCreate, "CreateRoom failed. A roomname is required.");
+
+            //dont create room
+            return;
+        }
+
         //set room options:
         RoomOptions roomOptions = new RoomOptions();
-        roomOptions.MaxPlayers = 4;
+        roomOptions.MaxPlayers = 0; //4; 0 = no limit
 
         //roomOptions.CleanupCacheOnLeave = false; //doesnt cleanup player or objs they have ownership over w/ leave
         //roomOptions.PublishUserId = true;
+
+        //clear error msg
+        AssignErrorText(errorCreate, "Creating room...");
 
         //make and join room:
         PhotonNetwork.CreateRoom(createInput.text, roomOptions);
@@ -41,11 +55,26 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
 
         //output why cant create room:
         Debug.LogWarning("Room not created bc: " + message);
+
+        AssignErrorText(errorCreate, message);
+
     }
 
     //join room w/ corresponding input as room name w/ join button pressed:
     public void JoinRoom()
     {
+        //output msg if empty room field
+        if (string.IsNullOrEmpty(joinInput.text))
+        {
+            AssignErrorText(errorJoin, "JoinRoom failed. A roomname is required.");
+
+            //dont join room
+            return;
+        }
+
+        //clear error msg
+        AssignErrorText(errorJoin, "Joining room...");
+
         PhotonNetwork.JoinRoom(joinInput.text);
     }
 
@@ -53,8 +82,15 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
     {
         base.OnJoinRoomFailed(returnCode, message);
 
-        //output why cant join room:
-        Debug.LogWarning("Room not joined bc: " + message);
+        AssignErrorText(errorJoin, message);
+    }
+
+    //assign error text
+    private void AssignErrorText( TMP_Text errorText, string message)
+    {
+        errorText.text = message;
+
+        Debug.LogError("Error message: " + message);
     }
 
     //callback for w/ any client joins room then multiplayer game loaded:
