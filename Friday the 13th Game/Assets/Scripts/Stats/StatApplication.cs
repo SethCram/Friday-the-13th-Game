@@ -98,6 +98,8 @@ public class StatApplication : MonoBehaviour
                 bulkDifference = statVal - lastSetBulkStat;
 
                 //set curr hp to itself + or - the difference;
+                // only need to do this when player first spawns in
+                // otherwise, player's hp shouldnt change based on armor?
                 playerStats.currHealth += hp_per_bulk * bulkDifference;
 
                 //set what the prev bulk stat is for w/ we call this method again:

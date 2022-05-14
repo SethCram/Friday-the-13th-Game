@@ -124,9 +124,7 @@ public class CharacterStats : MonoBehaviourPun
         return listOfInts.ToArray();
     }
 
-        //public virtual void Die() 
-    [PunRPC]
-    public void RPC_Die()
+    public virtual void Die() 
     {
         //start death by animating death:
         if (GetComponent<CharacterAnimator>() != null)
@@ -155,6 +153,18 @@ public class CharacterStats : MonoBehaviourPun
     //take damage based on enemy atk and my def:
     public void TakeDamage(int dmgDealt)
     {
+        if (PhotonNetwork.IsConnected)
+        {
+            //tell all of these clients to take dmg
+            photonView.RPC("RPC_TakeDamage", RpcTarget.Others, dmgDealt);
+        }
+        else
+        {
+            //take dmg locally
+            RPC_TakeDamage( dmgDealt );
+        }
+
+        /*
         if(charAnimator != null)
         {
             //animate this char taking dmg:
@@ -195,7 +205,7 @@ public class CharacterStats : MonoBehaviourPun
         {
             if( PhotonNetwork.IsConnected)
             {
-                //tell all clients to die
+                //tell all of these clients to die
                 photonView.RPC("RPC_Die", RpcTarget.Others);
             }
             else
@@ -204,6 +214,54 @@ public class CharacterStats : MonoBehaviourPun
                 RPC_Die();
             }
         }
+        */
     }
-    
+
+    [PunRPC]
+    public void RPC_TakeDamage( int dmgDealt )
+    {
+        if (charAnimator != null)
+        {
+            //animate this char taking dmg:
+            charAnimator.AnimateDmgTaken();
+
+            //animate this char taking dmg across the network:
+            //photonView.RPC("AnimateDmgTaken", RpcTarget.Others);
+        }
+        else
+        {
+            Debug.LogWarning("No CharAnim script filled for CharStats so cant animate being hit");
+        }
+
+        int damageTaken = dmgDealt;
+        float damageFloatPH;
+
+        //factor def into damage calculation:
+        damageFloatPH = damageTaken;
+        damageFloatPH -= damageFloatPH * (statDict["Defense"].GetValue() * 0.04f); //max damage blocked due to def should be 80%
+        damageTaken = (int)damageFloatPH;
+
+
+        //makes sure damage doesn't go negative and heal:
+        damageTaken = Mathf.Clamp(damageTaken, 1, int.MaxValue);
+
+        //subtract damage amt from curr health and print it:
+        currHealth -= damageTaken;
+        Debug.LogWarning(transform.name + " takes " + damageTaken + " damage.");
+
+        //health changed event:
+        if (OnHealthChangedCallback != null)
+        {
+            OnHealthChangedCallback(maxHealth, currHealth);
+        }
+
+        //if no more hp
+        if (currHealth <= 0)
+        {
+            //die locally
+            Die();
+        }
+    }
+
+
 }

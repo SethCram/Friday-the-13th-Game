@@ -261,7 +261,6 @@ public class CharacterAnimator : MonoBehaviour
     }
 
     //activated by 'TakeDmg()' in 'CharStats':
-    [PunRPC]
     public void AnimateDmgTaken()
     {
         Debug.Log("Animate taking dmg");
