@@ -58,3 +58,12 @@ sysinfo.txt
 # Crashlytics generated file
 crashlytics-build.properties
 
+#unignore build files
+
+#include everything in /Builds/
+!/Builds/
+!/Builds/*
+
+#include subdirs inside /Builds/
+!/Builds/**/*
+
