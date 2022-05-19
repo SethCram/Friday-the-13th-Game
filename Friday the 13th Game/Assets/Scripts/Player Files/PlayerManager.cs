@@ -19,6 +19,8 @@ public class PlayerManager : MonoBehaviourPunCallbacks
     //cache so dont use 'getcomp' more than once:
     private ThirdPersonMovement playerMovement;
 
+    public bool paused = false;
+
         //for item replacement on leave
         //private PlayerManager[] playerManagers;
         //private int playerCount = 0;

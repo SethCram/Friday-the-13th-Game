@@ -10,7 +10,9 @@ public class ThirdPersonMovement : MonoBehaviour
     private CharacterController controller;
     public CharacterCombat combat; //init in inspector
     public CharacterAnimator charAnimator; //*********init in inspector***
+    public PlayerButtons playerButtons; //init inspector
     public PhotonView photonView;   //*********init in inspector***
+    public PlayerManager playerManager;
 
     //cam following player:     (drop)
     public Transform playerCam;
@@ -93,6 +95,15 @@ public class ThirdPersonMovement : MonoBehaviour
             return;
         }
 
+        /*
+        //make sure motion controls cut if atking or dodging
+        if(isDodging || combat.isAtking)
+        {
+            //cutMotionControls();
+            cutMotionControls = true;
+        }
+        */
+
         //set if currently grounded:
         isGrounded = Physics.CheckSphere(groundCheck.position, groundSphereRadius, groundMask);
 
@@ -101,6 +112,8 @@ public class ThirdPersonMovement : MonoBehaviour
         {
             GroundedReset();
         }
+
+        Debug.Log("cutMotionControls: " + cutMotionControls.ToString() );
 
         //apply current motion controls if we don't want to cut them:
         if (cutMotionControls == false)
@@ -409,8 +422,9 @@ public class ThirdPersonMovement : MonoBehaviour
     public void AttackFinished()
     {
         //resume motion controls:
-        cutMotionControls = false;
-        
+        //cutMotionControls = false;
+        ResumeMotionCntrls();
+
         //check: print("Reconnecting motion controls");
 
         //no longer atking:
@@ -435,7 +449,8 @@ public class ThirdPersonMovement : MonoBehaviour
         }
 
         //resume motion controls:
-        cutMotionControls = false;
+        //cutMotionControls = false;
+        ResumeMotionCntrls();
 
         //no longer dodging:
         isDodging = false;
@@ -444,10 +459,22 @@ public class ThirdPersonMovement : MonoBehaviour
     //invoked by 'CharAnimator' w/ a delay to let hurt clip play out:
     public void HurtFinished()
     {
-        //resume motion control:
-        cutMotionControls = false;
+        ResumeMotionCntrls();
 
         //set 'isBeingHurt' to false so cant open UI?
+    }
+
+    //enable motion controls if no menus open
+    private void ResumeMotionCntrls()
+    {
+        //print(playerButtons.paused);
+
+        //if player not paused:
+        if (!playerManager.paused)
+        {
+            //resume motion control:
+            cutMotionControls = false;
+        }
     }
 
     //draw black wire sphere around 'groundCheck' obj when player obj is selected:

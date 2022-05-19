@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 8244978766147040960}
   - component: {fileID: 9128063417995234192}
   - component: {fileID: -225565362448980664}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: five
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -28,13 +28,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9128063417995234199}
-  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.70710677}
+  m_LocalRotation: {x: 0, y: -0.7071068, z: 0.70710677, w: 0}
   m_LocalPosition: {x: -61, y: 33, z: -203.29}
   m_LocalScale: {x: 100, y: 100, z: 100}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 90.00001, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 90.00001, y: 0, z: 180}
 --- !u!33 &4776470277865823880
 MeshFilter:
   m_ObjectHideFlags: 0

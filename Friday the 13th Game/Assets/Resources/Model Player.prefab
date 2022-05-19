@@ -704,7 +704,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   combat: {fileID: 7413788013251121926}
   charAnimator: {fileID: 7413788013251121927}
+  playerButtons: {fileID: 7413788013251121932}
   photonView: {fileID: -2933026003536563205}
+  playerManager: {fileID: 7413788013251121924}
   playerCam: {fileID: 6269342325880267029, guid: 6297942edde43f14292cb9d132b31388,
     type: 3}
   cutMotionControls: 0
@@ -878,6 +880,7 @@ MonoBehaviour:
     type: 3}
   inventory: {fileID: 7413788013251121933}
   equipmentManager: {fileID: 7413788013251121930}
+  paused: 0
 --- !u!114 &7413788013251121925
 MonoBehaviour:
   m_ObjectHideFlags: 0

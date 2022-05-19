@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 2311485456154352081}
   - component: {fileID: 6041833074042394759}
   - component: {fileID: 5800413920831542486}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: PlatelegsPickup
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -129,6 +129,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Platelegs
       objectReference: {fileID: 0}
+    - target: {fileID: 1515477859040413879, guid: ea113e8cff7dc134faaba79e0addee3d,
+        type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 3770726519845615284, guid: ea113e8cff7dc134faaba79e0addee3d,
         type: 3}
       propertyPath: m_RootOrder
@@ -203,6 +208,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Pickup - Particle System
+      objectReference: {fileID: 0}
+    - target: {fileID: 454017619452436681, guid: 177a7f6490c5c624982fa4c4d78636d3,
+        type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 2949439472782258566, guid: 177a7f6490c5c624982fa4c4d78636d3,
         type: 3}

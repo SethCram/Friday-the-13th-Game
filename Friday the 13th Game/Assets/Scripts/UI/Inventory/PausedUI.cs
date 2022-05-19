@@ -25,12 +25,17 @@ public class PausedUI : MonoBehaviour
     private bool inventory_UI_Accessible = true;
     private bool escape_UI_Accessible = true;
 
+    private int numOfChildren = 0;
+    private int deactiveChildren = 0;
+
     // Start is called before the first frame update
     void Start()
     {
-        //set both panels and the dropdown invisible by default:
+        //set children invisible by default:
         foreach (Transform child in transform)
         {
+            //incr num of childs
+            numOfChildren++;
 
             child.gameObject.SetActive(false);
         }
@@ -39,6 +44,33 @@ public class PausedUI : MonoBehaviour
     // Update pause UI if buttons pressed and not other UI active:
     void LateUpdate()
     {
+        //loop thru each child obj
+        foreach (Transform child in transform)
+        {
+            //if child deactive
+            if( !child.gameObject.activeSelf )
+            {
+                //count it
+                deactiveChildren++;
+            }
+        }
+
+        //if all panels deactive
+        if( deactiveChildren == numOfChildren )
+        {
+            //not paused
+            playerManager.paused = false;
+        }
+        //a panel active
+        else
+        {
+            //paused
+            playerManager.paused = true;
+        }
+
+        //rst num of deactive children
+        deactiveChildren = 0;
+
         //if press inventory button and its currently accessible:
         if(Input.GetButtonDown("Inventory") && inventory_UI_Accessible)
         {

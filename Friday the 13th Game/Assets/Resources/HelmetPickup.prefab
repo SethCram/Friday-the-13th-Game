@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 9002858636594496521}
   - component: {fileID: -3057785945944368950}
   - component: {fileID: -1120212137204412815}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: HelmetPickup
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -128,6 +128,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Pickup - Particle System
+      objectReference: {fileID: 0}
+    - target: {fileID: 454017619452436681, guid: 177a7f6490c5c624982fa4c4d78636d3,
+        type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 2949439472782258566, guid: 177a7f6490c5c624982fa4c4d78636d3,
         type: 3}
@@ -258,6 +263,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Helm
+      objectReference: {fileID: 0}
+    - target: {fileID: 199051672695184157, guid: f65865289e6067a45a5793a5f3fdc296,
+        type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f65865289e6067a45a5793a5f3fdc296, type: 3}

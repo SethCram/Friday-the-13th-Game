@@ -10,7 +10,8 @@ public class PlayerButtons : MonoBehaviourPun
 
     public bool playerInteract = false;
     public bool openInventory = false;
-    public bool openOptions = false; 
+    public bool openOptions = false;
+    //public bool paused = false;
 
     private ThirdPersonMovement playerMovement;
 
@@ -39,17 +40,24 @@ public class PlayerButtons : MonoBehaviourPun
         if (playerMovement.isGrounded && !(combat.isAtking) && !(playerMovement.isDodging))
         {
             AccessPausedUI();
-
-
+        }
+        else
+        {
+            //Debug.LogWarning("Access to pause UI not allowed.");
         }
     }
 
     private void AccessPausedUI()
     {
+        //Debug.LogWarning("Access to pause UI allowed.");
+
         //if press inventory button, invert its open state for one 'Update()', then reset it:
         openInventory = false;
         if (Input.GetButtonDown("Inventory"))
         {
+            //invert pause state
+            //paused = !paused;
+
             openInventory = true;
         }
 
@@ -57,6 +65,9 @@ public class PlayerButtons : MonoBehaviourPun
         openOptions = false;
         if (Input.GetButtonDown("Options"))
         {
+            // invert pause state
+            //paused = !paused;
+
             openOptions = true;
         }
     }

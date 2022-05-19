@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 2311485456154352081}
   - component: {fileID: 6041833074042394759}
   - component: {fileID: -5579714142929387583}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: ScimitarPickup
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -128,6 +128,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Pickup - Particle System
+      objectReference: {fileID: 0}
+    - target: {fileID: 454017619452436681, guid: 177a7f6490c5c624982fa4c4d78636d3,
+        type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 2949439472782258566, guid: 177a7f6490c5c624982fa4c4d78636d3,
         type: 3}
@@ -258,6 +263,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Scimitar
+      objectReference: {fileID: 0}
+    - target: {fileID: 4966387569967092813, guid: c89e41edc642c484da4d53fea9a30aa8,
+        type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c89e41edc642c484da4d53fea9a30aa8, type: 3}

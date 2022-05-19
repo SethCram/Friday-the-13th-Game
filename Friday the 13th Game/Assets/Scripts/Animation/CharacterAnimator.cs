@@ -32,6 +32,7 @@ public class CharacterAnimator : MonoBehaviour
     private ThirdPersonMovement movement; //needed to get walk speed and whether running
 
     public PhotonView photonView;
+    private bool dying = false;
 
     //private bool groundedPreviously = false;
     //private bool landing = false;
@@ -69,6 +70,11 @@ public class CharacterAnimator : MonoBehaviour
         {
             //dont execute any movement code:
             return;
+        }
+
+        if( dying )
+        {
+            movement.cutMotionControls = true;
         }
 
         //dont divide by 0 (happens if time is paused):
@@ -284,13 +290,19 @@ public class CharacterAnimator : MonoBehaviour
         //set dodge clip length:
         float deathClipLen = deathClip.length;
 
-        Debug.Log("Player should animate dying.");
+        dying = true;
+
+        Debug.LogWarning("Player should animate dying.");
 
         //cut motion controls
         movement.cutMotionControls = true;
 
         //apply root motion + set trigger to anim
         animator.applyRootMotion = true;
+
+        //try using player manager method
+        //playerManager.DisablePlayerControl();
+
         animator.SetTrigger("dead");
 
         //delay scene reset by _ secs so player death anim can play out
