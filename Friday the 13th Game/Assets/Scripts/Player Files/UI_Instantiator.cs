@@ -36,7 +36,7 @@ public class UI_Instantiator : MonoBehaviour
         //init script:
         pausedUIScript = pausedUICanvasPrefab.GetComponent<PausedUI>();
         pausedUIScript.playerManager = GetComponent<PlayerManager>();
-        pausedUIScript.playerButtons = GetComponent<PlayerButtons>();
+        //pausedUIScript.playerButtons = GetComponent<PlayerButtons>();
 
         //init callback script:
         pausedUICallbacks = pausedUICanvasPrefab.GetComponent<PausedUICallbacks>();

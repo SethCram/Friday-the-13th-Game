@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3964092233134819860}
   - component: {fileID: 3964092233134819861}
   - component: {fileID: 3964092233134819862}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: NailPickup
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -75,6 +75,7 @@ MonoBehaviour:
   interactionRadius: 2
   interactionTransform: {fileID: 3964092233134819863}
   item: {fileID: 11400000, guid: 2efe42777514f284a926ee2ff804f456, type: 2}
+  shouldDelete: 0
 --- !u!1 &3964092234027203570
 GameObject:
   m_ObjectHideFlags: 0
@@ -87,7 +88,7 @@ GameObject:
   - component: {fileID: 3964092234027203574}
   - component: {fileID: 3964092234027203575}
   - component: {fileID: 3964092234027203568}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Cylinder
   m_TagString: Untagged
   m_Icon: {fileID: 0}

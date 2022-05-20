@@ -12,9 +12,14 @@ public class Interactable : MonoBehaviourPunCallbacks
     private SphereCollider sphereCollider; //to setup sphere trigger
 
     //to store all players able to interact with this obj:
-    private List<Transform> interactablePlayers;
+    public List<Transform> interactablePlayers;
 
-    private void Start()
+    private bool showInteractMsg;
+    private GUIStyle guiStyle;
+    private string msg;
+    public bool isOpen = false;
+
+    public virtual void Start()
     {
         //setup sphere trigger:
         sphereCollider = GetComponent<SphereCollider>();
@@ -32,6 +37,9 @@ public class Interactable : MonoBehaviourPunCallbacks
 
         //init list of transforms:
         interactablePlayers = new List<Transform>();
+
+        //setup GUI style settings for user prompts
+        setupGui();
     }
 
     //arg of transform is player interacting with this:
@@ -40,6 +48,8 @@ public class Interactable : MonoBehaviourPunCallbacks
         //this method meant to be overwritten
 
         Debug.Log("Interacting w/: " + transform.name);
+
+        msg = getGuiMsg(!isOpen);
     }
 
     private void Update()
@@ -47,6 +57,9 @@ public class Interactable : MonoBehaviourPunCallbacks
         //if any interactable players:
         if (interactablePlayers.Count > 0)
         {
+            showInteractMsg = true;
+            msg = getGuiMsg(isOpen);
+
             //if a player within radius pressed the 'Interact' button, call 'Interact()':
             foreach (Transform player in interactablePlayers)
             {
@@ -65,10 +78,14 @@ public class Interactable : MonoBehaviourPunCallbacks
                 }
             }
         }
+        else
+        {
+            showInteractMsg = false; 
+        }
     }
 
     //add player to interactable players list w/ enter radius:
-    private void OnTriggerEnter(Collider other)
+    public virtual void OnTriggerEnter(Collider other)
     {
         //only add an interactable player if tagged w/ 'Player' or 'Enemy'
         if(other.tag != "Player" && other.tag != "Enemy")
@@ -82,7 +99,7 @@ public class Interactable : MonoBehaviourPunCallbacks
     }
 
     //remove player from interactable players list w/ exit radius:
-    private void OnTriggerExit(Collider other)
+    public virtual void OnTriggerExit(Collider other)
     {
         //only remove an interactable player if tagged w/ 'Player' or 'Enemy'
         if (other.tag != "Player" && other.tag != "Enemy")
@@ -94,4 +111,41 @@ public class Interactable : MonoBehaviourPunCallbacks
 
         //Debug.Log("Removed: " + other.transform.name);
     }
+
+    #region GUI Config
+
+    //configure the style of the GUI
+    private void setupGui()
+    {
+        guiStyle = new GUIStyle();
+        guiStyle.fontSize = 16;
+        guiStyle.fontStyle = FontStyle.Bold;
+        guiStyle.normal.textColor = Color.white;
+        msg = "Press E/Fire1 to Interact";
+    }
+
+    public virtual string getGuiMsg(bool isOpen)
+    {
+        string rtnVal;
+        if (isOpen)
+        {
+            rtnVal = "Press E/Fire1 to Close";
+        }
+        else
+        {
+            rtnVal = "Press E/Fire1 to Open";
+        }
+
+        return rtnVal;
+    }
+
+    void OnGUI()
+    {
+        if (showInteractMsg)  //show on-screen prompts to user for guide.
+        {
+            GUI.Label(new Rect(50, Screen.height - 50, 200, 50), msg, guiStyle);
+        }
+    }
+    //End of GUI Config --------------
+    #endregion
 }

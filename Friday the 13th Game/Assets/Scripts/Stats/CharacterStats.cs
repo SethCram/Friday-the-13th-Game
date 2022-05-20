@@ -93,16 +93,18 @@ public class CharacterStats : MonoBehaviourPun
 
                 //create an obj for every new player joining, when they load in:
                 PhotonNetwork.Instantiate(numberModels[digit].name, 
-                spawnPoint, 
-                    numberModels[digit].transform.rotation);
+                spawnPoint,
+                    numberModels[digit].transform.rotation); //use the player's rot?
             }
             else
             {
                 //create a local obj:
                 Instantiate(numberModels[digit], 
-                    spawnPoint, 
-                    numberModels[digit].transform.rotation);
+                    spawnPoint,
+                    numberModels[digit].transform.rotation); //use the player's rot?
             }
+
+            print(transform.rotation.ToString());
 
             //create new pos to spawn nxt number at
             offset += numSpacing;

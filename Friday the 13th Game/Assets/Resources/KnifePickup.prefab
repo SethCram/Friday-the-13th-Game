@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 2311485456154352081}
   - component: {fileID: 5828818488937399781}
   - component: {fileID: 1963784887313432531}
-  m_Layer: 8
+  m_Layer: 10
   m_Name: KnifePickup
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -132,7 +132,7 @@ PrefabInstance:
     - target: {fileID: 454017619452436681, guid: 177a7f6490c5c624982fa4c4d78636d3,
         type: 3}
       propertyPath: m_Layer
-      value: 8
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 2949439472782258566, guid: 177a7f6490c5c624982fa4c4d78636d3,
         type: 3}
@@ -212,7 +212,7 @@ PrefabInstance:
     - target: {fileID: 6166100968889238435, guid: 1d0d302ee524cfc4391785156bc3e495,
         type: 3}
       propertyPath: m_Layer
-      value: 8
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 6834692396885055769, guid: 1d0d302ee524cfc4391785156bc3e495,
         type: 3}

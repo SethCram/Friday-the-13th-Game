@@ -10,7 +10,7 @@ public class ThirdPersonMovement : MonoBehaviour
     private CharacterController controller;
     public CharacterCombat combat; //init in inspector
     public CharacterAnimator charAnimator; //*********init in inspector***
-    public PlayerButtons playerButtons; //init inspector
+        //public PlayerButtons playerButtons; //init inspector
     public PhotonView photonView;   //*********init in inspector***
     public PlayerManager playerManager;
 
@@ -113,7 +113,7 @@ public class ThirdPersonMovement : MonoBehaviour
             GroundedReset();
         }
 
-        Debug.Log("cutMotionControls: " + cutMotionControls.ToString() );
+        //debug: Debug.Log("cutMotionControls: " + cutMotionControls.ToString() );
 
         //apply current motion controls if we don't want to cut them:
         if (cutMotionControls == false)

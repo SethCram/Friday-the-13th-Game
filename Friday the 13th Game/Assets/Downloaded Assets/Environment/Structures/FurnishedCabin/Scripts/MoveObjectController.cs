@@ -24,6 +24,11 @@ public class MoveObjectController : MonoBehaviour
 		//Initialize moveDrawController if script is enabled.
 		player = GameObject.FindGameObjectWithTag("Player");
 
+		if(player == null)
+        {
+			Debug.LogError("An obj tagged 'Player' is missing.");
+		}
+
 		fpsCam = Camera.main;
 		if (fpsCam == null)	//a reference to Camera is required for rayasts
 		{
@@ -66,6 +71,17 @@ public class MoveObjectController : MonoBehaviour
 
 	void Update()
 	{		
+		//if cant find cam at start
+		if(fpsCam == null)
+        {
+			//try to find again
+			fpsCam = Camera.main;
+		}
+		else
+        {
+			//Debug.Log("Cam found");
+        }
+
 		if (playerEntered)
 		{	
 

@@ -101,4 +101,9 @@ public class ItemPickup : Interactable //this class is now derived from/a child 
             Debug.LogWarning("re-created: " + itemPickup.name);
         }
     }
+
+    public override string getGuiMsg(bool isOpen)
+    {
+        return "Press E/Fire1 to Pickup";
+    }
 }

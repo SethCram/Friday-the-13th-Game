@@ -6,20 +6,11 @@ using Photon.Pun;
 public class PlayerButtons : MonoBehaviourPun
 {
     //init in inspector:
-    public CharacterCombat combat;    //needed to check if atking
+        //public CharacterCombat combat;    //needed to check if atking
 
     public bool playerInteract = false;
-    public bool openInventory = false;
-    public bool openOptions = false;
-    //public bool paused = false;
-
-    private ThirdPersonMovement playerMovement;
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        playerMovement = GetComponent<ThirdPersonMovement>();
-    }
+        //public bool openInventory = false;
+        //public bool openOptions = false;
 
     // Update is called once per frame
     void Update()
@@ -35,6 +26,7 @@ public class PlayerButtons : MonoBehaviourPun
         {
             playerInteract = true;
         }
+        /*
 
         //if player grounded and not atking, not dodging, allow access to 'paused' UI:
         if (playerMovement.isGrounded && !(combat.isAtking) && !(playerMovement.isDodging))
@@ -45,8 +37,10 @@ public class PlayerButtons : MonoBehaviourPun
         {
             //Debug.LogWarning("Access to pause UI not allowed.");
         }
+        */
     }
 
+    /*
     private void AccessPausedUI()
     {
         //Debug.LogWarning("Access to pause UI allowed.");
@@ -71,4 +65,5 @@ public class PlayerButtons : MonoBehaviourPun
             openOptions = true;
         }
     }
+    */
 }

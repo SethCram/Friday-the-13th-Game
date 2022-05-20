@@ -12,7 +12,7 @@ public class PausedUI : MonoBehaviour
 
     public PlayerManager playerManager; //made public to init before its instantiation
 
-    public PlayerButtons playerButtons; //made public to init before its instantiation
+    //public PlayerButtons playerButtons; //made public to init before its instantiation
 
     //for multi option menu:
     public Transform invenPanel;
