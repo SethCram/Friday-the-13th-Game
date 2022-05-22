@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9002858636594496523}
-  - component: {fileID: 9002858636594496522}
+  - component: {fileID: 1344358429219001021}
   - component: {fileID: 9002858636594496520}
   - component: {fileID: 9002858636594496521}
   - component: {fileID: -3057785945944368950}
@@ -37,8 +37,8 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &9002858636594496522
-BoxCollider:
+--- !u!64 &1344358429219001021
+MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -47,9 +47,10 @@ BoxCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.53280663, y: 0.44000673, z: 0.45746848}
-  m_Center: {x: -0.017969012, y: 0.026670188, z: 0.03616877}
+  serializedVersion: 4
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -1133273598262949773, guid: 78594e7a205ad71448a8ac358b5af6b8, type: 3}
 --- !u!135 &9002858636594496520
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -77,6 +78,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   interactionRadius: 2
   interactionTransform: {fileID: 9002858636594496523}
+  interactablePlayers: []
+  isOpen: 0
   item: {fileID: 11400000, guid: e96b0d178d4d29c49bb36efb5a3abbb6, type: 2}
   shouldDelete: 0
 --- !u!54 &-3057785945944368950

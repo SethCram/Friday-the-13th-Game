@@ -981,8 +981,8 @@ GameObject:
   - component: {fileID: 4000012266944780}
   - component: {fileID: 65000012033704080}
   - component: {fileID: 95000012188220506}
-  - component: {fileID: 114000014132392358}
   - component: {fileID: 114000010425294980}
+  - component: {fileID: 1599567205}
   m_Layer: 8
   m_Name: PFB_Pantry
   m_TagString: Untagged
@@ -1039,19 +1039,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &114000014132392358
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1000010558428230}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3174ace299f2b4c80baf44a6283329cf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  reachRange: 1.8
 --- !u!114 &114000010425294980
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1065,6 +1052,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   objectNumber: 1
+--- !u!114 &1599567205
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1000010558428230}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a6308db88a5d074ab827b13f9c8ea08, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  interactionRadius: 0
+  interactablePlayers: []
+  isOpen: 0
 --- !u!1 &1000010562229300
 GameObject:
   m_ObjectHideFlags: 0
@@ -1986,8 +1988,9 @@ GameObject:
   - component: {fileID: 4000012047744974}
   - component: {fileID: 65000010980420622}
   - component: {fileID: 95000010748612786}
-  - component: {fileID: 114000011474539018}
   - component: {fileID: 114000011125610996}
+  - component: {fileID: 973599126}
+  - component: {fileID: 973599125}
   m_Layer: 8
   m_Name: PFB_DoorDouble
   m_TagString: Untagged
@@ -2019,7 +2022,7 @@ BoxCollider:
   m_GameObject: {fileID: 1000010728641318}
   m_Material: {fileID: 0}
   m_IsTrigger: 1
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Size: {x: 1.55, y: 2.45, z: 3.5}
   m_Center: {x: 0, y: 0.24, z: 0}
@@ -2042,19 +2045,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &114000011474539018
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1000010728641318}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3174ace299f2b4c80baf44a6283329cf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  reachRange: 1.8
 --- !u!114 &114000011125610996
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2068,6 +2058,34 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   objectNumber: 1
+--- !u!135 &973599126
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1000010728641318}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 2
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &973599125
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1000010728641318}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a6308db88a5d074ab827b13f9c8ea08, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  interactionRadius: 2.6
+  interactablePlayers: []
+  isOpen: 0
 --- !u!1 &1000010757183540
 GameObject:
   m_ObjectHideFlags: 0
@@ -3423,7 +3441,7 @@ GameObject:
   - component: {fileID: 4000010771867398}
   - component: {fileID: 65000010428925272}
   - component: {fileID: 95000014093290740}
-  - component: {fileID: 114000011051721982}
+  - component: {fileID: 2744385547279708184}
   m_Layer: 0
   m_Name: PFB_BedsideTable (1)
   m_TagString: Untagged
@@ -3479,7 +3497,7 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &114000011051721982
+--- !u!114 &2744385547279708184
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -3488,10 +3506,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1000011003219250}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3174ace299f2b4c80baf44a6283329cf, type: 3}
+  m_Script: {fileID: 11500000, guid: 2a6308db88a5d074ab827b13f9c8ea08, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  reachRange: 1.8
+  interactionRadius: 0
+  interactablePlayers: []
+  isOpen: 0
 --- !u!1 &1000011015371202
 GameObject:
   m_ObjectHideFlags: 0
@@ -3503,7 +3523,7 @@ GameObject:
   - component: {fileID: 4000010194224916}
   - component: {fileID: 65000012632749960}
   - component: {fileID: 95000010720281200}
-  - component: {fileID: 114000013023247618}
+  - component: {fileID: 58280496}
   m_Layer: 0
   m_Name: PFB_BedsideTable
   m_TagString: Untagged
@@ -3559,7 +3579,7 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &114000013023247618
+--- !u!114 &58280496
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -3568,10 +3588,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1000011015371202}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3174ace299f2b4c80baf44a6283329cf, type: 3}
+  m_Script: {fileID: 11500000, guid: 2a6308db88a5d074ab827b13f9c8ea08, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  reachRange: 1.8
+  interactionRadius: 0
+  interactablePlayers: []
+  isOpen: 0
 --- !u!1 &1000011019590156
 GameObject:
   m_ObjectHideFlags: 0
@@ -6217,6 +6239,7 @@ GameObject:
   - component: {fileID: 65000013570814236}
   - component: {fileID: 95000010189434856}
   - component: {fileID: 114000013492922598}
+  - component: {fileID: 272120394}
   m_Layer: 0
   m_Name: PFB_KitchenBench
   m_TagString: Untagged
@@ -6286,6 +6309,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   reachRange: 1.9
+--- !u!114 &272120394
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1000012057688272}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a6308db88a5d074ab827b13f9c8ea08, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  interactionRadius: 0
+  interactablePlayers: []
+  isOpen: 0
 --- !u!1 &1000012101761340
 GameObject:
   m_ObjectHideFlags: 0
@@ -7755,7 +7793,7 @@ GameObject:
   - component: {fileID: 65000011719165432}
   - component: {fileID: 95000010700384334}
   - component: {fileID: 114000013570668846}
-  - component: {fileID: 114000011772486030}
+  - component: {fileID: 135520410}
   m_Layer: 8
   m_Name: PFB_DoorSingle_Open (1)
   m_TagString: Untagged
@@ -7823,7 +7861,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   objectNumber: 1
---- !u!114 &114000011772486030
+--- !u!114 &135520410
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -7832,10 +7870,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1000012614599264}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3174ace299f2b4c80baf44a6283329cf, type: 3}
+  m_Script: {fileID: 11500000, guid: 2a6308db88a5d074ab827b13f9c8ea08, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  reachRange: 1.8
+  interactionRadius: 0
+  interactablePlayers: []
+  isOpen: 0
 --- !u!1 &1000012615259678
 GameObject:
   m_ObjectHideFlags: 0
@@ -9125,6 +9165,7 @@ GameObject:
   - component: {fileID: 95000010126026382}
   - component: {fileID: 114000010457442454}
   - component: {fileID: 65000011400627782}
+  - component: {fileID: 858477747}
   m_Layer: 0
   m_Name: PFB_TVStand
   m_TagString: Untagged
@@ -9194,6 +9235,21 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1.96, y: 0.55, z: 0.81}
   m_Center: {x: 0, y: 0.33, z: 0.54}
+--- !u!114 &858477747
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1000013137690254}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a6308db88a5d074ab827b13f9c8ea08, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  interactionRadius: 0
+  interactablePlayers: []
+  isOpen: 0
 --- !u!1 &1000013209413178
 GameObject:
   m_ObjectHideFlags: 0
@@ -9564,8 +9620,8 @@ GameObject:
   - component: {fileID: 65000011972146648}
   - component: {fileID: 95000013331181696}
   - component: {fileID: 114000014171416964}
-  - component: {fileID: 114000011404731676}
   - component: {fileID: 64000013736877972}
+  - component: {fileID: 138339518}
   m_Layer: 8
   m_Name: PFB_BathroomSink
   m_TagString: Untagged
@@ -9636,19 +9692,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   objectNumber: 1
---- !u!114 &114000011404731676
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1000013424359804}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3174ace299f2b4c80baf44a6283329cf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  reachRange: 1.8
 --- !u!64 &64000013736877972
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -9663,6 +9706,21 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 4300000, guid: 1bbcd022f155a4944808bc105cc5d095, type: 3}
+--- !u!114 &138339518
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1000013424359804}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a6308db88a5d074ab827b13f9c8ea08, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  interactionRadius: 0
+  interactablePlayers: []
+  isOpen: 0
 --- !u!1 &1000013498615282
 GameObject:
   m_ObjectHideFlags: 0
@@ -9675,7 +9733,7 @@ GameObject:
   - component: {fileID: 65000010507301768}
   - component: {fileID: 95000010541276470}
   - component: {fileID: 114000014155093602}
-  - component: {fileID: 114000012636205018}
+  - component: {fileID: 513936146}
   m_Layer: 8
   m_Name: PFB_DoorSingle_Open
   m_TagString: Untagged
@@ -9743,7 +9801,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   objectNumber: 1
---- !u!114 &114000012636205018
+--- !u!114 &513936146
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -9752,10 +9810,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1000013498615282}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3174ace299f2b4c80baf44a6283329cf, type: 3}
+  m_Script: {fileID: 11500000, guid: 2a6308db88a5d074ab827b13f9c8ea08, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  reachRange: 1.8
+  interactionRadius: 0
+  interactablePlayers: []
+  isOpen: 0
 --- !u!1 &1000013502178602
 GameObject:
   m_ObjectHideFlags: 0
@@ -10279,6 +10339,7 @@ GameObject:
   - component: {fileID: 65000013570734974}
   - component: {fileID: 95000013265448314}
   - component: {fileID: 114000011620427998}
+  - component: {fileID: 862779236}
   m_Layer: 0
   m_Name: PFB_ChestOfDraws
   m_TagString: Untagged
@@ -10353,6 +10414,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   reachRange: 1.8
+--- !u!114 &862779236
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1000013602759736}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a6308db88a5d074ab827b13f9c8ea08, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  interactionRadius: 0
+  interactablePlayers: []
+  isOpen: 0
 --- !u!1 &1000013634868504
 GameObject:
   m_ObjectHideFlags: 0
@@ -11228,9 +11304,9 @@ GameObject:
   m_Component:
   - component: {fileID: 4000011231752346}
   - component: {fileID: 114000012948973726}
-  - component: {fileID: 114000010489010410}
   - component: {fileID: 95000012470866046}
   - component: {fileID: 65000010090759618}
+  - component: {fileID: 1331707532}
   m_Layer: 8
   m_Name: PFB_Closet
   m_TagString: Untagged
@@ -11268,19 +11344,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   objectNumber: 1
---- !u!114 &114000010489010410
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1000014048589844}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3174ace299f2b4c80baf44a6283329cf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  reachRange: 1.8
 --- !u!95 &95000012470866046
 Animator:
   serializedVersion: 3
@@ -11313,6 +11376,21 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1.18, y: 1.91, z: 1.93}
   m_Center: {x: 0, y: 1.05, z: 0.63}
+--- !u!114 &1331707532
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1000014048589844}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a6308db88a5d074ab827b13f9c8ea08, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  interactionRadius: 0
+  interactablePlayers: []
+  isOpen: 0
 --- !u!1 &1000014106058482
 GameObject:
   m_ObjectHideFlags: 0

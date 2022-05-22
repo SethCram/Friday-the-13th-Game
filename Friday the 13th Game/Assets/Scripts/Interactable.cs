@@ -2,38 +2,47 @@
 using UnityEngine;
 using Photon.Pun;
 
-[RequireComponent(typeof(SphereCollider))] //needed to act as trigger for interaction
+//[RequireComponent(typeof(SphereCollider))] //needed to act as trigger for interaction
 public class Interactable : MonoBehaviourPunCallbacks
 {
     public float interactionRadius = 3f; // distance player has to be from obj to interact with it
 
-    public Transform interactionTransform; //if want interaction pnt to be not around obj, set this to desired pnt
+    //public Transform interactionTransform; //if want interaction pnt to be not around obj, set this to desired pnt
 
     private SphereCollider sphereCollider; //to setup sphere trigger
 
     //to store all players able to interact with this obj:
+    [HideInInspector]
     public List<Transform> interactablePlayers;
 
     private bool showInteractMsg;
     private GUIStyle guiStyle;
     private string msg;
+
+    [HideInInspector]
     public bool isOpen = false;
 
     public virtual void Start()
     {
-        //setup sphere trigger:
+        //setup sphere trigger
+
         sphereCollider = GetComponent<SphereCollider>();
 
-        //set sphere's trigger radius to interaction radius:
-        sphereCollider.radius = interactionRadius;
+        if( sphereCollider != null)
+        {
+            //set sphere's trigger radius to interaction radius:
+            sphereCollider.radius = interactionRadius;
+            sphereCollider.isTrigger = true;
 
-        sphereCollider.isTrigger = true;
+        }
 
+        /*
         //if no interactable point set, set it to this obj:
         if (interactionTransform == null)
         {
             interactionTransform = transform;
         }
+        */
 
         //init list of transforms:
         interactablePlayers = new List<Transform>();
@@ -148,4 +157,12 @@ public class Interactable : MonoBehaviourPunCallbacks
     }
     //End of GUI Config --------------
     #endregion
+
+    //draw interaction radius
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.yellow;
+
+        Gizmos.DrawWireSphere(transform.position, interactionRadius);
+    }
 }

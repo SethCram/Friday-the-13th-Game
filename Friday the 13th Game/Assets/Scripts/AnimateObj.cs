@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Entryway : Interactable
+public class AnimateObj : Interactable
 {
 	private Animator anim;
 
@@ -30,7 +30,7 @@ public class Entryway : Interactable
 		//setup GUI style settings for user prompts
 			//setupGui();
 
-		moveableObject = GetComponent<MoveableObject>();
+		moveableObject = GetComponentInChildren<MoveableObject>(); //have to get moveable obj in children too?
 	}
 
     private void LateUpdate() //doesnt override superclass update bc private

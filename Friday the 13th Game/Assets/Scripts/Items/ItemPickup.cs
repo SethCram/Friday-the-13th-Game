@@ -3,6 +3,8 @@ using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
 
+//req sphere for interacting
+[RequireComponent(typeof(SphereCollider))]
 public class ItemPickup : Interactable //this class is now derived from/a child of the 'Interactable' class (but since not a child of monobehavior, cant access any unity functs? (incorrect bc the class we derive from derives from monobehavior) )
 {
     public Item item;
