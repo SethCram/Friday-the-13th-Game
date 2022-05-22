@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Photon.Pun;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,16 +8,9 @@ public class AnimateObj : Interactable
 	private Animator anim;
 
 	private const string animBoolName = "isOpen_Obj_";
-	
-		/*
-		private bool showInteractMsg;
-		private GUIStyle guiStyle;
-		private string msg;
-		*/
 
 	private MoveableObject moveableObject;
 	private string animBoolNameNum = "";
-		//private bool isOpen = false;
 
 	public override void Start()
     {
@@ -27,9 +21,6 @@ public class AnimateObj : Interactable
 		anim = GetComponent<Animator>();
 		anim.enabled = false;  //disable animation states by default.
 
-		//setup GUI style settings for user prompts
-			//setupGui();
-
 		moveableObject = GetComponentInChildren<MoveableObject>(); //have to get moveable obj in children too?
 	}
 
@@ -38,18 +29,11 @@ public class AnimateObj : Interactable
 		//if (playerEntered)
 		if (interactablePlayers.Count > 0) //players within interaction range
 		{
-				//showInteractMsg = true;
 			animBoolNameNum = animBoolName + moveableObject.objectNumber.ToString();
 
 			isOpen = anim.GetBool(animBoolNameNum);    //need current state for message.
-				//msg = getGuiMsg(isOpen);
+		}
 
-		}
-		//no players within interaction range
-		else
-		{
-				//showInteractMsg = false;
-		}
 	}
 
     //override og 'Interact()' to have the interacting player 'animate' the item:
@@ -58,9 +42,26 @@ public class AnimateObj : Interactable
         base.Interact(playerInteracting); //calls 'Interactable' Interact() method
 
 		//should invert state of entryway
+		if ( PhotonNetwork.IsConnected)
+        {
+			//over network
+			photonView.RPC("RPC_InvertAnim", RpcTarget.AllBuffered);
+
+		}
+        else
+        {
+			//local
+			RPC_InvertAnim();
+		}
+
+	}
+
+	//should invert state of entryway
+	[PunRPC]
+	private void RPC_InvertAnim()
+    {
 		anim.enabled = true;
 		anim.SetBool(animBoolNameNum, !isOpen);
-			//msg = getGuiMsg(!isOpen);
 	}
 
 	public override void OnTriggerEnter(Collider other)

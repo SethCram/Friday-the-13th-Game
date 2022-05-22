@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 405010}
   - component: {fileID: 21583262}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Bedroom_ReflectionProbe
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -73,7 +73,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 451208}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: PFB_Building_Full
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -137,7 +137,7 @@ GameObject:
   m_Component:
   - component: {fileID: 405536}
   - component: {fileID: 21542844}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Bathroom_ReflectionProbe
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -202,7 +202,7 @@ GameObject:
   - component: {fileID: 4000011209916924}
   - component: {fileID: 33000011205309950}
   - component: {fileID: 23000014125830928}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: BedBase
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -279,7 +279,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4000012389106346}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: grp_draw_06
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -525,7 +525,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4000010556427728}
   - component: {fileID: 108000010953051978}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Point light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -619,7 +619,7 @@ GameObject:
   - component: {fileID: 33000013906295254}
   - component: {fileID: 23000010552681024}
   - component: {fileID: 64000013389304798}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: PFB_Towel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -710,7 +710,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4000012236790504}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: BakedLightSet_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -948,7 +948,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4000012328036004}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: grp_draw_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1110,7 +1110,7 @@ GameObject:
   - component: {fileID: 33000011041958744}
   - component: {fileID: 23000012276166624}
   - component: {fileID: 64000012592682692}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: PFB_Sofa
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1404,7 +1404,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4000013718603440}
   - component: {fileID: 108000012242197606}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Point light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1498,7 +1498,7 @@ GameObject:
   - component: {fileID: 33000013307242274}
   - component: {fileID: 23000013090729870}
   - component: {fileID: 64000011491352018}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: PFB_OvenExhaustFan
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1697,7 +1697,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4000012497241216}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: grp_draw_02
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1895,7 +1895,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4000011357518370}
   - component: {fileID: 108000011496120176}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Point light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2376,7 +2376,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4000012949197858}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: grp_drawsDoors
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2409,7 +2409,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4000011267035326}
   - component: {fileID: 108000013217776896}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Point light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2503,7 +2503,7 @@ GameObject:
   - component: {fileID: 33000013743658418}
   - component: {fileID: 23000012258710892}
   - component: {fileID: 64000012508946568}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: PFB_FreestandMirror
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2704,7 +2704,7 @@ GameObject:
   - component: {fileID: 4000011506250028}
   - component: {fileID: 33000013438674492}
   - component: {fileID: 23000012056045098}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: PFB_Lightswitch (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2892,7 +2892,7 @@ GameObject:
   - component: {fileID: 33000012278292864}
   - component: {fileID: 23000013964175226}
   - component: {fileID: 64000010627125414}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: PFB_Curtain (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2986,7 +2986,7 @@ GameObject:
   - component: {fileID: 33000013073893830}
   - component: {fileID: 23000011800498650}
   - component: {fileID: 64000012121242332}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: PFB_Building_Base
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3095,7 +3095,7 @@ GameObject:
   - component: {fileID: 33000011617256854}
   - component: {fileID: 23000012021856586}
   - component: {fileID: 64000010396740590}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: PFB_Lamp
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3281,7 +3281,7 @@ GameObject:
   - component: {fileID: 4000012621731876}
   - component: {fileID: 33000013314316580}
   - component: {fileID: 23000013540608306}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: PFB_LightCover (5)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3361,7 +3361,7 @@ GameObject:
   - component: {fileID: 4000012437769886}
   - component: {fileID: 33000011582264642}
   - component: {fileID: 23000012279309634}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: PFB_LightCover (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3442,7 +3442,7 @@ GameObject:
   - component: {fileID: 65000010428925272}
   - component: {fileID: 95000014093290740}
   - component: {fileID: 2744385547279708184}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: PFB_BedsideTable (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3524,7 +3524,7 @@ GameObject:
   - component: {fileID: 65000012632749960}
   - component: {fileID: 95000010720281200}
   - component: {fileID: 58280496}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: PFB_BedsideTable
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3606,7 +3606,7 @@ GameObject:
   - component: {fileID: 33000011201613054}
   - component: {fileID: 23000012672638702}
   - component: {fileID: 64000014070013574}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: PFB_Lamp (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3699,7 +3699,7 @@ GameObject:
   - component: {fileID: 4000013340103056}
   - component: {fileID: 33000013830691084}
   - component: {fileID: 23000013520517046}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: PFB_LightCover (10)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3777,7 +3777,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4000011166449706}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: doors_interact
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3814,7 +3814,7 @@ GameObject:
   - component: {fileID: 4000013852181802}
   - component: {fileID: 65000010969523914}
   - component: {fileID: 114000010652553870}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: grp_doorsL
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3871,7 +3871,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4000010216184818}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: TVStand
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3905,7 +3905,7 @@ GameObject:
   - component: {fileID: 4000011757875748}
   - component: {fileID: 33000010214026526}
   - component: {fileID: 23000011663963522}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: BedBlanket
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4079,7 +4079,7 @@ GameObject:
   - component: {fileID: 33000010108893236}
   - component: {fileID: 23000011972174276}
   - component: {fileID: 64000010644872350}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: PFB_Curtain
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4297,7 +4297,7 @@ GameObject:
   - component: {fileID: 4000013543244020}
   - component: {fileID: 33000011091372254}
   - component: {fileID: 23000012029705856}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: PFB_LightCover (11)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4469,7 +4469,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4000011585706650}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: grp_draw_04
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4500,7 +4500,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4000013736780638}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: grp_doors
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4535,7 +4535,7 @@ GameObject:
   - component: {fileID: 33000011295788244}
   - component: {fileID: 23000011628473008}
   - component: {fileID: 64000012337865882}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: PFB_DiningChair (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4629,7 +4629,7 @@ GameObject:
   - component: {fileID: 33000013296224088}
   - component: {fileID: 23000012819998324}
   - component: {fileID: 64000013189994642}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: PFB_Fridge
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4720,7 +4720,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4000011260505716}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: BakedLightSet_02
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4758,7 +4758,7 @@ GameObject:
   - component: {fileID: 33000011755573240}
   - component: {fileID: 23000010838783530}
   - component: {fileID: 64000012216465390}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Base
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4931,7 +4931,7 @@ GameObject:
   - component: {fileID: 33000012088143228}
   - component: {fileID: 23000012321732318}
   - component: {fileID: 64000013659240738}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: PFB_DiningChair (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5253,7 +5253,7 @@ GameObject:
   - component: {fileID: 4000013139010936}
   - component: {fileID: 33000011920178206}
   - component: {fileID: 23000010941278770}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: PFB_LightCover (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5441,7 +5441,7 @@ GameObject:
   - component: {fileID: 4000013400541614}
   - component: {fileID: 33000010340248958}
   - component: {fileID: 23000011428665082}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: PFB_LightCover (8)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5629,7 +5629,7 @@ GameObject:
   - component: {fileID: 4000012197371874}
   - component: {fileID: 33000013343318140}
   - component: {fileID: 23000010341517788}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: PFB_Lightswitch (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5709,7 +5709,7 @@ GameObject:
   - component: {fileID: 33000011662954574}
   - component: {fileID: 23000013908721226}
   - component: {fileID: 64000013718241350}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: PFB_Basket
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5801,7 +5801,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4000011785514878}
   - component: {fileID: 108000012890068474}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Point light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5924,7 +5924,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4000012327354256}
   - component: {fileID: 64000010595759298}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: PFB_Shower
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5972,7 +5972,7 @@ GameObject:
   - component: {fileID: 4000011019562186}
   - component: {fileID: 33000013080586424}
   - component: {fileID: 23000014198316342}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: tap
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6159,7 +6159,7 @@ GameObject:
   - component: {fileID: 4000010271405736}
   - component: {fileID: 33000010364317412}
   - component: {fileID: 23000013744198254}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: PFB_Lightswitch (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6240,7 +6240,7 @@ GameObject:
   - component: {fileID: 95000010189434856}
   - component: {fileID: 114000013492922598}
   - component: {fileID: 272120394}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: PFB_KitchenBench
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6596,7 +6596,7 @@ GameObject:
   - component: {fileID: 33000014154864358}
   - component: {fileID: 23000013540946128}
   - component: {fileID: 64000012360159646}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: PFB_TV
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6856,7 +6856,7 @@ GameObject:
   - component: {fileID: 33000012894771972}
   - component: {fileID: 23000013729428524}
   - component: {fileID: 64000012848385396}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: PFB_CoffeeTable
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6950,7 +6950,7 @@ GameObject:
   - component: {fileID: 33000012092905122}
   - component: {fileID: 23000013902638878}
   - component: {fileID: 64000012525447156}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: tvStandBase
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7257,7 +7257,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4000010420639692}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: LightsGroup
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7290,7 +7290,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4000011870042576}
   - component: {fileID: 108000013505251972}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Point light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7491,7 +7491,7 @@ GameObject:
   - component: {fileID: 4000012935993188}
   - component: {fileID: 33000011260066746}
   - component: {fileID: 23000011635096662}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: showerBase
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7571,7 +7571,7 @@ GameObject:
   - component: {fileID: 33000012761334370}
   - component: {fileID: 23000011856917980}
   - component: {fileID: 64000011479689524}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: PFB_DiningChair
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7662,7 +7662,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4000012171897296}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: draws
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7696,7 +7696,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4000014187842380}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: doors
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7733,7 +7733,7 @@ GameObject:
   - component: {fileID: 4000010046148438}
   - component: {fileID: 65000011122844968}
   - component: {fileID: 114000011222558182}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: grp_doorsR
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7887,7 +7887,7 @@ GameObject:
   - component: {fileID: 4000011066226142}
   - component: {fileID: 33000013560865234}
   - component: {fileID: 23000010634595086}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: PFB_LightCover (6)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8023,7 +8023,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4000013068314294}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: grp_draw_07
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8055,7 +8055,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4000013865415458}
   - component: {fileID: 108000013649937482}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Point light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8148,7 +8148,7 @@ GameObject:
   - component: {fileID: 4000013988934476}
   - component: {fileID: 33000013805372552}
   - component: {fileID: 23000011758082874}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: BedPillow02
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8228,7 +8228,7 @@ GameObject:
   - component: {fileID: 33000011343059302}
   - component: {fileID: 23000010722853148}
   - component: {fileID: 64000013693881850}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: PFB_DiningChair (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8321,7 +8321,7 @@ GameObject:
   - component: {fileID: 4000012253654838}
   - component: {fileID: 33000013771640984}
   - component: {fileID: 23000010884922504}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: PFB_LightCover (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8509,7 +8509,7 @@ GameObject:
   - component: {fileID: 4000012320243426}
   - component: {fileID: 33000010463470670}
   - component: {fileID: 23000011850450834}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: PFB_LightCover (9)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8590,7 +8590,7 @@ GameObject:
   - component: {fileID: 33000012374925704}
   - component: {fileID: 23000011239616524}
   - component: {fileID: 64000011393011632}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: PFB_Stove
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8742,7 +8742,7 @@ GameObject:
   - component: {fileID: 33000012506988776}
   - component: {fileID: 23000014127570890}
   - component: {fileID: 64000010300174756}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: PFB_CurtainSmall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8866,7 +8866,7 @@ GameObject:
   - component: {fileID: 4000013443176096}
   - component: {fileID: 33000010276992946}
   - component: {fileID: 23000012327107108}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: BedPillow01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8946,7 +8946,7 @@ GameObject:
   - component: {fileID: 33000013349564584}
   - component: {fileID: 23000013684522382}
   - component: {fileID: 64000010259568034}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: KitchenBench_base
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9040,7 +9040,7 @@ GameObject:
   - component: {fileID: 33000013997231900}
   - component: {fileID: 23000013696989436}
   - component: {fileID: 64000011230568756}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: PFB_Fireplace
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9131,7 +9131,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4000010988585056}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: grp_draw_03
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9166,7 +9166,7 @@ GameObject:
   - component: {fileID: 114000010457442454}
   - component: {fileID: 65000011400627782}
   - component: {fileID: 858477747}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: PFB_TVStand
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9261,7 +9261,7 @@ GameObject:
   - component: {fileID: 4000012262556042}
   - component: {fileID: 33000013823888742}
   - component: {fileID: 23000010286258898}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: PFB_LightCover (7)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9340,7 +9340,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4000010886090658}
   - component: {fileID: 108000013549066802}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Point light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9434,7 +9434,7 @@ GameObject:
   - component: {fileID: 33000011486128494}
   - component: {fileID: 23000010930693426}
   - component: {fileID: 64000013261019198}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: PFB_DiningTable
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9526,7 +9526,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4000012004300438}
   - component: {fileID: 108000011985963424}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Point light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9828,7 +9828,7 @@ GameObject:
   - component: {fileID: 33000013331450702}
   - component: {fileID: 23000014228264892}
   - component: {fileID: 64000011847081684}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: PFB_BedroomSofa
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9920,7 +9920,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4000013155277564}
   - component: {fileID: 108000014001858214}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Point light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10120,7 +10120,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4000012522145348}
   - component: {fileID: 108000012612968664}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Point light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10214,7 +10214,7 @@ GameObject:
   - component: {fileID: 33000011275152242}
   - component: {fileID: 23000012146042990}
   - component: {fileID: 64000013251121730}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: tvStandDoor_L
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10340,7 +10340,7 @@ GameObject:
   - component: {fileID: 95000013265448314}
   - component: {fileID: 114000011620427998}
   - component: {fileID: 862779236}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: PFB_ChestOfDraws
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10441,7 +10441,7 @@ GameObject:
   - component: {fileID: 33000011706012064}
   - component: {fileID: 23000013161809090}
   - component: {fileID: 64000011728177262}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: PFB_SofaSmall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10629,7 +10629,7 @@ GameObject:
   - component: {fileID: 33000011132248076}
   - component: {fileID: 23000013229770930}
   - component: {fileID: 64000011513321830}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: chestOfDraws_Base
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10722,7 +10722,7 @@ GameObject:
   - component: {fileID: 4000012128967540}
   - component: {fileID: 33000014065228794}
   - component: {fileID: 23000010408457108}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: PFB_Carpet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10894,7 +10894,7 @@ GameObject:
   - component: {fileID: 4000012955807648}
   - component: {fileID: 33000012160024930}
   - component: {fileID: 23000013465927262}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: PFB_LightCover (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10975,7 +10975,7 @@ GameObject:
   - component: {fileID: 33000010471868274}
   - component: {fileID: 23000012477356188}
   - component: {fileID: 64000012686132548}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: PFB_Curtain (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11069,7 +11069,7 @@ GameObject:
   - component: {fileID: 33000014007384616}
   - component: {fileID: 23000013646874274}
   - component: {fileID: 64000013544885254}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: PFB_Curtain (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11163,7 +11163,7 @@ GameObject:
   - component: {fileID: 33000013337102082}
   - component: {fileID: 23000012287703958}
   - component: {fileID: 64000011648956980}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: PFB_Toilet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11255,7 +11255,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4000014214727108}
   - component: {fileID: 64000010391239532}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: PFB_Bed
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11400,7 +11400,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4000011662802214}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: grp_draw_05
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11434,7 +11434,7 @@ GameObject:
   - component: {fileID: 33000013158969884}
   - component: {fileID: 23000013468698996}
   - component: {fileID: 64000011490866334}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Base
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11622,7 +11622,7 @@ GameObject:
   - component: {fileID: 33000011541706286}
   - component: {fileID: 23000011989814432}
   - component: {fileID: 64000013235891536}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: tvStandDoor_R
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11714,7 +11714,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4255882681626104}
   - component: {fileID: 220394701964334022}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Light Probe Group
   m_TagString: Untagged
   m_Icon: {fileID: 0}

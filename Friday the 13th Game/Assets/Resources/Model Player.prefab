@@ -647,10 +647,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91a9ad01b3e35c849aeb68f5eb717300, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  combat: {fileID: 7413788013251121926}
   playerInteract: 0
-  openInventory: 0
-  openOptions: 0
 --- !u!114 &7413788013251121933
 MonoBehaviour:
   m_ObjectHideFlags: 0

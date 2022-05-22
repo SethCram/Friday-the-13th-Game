@@ -54,6 +54,8 @@ MonoBehaviour:
   - Die
   - RPC_Die
   - RPC_TakeDamage
+  - RPC_InvertAnim
+  - RPC_InvertState
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1

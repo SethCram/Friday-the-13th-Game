@@ -77,7 +77,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   interactionRadius: 2
-  interactionTransform: {fileID: 2311485456154352080}
   interactablePlayers: []
   isOpen: 0
   item: {fileID: 11400000, guid: 3829e3852d47c5d4e9c1d2f344744d15, type: 2}
