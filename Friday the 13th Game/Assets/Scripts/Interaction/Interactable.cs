@@ -12,11 +12,11 @@ public class Interactable : MonoBehaviourPunCallbacks
     private SphereCollider sphereCollider; //to setup sphere trigger
 
     //to store all players able to interact with this obj:
-    [HideInInspector]
+    //[HideInInspector]
     public List<Transform> interactablePlayers;
 
-    private bool showInteractMsg;
-    private GUIStyle guiStyle;
+    //private bool showInteractMsg;
+    //private GUIStyle guiStyle;
     private string msg;
 
     [HideInInspector]
@@ -36,19 +36,9 @@ public class Interactable : MonoBehaviourPunCallbacks
 
         }
 
-        /*
-        //if no interactable point set, set it to this obj:
-        if (interactionTransform == null)
-        {
-            interactionTransform = transform;
-        }
-        */
-
         //init list of transforms:
         interactablePlayers = new List<Transform>();
 
-        //setup GUI style settings for user prompts
-        setupGui();
     }
 
     //arg of transform is player interacting with this:
@@ -58,6 +48,7 @@ public class Interactable : MonoBehaviourPunCallbacks
 
         Debug.Log("Interacting w/: " + transform.name);
 
+        //update msg
         msg = getGuiMsg(!isOpen);
     }
 
@@ -66,7 +57,8 @@ public class Interactable : MonoBehaviourPunCallbacks
         //if any interactable players:
         if (interactablePlayers.Count > 0)
         {
-            showInteractMsg = true;
+            //showInteractMsg = true;
+
             msg = getGuiMsg(isOpen);
 
             //if a player within radius pressed the 'Interact' button, call 'Interact()':
@@ -89,7 +81,8 @@ public class Interactable : MonoBehaviourPunCallbacks
         }
         else
         {
-            showInteractMsg = false; 
+            //showInteractMsg = false;
+            
         }
     }
 
@@ -101,6 +94,14 @@ public class Interactable : MonoBehaviourPunCallbacks
         {
             return;
         }
+
+        PlayerManager playerManager = other.gameObject.GetComponent<PlayerManager>();
+
+        //update msg
+        playerManager.SetInteractMsg(msg);
+
+        //show interaction msg
+        playerManager.SetInteractVisibility(true);
 
         interactablePlayers.Add(other.transform);
 
@@ -116,6 +117,9 @@ public class Interactable : MonoBehaviourPunCallbacks
             return;
         }
 
+        //unshow interaction msg
+        other.gameObject.GetComponent<PlayerManager>().SetInteractVisibility(false);
+
         interactablePlayers.Remove(other.transform);
 
         //Debug.Log("Removed: " + other.transform.name);
@@ -123,6 +127,7 @@ public class Interactable : MonoBehaviourPunCallbacks
 
     #region GUI Config
 
+    /*
     //configure the style of the GUI
     private void setupGui()
     {
@@ -132,6 +137,7 @@ public class Interactable : MonoBehaviourPunCallbacks
         guiStyle.normal.textColor = Color.white;
         msg = "Press E/Fire1 to Interact";
     }
+    */
 
     public virtual string getGuiMsg(bool isOpen)
     {
@@ -147,7 +153,7 @@ public class Interactable : MonoBehaviourPunCallbacks
 
         return rtnVal;
     }
-
+    /*
     void OnGUI()
     {
         if (showInteractMsg)  //show on-screen prompts to user for guide.
@@ -155,6 +161,7 @@ public class Interactable : MonoBehaviourPunCallbacks
             GUI.Label(new Rect(50, Screen.height - 50, 200, 50), msg, guiStyle);
         }
     }
+    */
     //End of GUI Config --------------
     #endregion
 
@@ -164,5 +171,18 @@ public class Interactable : MonoBehaviourPunCallbacks
         Gizmos.color = Color.yellow;
 
         Gizmos.DrawWireSphere(transform.position, interactionRadius);
+    }
+
+    private void OnDestroy()
+    {
+        /*
+        //for every interactable player
+        foreach (Transform player in interactablePlayers)
+        {
+            //make msgs dissapear
+            player.GetComponent<PlayerManager>().SetInteractVisibility(false);
+        }
+        Debug.Log(interactablePlayers.ToString());
+        */
     }
 }

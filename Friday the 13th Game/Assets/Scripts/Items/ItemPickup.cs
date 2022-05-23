@@ -17,6 +17,24 @@ public class ItemPickup : Interactable //this class is now derived from/a child 
     {
         base.Interact(playerInteracting); //calls 'Interactable' Interact() method
 
+        /*
+        //for every interactable player
+        foreach (Transform player in interactablePlayers)
+        {
+            //make msgs blank
+            player.GetComponent<PlayerManager>().SetInteractMsg("");
+
+            //make msgs dissapear
+            player.GetComponent<PlayerManager>().SetInteractVisibility(false);
+        }
+        */
+
+        //Debug.Log(interactablePlayers.ToString());
+        
+        //dissapear interact msg (what if someone else picks up while we in range??)
+        //playerInteracting.GetComponent<PlayerManager>().photonView.RPC("SetInteractVisibility", RpcTarget.Others, false);
+        playerInteracting.GetComponent<PlayerManager>().SetInteractVisibility(false);
+
         Pickup(playerInteracting);
     }
 

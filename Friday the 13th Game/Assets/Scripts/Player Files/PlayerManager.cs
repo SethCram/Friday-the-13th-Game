@@ -19,11 +19,19 @@ public class PlayerManager : MonoBehaviourPunCallbacks
     //cache so dont use 'getcomp' more than once:
     private ThirdPersonMovement playerMovement;
 
+    [HideInInspector]
     public bool paused = false;
+
+    //private bool showInteractMsg = false;
 
         //for item replacement on leave
         //private PlayerManager[] playerManagers;
         //private int playerCount = 0;
+
+    //private GUIStyle guiStyle;
+    private string msg = "";
+
+    public OverlayUI overlayUI;
 
     private void Start()
     {
@@ -34,6 +42,9 @@ public class PlayerManager : MonoBehaviourPunCallbacks
 
             //store player pos's every 3rd arg starting at 2nd arg
             // InvokeRepeating("StorePlayers", 1, 5);
+
+        //setup GUI style settings for user prompts
+        //setupGui();
     }
 
     //reload the scene:
@@ -195,7 +206,7 @@ public class PlayerManager : MonoBehaviourPunCallbacks
     }
 
     [PunRPC]
-    private void DeactivateObject(int viewID)
+    public void DeactivateObject(int viewID)
     {
         //find photon view deactivating using view ID:
         PhotonView deactivatingView = PhotonView.Find(viewID);
@@ -269,4 +280,78 @@ public class PlayerManager : MonoBehaviourPunCallbacks
         }
         */
     }
+
+    #region GUI Config
+
+    /*
+    private void Update()
+    {
+        //if showing msg
+        if(showInteractMsg)
+        {
+            //make sure correct message shown
+            overlayUI.interactTxt.text = msg;
+        }
+    }
+    */
+
+    //change visibility of interaction msg 
+    //[PunRPC]
+    public void SetInteractVisibility(bool state)
+    {
+        //showInteractMsg = state;
+
+        //if txt showing
+        if(state == true)
+        {
+            //make sure correct message shown
+            overlayUI.interactTxt.text = msg;
+
+            //invoke method incase txt doesnt dissapear in 5 seconds
+            //TurnIntTextOffIn(5);
+        }
+
+        //change state of txt
+        overlayUI.interactTxt.gameObject.SetActive(state);
+    }
+
+    /*
+    private IEnumerator TurnIntTextOffIn(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+
+        //turn off interaction text
+        overlayUI.interactTxt.gameObject.SetActive(false);
+    }
+    */
+
+    //change msg contents
+    public void SetInteractMsg(string message)
+    {
+        msg = message;
+    }
+    /*
+    //configure the style of the GUI
+    private void setupGui()
+    {
+        guiStyle = new GUIStyle();
+        guiStyle.fontSize = 16;
+        guiStyle.fontStyle = FontStyle.Bold;
+        guiStyle.normal.textColor = Color.white;
+        msg = "Press E/Fire1 to Interact";
+    }
+
+    void OnGUI()
+    {
+        Debug.Log("show interact msg: " + showInteractMsg);
+
+        if (showInteractMsg)  //show on-screen prompts to user for guide.
+        {
+            GUI.Label(new Rect(50, Screen.height - 50, 200, 50), msg, guiStyle);
+        }
+    }
+    */
+
+    //End of GUI Config --------------
+    #endregion
 }

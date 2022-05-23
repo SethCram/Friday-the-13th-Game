@@ -877,6 +877,7 @@ MonoBehaviour:
   inventory: {fileID: 7413788013251121933}
   equipmentManager: {fileID: 7413788013251121930}
   paused: 0
+  overlayUI: {fileID: 0}
 --- !u!114 &7413788013251121925
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -893,6 +894,8 @@ MonoBehaviour:
   pausedUICanvasPrefab: {fileID: 5772637367856045314, guid: ba33241b9634e2e4faecfaaa181e9463,
     type: 3}
   statsUIPrefab: {fileID: 6003939080344042975, guid: 36938d2405154dd4fb10ef4bc0bfd035,
+    type: 3}
+  overlayUICanvasPrefab: {fileID: 5772637367856045314, guid: 1c231fa7ab9a2cc4abdc5c3a65f9bbc6,
     type: 3}
 --- !u!114 &832983379651791480
 MonoBehaviour:

@@ -39,55 +39,35 @@ public class AnimateObj : Interactable
     //override og 'Interact()' to have the interacting player 'animate' the item:
     public override void Interact(Transform playerInteracting)
     {
-        base.Interact(playerInteracting); //calls 'Interactable' Interact() method
+
+        base.Interact(playerInteracting);
 
 		//should invert state of entryway
 		if ( PhotonNetwork.IsConnected)
         {
-			//over network
-			photonView.RPC("RPC_InvertAnim", RpcTarget.AllBuffered);
-
+			//over network + stays after this player leaves
+			photonView.RPC("RPC_InvertAnim", RpcTarget.AllBufferedViaServer, animBoolNameNum, !isOpen);
 		}
         else
         {
 			//local
-			RPC_InvertAnim();
+			RPC_InvertAnim(animBoolNameNum, !isOpen);
 		}
 
 	}
 
 	//should invert state of entryway
 	[PunRPC]
-	private void RPC_InvertAnim()
+	private void RPC_InvertAnim(string animName, bool openState)
     {
+		Debug.Log("Aimation " + anim.name + " should play");
+
+		//verify local isOpen
+		//isOpen = !openState;
+
+		//animate
 		anim.enabled = true;
-		anim.SetBool(animBoolNameNum, !isOpen);
-	}
-
-	public override void OnTriggerEnter(Collider other)
-	{
-		//add to player list
-		base.OnTriggerEnter(other);
-
-		if (other.tag == "Player" || other.tag == "Enemy")     //player has collided with trigger
-		{
-			//playerEntered = true;
-
-		}
-	}
-
-	public override void OnTriggerExit(Collider other)
-	{
-		//rm from player list
-		base.OnTriggerExit(other);
-
-		if (other.tag == "Player" || other.tag == "Enemy")     //player has exited trigger
-		{
-			//playerEntered = false;
-
-			//hide interact message as player may not have been looking at object when they left
-			//showInteractMsg = false;
-		}
+		anim.SetBool(animName, openState);
 	}
 
 	public override string getGuiMsg(bool isOpen)

@@ -2287,7 +2287,6 @@ MonoBehaviour:
   escapePanel: {fileID: 6318549126448255849}
   txtSpawnPnt: {fileID: 843511326252663465}
   playerManager: {fileID: 0}
-  playerButtons: {fileID: 0}
   invenPanel: {fileID: 7094674307988945409}
   multiOptionsUI: {fileID: 6490966627182564394, guid: 917e709e9ed221f4ba8970a03a72d89e,
     type: 3}

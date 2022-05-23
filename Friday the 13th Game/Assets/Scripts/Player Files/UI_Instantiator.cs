@@ -21,6 +21,9 @@ public class UI_Instantiator : MonoBehaviour
     public GameObject statsUIPrefab;
     private GetSetStats statSetter;
 
+    //to instantiate an overlay canvas per person:
+    public GameObject overlayUICanvasPrefab;
+
     // awake called before start, and sometimes we need comps in start:
     void Awake()
     {
@@ -63,5 +66,16 @@ public class UI_Instantiator : MonoBehaviour
 
         //instantiate player's stats UI:
         Instantiate(statsUIPrefab);
+
+        //OVERLAY
+
+        //start overlay UI canvas as active:
+        overlayUICanvasPrefab.SetActive(true);
+
+        //create player's overlay canvas:
+        GameObject overlayCopy = Instantiate(overlayUICanvasPrefab);
+
+        //fill player manager's overlay UI field
+        GetComponent<PlayerManager>().overlayUI = overlayCopy.GetComponent<OverlayUI>();
     }
 }

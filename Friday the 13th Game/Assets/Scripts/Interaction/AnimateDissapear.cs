@@ -20,25 +20,28 @@ public class AnimateDissapear : Interactable
 		if (PhotonNetwork.IsConnected)
 		{
 			//over network
-			photonView.RPC("RPC_InvertState", RpcTarget.AllBuffered);
+			photonView.RPC("RPC_InvertState", RpcTarget.AllBufferedViaServer, !isOpen);
 
 		}
 		else
 		{
 			//local
-			RPC_InvertState();
+			RPC_InvertState(!isOpen);
 		}
 
 		//msg = getGuiMsg(!isOpen);
 	}
 
 	[PunRPC]
-	private void RPC_InvertState()
+	private void RPC_InvertState(bool openState)
     {
-		foreach (GameObject gameobj in dissapearingGameobjs)
+
+		foreach (GameObject invObj in dissapearingGameobjs)
 		{
+			Debug.Log("Gameobj " + invObj.name + " should invert states");
+
 			//should invert state of entryway
-			gameobj.SetActive(!isOpen);
+			invObj.SetActive(openState);
 		}
 	}
 
