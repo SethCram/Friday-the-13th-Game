@@ -31,6 +31,7 @@ public class PlayerManager : MonoBehaviourPunCallbacks
     //private GUIStyle guiStyle;
     private string msg = "";
 
+    [HideInInspector]
     public OverlayUI overlayUI;
 
     private void Start()

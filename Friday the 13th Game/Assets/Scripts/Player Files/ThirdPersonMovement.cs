@@ -17,6 +17,7 @@ public class ThirdPersonMovement : MonoBehaviour
     //cam following player:     (drop)
     public Transform playerCam;
 
+    [HideInInspector]
     public bool cutMotionControls = false; //invert w/ UI opened/closed callback invoked
 
     //different speeds:
@@ -63,6 +64,7 @@ public class ThirdPersonMovement : MonoBehaviour
     //this downward velocity makes sure player rlly on ground:
     float groundedDownwardVelocity = -2f;
 
+    [HideInInspector]
     public bool isDodging = false; //to cut off UI access w/ dodging
 
     //vars needed by 'CharacterAnimator' to `animate:

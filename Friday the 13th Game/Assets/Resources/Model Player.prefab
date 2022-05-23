@@ -714,7 +714,7 @@ MonoBehaviour:
   groundSphereRadius: 0.4
   groundMask:
     serializedVersion: 2
-    m_Bits: 1280
+    m_Bits: 3328
   gravity: -20
   jumpHeight: 1
   midAirSlopeLimit: 90
