@@ -26,7 +26,7 @@ public class CharacterStats : MonoBehaviourPun
     //number related
     public GameObject[] numberModels;
     public float numSpawnHeight = 2;
-    public float numSpacing = 2;
+    public float numSpacing = 5; //2;
 
     //inited beforehand:
     public PlayerManager playerManager;
@@ -75,8 +75,11 @@ public class CharacterStats : MonoBehaviourPun
 
         float offset = 0;
 
+        //calc offset based on player's curr local z
+        Vector3 localXoffset = new Vector3(transform.localPosition.x * offset, 0, 0); //mult'd by offset before
+
         //set spawnpoint to above player + offset to the pos z
-        Vector3 spawnPoint = transform.position + Vector3.up * numSpawnHeight + Vector3.forward * offset;
+        Vector3 spawnPoint = transform.position + Vector3.up * numSpawnHeight + localXoffset; //+ Vector3.forward * offset;
 
         //for every digit in currHP
         foreach (int digit in intArr)
@@ -93,23 +96,30 @@ public class CharacterStats : MonoBehaviourPun
 
                 //create an obj for every new player joining, when they load in:
                 PhotonNetwork.Instantiate(numberModels[digit].name, 
-                spawnPoint,
-                    numberModels[digit].transform.rotation); //use the player's rot?
+                    spawnPoint,
+                    Quaternion.Euler( numberModels[digit].transform.rotation.x, 
+                        numberModels[digit].transform.rotation.y + transform.eulerAngles.y, 
+                        numberModels[digit].transform.rotation.z ) 
+                ); 
             }
             else
             {
                 //create a local obj:
                 Instantiate(numberModels[digit], 
                     spawnPoint,
-                    numberModels[digit].transform.rotation); //use the player's rot?
+                    numberModels[digit].transform.rotation); //use preset rot
             }
 
             print(transform.rotation.ToString());
 
             //create new pos to spawn nxt number at
             offset += numSpacing;
-            spawnPoint += Vector3.forward * offset;
 
+            localXoffset += new Vector3( offset, 0, 0);
+
+            //spawnPoint += Vector3.forward * offset;
+            spawnPoint += localXoffset;
+            //spawnPoint += new Vector3(offset)
         }
     }
 

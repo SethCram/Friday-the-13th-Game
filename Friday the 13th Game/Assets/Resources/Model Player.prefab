@@ -897,6 +897,8 @@ MonoBehaviour:
     type: 3}
   overlayUICanvasPrefab: {fileID: 5772637367856045314, guid: 1c231fa7ab9a2cc4abdc5c3a65f9bbc6,
     type: 3}
+  minimapCamPrefab: {fileID: 951725620844477100, guid: 750b0005eea9d814899c713e9aa50cfc,
+    type: 3}
 --- !u!114 &832983379651791480
 MonoBehaviour:
   m_ObjectHideFlags: 0

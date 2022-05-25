@@ -24,13 +24,17 @@ public class UI_Instantiator : MonoBehaviour
     //to instantiate an overlay canvas per person:
     public GameObject overlayUICanvasPrefab;
 
+    //for minimap
+    public GameObject minimapCamPrefab;
+    //public float camYoffset = 10;
+
     // awake called before start, and sometimes we need comps in start:
     void Awake()
     {
         //if this obj isnt mine and we connected to the photon network:
         if (!(photonView.IsMine) && PhotonNetwork.IsConnected)
         {
-            //dont execute any movement code:
+            //dont execute any spawning
             return;
         }
 
@@ -77,5 +81,16 @@ public class UI_Instantiator : MonoBehaviour
 
         //fill player manager's overlay UI field
         GetComponent<PlayerManager>().overlayUI = overlayCopy.GetComponent<OverlayUI>();
+
+        //MINIMAP CAM
+
+        //create as child of model player
+        //Instantiate(minimapCamPrefab, transform);
+
+        //create minimap cam
+        GameObject minimapCamCopy = Instantiate(minimapCamPrefab);
+        
+        //fill player field
+        minimapCamCopy.GetComponent<MiniMap>().player = transform;
     }
 }
