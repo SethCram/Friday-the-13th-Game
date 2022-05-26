@@ -218,9 +218,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 0}
   yOffset: 10
-  SoftLights:
-  - {fileID: 0}
-  HardLights: []
 --- !u!1 &2392998197002684603
 GameObject:
   m_ObjectHideFlags: 0

@@ -7,7 +7,7 @@ public class MiniMap : MonoBehaviour
     public Transform player;
     public float yOffset = 10;
 
-    
+    /*
     public Light[] SoftLights = new Light[1];
     public Light[] HardLights;
     void Start()
@@ -28,7 +28,7 @@ public class MiniMap : MonoBehaviour
         foreach (Light l in SoftLights) { l.shadows = LightShadows.Soft; }
         foreach (Light l in HardLights) { l.shadows = LightShadows.Hard; }
     }
-    
+    */
 
     private void LateUpdate()
     {

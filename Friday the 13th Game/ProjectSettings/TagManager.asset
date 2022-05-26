@@ -18,9 +18,9 @@ TagManager:
   - InteractRaycast
   - Walkable
   - Forest
-  - 
-  - 
-  - 
+  - Minimap
+  - Grass
+  - Sand
   - 
   - 
   - 

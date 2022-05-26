@@ -12,6 +12,30 @@ public class ItemPickup : Interactable //this class is now derived from/a child 
     [HideInInspector]
     public bool shouldDelete; //actually want to delete obj on destroy
 
+    private GameObject itemIconCopy;
+
+    public override void Start()
+    {
+        base.Start();
+
+        //create item's icon in world space for rendering
+        itemIconCopy = new GameObject(name: "pickupIcon");
+        //fill sprite field
+        itemIconCopy.AddComponent<SpriteRenderer>().sprite = item.icon;
+        //rot so can see icon
+        itemIconCopy.transform.eulerAngles = new Vector3( 90, 
+                                                        itemIconCopy.transform.eulerAngles.y, 
+                                                        itemIconCopy.transform.eulerAngles.z);
+        //set to minimap layer
+        itemIconCopy.layer = 12; 
+        //set to spawn position with 100 in the y
+        itemIconCopy.transform.position = new Vector3(transform.transform.position.x, 
+                                                        100, 
+                                                        transform.transform.position.z); 
+        //scale icon up so visible on minimap
+        itemIconCopy.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f); 
+    }
+
     //override og 'Interact()' to have the interacting player 'Pickup()' the item:
     public override void Interact(Transform playerInteracting)
     {
@@ -78,10 +102,17 @@ public class ItemPickup : Interactable //this class is now derived from/a child 
 
     private void OnDestroy()
     {
+        //if item icon created
+        if( itemIconCopy != null )
+        {
+            //destroy it locally
+            Destroy(itemIconCopy);
+        }
+
         //check: Debug.LogError(item.name + " destroyed");
 
         //if photon view not setup yet:
-        if(photonView == null)
+        if (photonView == null)
         {
             Debug.LogWarning("Photon view not yet setup, so " + item.name + " not destroyed.");
 
@@ -126,4 +157,6 @@ public class ItemPickup : Interactable //this class is now derived from/a child 
     {
         return "Press E/Fire1 to Pickup";
     }
+
+    
 }

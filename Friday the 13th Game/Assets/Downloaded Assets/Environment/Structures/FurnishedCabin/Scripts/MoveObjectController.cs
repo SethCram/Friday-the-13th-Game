@@ -26,13 +26,13 @@ public class MoveObjectController : MonoBehaviour
 
 		if(player == null)
         {
-			Debug.LogError("An obj tagged 'Player' is missing.");
+			//Debug.LogError("An obj tagged 'Player' is missing.");
 		}
 
 		fpsCam = Camera.main;
 		if (fpsCam == null)	//a reference to Camera is required for rayasts
 		{
-			Debug.LogError("A camera tagged 'MainCamera' is missing.");
+			//Debug.LogError("A camera tagged 'MainCamera' is missing.");
 		}
 
 		//create AnimatorOverrideController to re-use animationController for sliding draws.
