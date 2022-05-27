@@ -24,10 +24,6 @@ public class PlayerManager : MonoBehaviourPunCallbacks
 
     //private bool showInteractMsg = false;
 
-        //for item replacement on leave
-        //private PlayerManager[] playerManagers;
-        //private int playerCount = 0;
-
     //private GUIStyle guiStyle;
     private string msg = "";
 
@@ -40,12 +36,6 @@ public class PlayerManager : MonoBehaviourPunCallbacks
 
         //just incase disabled for some reason
         EnableCamControl();
-
-            //store player pos's every 3rd arg starting at 2nd arg
-            // InvokeRepeating("StorePlayers", 1, 5);
-
-        //setup GUI style settings for user prompts
-        //setupGui();
     }
 
     //reload the scene:
@@ -187,7 +177,7 @@ public class PlayerManager : MonoBehaviourPunCallbacks
             //we destroy obj across network:
             PhotonNetwork.Destroy(destroyingView.gameObject);
 
-            Debug.LogError("successfully destroyed networked gameobj");
+            Debug.Log("successfully destroyed networked gameobj");
         }
     }
 
@@ -228,33 +218,6 @@ public class PlayerManager : MonoBehaviourPunCallbacks
         while(!equipmentManager.DropEquipment() );
     }
 
-    /*
-    private void StorePlayers()
-    {
-
-        //stor all player manager's
-        playerManagers = FindObjectsOfType<PlayerManager>();
-
-        //if less player's than before
-        if( playerManagers.Length < playerCount)
-        {
-
-        }
-
-        //step thru all player manager's
-        foreach (PlayerManager manager in playerManagers)
-        {
-
-        }
-    }
-
-    //respawn lost items
-    private void RestoreLostPickups()
-    {
-        ItemPickup[] items = FindObjectsOfType<ItemPickup>();
-    }
-    */
-
     //called w/ another client leaves room:
     public override void OnPlayerLeftRoom(Player otherPlayer)
     {
@@ -284,26 +247,14 @@ public class PlayerManager : MonoBehaviourPunCallbacks
 
     #region GUI Config
 
-    /*
-    private void Update()
-    {
-        //if showing msg
-        if(showInteractMsg)
-        {
-            //make sure correct message shown
-            overlayUI.interactTxt.text = msg;
-        }
-    }
-    */
-
     //change visibility of interaction msg 
     //[PunRPC]
     public void SetInteractVisibility(bool state)
     {
         //showInteractMsg = state;
 
-        //if txt showing
-        if(state == true)
+        //if txt showing and overlay UI set
+        if(state == true && overlayUI != null )
         {
             //make sure correct message shown
             overlayUI.interactTxt.text = msg;
@@ -316,42 +267,11 @@ public class PlayerManager : MonoBehaviourPunCallbacks
         overlayUI.interactTxt.gameObject.SetActive(state);
     }
 
-    /*
-    private IEnumerator TurnIntTextOffIn(float delay)
-    {
-        yield return new WaitForSeconds(delay);
-
-        //turn off interaction text
-        overlayUI.interactTxt.gameObject.SetActive(false);
-    }
-    */
-
     //change msg contents
     public void SetInteractMsg(string message)
     {
         msg = message;
     }
-    /*
-    //configure the style of the GUI
-    private void setupGui()
-    {
-        guiStyle = new GUIStyle();
-        guiStyle.fontSize = 16;
-        guiStyle.fontStyle = FontStyle.Bold;
-        guiStyle.normal.textColor = Color.white;
-        msg = "Press E/Fire1 to Interact";
-    }
-
-    void OnGUI()
-    {
-        Debug.Log("show interact msg: " + showInteractMsg);
-
-        if (showInteractMsg)  //show on-screen prompts to user for guide.
-        {
-            GUI.Label(new Rect(50, Screen.height - 50, 200, 50), msg, guiStyle);
-        }
-    }
-    */
 
     //End of GUI Config --------------
     #endregion

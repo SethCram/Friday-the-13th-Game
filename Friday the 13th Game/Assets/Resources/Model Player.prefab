@@ -898,8 +898,8 @@ MonoBehaviour:
     type: 3}
   overlayUICanvasPrefab: {fileID: 5772637367856045314, guid: 1c231fa7ab9a2cc4abdc5c3a65f9bbc6,
     type: 3}
-  minimapCamPrefab: {fileID: 951725620844477100, guid: 3ccace40362eb534bbbc1a6635664f85,
-    type: 3}
+  playerIconObj: {fileID: 390024608957583044}
+  playerIcon: {fileID: 21300000, guid: fa24baa939b84ad47bcbddd283623c62, type: 3}
 --- !u!114 &832983379651791480
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -915,9 +915,12 @@ MonoBehaviour:
   mainCam: {fileID: 6269342325880267024, guid: 6297942edde43f14292cb9d132b31388, type: 3}
   camController: {fileID: 748000913362258575, guid: 6d04efeff66552e499953611b04eeec4,
     type: 3}
+  lookAtPnt: {fileID: 7413788013507500955}
   photonView: {fileID: -2933026003536563205}
   movement: {fileID: 7413788013251121931}
   playManager: {fileID: 7413788013251121924}
+  minimapCamPrefab: {fileID: 951725620844477100, guid: 3ccace40362eb534bbbc1a6635664f85,
+    type: 3}
 --- !u!114 &-2933026003536563205
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3158,15 +3161,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c89e41edc642c484da4d53fea9a30aa8, type: 3}
---- !u!1 &2454241644259036574 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4966387569967092813, guid: c89e41edc642c484da4d53fea9a30aa8,
-    type: 3}
-  m_PrefabInstance: {fileID: 7413788014088427987}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &6206260450463944797 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3513370746925582734, guid: c89e41edc642c484da4d53fea9a30aa8,
+    type: 3}
+  m_PrefabInstance: {fileID: 7413788014088427987}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &2454241644259036574 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4966387569967092813, guid: c89e41edc642c484da4d53fea9a30aa8,
     type: 3}
   m_PrefabInstance: {fileID: 7413788014088427987}
   m_PrefabAsset: {fileID: 0}
@@ -3232,13 +3235,29 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8296026750684875145, guid: 68e04d059c2b21d4eb1719abf088eaae,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 8296026750684875145, guid: 68e04d059c2b21d4eb1719abf088eaae,
+        type: 3}
+      propertyPath: m_WasSpriteAssigned
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8296026750684875146, guid: 68e04d059c2b21d4eb1719abf088eaae,
         type: 3}
       propertyPath: m_Name
-      value: Arrow 5 N Icon
+      value: Spriteless Arrow 5 N Icon
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 68e04d059c2b21d4eb1719abf088eaae, type: 3}
+--- !u!1 &390024608957583044 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8296026750684875146, guid: 68e04d059c2b21d4eb1719abf088eaae,
+    type: 3}
+  m_PrefabInstance: {fileID: 8523287903510857550}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &390024608957583046 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8296026750684875144, guid: 68e04d059c2b21d4eb1719abf088eaae,

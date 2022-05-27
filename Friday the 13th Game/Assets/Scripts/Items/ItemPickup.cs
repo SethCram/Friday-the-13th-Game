@@ -100,6 +100,16 @@ public class ItemPickup : Interactable //this class is now derived from/a child 
         shouldDelete = true;
     }
 
+    new private void OnDisable()
+    {
+        //if item icon created
+        if ( itemIconCopy != null )
+        {
+            //disable icon
+            itemIconCopy.SetActive(false);
+        }
+    }
+
     private void OnDestroy()
     {
         //if item icon created
