@@ -11,6 +11,7 @@ public class StatApplication : MonoBehaviour
     //fill in inspector:
     public PlayerStats playerStats; //could also use 'CharStats' but that doesnt add mods?
     public ThirdPersonMovement movement; //to change run speed and jump height
+    public PlayerManager playerManager;
 
     //max of every stat:
     public int statMax = 10;
@@ -29,6 +30,11 @@ public class StatApplication : MonoBehaviour
     public int hp_per_bulk = 5;       //bc each bulk pnt worth a specified number of hp
     private int bulkDifference; 
     private int lastSetBulkStat = 0;
+
+    //for dif minimap usage reqs
+    public int minIconMinimap = 4;
+    public int minRealMinimap = 7;
+    public Cam_Instantiator cam_Instantiator;
 
     // Start is called before the first frame update
     void Start()
@@ -81,6 +87,55 @@ public class StatApplication : MonoBehaviour
                 break;
 
             case "Perception":
+
+                //if perception too low for either minimap
+                if (statVal < minIconMinimap && statVal < minRealMinimap)
+                {
+                    //deactivate minimap outline
+                    playerManager.minimapUI.SetActive(false);
+
+                    break;
+                }
+                else
+                {
+                    //make sure minimap outline active
+                    playerManager.minimapUI.SetActive(true);
+                }
+
+                //check if real minimap reqs more points than icon minimap 
+                if ( minRealMinimap < minIconMinimap )
+                {
+                    Debug.LogWarning("real minimap threshold shouldn't be less than the icon minimap threshold?");
+                }
+
+                //if icon minimap reqs more points
+                if(minRealMinimap < minIconMinimap)
+                {
+                    //if perception high enough for icon minimap
+                    if (statVal >= minIconMinimap)
+                    {
+                        cam_Instantiator.SpawnIconMinimap();
+                    }
+                    else if (statVal >= minRealMinimap)
+                    {
+                        cam_Instantiator.SpawnRealMinimap();
+                    }
+
+                }
+                //real minimap reqs more or equal points
+                else
+                {
+                    //if perception high enough for real minimap
+                    if (statVal >= minRealMinimap)
+                    {
+                        cam_Instantiator.SpawnRealMinimap();
+                    }
+                    else if (statVal >= minIconMinimap)
+                    {
+                        cam_Instantiator.SpawnIconMinimap();
+                    }
+                }
+
                 break;
 
             case "Paranoia":

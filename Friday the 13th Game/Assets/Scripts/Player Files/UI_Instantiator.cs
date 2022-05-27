@@ -2,11 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
+using UnityEngine.UI;
 
 //require all scripts required to correctly implement the Pause UI:
 [RequireComponent(typeof(Inventory))]
 [RequireComponent(typeof(PlayerButtons))]
 [RequireComponent(typeof(EquipmentManager))]
+[RequireComponent(typeof(PlayerManager))]
+[RequireComponent(typeof(Cam_Instantiator))]
 public class UI_Instantiator : MonoBehaviour
 {
     //for multiplayer:
@@ -27,6 +30,8 @@ public class UI_Instantiator : MonoBehaviour
     //for player icon
     public GameObject playerIconObj;
     public Sprite playerIcon;
+
+    public PlayerManager playerManager;
 
     // awake called before start, and sometimes we need comps in start:
     void Awake()
@@ -79,8 +84,13 @@ public class UI_Instantiator : MonoBehaviour
         //create player's overlay canvas:
         GameObject overlayCopy = Instantiate(overlayUICanvasPrefab);
 
+        playerManager = GetComponent<PlayerManager>();
+
         //fill player manager's overlay UI field
-        GetComponent<PlayerManager>().overlayUI = overlayCopy.GetComponent<OverlayUI>();
+        playerManager.overlayUI = overlayCopy.GetComponent<OverlayUI>();
+
+        //fill minimap UI obj using the mask attached to the minimap
+        playerManager.minimapUI = overlayCopy.GetComponentInChildren<Mask>(includeInactive:true).gameObject;
 
         //fill player icon in
         playerIconObj.GetComponent<SpriteRenderer>().sprite = playerIcon;

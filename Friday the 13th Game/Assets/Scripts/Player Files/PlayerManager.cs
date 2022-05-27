@@ -30,6 +30,9 @@ public class PlayerManager : MonoBehaviourPunCallbacks
     [HideInInspector]
     public OverlayUI overlayUI;
 
+    [HideInInspector]
+    public GameObject minimapUI;
+
     private void Start()
     {
         playerMovement = GetComponent<ThirdPersonMovement>();

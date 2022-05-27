@@ -19,7 +19,10 @@ public class Cam_Instantiator : MonoBehaviour
     private CinemachineFreeLook freeLookComp;
 
     //for minimap
+    public GameObject minimapIconCamPrefab;
     public GameObject minimapCamPrefab;
+    private GameObject minimapIconCamCopy;
+    private GameObject minimapCamCopy;
 
     // Start is called before the first frame update
     void Start()
@@ -44,14 +47,40 @@ public class Cam_Instantiator : MonoBehaviour
         //fill out player scripts:
         movement.playerCam = camCopy.transform;
         playManager.thirdPersonCamController = camControlCopy;
+    }
 
-        //MINIMAP CAM
+    public void SpawnRealMinimap()
+    {
+        //destroy icon minimap cam if already spawned
+        if(minimapIconCamCopy != null)
+        {
+            Destroy(minimapIconCamCopy);
+        }
+
+        //instantiate real minimap cam
 
         //create minimap cam
-        GameObject minimapCamCopy = Instantiate(minimapCamPrefab);
+        minimapCamCopy = Instantiate(minimapCamPrefab);
 
         //fill player field
         minimapCamCopy.GetComponent<MiniMap>().player = transform;
+    }
+
+    public void SpawnIconMinimap()
+    {
+        //destroy real minimap cam if already spawned
+        if(minimapCamCopy != null)
+        {
+            Destroy(minimapCamCopy);
+        }
+
+        //instantiate icon minimap cam
+
+        //create minimap cam
+        minimapIconCamCopy = Instantiate(minimapIconCamPrefab);
+
+        //fill player field
+        minimapIconCamCopy.GetComponent<MiniMap>().player = transform;
     }
 
 }

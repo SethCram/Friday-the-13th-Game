@@ -8,6 +8,7 @@ public class PlayerButtons : MonoBehaviourPun
     //init in inspector:
         //public CharacterCombat combat;    //needed to check if atking
 
+    [HideInInspector]
     public bool playerInteract = false;
         //public bool openInventory = false;
         //public bool openOptions = false;
