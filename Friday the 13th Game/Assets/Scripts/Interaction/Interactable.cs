@@ -12,7 +12,7 @@ public class Interactable : MonoBehaviourPunCallbacks
     private SphereCollider sphereCollider; //to setup sphere trigger
 
     //to store all players able to interact with this obj:
-    //[HideInInspector]
+    [HideInInspector]
     public List<Transform> interactablePlayers;
 
     //private bool showInteractMsg;

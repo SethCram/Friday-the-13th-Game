@@ -281,7 +281,7 @@ Transform:
   m_Children:
   - {fileID: 4000013272176810}
   m_Father: {fileID: 4000010214412056}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 100, z: 0}
 --- !u!1 &1000011775389130
 GameObject:
@@ -391,6 +391,7 @@ GameObject:
   - component: {fileID: 114000011419402594}
   - component: {fileID: 114000011411071628}
   - component: {fileID: 64000013895505880}
+  - component: {fileID: 4943369212136506627}
   m_Layer: 8
   m_Name: PFB_BathroomSink
   m_TagString: Untagged
@@ -405,12 +406,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1000013269158302}
-  m_LocalRotation: {x: -0, y: -0.7071068, z: -0, w: 0.7071067}
+  m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 11.969164, y: -0.00000059604645, z: 3.5361626}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4000013492317270}
   - {fileID: 4000013137938756}
+  - {fileID: 7486972936762755429}
   - {fileID: 4000012777636056}
   - {fileID: 4000012158789550}
   m_Father: {fileID: 0}
@@ -437,7 +439,7 @@ Animator:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1000013269158302}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: 0c196be1b21d24214a5af57528f6ecb3, type: 2}
   m_CullingMode: 0
@@ -468,7 +470,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1000013269158302}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3174ace299f2b4c80baf44a6283329cf, type: 3}
   m_Name: 
@@ -488,6 +490,23 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 4300000, guid: 1bbcd022f155a4944808bc105cc5d095, type: 3}
+--- !u!114 &4943369212136506627
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1000013269158302}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a6308db88a5d074ab827b13f9c8ea08, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  interactionRadius: 0
+  interactablePlayers: []
+  isOpen: 0
+  pickups:
+  - {fileID: 7486972936762755426}
 --- !u!1 &1000013504680576
 GameObject:
   m_ObjectHideFlags: 0
@@ -517,5 +536,96 @@ Transform:
   m_Children:
   - {fileID: 4000013828812206}
   m_Father: {fileID: 4000010214412056}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: -100, z: 0}
+--- !u!1001 &5184516120777511093
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 4000010214412056}
+    m_Modifications:
+    - target: {fileID: 2311485456154352080, guid: 53f2d1d27384cfc4ba102a31bb15b130,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2311485456154352080, guid: 53f2d1d27384cfc4ba102a31bb15b130,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.2525704
+      objectReference: {fileID: 0}
+    - target: {fileID: 2311485456154352080, guid: 53f2d1d27384cfc4ba102a31bb15b130,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.5766603
+      objectReference: {fileID: 0}
+    - target: {fileID: 2311485456154352080, guid: 53f2d1d27384cfc4ba102a31bb15b130,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.20717531
+      objectReference: {fileID: 0}
+    - target: {fileID: 2311485456154352080, guid: 53f2d1d27384cfc4ba102a31bb15b130,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2311485456154352080, guid: 53f2d1d27384cfc4ba102a31bb15b130,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2311485456154352080, guid: 53f2d1d27384cfc4ba102a31bb15b130,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2311485456154352080, guid: 53f2d1d27384cfc4ba102a31bb15b130,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2311485456154352080, guid: 53f2d1d27384cfc4ba102a31bb15b130,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2311485456154352080, guid: 53f2d1d27384cfc4ba102a31bb15b130,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2311485456154352080, guid: 53f2d1d27384cfc4ba102a31bb15b130,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2311485456154352081, guid: 53f2d1d27384cfc4ba102a31bb15b130,
+        type: 3}
+      propertyPath: interactionRadius
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 2311485456154352087, guid: 53f2d1d27384cfc4ba102a31bb15b130,
+        type: 3}
+      propertyPath: m_Name
+      value: KnifePickup
+      objectReference: {fileID: 0}
+    - target: {fileID: 2311485456154352087, guid: 53f2d1d27384cfc4ba102a31bb15b130,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 53f2d1d27384cfc4ba102a31bb15b130, type: 3}
+--- !u!4 &7486972936762755429 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2311485456154352080, guid: 53f2d1d27384cfc4ba102a31bb15b130,
+    type: 3}
+  m_PrefabInstance: {fileID: 5184516120777511093}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &7486972936762755426 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2311485456154352087, guid: 53f2d1d27384cfc4ba102a31bb15b130,
+    type: 3}
+  m_PrefabInstance: {fileID: 5184516120777511093}
+  m_PrefabAsset: {fileID: 0}

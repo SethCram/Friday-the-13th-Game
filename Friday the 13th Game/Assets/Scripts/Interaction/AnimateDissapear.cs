@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(BoxCollider))]
-public class AnimateDissapear : Interactable
+public class AnimateDissapear : Entryway
 {
 	public GameObject[] dissapearingGameobjs;
 
