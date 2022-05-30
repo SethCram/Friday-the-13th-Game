@@ -60,11 +60,19 @@ public class CharacterAnimator : MonoBehaviour
         movement = GetComponent<ThirdPersonMovement>();
 
         //Debug.LogError("Char Animator Awake finished");
+
     }
 
     // Update is called once per frame
     protected virtual void Update()
     {
+        //test key
+        if( Input.GetKeyDown(KeyCode.T))
+        {
+            //animate dying
+            Die();
+        }
+
         //if this obj isnt mine and we connected to the photon network:
         if (!(photonView.IsMine) && PhotonNetwork.IsConnected)
         {

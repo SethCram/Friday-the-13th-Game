@@ -9,26 +9,6 @@ public class PlayerStats : CharacterStats
     public EquipmentManager equipManager;
     public StatApplication statApply;
 
-    /*
-    //currently does nothing new
-    public override void Die()
-    {
-        //says who died in console:
-        base.Die();
-
-            //Kill the player
-            //  (death anim done in 'CharacterAnimator';
-            //      could add gameover screen after player killed,
-            //      then prompt to respawn w/ penalty) (we just restart lvl for now):
-
-            //delay scene reset by _ secs so player death anim can play out
-            // playerManager.Invoke("ResetScene", deathAnimDelay); 
-
-        //delay scene reset by _ secs so player death anim can play out
-        //playerManager.Invoke("ResetToMainMenu", deathAnimDelay); 
-    }
-    */
-
     // Start is called before the first frame update
     void Start()
     {
