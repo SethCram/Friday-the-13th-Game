@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
@@ -8,8 +7,8 @@ public class RoomListingsMenu : MonoBehaviourPunCallbacks
 {
     //to create new room listings:
     public Transform roomListingsParent;
-              //public GameObject roomListingPrefab;
     public RoomListing roomListingPrefab;
+    public CreateAndJoinRooms createJoinRoom;
 
     //to store rooms added to room listings (always init lists):
     private List<RoomListing> listings = new List<RoomListing>();
@@ -98,11 +97,11 @@ public class RoomListingsMenu : MonoBehaviourPunCallbacks
 
         //set room listing's room info:
         roomListing.SetRoomInfo(roomInfo);
-        //roomListing.GetComponent<RoomListing>().SetRoomInfo(roomInfo);
 
-        //add listing to list:
+        roomListing.createJoinRooms = createJoinRoom;
+
+        //add listing to list: (need to add over buffered RPC?) (could have players join empty room if needed to run RPCs?)
         listings.Add(roomListing);
-
 
         //init previous players list as starting each entry w/ 1:
         previousPlayers.Add(1);

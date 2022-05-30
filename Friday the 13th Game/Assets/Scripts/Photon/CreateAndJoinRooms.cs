@@ -66,15 +66,17 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
         //output msg if empty room field
         if (string.IsNullOrEmpty(joinInput.text))
         {
+            //output error msg
             AssignErrorText(errorJoin, "JoinRoom failed. A roomname is required.");
 
             //dont join room
             return;
         }
 
-        //clear error msg
-        AssignErrorText(errorJoin, "Joining room...");
+        //output client msg
+        AssignErrorText(errorJoin, "Joining room...", false);
 
+        //join room
         PhotonNetwork.JoinRoom(joinInput.text);
     }
 
@@ -86,11 +88,23 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
     }
 
     //assign error text
-    private void AssignErrorText( TMP_Text errorText, string message)
+    public void AssignErrorText( TMP_Text errorText, string message, bool error = true)
     {
         errorText.text = message;
 
-        Debug.LogError("Error message: " + message);
+        //if error
+        if( error == true )
+        {
+            //output error:
+            Debug.LogError("Error message: " + message);
+        }
+        // not error
+        else
+        {
+            //output client reg msg
+            Debug.Log("Client message: " + message);
+        }
+
     }
 
     //callback for w/ any client joins room then multiplayer game loaded:
