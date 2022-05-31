@@ -140,14 +140,32 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
             //log progress (breaks it)
             //Debug.Log(PhotonNetwork.LevelLoadingProgress);
 
+            //set to 100% even if only 90% thru clamping
+            //float progress = Mathf.Clamp01(PhotonNetwork.LevelLoadingProgress / 0.9f);
+            //slider.value = progress;
+
             slider.value = PhotonNetwork.LevelLoadingProgress;
 
+
+            //if loading is still zero
+            if (PhotonNetwork.LevelLoadingProgress == 0)
+            {
+                slider.fillRect.gameObject.SetActive(false);
+            }
+            //loading is non zero
+            else
+            {
+                slider.fillRect.gameObject.SetActive(true);
+            }
+            
+
             //set progress percentage
-            float progress = PhotonNetwork.LevelLoadingProgress * 100f;
-            progressTxt.text = progress.ToString() + "%";
+            float progressPercentage = PhotonNetwork.LevelLoadingProgress * 100f;
+            progressTxt.text = progressPercentage.ToString() + "%";
 
             //wait a frame
             yield return null;
+            //yield return new WaitForEndOfFrame();
         }
     }
 

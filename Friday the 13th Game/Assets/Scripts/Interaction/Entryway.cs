@@ -14,7 +14,8 @@ public class Entryway : Interactable
 		if (PhotonNetwork.IsConnected)
 		{
 			//over network
-			photonView.RPC("RPC_InvertPickups", RpcTarget.AllBufferedViaServer, !isOpen);
+			//photonView.RPC("RPC_InvertPickups", RpcTarget.AllBufferedViaServer, !isOpen);
+			photonView.RPC("RPC_InvertPickups", RpcTarget.AllBufferedViaServer);
 
 		}
 		else

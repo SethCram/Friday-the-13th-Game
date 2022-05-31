@@ -251,14 +251,13 @@ public class PlayerManager : MonoBehaviourPunCallbacks
     #region GUI Config
 
     //change visibility of interaction msg 
-    //[PunRPC]
     public void SetInteractVisibility(bool state)
     {
-        //showInteractMsg = state;
-
         //if txt showing and overlay UI set
-        if(state == true && overlayUI != null )
+        if( overlayUI != null) // && state == true)
         {
+            Debug.Log("interact msg: " + msg);
+
             //make sure correct message shown
             overlayUI.interactTxt.text = msg;
 
