@@ -2,7 +2,8 @@
 using UnityEngine;
 using Photon.Pun;
 
-//[RequireComponent(typeof(SphereCollider))] //needed to act as trigger for interaction
+//need photon view
+[RequireComponent(typeof(PhotonView))]
 public class Interactable : MonoBehaviourPunCallbacks
 {
     public float interactionRadius = 3f; // distance player has to be from obj to interact with it

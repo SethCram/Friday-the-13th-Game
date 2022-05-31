@@ -14,6 +14,12 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
     public TMP_InputField joinInput;
     public TMP_Text errorJoin;
 
+    //for loading 
+    public GameObject loadingScreen;
+    public GameObject roomSelectionScreen;
+    public Slider slider;
+    public TMP_Text progressTxt;
+
     //public int maxPlayers = 4;
 
     //create room w/ corresponding input as room name w/ create button pressed:
@@ -35,8 +41,8 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
         //roomOptions.CleanupCacheOnLeave = false; //doesnt cleanup player or objs they have ownership over w/ leave
         //roomOptions.PublishUserId = true;
 
-        //clear error msg
-        AssignErrorText(errorCreate, "Creating room...");
+        //clear error msg w/ client msg
+        AssignErrorText(errorCreate, "Creating room...", false);
 
         //make and join room:
         PhotonNetwork.CreateRoom(createInput.text, roomOptions);
@@ -110,9 +116,39 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
     //callback for w/ any client joins room then multiplayer game loaded:
     public override void OnJoinedRoom() //called both w/ client and other people join room
     {
-        //have multiplayer server load next scene in build settings (should be Game scene):
-        PhotonNetwork.LoadLevel(SceneManager.GetActiveScene().buildIndex + 1);
+        //isnt displayed
+        Debug.Log("Game scene loading.");
+
+        //load level asynchly
+        StartCoroutine(LoadLevelAsynch());
     }
 
+    private IEnumerator LoadLevelAsynch()
+    {
+        //deactivate room selection screen
+        roomSelectionScreen.SetActive(false);
+
+        //activate loading screen
+        loadingScreen.SetActive(true);
+
+        //have multiplayer server asynchly load next scene in build settings (should be Game scene):
+        PhotonNetwork.LoadLevel(SceneManager.GetActiveScene().buildIndex + 1);
+
+        //check if level loaded yet
+        while( PhotonNetwork.LevelLoadingProgress < 1)
+        {
+            //log progress (breaks it)
+            //Debug.Log(PhotonNetwork.LevelLoadingProgress);
+
+            slider.value = PhotonNetwork.LevelLoadingProgress;
+
+            //set progress percentage
+            float progress = PhotonNetwork.LevelLoadingProgress * 100f;
+            progressTxt.text = progress.ToString() + "%";
+
+            //wait a frame
+            yield return null;
+        }
+    }
 
 }

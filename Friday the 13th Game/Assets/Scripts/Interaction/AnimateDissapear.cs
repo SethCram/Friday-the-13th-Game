@@ -21,6 +21,7 @@ public class AnimateDissapear : Entryway
 		{
 			//over network
 			photonView.RPC("RPC_InvertState", RpcTarget.AllBufferedViaServer, !isOpen);
+			//photonView.RPC("RPC_InvertState", RpcTarget.AllBuffered, !isOpen);
 
 		}
 		else

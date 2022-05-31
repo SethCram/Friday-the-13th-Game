@@ -25,7 +25,7 @@ public class Entryway : Interactable
 	}
 
 	[PunRPC]
-	private void RPC_InvertPickups()
+	public void RPC_InvertPickups()
     {
 		//if no pickups
 		if( pickups == null || pickups.Length == 0)
