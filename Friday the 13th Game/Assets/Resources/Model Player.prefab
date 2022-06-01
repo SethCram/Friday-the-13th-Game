@@ -785,6 +785,7 @@ MonoBehaviour:
   numSpawnHeight: 3
   numSpacing: 2
   playerManager: {fileID: 7413788013251121924}
+  overlayUI: {fileID: 0}
   equipManager: {fileID: 7413788013251121930}
   statApply: {fileID: 7413788013251121929}
 --- !u!114 &7413788013251121929
@@ -807,6 +808,8 @@ MonoBehaviour:
   minIconMinimap: 4
   minRealMinimap: 7
   cam_Instantiator: {fileID: 832983379651791480}
+  minHealthBar: 5
+  overlayUI: {fileID: 0}
 --- !u!114 &7413788013251121926
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -906,6 +909,7 @@ MonoBehaviour:
   playerIconObj: {fileID: 390024608957583044}
   playerIcon: {fileID: 21300000, guid: fa24baa939b84ad47bcbddd283623c62, type: 3}
   playerManager: {fileID: 7413788013251121924}
+  statApplication: {fileID: 7413788013251121929}
 --- !u!114 &832983379651791480
 MonoBehaviour:
   m_ObjectHideFlags: 0

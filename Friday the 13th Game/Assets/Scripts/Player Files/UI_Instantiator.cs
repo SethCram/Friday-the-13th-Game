@@ -32,6 +32,7 @@ public class UI_Instantiator : MonoBehaviour
     public Sprite playerIcon;
 
     public PlayerManager playerManager;
+    public StatApplication statApplication;
 
     // awake called before start, and sometimes we need comps in start:
     void Awake()
@@ -55,7 +56,7 @@ public class UI_Instantiator : MonoBehaviour
         pausedUICallbacks.playerInventory = GetComponent<Inventory>();
         pausedUICallbacks.equipManager = GetComponent<EquipmentManager>();
         pausedUICallbacks.charStats = GetComponent<CharacterStats>();
-        pausedUICallbacks.statApply = GetComponent<StatApplication>();
+        pausedUICallbacks.statApply = statApplication; //GetComponent<StatApplication>();
 
         //start paused canvas as inactive:
         pausedUICanvasPrefab.SetActive(false);
@@ -68,7 +69,7 @@ public class UI_Instantiator : MonoBehaviour
         statSetter = statsUIPrefab.GetComponent<GetSetStats>();
         statSetter.pausedUICanvas = pausedUICopy;
         statSetter.playerStats = GetComponent<PlayerStats>();
-        statSetter.applyStats = GetComponent<StatApplication>();
+        statSetter.applyStats = statApplication; //GetComponent<StatApplication>();
 
         //start stats UI canvas as active:
         statsUIPrefab.SetActive(true);
@@ -86,13 +87,21 @@ public class UI_Instantiator : MonoBehaviour
 
         playerManager = GetComponent<PlayerManager>();
 
+        OverlayUI overlayUICopy = overlayCopy.GetComponent<OverlayUI>();
+
         //fill player manager's overlay UI field
-        playerManager.overlayUI = overlayCopy.GetComponent<OverlayUI>();
+        playerManager.overlayUI = overlayUICopy; //overlayCopy.GetComponent<OverlayUI>();
 
         //fill minimap UI obj using the mask attached to the minimap
-        playerManager.minimapUI = overlayCopy.GetComponentInChildren<Mask>(includeInactive:true).gameObject;
+        playerManager.minimapUI = overlayUICopy.minimap; //overlayCopy.GetComponentInChildren<Mask>(includeInactive:true).gameObject;
 
         //fill player icon in
         playerIconObj.GetComponent<SpriteRenderer>().sprite = playerIcon;
+
+        //fill character stats overlay UI
+        GetComponent<CharacterStats>().overlayUI = overlayUICopy;
+
+        //fill stat application overlay UI
+        statApplication.overlayUI = overlayUICopy;
     }
 }

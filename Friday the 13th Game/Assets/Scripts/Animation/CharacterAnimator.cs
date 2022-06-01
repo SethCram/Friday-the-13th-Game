@@ -70,7 +70,7 @@ public class CharacterAnimator : MonoBehaviour
         if( Input.GetKeyDown(KeyCode.T))
         {
             //animate dying
-            Die();
+            //Die();
         }
 
         //if this obj isnt mine and we connected to the photon network:

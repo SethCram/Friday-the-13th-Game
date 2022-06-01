@@ -36,6 +36,10 @@ public class StatApplication : MonoBehaviour
     public int minRealMinimap = 7;
     public Cam_Instantiator cam_Instantiator;
 
+    //for hp bar usage
+    public int minHealthBar = 5;
+    public OverlayUI overlayUI;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -139,6 +143,19 @@ public class StatApplication : MonoBehaviour
                 break;
 
             case "Paranoia":
+                
+                //if have enough points for health bar
+                if( statVal >= minHealthBar)
+                {
+                    //activate it
+                    overlayUI.healthSlider.gameObject.SetActive(true);
+                }
+                else
+                {
+                    //deactivate it
+                    overlayUI.healthSlider.gameObject.SetActive(false);
+                }
+                
                 break;
 
             case "Communication":

@@ -31,6 +31,10 @@ public class CharacterStats : MonoBehaviourPun
     //inited beforehand:
     public PlayerManager playerManager;
 
+    private int prevHP;
+
+    public OverlayUI overlayUI;
+
     //awake happens before 'Start()', need filling of 'allStats' array here bc it's used in another script's start
     private void Awake()
     {
@@ -47,22 +51,29 @@ public class CharacterStats : MonoBehaviourPun
 
         currHealth = maxHealth;
 
+        prevHP = currHealth;
+
         //subscribe number method
         OnHealthChangedCallback += SpawnNumbers;
 
-        //test out dying
-        /*
-        if (PhotonNetwork.IsConnected)
+        //update health slider using HP changed event
+        OnHealthChangedCallback += CallHealthSlider;
+    }
+
+    //call overlay UI health slider to update it
+    public void CallHealthSlider(int maxHP, int currHP)
+    {
+        overlayUI.UpdateHealthSlider(maxHP, currHP);
+    }
+
+    private void Update()
+    {
+        //test key
+        if (Input.GetKeyDown(KeyCode.T))
         {
-            //tell all clients to die
-            photonView.RPC("RPC_Die", RpcTarget.Other);
+            //test taking dmg
+            TakeDamage(5);
         }
-        else
-        {
-            //die locally
-            Invoke( "RPC_Die", 15);
-        }
-        */
     }
 
     //spawn numbers above attached player  
@@ -70,6 +81,10 @@ public class CharacterStats : MonoBehaviourPun
     {
         //turn curr HP into an arr of ints
         int[] intArr = GetIntArray(currHP);
+        //int[] intArr = GetIntArray(prevHP - currHP);
+
+        //update prev HP for next spawn numbers
+        //prevHP = currHP;
 
         //debug: Debug.Log(currHP.ToString() + " spawned" );
 
