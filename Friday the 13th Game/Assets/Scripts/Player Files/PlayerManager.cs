@@ -254,7 +254,7 @@ public class PlayerManager : MonoBehaviourPunCallbacks
     public void SetInteractVisibility(bool state)
     {
         //if txt showing and overlay UI set
-        if( overlayUI != null) // && state == true)
+        if( overlayUI != null ) // && state == true)
         {
             Debug.Log("interact msg: " + msg);
 
@@ -263,10 +263,10 @@ public class PlayerManager : MonoBehaviourPunCallbacks
 
             //invoke method incase txt doesnt dissapear in 5 seconds
             //TurnIntTextOffIn(5);
-        }
 
-        //change state of txt
-        overlayUI.interactTxt.gameObject.SetActive(state);
+            //change state of txt
+            overlayUI.interactTxt.gameObject.SetActive(state);
+        }
     }
 
     //change msg contents
