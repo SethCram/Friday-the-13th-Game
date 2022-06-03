@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using Photon.Pun;
 using UnityEngine.UI;
 
@@ -48,7 +46,7 @@ public class UI_Instantiator : MonoBehaviour
 
         //init script:
         pausedUIScript = pausedUICanvasPrefab.GetComponent<PausedUI>();
-        pausedUIScript.playerManager = GetComponent<PlayerManager>();
+        pausedUIScript.playerManager = playerManager; //GetComponent<PlayerManager>();
         //pausedUIScript.playerButtons = GetComponent<PlayerButtons>();
 
         //init callback script:
@@ -84,10 +82,8 @@ public class UI_Instantiator : MonoBehaviour
 
         //create player's overlay canvas:
         GameObject overlayCopy = Instantiate(overlayUICanvasPrefab);
-
-        playerManager = GetComponent<PlayerManager>();
-
         OverlayUI overlayUICopy = overlayCopy.GetComponent<OverlayUI>();
+        overlayUICopy.playerManager = playerManager;
 
         //fill player manager's overlay UI field
         playerManager.overlayUI = overlayUICopy; //overlayCopy.GetComponent<OverlayUI>();

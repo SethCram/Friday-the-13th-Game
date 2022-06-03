@@ -58,6 +58,9 @@ MonoBehaviour:
   - RPC_InvertState
   - SetInteractVisibility
   - RPC_InvertPickups
+  - RPC_StartJason
+  - RPC_StartCounselor
+  - RPC_ChangeVoteCount
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1

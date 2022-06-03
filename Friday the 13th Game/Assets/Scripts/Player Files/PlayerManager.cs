@@ -11,6 +11,11 @@ public class PlayerManager : MonoBehaviourPunCallbacks
 {
     public GameObject player;
 
+    public Transform jasonStart;
+    public Transform counselorStart;
+    public GameObject gameLevel;
+    public GameObject lobbyLevel;
+
     public GameObject thirdPersonCamController; //need to activate/deactivate camera controls
 
     public Inventory inventory;
@@ -33,9 +38,22 @@ public class PlayerManager : MonoBehaviourPunCallbacks
     [HideInInspector]
     public GameObject minimapUI;
 
+    [HideInInspector]
+    public int startVotes { private set; get; } = 0; //needa incr/decr over RPC
+
     private void Start()
     {
         playerMovement = GetComponent<ThirdPersonMovement>();
+
+        //fill level fields
+        gameLevel = GameObject.FindGameObjectWithTag("GameLevel");
+        gameLevel.SetActive(false);
+        lobbyLevel = GameObject.FindGameObjectWithTag("LobbyLevel");
+        lobbyLevel.SetActive(true);
+
+        //fill spawn fields:
+        jasonStart = GameObject.FindWithTag("JasonStart").transform;
+        counselorStart = GameObject.FindGameObjectWithTag("CounselorStart").transform;
 
         //just incase disabled for some reason
         EnableCamControl();
@@ -246,6 +264,63 @@ public class PlayerManager : MonoBehaviourPunCallbacks
             Debug.LogError("Destroyed leaving player gameobj.");
         }
         */
+    }
+
+    public void StartJasonWrapper(Player photonPlayer)
+    {
+        photonView.RPC("RPC_StartJason", photonPlayer);
+    }
+
+    /// <summary>
+    /// Start jason out at spawn point
+    /// </summary>
+    [PunRPC]
+    private void RPC_StartJason()
+    {
+        Debug.Log("Starting as Jason");
+
+        //change tag
+        player.tag = "Enemy";
+
+        //teleport Jason to start
+        player.transform.position = jasonStart.position;
+    }
+
+    public void StartCounselorWrapper(Player photonPlayer)
+    {
+        photonView.RPC("RPC_StartCounselor", photonPlayer);
+    }
+
+    /// <summary>
+    /// start counselors out at spawnpoint 
+    /// </summary>
+    [PunRPC]
+    private void RPC_StartCounselor()
+    {
+        Debug.Log("Starting as counselor");
+
+        //teleport counselor to start
+        player.transform.position = counselorStart.position;
+    }
+
+    /// <summary>
+    /// RPC to change start vote count.
+    /// </summary>
+    /// <param name="newVoteCount"></param>
+    [PunRPC]
+    public void RPC_ChangeVoteCount( int newVoteCount )
+    {
+        startVotes = newVoteCount;
+    }
+
+    /// <summary>
+    /// deactivate lobby + activate game approp levels
+    /// </summary>
+    public void ChangeLevels()
+    {
+        gameLevel.SetActive(true);
+
+        lobbyLevel.SetActive(false);
     }
 
     #region GUI Config
