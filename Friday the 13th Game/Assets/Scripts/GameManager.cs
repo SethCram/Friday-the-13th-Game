@@ -12,8 +12,6 @@ public class GameManager : MonoBehaviour
 
     public PhotonView photonView;
 
-    public Transform jasonStart;
-    public Transform counselorStart;
     public GameObject gameLevel;
     public GameObject lobbyLevel;
 
