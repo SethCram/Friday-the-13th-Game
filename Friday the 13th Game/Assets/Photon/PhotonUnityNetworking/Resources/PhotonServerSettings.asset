@@ -61,6 +61,8 @@ MonoBehaviour:
   - RPC_StartJason
   - RPC_StartCounselor
   - RPC_ChangeVoteCount
+  - InstantiationPlayer
+  - StartPlayer
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1

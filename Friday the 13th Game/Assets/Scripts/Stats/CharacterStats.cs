@@ -72,7 +72,7 @@ public class CharacterStats : MonoBehaviourPun
         if (Input.GetKeyDown(KeyCode.T))
         {
             //test taking dmg
-            TakeDamage(5);
+            //TakeDamage(5);
         }
     }
 

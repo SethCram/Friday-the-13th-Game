@@ -58,6 +58,8 @@ public class SpawnPlayers : MonoBehaviour
             //spawnScript.SpawnObjAtRandom(transform.position, playerPrefab, spawnRadius);
 
         SpawnObjAtRandom(transform.position, playerPrefab, radius:spawnRadius);
+
+
     }
 
 

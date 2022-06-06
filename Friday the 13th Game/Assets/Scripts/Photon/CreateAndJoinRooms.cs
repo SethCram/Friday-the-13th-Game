@@ -22,6 +22,15 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
 
     //public int maxPlayers = 4;
 
+    private void Start()
+    {
+        //set screen visibility 
+
+        roomSelectionScreen.SetActive(true);
+
+        loadingScreen.SetActive(false);
+    }
+
     //create room w/ corresponding input as room name w/ create button pressed:
     public void CreateRoom()
     {
@@ -160,7 +169,7 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
             
 
             //set progress percentage
-            float progressPercentage = PhotonNetwork.LevelLoadingProgress * 100f;
+            int progressPercentage = (int) (PhotonNetwork.LevelLoadingProgress * 100f);
             progressTxt.text = progressPercentage.ToString() + "%";
 
             //wait a frame

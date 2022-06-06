@@ -5,9 +5,12 @@ using TMPro;
 using UnityEngine.UI;
 using Photon.Pun;
 using Photon.Realtime;
+using UnityEngine.SceneManagement;
 
 public class OverlayUI : MonoBehaviour
 {
+    #region Variables
+
     public TMP_Text interactTxt;
     public GameObject minimap;
 
@@ -22,6 +25,13 @@ public class OverlayUI : MonoBehaviour
     //public int startVotes = 0; //needa incr/decr over RPC
     public PlayerManager playerManager;
     private bool startedGame = false;
+    public GameManager gameManager;
+
+    Scene currScene;
+
+    #endregion
+
+    #region Unity
 
     private void Awake()
     {
@@ -33,7 +43,116 @@ public class OverlayUI : MonoBehaviour
 
         //start w/ health slider off
         healthSlider.gameObject.SetActive(false);
+
+        //can do bc singleton
+        gameManager = FindObjectOfType<GameManager>();
+
+        //cache curr scene
+        currScene = SceneManager.GetActiveScene();
     }
+
+    
+    private void Update()
+    {
+        //if started game already
+        if (startedGame || currScene.name == "Game")
+        {
+            //Debug.Log("Game already started");
+
+            //dont allow voting
+            return;
+        }
+
+        //if press V
+        if (Input.GetKeyDown(key: KeyCode.V))
+        {
+            //invert toggle
+            voteToggle.isOn = !voteToggle.isOn;
+
+            print("Toggle");
+
+            if (PhotonNetwork.IsConnected)
+            {
+                //if now voting to start
+                if (voteToggle.isOn == true)
+                {
+                    //should incr votes over RPC so works for everyone
+                    gameManager.photonView.RPC("RPC_ChangeVoteCount",
+                        RpcTarget.AllBuffered,
+                        gameManager.startVotes + 1);
+                }
+                //not voting to start
+                else
+                {
+                    //should descr votes over RPC so works for everyone
+                    gameManager.photonView.RPC("RPC_ChangeVoteCount",
+                        RpcTarget.AllBuffered,
+                        gameManager.startVotes - 1);
+                }
+            }
+            else
+            {
+                //if now voting to start
+                if (voteToggle.isOn == true)
+                {
+                    //should incr votes over RPC so works for everyone
+                    gameManager.RPC_ChangeVoteCount(gameManager.startVotes + 1);
+                }
+                //not voting to start
+                else
+                {
+                    //should descr votes over RPC so works for everyone
+                    gameManager.RPC_ChangeVoteCount(gameManager.startVotes - 1);
+                }
+            }
+        }
+
+        if (PhotonNetwork.IsConnected)
+        {
+            //if all players voted to start
+            if (gameManager.startVotes >= PhotonNetwork.CurrentRoom.PlayerCount)
+            {
+                //Start game for everyone
+                //Debug.LogError("Should start game.");
+
+                if( SceneManager.GetActiveScene().name == "Game Lobby")
+                {
+                    playerManager.AdvanceScene();
+                }
+                else
+                {
+                    StartGame();
+                }
+                
+                startedGame = true;
+            }
+        }
+        else
+        {
+            //if voted to start
+            if (gameManager.startVotes >= 1)
+            {
+                //Start game locally
+                Debug.LogError("Should start game.");
+
+
+                if (SceneManager.GetActiveScene().name == "Game Lobby")
+                {
+                    playerManager.AdvanceScene();
+                }
+                else
+                {
+                    StartGame();
+                }
+
+                startedGame = true;
+            }
+        }
+    }
+
+    #endregion
+
+    #region Update UI
 
     //update health slider using HP changed event
     public void UpdateHealthSlider(int maxHP, int currHP)
@@ -54,79 +173,9 @@ public class OverlayUI : MonoBehaviour
         healthRatio.text = currHP + "/" + maxHP;
     }
 
-    private void Update()
-    {
-        //if started game
-        if( startedGame )
-        {
-            //dont allow voting
-            return;
-        }
+    #endregion
 
-        //if press V
-        if( Input.GetKeyDown(key:KeyCode.V))
-        {
-            //invert toggle
-            voteToggle.isOn = !voteToggle.isOn;
-
-            if( PhotonNetwork.IsConnected)
-            {
-                //if now voting to start
-                if (voteToggle.isOn == true)
-                {
-                    //should incr votes over RPC so works for everyone
-                    playerManager.photonView.RPC("RPC_ChangeVoteCount",
-                        RpcTarget.AllBufferedViaServer,
-                        playerManager.startVotes + 1);
-                }
-                //not voting to start
-                else
-                {
-                    //should descr votes over RPC so works for everyone
-                    playerManager.photonView.RPC("RPC_ChangeVoteCount",
-                        RpcTarget.AllBufferedViaServer,
-                        playerManager.startVotes - 1);
-                }
-            }
-            else
-            {
-                //if now voting to start
-                if (voteToggle.isOn == true)
-                {
-                    //should incr votes over RPC so works for everyone
-                    playerManager.RPC_ChangeVoteCount(playerManager.startVotes + 1);
-                }
-                //not voting to start
-                else
-                {
-                    //should descr votes over RPC so works for everyone
-                    playerManager.RPC_ChangeVoteCount(playerManager.startVotes - 1);
-                }
-            }
-
-            if(PhotonNetwork.IsConnected)
-            {
-                //if all players voted to start
-                if (playerManager.startVotes >= PhotonNetwork.CurrentRoom.PlayerCount)
-                {
-                    //Start game for everyone
-                    Debug.Log("Should start game.");
-                    StartGame();
-                }
-            }
-            else
-            {
-                //if voted to start
-                if( playerManager.startVotes >= 1)
-                {
-                    //Start game locally
-                    Debug.Log("Should start game.");
-                    StartGame();
-                }
-            }
-            
-        }
-    }
+    #region Start Game
 
     /// <summary>
     /// start game thru disabling vote toggle UI + moving players
@@ -139,20 +188,31 @@ public class OverlayUI : MonoBehaviour
         startedGame = true;
 
         //change levels:
-        playerManager.ChangeLevels();
+        //gameManager.ChangeLevels();
 
         //move players to game level
-        MovePlayers();
+        //MovePlayers();
+        playerManager.TeleportPlayers();
     }
-
+    
     /// <summary>
-    /// move players to start of actual game
+    /// master client move players to start of actual game
     /// </summary>
     private void MovePlayers()
     {
+        //if not connected to network 
         if(!PhotonNetwork.IsConnected)
         {
+            //move local player
             playerManager.player.transform.position = playerManager.counselorStart.position;
+
+            //dont move other players
+            return;
+        }
+        //if not master client
+        else if (!PhotonNetwork.IsMasterClient)
+        {
+            //dont move players
             return;
         }
 
@@ -177,7 +237,7 @@ public class OverlayUI : MonoBehaviour
 
                 //teleport enemy to enemy start loc
                 //playerManager.photonView.RPC("RPC_StartJason", playerList[i]);
-                playerManager.StartJasonWrapper(playerList[i]);
+                playerManager.StartJasonWrapper(playerList[enemyIndex]);
                 
             }
             //if not enemy
@@ -190,4 +250,5 @@ public class OverlayUI : MonoBehaviour
         }
     }
 
+    #endregion
 }

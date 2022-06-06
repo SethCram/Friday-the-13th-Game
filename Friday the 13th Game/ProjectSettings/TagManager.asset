@@ -9,6 +9,8 @@ TagManager:
   - LobbyLevel
   - JasonStart
   - CounselorStart
+  - GameManager
+  - Enemy
   layers:
   - Default
   - TransparentFX
