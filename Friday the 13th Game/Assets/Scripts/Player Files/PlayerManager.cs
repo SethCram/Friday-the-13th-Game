@@ -212,13 +212,15 @@ public class PlayerManager : MonoBehaviourPunCallbacks
     public void AdvanceScene()
     {
 
+        StartCoroutine(overlayUI.LoadLevelAsynch());
+
         if ( PhotonNetwork.IsConnected)
         {
-            PhotonNetwork.LoadLevel(SceneManager.GetActiveScene().buildIndex + 1);
+            //PhotonNetwork.LoadLevel(SceneManager.GetActiveScene().buildIndex + 1);
         }
         else
         {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1); //reloads current scene using its 'buildIndex'
+            //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1); //reloads current scene using its 'buildIndex'
         }
 
     }
@@ -281,7 +283,7 @@ public class PlayerManager : MonoBehaviourPunCallbacks
         Cursor.visible = true;
     }
 
-    private void DisableCamControl()
+    public void DisableCamControl()
     {
         //pause mouse controls:
         CinemachineCore.UniformDeltaTimeOverride = 0;
@@ -293,7 +295,7 @@ public class PlayerManager : MonoBehaviourPunCallbacks
         CinemachineCore.UniformDeltaTimeOverride = -1; //reset time value
     }
 
-    private void CutMotionControls()
+    public void CutMotionControls()
     {
         playerMovement.cutMotionControls = true;
     }

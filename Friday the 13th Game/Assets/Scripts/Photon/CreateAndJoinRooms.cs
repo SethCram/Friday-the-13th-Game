@@ -31,6 +31,8 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
         loadingScreen.SetActive(false);
     }
 
+    #region Create Room
+
     //create room w/ corresponding input as room name w/ create button pressed:
     public void CreateRoom()
     {
@@ -75,6 +77,10 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
 
     }
 
+    #endregion
+
+    #region Join Room
+
     //join room w/ corresponding input as room name w/ join button pressed:
     public void JoinRoom()
     {
@@ -102,6 +108,18 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
         AssignErrorText(errorJoin, message);
     }
 
+    //callback for w/ any client joins room then multiplayer game loaded:
+    public override void OnJoinedRoom() //called both w/ client and other people join room
+    {
+        //isnt displayed
+        Debug.Log("Game scene loading.");
+
+        //load level asynchly
+        StartCoroutine(LoadLevelAsynch());
+    }
+
+    #endregion
+
     //assign error text
     public void AssignErrorText( TMP_Text errorText, string message, bool error = true)
     {
@@ -120,16 +138,6 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
             Debug.Log("Client message: " + message);
         }
 
-    }
-
-    //callback for w/ any client joins room then multiplayer game loaded:
-    public override void OnJoinedRoom() //called both w/ client and other people join room
-    {
-        //isnt displayed
-        Debug.Log("Game scene loading.");
-
-        //load level asynchly
-        StartCoroutine(LoadLevelAsynch());
     }
 
     private IEnumerator LoadLevelAsynch()

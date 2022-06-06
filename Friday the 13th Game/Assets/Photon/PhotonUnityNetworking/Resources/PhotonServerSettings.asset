@@ -63,6 +63,7 @@ MonoBehaviour:
   - RPC_ChangeVoteCount
   - InstantiationPlayer
   - StartPlayer
+  - SpawnPlayer
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1
