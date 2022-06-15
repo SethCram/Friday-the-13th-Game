@@ -14,10 +14,14 @@ public class RoomListingsMenu : MonoBehaviourPunCallbacks
     private List<RoomListing> listings = new List<RoomListing>();
     private List<int> previousPlayers = new List<int>(); //attached to each room listing to make sure dont create another room w/ join a room
 
+    private int playerCurrCnt;
+    private bool enteredRoomUpdateBefore = false;
+
     public override void OnJoinedLobby()
     {
         //instantiate all currently open rooms
         //PhotonNetwork.room
+
     }
 
     // w/ ever a visible room created/destroyed, this called:
@@ -59,9 +63,10 @@ public class RoomListingsMenu : MonoBehaviourPunCallbacks
                     }
                 }
             }
-            //added to room list:
+            //added to room list bc someone created room or someone joined room or left room:
             else
             {
+
                 //if previous players havent been added yet bc no rooms exist:
                 if(previousPlayers.Count == 0)
                 {
@@ -76,16 +81,52 @@ public class RoomListingsMenu : MonoBehaviourPunCallbacks
                     //increase previous player cnt:
                     previousPlayers[j]++;
 
-                    Debug.LogError("Didnt create a new room bc joined another room.");
+                    Debug.LogError("Didnt create a new room bc player joined another room.");
                 }
+                //if room has less players than previously:
+                else if(roomInfo.PlayerCount < previousPlayers[j])
+                {
+                    //increase previous player cnt:
+                    previousPlayers[j]--;
+                    Debug.LogError("Didnt create a new room bc player left another room.");
+                }
+                /*
                 else
                 {
                     //create room listing w/ given info:
                     CreateRoomListing(roomInfo);
                 }
+                */
             }
 
             j++;
+        }
+
+        //walk thru listings
+        for (int i = 0; i < listings.Count; i++)
+        {
+            //cache curr player cnt
+            playerCurrCnt = listings[i]._room_Info.PlayerCount;
+
+            //if player counts diff and initing rooms for 1st time
+            if (!enteredRoomUpdateBefore && playerCurrCnt != previousPlayers[i])
+            {
+                //set both to room player count (bc always right at lobby start)
+                previousPlayers[i] = playerCurrCnt;
+            }
+
+            //make sure their player count up to date (curr players not dynamically updated)
+            listings[i].UpdatePlayerCount(previousPlayers[i]);
+
+            //debug: Debug.LogError("\n list's player count = " + previousPlayers[i] + ", curr player count = " + playerCurrCnt);
+
+        }
+        
+        //if 1st time updating rooms:
+        if (!enteredRoomUpdateBefore)
+        {
+            //don't reset previous players cnt again 
+            enteredRoomUpdateBefore = true;
         }
     }
 

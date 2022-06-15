@@ -1,6 +1,9 @@
 ﻿using TMPro;
 using Photon.Realtime;
 using Photon.Pun;
+using System.Collections.Generic;
+using System.Collections;
+using UnityEngine;
 
 public class RoomListing : MonoBehaviourPunCallbacks
 {
@@ -19,14 +22,28 @@ public class RoomListing : MonoBehaviourPunCallbacks
         //set room name:
         nameText.text = roomInfo.Name;
 
-        //set max room player amt:
-        playersText.text = roomInfo.MaxPlayers.ToString();
-        
-        //clear player count txt
-        //playersText.text = "";
-
         //store curr room info for this listing:
         _room_Info = roomInfo;
+    }
+
+    /// <summary>
+    /// Update player count text on listing entry.
+    /// </summary>
+    public void UpdatePlayerCount( int currPlayers = 0 )
+    {
+        //if passed in param not set
+        if( currPlayers == 0)
+        {
+            //set curr/max room player amt: 
+            playersText.text = _room_Info.PlayerCount.ToString() + "/" + _room_Info.MaxPlayers.ToString();
+        }
+        //if passed in param set, use it
+        else
+        {
+            //set curr/max room player amt: 
+            playersText.text = currPlayers.ToString() + "/" + _room_Info.MaxPlayers.ToString();
+        }
+
     }
 
     //called w/ listing clicked:

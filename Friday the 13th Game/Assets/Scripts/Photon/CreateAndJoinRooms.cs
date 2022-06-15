@@ -20,7 +20,7 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
     public Slider slider;
     public TMP_Text progressTxt;
 
-    //public int maxPlayers = 4;
+    public int maxPlayers = 4;
 
     private void Start()
     {
@@ -47,7 +47,7 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
 
         //set room options:
         RoomOptions roomOptions = new RoomOptions();
-        roomOptions.MaxPlayers = 0; //4; 0 = no limit
+        roomOptions.MaxPlayers = (byte)maxPlayers; //0 = no limit
 
         //roomOptions.CleanupCacheOnLeave = false; //doesnt cleanup player or objs they have ownership over w/ leave
         //roomOptions.PublishUserId = true;
