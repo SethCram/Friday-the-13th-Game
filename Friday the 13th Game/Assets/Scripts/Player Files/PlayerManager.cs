@@ -25,7 +25,7 @@ public class PlayerManager : MonoBehaviourPunCallbacks
     public EquipmentManager equipmentManager;
 
     //cache so dont use 'getcomp' more than once:
-    private ThirdPersonMovement playerMovement;
+    public ThirdPersonMovement playerMovement;
 
     [HideInInspector]
     public bool paused = false;
@@ -55,7 +55,7 @@ public class PlayerManager : MonoBehaviourPunCallbacks
 
     private void Start()
     {
-        playerMovement = GetComponent<ThirdPersonMovement>();
+        //playerMovement = GetComponent<ThirdPersonMovement>();
 
         gameManager = FindObjectOfType<GameManager>();
         
@@ -80,7 +80,7 @@ public class PlayerManager : MonoBehaviourPunCallbacks
         EnableCamControl();
 
         //make sure cursor usable
-        UnlockCursor();
+        //UnlockCursor();
     }
 
     private void Update()

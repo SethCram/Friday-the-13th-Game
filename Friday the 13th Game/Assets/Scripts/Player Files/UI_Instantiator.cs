@@ -68,6 +68,7 @@ public class UI_Instantiator : MonoBehaviour
         statSetter.pausedUICanvas = pausedUICopy;
         statSetter.playerStats = GetComponent<PlayerStats>();
         statSetter.applyStats = statApplication; //GetComponent<StatApplication>();
+        statSetter.playerManager = playerManager;
 
         //start stats UI canvas as active:
         statsUIPrefab.SetActive(true);

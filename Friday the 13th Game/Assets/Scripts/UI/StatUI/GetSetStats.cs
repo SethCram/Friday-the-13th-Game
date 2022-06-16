@@ -12,6 +12,7 @@ public class GetSetStats : MonoBehaviour
     //set in ui initer:
     public GameObject pausedUICanvas;
     public StatApplication applyStats;
+    public PlayerManager playerManager;
 
     //total number text:
     public TMP_Text numTotalText;      //(init in inespector)
@@ -39,12 +40,15 @@ public class GetSetStats : MonoBehaviour
     private void Awake()
     {
         //pause game:
-        Time.timeScale = 0; //doesnt work correctly
+        //Time.timeScale = 0; //doesnt work correctly
     }
 
     // Start is called before the first frame update
     void Start()
     {
+        //disable player control
+        playerManager.DisablePlayerControl();
+
         //init total max pnts of this character:
         maxPnts = int.Parse(numTotalText.text);
 
@@ -136,11 +140,10 @@ public class GetSetStats : MonoBehaviour
         }
 
         //enable time:
-        Time.timeScale = 1;
+        //Time.timeScale = 1;
 
-        //lock cursor and make invisible:
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
+        //enable player cntrl
+        playerManager.EnablePlayerControl();
 
         //enable paused UI:
         pausedUICanvas.SetActive(true);

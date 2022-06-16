@@ -890,6 +890,7 @@ MonoBehaviour:
     type: 3}
   inventory: {fileID: 7413788013251121933}
   equipmentManager: {fileID: 7413788013251121930}
+  playerMovement: {fileID: 7413788013251121931}
   paused: 0
   overlayUI: {fileID: 0}
   minimapUI: {fileID: 0}

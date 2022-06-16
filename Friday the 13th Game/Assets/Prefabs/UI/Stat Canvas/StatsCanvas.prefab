@@ -117,6 +117,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pausedUICanvas: {fileID: 0}
   applyStats: {fileID: 0}
+  playerManager: {fileID: 0}
   numTotalText: {fileID: 6003939081283788015}
   leftPanel: {fileID: 6003939080925443776}
   rightPanel: {fileID: 6003939082166194034}
