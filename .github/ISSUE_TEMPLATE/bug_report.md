@@ -25,7 +25,7 @@ A clear and concise description of what you expected to happen.
  - Game Version: [e.g. 0.6.0]
 
 **Additional context**
-Add any other context about the problem here.
+- Add any other context about the problem here.
 
 **Development**
 - [ ] item 1
