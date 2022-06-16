@@ -22,7 +22,7 @@ A clear and concise description of what you expected to happen.
 
 **Desktop (please complete the following information):**
  - OS: Windows
- - Game Version [e.g. 0.6.0]
+ - Game Version: [e.g. 0.6.0]
 
 **Additional context**
 Add any other context about the problem here.
