@@ -4,13 +4,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SpawnPlayers : MonoBehaviour
+public class SpawnPlayers : MonoBehaviourPunCallbacks
 {
     public GameObject playerPrefab;
-    private Vector3 spawnPoint;
-    public PhotonView photonView;
     public Transform jasonSpawn;
     public Transform counselorSpawn;
+    public Transform customLocalSpawn;
 
     // Start is called before the first frame update
     void Start()
@@ -18,14 +17,23 @@ public class SpawnPlayers : MonoBehaviour
         SpawnPlayersAtStart();
     }
 
+    /// <summary>
+    /// Spawn players at start of game
+    /// </summary>
     public void SpawnPlayersAtStart()
     {
+        //on network
         if(PhotonNetwork.IsConnected)
         {
+            //if master of room
             if (PhotonNetwork.IsMasterClient)
             {
+                //print out player list
+                Debug.Log("player count =" + PhotonNetwork.PlayerList.Length);
+
                 int index = 0;
 
+                //walk thru players
                 foreach (Player pl in PhotonNetwork.PlayerList)
                 {
                     //if 1st player
@@ -44,10 +52,13 @@ public class SpawnPlayers : MonoBehaviour
                 }
             }
         }
+        //local game
         else
         {
-            //create a local scimitar:
-            Instantiate(playerPrefab, counselorSpawn.position, playerPrefab.transform.rotation);
+            //create a local player as counselor:
+            Instantiate(playerPrefab, 
+                customLocalSpawn.position, 
+                playerPrefab.transform.rotation);
 
         }
     }
@@ -60,21 +71,22 @@ public class SpawnPlayers : MonoBehaviour
     [PunRPC]
     public void SpawnPlayer(int index, bool jason = false)
     {
-        //create a obj for every new player joining, when they load in:
-        GameObject spawnedPlayer = PhotonNetwork.Instantiate(playerPrefab.name, 
-            new Vector3(0, 0, 0), 
-            playerPrefab.transform.rotation);
+        //create an obj for every new player joining, when they load in
 
         //if jason
         if (jason)
         {
-            spawnedPlayer.transform.position = jasonSpawn.position;
+            GameObject spawnedPlayer = PhotonNetwork.Instantiate(playerPrefab.name,
+                jasonSpawn.position,
+                playerPrefab.transform.rotation);
             spawnedPlayer.tag = "Enemy";
         }
         //if not jason
         else
         {
-            spawnedPlayer.transform.position = counselorSpawn.position + Vector3.right * index;
+            PhotonNetwork.Instantiate(playerPrefab.name,
+                counselorSpawn.position + Vector3.right * index,
+                playerPrefab.transform.rotation);
         }
     }
 }

@@ -45,7 +45,7 @@ public class PlayerManager : MonoBehaviourPunCallbacks
     public int startVotes { private set; get; } = 0; //needa incr/decr over RPC
     public GameManager gameManager;
 
-    private bool startedGame = false;
+    //private bool startedGame = false;
 
     #endregion
 
@@ -198,7 +198,7 @@ public class PlayerManager : MonoBehaviourPunCallbacks
         gameManager.ChangeLevels();
 
         //label game as started
-        startedGame = true;
+        //startedGame = true;
 
         Debug.LogError("Player " + PhotonNetwork.NickName + " started at " + player.transform.position.ToString());
         Debug.LogError("Player is Jason? " + jason);
