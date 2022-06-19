@@ -8,7 +8,7 @@ assignees: SethCram
 ---
 
 **Describe the bug**
-A clear and concise description of what the bug is.
+- A clear and concise description of what the bug is.
 
 **To Reproduce**
 Steps to reproduce the behavior:
@@ -18,18 +18,14 @@ Steps to reproduce the behavior:
 4. See error
 
 **Expected behavior**
-A clear and concise description of what you expected to happen.
+- A clear and concise description of what you expected to happen.
 
 **Desktop (please complete the following information):**
- - OS: [e.g. iOS]
- - Version [e.g. 22]
-
-**Console (please complete the following information):**
- - Device: [e.g. iPhone6]
- - Game Version [e.g. 22]
+ - OS: Windows
+ - Game Version: 0.6.0
 
 **Additional context**
-Add any other context about the problem here.
+- Add any other context about the problem here.
 
 **Development**
 - [ ] item 1
