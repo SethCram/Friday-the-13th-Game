@@ -22,8 +22,18 @@ public class OptionsMenu : MonoBehaviour
     private string volName = "volumeFloat";
     private string qualityName = "qualityIndex";
 
+    public Toggle fullscreenToggle;
+
     private void Awake()
     {
+        //set options menu deactive 
+        gameObject.SetActive(false);
+
+        //set toggle to current state of game
+        fullscreenToggle.isOn = Screen.fullScreen;
+
+        Debug.Log("Options menu awake called");
+
         //if not first time setting volume:
         if (PlayerPrefs.GetFloat(volName, -1) != -1)
         {
