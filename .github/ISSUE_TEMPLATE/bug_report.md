@@ -8,28 +8,22 @@ assignees: SethCram
 ---
 
 **Describe the bug**
-- A clear and concise description of what the bug is.
+- 
 
 **To Reproduce**
 Steps to reproduce the behavior:
-1. Go to '...'
-2. Click on '....'
-3. Scroll down to '....'
-4. See error
+1.  
 
 **Expected behavior**
-- A clear and concise description of what you expected to happen.
+- 
 
 **Desktop (please complete the following information):**
  - OS: Windows
  - Game Version: 0.6.0
 
 **Additional context**
-- Add any other context about the problem here.
+- 
 
 **Development**
 - [ ] item 1
-- details...
-
-- [ ] item 2
 - details...
