@@ -14,6 +14,8 @@ public class SpawnPlayers : MonoBehaviourPunCallbacks
     // Start is called before the first frame update
     void Start()
     {
+        NetworkCloseRoom();
+
         SpawnPlayersAtStart();
     }
 
@@ -87,6 +89,22 @@ public class SpawnPlayers : MonoBehaviourPunCallbacks
             PhotonNetwork.Instantiate(playerPrefab.name,
                 counselorSpawn.position + Vector3.right * index,
                 playerPrefab.transform.rotation);
+        }
+    }
+
+    /// <summary>
+    /// close off room to network
+    /// </summary>
+    public void NetworkCloseRoom()
+    {
+        //if connected + master client
+        if(PhotonNetwork.IsConnected && PhotonNetwork.IsMasterClient)
+        {
+            //close room
+            PhotonNetwork.CurrentRoom.IsOpen = false;
+
+            //disable visibility in lobby
+            PhotonNetwork.CurrentRoom.IsVisible = false;
         }
     }
 }
