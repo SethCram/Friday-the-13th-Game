@@ -893,6 +893,7 @@ MonoBehaviour:
   playerMovement: {fileID: 7413788013251121931}
   paused: 0
   overlayUI: {fileID: 0}
+  loadingUI: {fileID: 0}
   minimapUI: {fileID: 0}
   gameManager: {fileID: 0}
 --- !u!114 &7413788013251121925
@@ -918,6 +919,8 @@ MonoBehaviour:
   playerIcon: {fileID: 21300000, guid: fa24baa939b84ad47bcbddd283623c62, type: 3}
   playerManager: {fileID: 7413788013251121924}
   statApplication: {fileID: 7413788013251121929}
+  topmostUIPrefab: {fileID: 5772637367856045314, guid: ebed5b14def10544c8e5482f2ed0f42f,
+    type: 3}
 --- !u!114 &832983379651791480
 MonoBehaviour:
   m_ObjectHideFlags: 0

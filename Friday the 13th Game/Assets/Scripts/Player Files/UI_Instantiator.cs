@@ -32,6 +32,8 @@ public class UI_Instantiator : MonoBehaviour
     public PlayerManager playerManager;
     public StatApplication statApplication;
 
+    public GameObject topmostUIPrefab;
+
     // awake called before start, and sometimes we need comps in start:
     void Awake()
     {
@@ -100,5 +102,11 @@ public class UI_Instantiator : MonoBehaviour
 
         //fill stat application overlay UI
         statApplication.overlayUI = overlayUICopy;
+
+        //create topmost UI for player
+        GameObject loadingUICopy = Instantiate(topmostUIPrefab);
+
+        //fill player mngers loading UI
+        playerManager.loadingUI = loadingUICopy.GetComponent<Loading>();
     }
 }

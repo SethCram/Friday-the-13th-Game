@@ -21,19 +21,14 @@ public class OverlayUI : MonoBehaviour
 
     //for starting game
     public Toggle voteToggle;
-    //[HideInInspector]
-    //public int startVotes = 0; //needa incr/decr over RPC
+        //[HideInInspector]
+        //public int startVotes = 0; //needa incr/decr over RPC
     [HideInInspector]
     public PlayerManager playerManager;
     private bool startedGame = false;
     [HideInInspector]
     public GameManager gameManager;
     private Scene currScene;
-
-    //for loading
-    public GameObject loadingScreen;
-    public Slider slider;
-    public TMP_Text progressTxt;
 
     #endregion
 
@@ -82,8 +77,7 @@ public class OverlayUI : MonoBehaviour
             //invert toggle
             voteToggle.isOn = !voteToggle.isOn;
 
-            print("Toggle");
-
+            //if online
             if (PhotonNetwork.IsConnected)
             {
                 //if now voting to start
@@ -103,6 +97,7 @@ public class OverlayUI : MonoBehaviour
                         gameManager.startVotes - 1);
                 }
             }
+            //if local
             else
             {
                 //if now voting to start
@@ -120,6 +115,7 @@ public class OverlayUI : MonoBehaviour
             }
         }
 
+        //if online
         if (PhotonNetwork.IsConnected)
         {
             //if all players voted to start
@@ -144,21 +140,25 @@ public class OverlayUI : MonoBehaviour
                 startedGame = true;
             }
         }
+        //if local
         else
         {
             //if voted to start
             if (gameManager.startVotes >= 1)
             {
                 //Start game locally
-                Debug.LogError("Should start game.");
+                //Debug.LogError("Should start game.");
 
-
+                //if in game lobby
                 if (SceneManager.GetActiveScene().name == "Game Lobby")
                 {
+                    //load next scene
                     playerManager.AdvanceScene();
                 }
+                //if not in game lobby
                 else
                 {
+                    //start the game in this scene
                     StartGame();
                 }
 
@@ -193,59 +193,6 @@ public class OverlayUI : MonoBehaviour
     #endregion
 
     #region Start Game
-
-    public IEnumerator LoadLevelAsynch()
-    {
-        //deactivate all screens
-        foreach (Transform child in transform)
-        {
-            child.gameObject.SetActive(false);
-        }
-
-        //activate loading screen
-        loadingScreen.SetActive(true);
-
-        //dont let player do anything but keep cursor locked
-        playerManager.CutMotionControls();
-        playerManager.DisableCamControl();
-
-        //have multiplayer server asynchly load next scene in build settings (should be Game scene):
-        PhotonNetwork.LoadLevel(SceneManager.GetActiveScene().buildIndex + 1);
-
-        //check if level loaded yet
-        while (PhotonNetwork.LevelLoadingProgress < 1)
-        {
-            //log progress (breaks it)
-            //Debug.Log(PhotonNetwork.LevelLoadingProgress);
-
-            //set to 100% even if only 90% thru clamping
-            //float progress = Mathf.Clamp01(PhotonNetwork.LevelLoadingProgress / 0.9f);
-            //slider.value = progress;
-
-            slider.value = PhotonNetwork.LevelLoadingProgress;
-
-
-            //if loading is still zero
-            if (PhotonNetwork.LevelLoadingProgress == 0)
-            {
-                slider.fillRect.gameObject.SetActive(false);
-            }
-            //loading is non zero
-            else
-            {
-                slider.fillRect.gameObject.SetActive(true);
-            }
-
-
-            //set progress percentage
-            int progressPercentage = (int)(PhotonNetwork.LevelLoadingProgress * 100f);
-            progressTxt.text = progressPercentage.ToString() + "%";
-
-            //wait a frame
-            yield return null;
-            //yield return new WaitForEndOfFrame();
-        }
-    }
 
     /// <summary>
     /// start game thru disabling vote toggle UI + moving players

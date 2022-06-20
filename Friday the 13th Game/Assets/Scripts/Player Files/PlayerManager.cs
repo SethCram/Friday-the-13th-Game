@@ -37,6 +37,9 @@ public class PlayerManager : MonoBehaviourPunCallbacks
 
     [HideInInspector]
     public OverlayUI overlayUI;
+    
+    [HideInInspector]
+    public Loading loadingUI;
 
     [HideInInspector]
     public GameObject minimapUI;
@@ -211,17 +214,13 @@ public class PlayerManager : MonoBehaviourPunCallbacks
     //Load the nxt scene:
     public void AdvanceScene()
     {
+        //cut player motion + disable cam movement
+        CutMotionControls();
+        DisableCamControl();
 
-        StartCoroutine(overlayUI.LoadLevelAsynch());
-
-        if ( PhotonNetwork.IsConnected)
-        {
-            //PhotonNetwork.LoadLevel(SceneManager.GetActiveScene().buildIndex + 1);
-        }
-        else
-        {
-            //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1); //reloads current scene using its 'buildIndex'
-        }
+        //asynchly load nxt scene
+        //StartCoroutine(overlayUI.LoadLevelAsynch());
+        StartCoroutine(loadingUI.LoadLevelAsynch());
 
     }
 
