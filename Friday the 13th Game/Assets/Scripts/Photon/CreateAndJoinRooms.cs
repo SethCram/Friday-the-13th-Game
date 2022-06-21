@@ -19,13 +19,6 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
 
     public int maxPlayers = 4;
 
-    private void Start()
-    {
-        //set screen visibility 
-        //roomSelectionScreen.SetActive(true);
-        //loadingScreen.SetActive(false);
-    }
-
     #region Create Room
 
     //create room w/ corresponding input as room name w/ create button pressed:
@@ -134,5 +127,23 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
             Debug.Log("Client message: " + message);
         }
 
+    }
+
+    /// <summary>
+    /// kick player back to main menu if disconnected from photon
+    /// </summary>
+    /// <param name="cause"></param>
+    public override void OnDisconnected(DisconnectCause cause)
+    {
+        base.OnDisconnected(cause);
+
+        //create disconnect msg
+        string disconnectMsg = "Disconnected for reason: " + cause.ToString();
+
+        //print out why disconnected:
+        AssignErrorText(errorText: errorJoin, message: disconnectMsg);
+
+        //load menu menu
+        SceneManager.LoadScene(0);
     }
 }

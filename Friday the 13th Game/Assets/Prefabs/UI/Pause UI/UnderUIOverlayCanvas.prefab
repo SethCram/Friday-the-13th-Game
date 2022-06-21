@@ -751,7 +751,7 @@ GameObject:
   - component: {fileID: 7742872773239592217}
   - component: {fileID: 2127951683244031332}
   m_Layer: 5
-  m_Name: UIOverlayCanvas
+  m_Name: UnderUIOverlayCanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -859,9 +859,6 @@ MonoBehaviour:
   voteToggle: {fileID: 6672450948723679737}
   playerManager: {fileID: 0}
   gameManager: {fileID: 0}
-  loadingScreen: {fileID: 7461775919031105857}
-  slider: {fileID: 3038652600750554867}
-  progressTxt: {fileID: 3038652601004251669}
 --- !u!1 &5854357238480036480
 GameObject:
   m_ObjectHideFlags: 0
@@ -1682,39 +1679,9 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 31c04bdaa2c705f4eb30385878a36c38, type: 3}
---- !u!1 &7461775919031105857 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5595436503204357338, guid: 31c04bdaa2c705f4eb30385878a36c38,
-    type: 3}
-  m_PrefabInstance: {fileID: 3038652599547354523}
-  m_PrefabAsset: {fileID: 0}
 --- !u!224 &7461775919031105858 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 5595436503204357337, guid: 31c04bdaa2c705f4eb30385878a36c38,
     type: 3}
   m_PrefabInstance: {fileID: 3038652599547354523}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &3038652600750554867 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1213981544, guid: 31c04bdaa2c705f4eb30385878a36c38,
-    type: 3}
-  m_PrefabInstance: {fileID: 3038652599547354523}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &3038652601004251669 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2038073230, guid: 31c04bdaa2c705f4eb30385878a36c38,
-    type: 3}
-  m_PrefabInstance: {fileID: 3038652599547354523}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
