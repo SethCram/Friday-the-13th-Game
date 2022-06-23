@@ -1,7 +1,7 @@
 ---
 name: Bug report
 about: Create a report to help us improve
-title: "[BUG] bug title"
+title: "[BUG] "
 labels: bug
 assignees: SethCram
 
@@ -25,5 +25,5 @@ Steps to reproduce the behavior:
 - 
 
 **Development**
-- [ ] item 1
-- details...
+- [ ] 
+-
