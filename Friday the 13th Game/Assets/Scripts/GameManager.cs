@@ -4,16 +4,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(PhotonView))]
-public class GameManager : MonoBehaviour
+public class GameManager : MonoBehaviourPun 
 {
     [HideInInspector]
     public int startVotes { private set; get; } = 0; //needa incr/decr over RPC
-
-    public PhotonView photonView;
-
-    public GameObject gameLevel;
-    public GameObject lobbyLevel;
 
     /// <summary>
     /// RPC to change start vote count.
@@ -24,14 +18,4 @@ public class GameManager : MonoBehaviour
     {
         startVotes = newVoteCount;
     }    
-
-    /// <summary>
-    /// deactivate lobby + activate game approp levels
-    /// </summary>
-    public void ChangeLevels()
-    {
-        gameLevel.SetActive(true);
-
-        lobbyLevel.SetActive(false);
-    }
 }

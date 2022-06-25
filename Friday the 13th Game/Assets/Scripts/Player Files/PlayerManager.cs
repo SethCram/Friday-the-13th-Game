@@ -13,12 +13,6 @@ public class PlayerManager : MonoBehaviourPunCallbacks
 
     public GameObject player;
     
-    public Transform jasonStart;
-    public Transform counselorStart;
-    public GameObject gameLevel;
-    public GameObject lobbyLevel;
-    
-
     public GameObject thirdPersonCamController; //need to activate/deactivate camera controls
 
     public Inventory inventory;
@@ -46,9 +40,6 @@ public class PlayerManager : MonoBehaviourPunCallbacks
 
     [HideInInspector]
     public int startVotes { private set; get; } = 0; //needa incr/decr over RPC
-    public GameManager gameManager;
-
-    //private bool startedGame = false;
 
     #endregion
 
@@ -58,153 +49,8 @@ public class PlayerManager : MonoBehaviourPunCallbacks
 
     private void Start()
     {
-        //playerMovement = GetComponent<ThirdPersonMovement>();
-
-        gameManager = FindObjectOfType<GameManager>();
-        
-        //only find fields if this photon view mine or connected to network
-        if(photonView.IsMine || !PhotonNetwork.IsConnected)
-        {
-            //fill level fields
-            gameLevel = GameObject.FindGameObjectWithTag("GameLevel");
-            lobbyLevel = GameObject.FindGameObjectWithTag("LobbyLevel");
-            if (gameLevel != null && lobbyLevel != null)
-            {
-                gameLevel.SetActive(false);
-                lobbyLevel.SetActive(true);
-            }
-
-            //fill spawn fields:
-            //jasonStart = GameObject.FindGameObjectWithTag("JasonStart").transform;
-            //counselorStart = GameObject.FindGameObjectWithTag("CounselorStart").transform;
-        }
-
         //just incase disabled for some reason
         EnableCamControl();
-
-        //make sure cursor usable
-        //UnlockCursor();
-    }
-
-    private void Update()
-    {
-        /*
-        //vote key pressed and havent started game
-        if (Input.GetKeyDown(KeyCode.V) && startedGame == false)
-        {
-            //teleport players to start
-            TeleportPlayers();
-        }
-        */
-    }
-
-    #endregion
-
-    #region Start Game Methods
-
-    /// <summary>
-    /// Teleport players to the needed locations if master client
-    /// </summary>
-    public void TeleportPlayers()
-    {
-        //pick rando # tween 1 and number of players in room
-        //int enemyIndex = Random.Range(min: 0, max: PhotonNetwork.PlayerList.Length);
-
-        //store players
-        Player[] playerList = PhotonNetwork.PlayerList;
-
-        int index = 0;
-
-        //Debug.LogError("Enemy index = " + enemyIndex);
-
-        //if master client 
-        //if (PhotonNetwork.IsMasterClient )
-        //{
-            Debug.Log("Teleport players");
-
-            foreach (Player pl in PhotonNetwork.PlayerList)
-            {
-                //if 1st player
-                if(index == 0)
-                {
-                    //start player as Jason
-                    photonView.RPC("StartPlayer", playerList[index], index, true);
-                }
-                //not 1st player
-                else
-                {
-                    //start player as counselor
-                    photonView.RPC("StartPlayer", playerList[index], index, false);
-                }
-                index++;
-            }
-
-            /*
-            //walk thru player list
-            for (int i = 0; i < playerList.Length; i++)
-            {
-                if( i == enemyIndex)
-                {
-                    //start given player as jason
-                    photonView.RPC("StartPlayer", playerList[i], i, true);
-                }
-                else
-                {
-                    //start given player as counselor
-                    photonView.RPC("StartPlayer", playerList[i], i, false);
-                }
-            }
-            */
-        //}
-        //if not connected to network
-        //else
-        if (!PhotonNetwork.IsConnected)
-        {
-            //start local player as counselor
-            StartPlayer(0);
-        }
-    }
-
-    /*
-    /// <summary>
-    /// deactivate lobby + activate game approp levels
-    /// </summary>
-    public void ChangeLevels()
-    {
-        gameLevel.SetActive(true);
-
-        lobbyLevel.SetActive(false);
-    }
-    */
-
-    /// <summary>
-    /// Spawn player and change tag according to whether jason or not.
-    /// </summary>
-    /// <param name="index"></param>
-    /// <param name="jason"></param>
-    [PunRPC]
-    private void StartPlayer(int index, bool jason = false)
-    { 
-        //if jason
-        if(jason)
-        {
-            player.transform.position = new Vector3(515, 5, 121);
-            player.tag = "Enemy";
-        }
-        //if not jason
-        else
-        {
-            player.transform.position = new Vector3(547 + index * 2, 5, -343);
-        }
-
-        //show game level
-        gameManager.ChangeLevels();
-
-        //label game as started
-        //startedGame = true;
-
-        Debug.LogError("Player " + PhotonNetwork.NickName + " started at " + player.transform.position.ToString());
-        Debug.LogError("Player is Jason? " + jason);
     }
 
     #endregion
@@ -429,57 +275,6 @@ public class PlayerManager : MonoBehaviourPunCallbacks
             Debug.LogError("Destroyed leaving player gameobj.");
         }
         */
-    }
-
-    #endregion
-
-    #region Start Players
-
-    public void StartJasonWrapper(Player photonPlayer)
-    {
-        photonView.RPC("RPC_StartJason", photonPlayer, jasonStart.position);
-    }
-
-    /// <summary>
-    /// Start jason out at spawn point
-    /// </summary>
-    [PunRPC]
-    private void RPC_StartJason(Vector3 startPos)
-    {
-        Debug.Log("Starting as Jason");
-
-        //change tag
-        player.tag = "Enemy";
-
-        //teleport Jason to start
-        player.transform.position = startPos; //jasonStart.position;
-    }
-
-    public void StartCounselorWrapper(Player photonPlayer)
-    {
-        photonView.RPC("RPC_StartCounselor", photonPlayer, counselorStart.position);
-    }
-
-    /// <summary>
-    /// start counselors out at spawnpoint 
-    /// </summary>
-    [PunRPC]
-    private void RPC_StartCounselor(Vector3 startPos)
-    {
-        Debug.Log("Starting as counselor");
-
-        //teleport counselor to start
-        player.transform.position = startPos; //counselorStart.position;
-    }
-
-    /// <summary>
-    /// RPC to change start vote count.
-    /// </summary>
-    /// <param name="newVoteCount"></param>
-    [PunRPC]
-    public void RPC_ChangeVoteCount( int newVoteCount )
-    {
-        startVotes = newVoteCount;
     }
 
     #endregion

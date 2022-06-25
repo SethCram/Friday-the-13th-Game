@@ -21,8 +21,6 @@ public class OverlayUI : MonoBehaviour
 
     //for starting game
     public Toggle voteToggle;
-        //[HideInInspector]
-        //public int startVotes = 0; //needa incr/decr over RPC
     [HideInInspector]
     public PlayerManager playerManager;
     private bool startedGame = false;
@@ -45,14 +43,18 @@ public class OverlayUI : MonoBehaviour
         //start w/ health slider off
         healthSlider.gameObject.SetActive(false);
 
-        //can do bc singleton
-        gameManager = FindObjectOfType<GameManager>();
+        //if not game lobby scene
+        if (currScene.name != "Game Lobby")
+        {
+            //can do bc singleton
+            gameManager = FindObjectOfType<GameManager>();
+        }
 
         //cache curr scene
         currScene = SceneManager.GetActiveScene();
 
-        //if game scene
-        if(currScene.name == "Game")
+        //if not game lobby scene
+        if(currScene.name != "Game Lobby")
         {
             //inactivate vote overlay
             voteToggle.gameObject.SetActive(false);
@@ -62,8 +64,8 @@ public class OverlayUI : MonoBehaviour
     
     private void Update()
     {
-        //if started game already
-        if (startedGame || currScene.name == "Game")
+        //if started game already or not in game lobby
+        if (startedGame || currScene.name != "Game Lobby")
         {
             //Debug.Log("Game already started");
 
@@ -124,18 +126,8 @@ public class OverlayUI : MonoBehaviour
                 //Start game for everyone
                 //Debug.LogError("Should start game.");
 
-                //if in game lobby
-                if( SceneManager.GetActiveScene().name == "Game Lobby")
-                {
-                    //advance scene
-                    playerManager.AdvanceScene();
-                }
-                //not in game lobby
-                else
-                {
-                    //start game
-                    StartGame();
-                }
+                //advance scene
+                playerManager.AdvanceScene();
                 
                 startedGame = true;
             }
@@ -148,19 +140,9 @@ public class OverlayUI : MonoBehaviour
             {
                 //Start game locally
                 //Debug.LogError("Should start game.");
-
-                //if in game lobby
-                if (SceneManager.GetActiveScene().name == "Game Lobby")
-                {
-                    //load next scene
-                    playerManager.AdvanceScene();
-                }
-                //if not in game lobby
-                else
-                {
-                    //start the game in this scene
-                    StartGame();
-                }
+                    
+                //load next scene
+                playerManager.AdvanceScene();
 
                 startedGame = true;
             }
@@ -192,80 +174,4 @@ public class OverlayUI : MonoBehaviour
 
     #endregion
 
-    #region Start Game
-
-    /// <summary>
-    /// start game thru disabling vote toggle UI + moving players
-    /// </summary>
-    public void StartGame()
-    {
-        //disable voting UI
-        voteToggle.gameObject.SetActive(false);
-
-        startedGame = true;
-
-        //change levels:
-        //gameManager.ChangeLevels();
-
-        //move players to game level
-        //MovePlayers();
-        playerManager.TeleportPlayers();
-    }
-    /*
-    /// <summary>
-    /// master client move players to start of actual game
-    /// </summary>
-    private void MovePlayers()
-    {
-        //if not connected to network 
-        if(!PhotonNetwork.IsConnected)
-        {
-            //move local player
-            playerManager.player.transform.position = playerManager.counselorStart.position;
-
-            //dont move other players
-            return;
-        }
-        //if not master client
-        else if (!PhotonNetwork.IsMasterClient)
-        {
-            //dont move players
-            return;
-        }
-
-        //pick rando # tween 1 and number of players in room
-        int enemyIndex = Random.Range(min:0, max:PhotonNetwork.PlayerList.Length);
-
-        //find all players
-        //GameObject[] playerList = GameObject.FindGameObjectsWithTag("Player");
-        Player[] playerList = PhotonNetwork.PlayerList;
-
-        //[enemyIndex].tag = "Enemy";
-
-        //walk thru player list
-        for (int i = 0; i < playerList.Length; i++)
-        {
-
-            //if index is enemy index
-            if( i == enemyIndex )
-            {
-                //change player's tag to enemy tag
-                //playerList[enemyIndex].tag = "Enemy";
-
-                //teleport enemy to enemy start loc
-                //playerManager.photonView.RPC("RPC_StartJason", playerList[i]);
-                playerManager.StartJasonWrapper(playerList[enemyIndex]);
-                
-            }
-            //if not enemy
-            else
-            {
-                //teleport players to player start
-                //playerManager.photonView.RPC("RPC_StartCounselor", playerList[i]);
-                playerManager.StartCounselorWrapper(playerList[i]);
-            }
-        }
-    }
-    */
-    #endregion
 }
