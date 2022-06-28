@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// regular mesh -> skinned mesh
+/// </summary>
 public class ConvertToSkinnedMesh : MonoBehaviour
 {
     //activate this method from the menu: ('context menu' found under 3 dots in top right of script comp)

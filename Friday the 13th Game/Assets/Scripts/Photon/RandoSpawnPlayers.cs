@@ -42,7 +42,6 @@ public class RandoSpawnPlayers : MonoBehaviour
             //print("local obj inst'd");
         }
     }
-    
 
     private void OnDrawGizmos()
     {

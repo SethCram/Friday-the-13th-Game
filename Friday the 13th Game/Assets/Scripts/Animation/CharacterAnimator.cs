@@ -173,6 +173,8 @@ public class CharacterAnimator : MonoBehaviour
     }
     */
 
+    #region Atk Methods
+
     //activated by the 'onAtkCallback' in 'CharacterCombat' script:
     protected virtual void AnimateAttack(int atkIndex)
     {
@@ -253,6 +255,8 @@ public class CharacterAnimator : MonoBehaviour
         Invoke("DisableRootMotion", atkAnimLength);
 
     }
+
+    #endregion Atk Methods
 
     //disable root motion:
     private void DisableRootMotion()

@@ -1,6 +1,9 @@
 ﻿using Photon.Pun;
 using UnityEngine;
 
+/// <summary>
+/// subclass of Interactable and superclass of any entryway
+/// </summary>
 public class Entryway : Interactable
 {
     //pickups in container

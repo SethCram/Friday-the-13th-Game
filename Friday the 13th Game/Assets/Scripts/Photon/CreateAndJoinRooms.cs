@@ -9,6 +9,8 @@ using Photon.Realtime; //for room options
 
 public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
 {
+    #region Vars
+
     public TMP_InputField createInput;
     public TMP_Text errorCreate;
     public TMP_InputField joinInput;
@@ -18,6 +20,8 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
     public Loading loading;
 
     public int maxPlayers = 4;
+
+    #endregion Vars
 
     #region Create Room
 

@@ -4,8 +4,13 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
+/// <summary>
+/// Superclass for any type of UI slot
+/// </summary>
 public class Slot : MonoBehaviour
 {
+    #region Vars
+
     public Image icon; //to update our icon w/ add or remove item 
     public Button removeButton; //to show/hide remove button on each slot
 
@@ -13,17 +18,15 @@ public class Slot : MonoBehaviour
 
     public Inventory inventoryAttachedTo { private set; get; } //inventory this slot is attached to 
 
+    #endregion Vars
+
     public virtual void Start() //can make a system def'd class overwritable
     {
         //init inventory this slot attached to:
         inventoryAttachedTo = GetComponentInParent<PausedUICallbacks>().playerInventory;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    #region Addition Methods
 
     //update icon's enabled + whether it's currently interactive:
     public void AddSomethingToSlot()
@@ -34,6 +37,27 @@ public class Slot : MonoBehaviour
         //show remove button:
         removeButton.interactable = true;
     }
+
+    // show/hide stack amt based on param:
+    public void ShowStackAmt(bool showAmt)
+    {
+        if (showAmt)
+        {
+            Debug.Log("show amt");
+
+            //show:
+            itemCountTxt.color = Color.white;
+        }
+        else
+        {
+            //hide:
+            itemCountTxt.color = Color.clear;
+        }
+    }
+
+    #endregion Addition Methods
+
+    #region Removal Methods
 
     public virtual void OnRemoveButton()
     {
@@ -57,20 +81,5 @@ public class Slot : MonoBehaviour
         removeButton.interactable = false;
     }
 
-    // show/hide stack amt based on param:
-    public void ShowStackAmt(bool showAmt)
-    {
-        if(showAmt)
-        {
-            Debug.Log("show amt");
-
-            //show:
-            itemCountTxt.color = Color.white;
-        }
-        else
-        {
-            //hide:
-            itemCountTxt.color = Color.clear;
-        }
-    }
+    #endregion Removal Methods
 }

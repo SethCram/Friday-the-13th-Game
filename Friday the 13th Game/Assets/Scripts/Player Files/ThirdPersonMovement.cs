@@ -169,18 +169,34 @@ public class ThirdPersonMovement : MonoBehaviour
     }
     */
 
+    //jump and change slope limit, step offset:
+    private void Jump()
+    {
+        //increase slope limit to avoid jitter w/ mid-air
+        controller.slopeLimit = midAirSlopeLimit;
+
+        //lower step offset so dont land on surfaces higher than feet:
+        controller.stepOffset = midAirStepOffset;
+
+        //decrease size of collider to land properly:
+        //controller.height = crouchedHeight;
+        //controller.center = crouchedCenter;
+
+        //set vertical velocity based on jump height want to jump:
+        verticalVelocity = Mathf.Sqrt(jumpHeight * -2f * gravity); // v = sqrt(h * -2 * g) is the velocity req'd to jump certain height
+
+        //check for head collision done in 'update()'
+
+        //make player jump:
+        jump = true;
+
+        //set time w/ char jumped:
+        //jumpTime = Time.time;
+    }
+
     #endregion Aerial Methods
 
-    /*
-    private string ResetControllerHeight()
-    {
-        Debug.Log("Resetting controller height");
-
-        controller.height = ogHeight;
-
-        return "ResetControllerHeight";
-    }
-    */
+    #region Motion Controls
 
     //includes walking, rotating, running, jumping, and crouching:
     private void applyMotion()
@@ -289,7 +305,70 @@ public class ThirdPersonMovement : MonoBehaviour
         }
     }
 
-    #region ActionMethods
+    //apply movement and rotation to char controller based on input:
+    private void WalkAndRotate()
+    {
+        //get input:
+        float horizontalInput = Input.GetAxisRaw("Horizontal"); //uses 'Raw' axis so no smoothing is applied (for suddent stopping)
+        float verticalInput = Input.GetAxisRaw("Vertical");
+
+        Vector3 direction = new Vector3(horizontalInput, 0f, verticalInput).normalized; //'.normalized' added on so max val is 1, even w/ both vertical and horizontal input are maxed out
+
+        //if want to move in any direction, tell player controller to move in that direction:
+        if (direction.magnitude >= 0.1f)
+        {
+            //calc rads player needs to rot based on direction want to move:
+            float targetAngle = Mathf.Atan2(direction.x, direction.z);
+
+            //convert radians to degrees:
+            targetAngle = targetAngle * Mathf.Rad2Deg;
+
+            //make the target angle dependent on the cam's rotation:
+            float camPointingTargetAngle = targetAngle + playerCam.eulerAngles.y;
+
+            //smooth our target angle using 'turnSmoothTime' to turn slower:
+            float smoothedAngle = Mathf.SmoothDampAngle(transform.eulerAngles.y, camPointingTargetAngle, ref turnSmoothVelocity, turnSmoothTime);
+
+            //set player's rot equal to smoothed angle:
+            transform.rotation = Quaternion.Euler(0f, smoothedAngle, 0f); //use 'Eulers' instead of 'Rotation/Rotate' to match vals in inspector
+
+            //calc new move direction based off the target angle calced based off the camera's rotation:
+            Vector3 moveDirection = Quaternion.Euler(0f, camPointingTargetAngle, 0f) * Vector3.forward; //turn a rotation into a direction by multing by 'Vector3.forward'
+
+            //normalized so never greater than 1:
+            moveDirection = moveDirection.normalized;
+
+            //tell player controller to move in this direction:
+            controller.Move(moveDirection * charSpeed * Time.deltaTime); //mult by 'Time.deltaTime' to make it framerate independant (bc we in update() and not fixedupdate())
+        }
+    }
+
+    //enable motion controls if no menus open
+    private void ResumeMotionCntrls()
+    {
+        //print(playerButtons.paused);
+
+        //if player not paused:
+        if (!playerManager.paused)
+        {
+            //resume motion control:
+            cutMotionControls = false;
+        }
+    }
+
+    /*
+    //continue curr motion for 'time':
+    public void CountinueMotion(float time)
+    {
+        print("Char controller velocity to continue: " + controller.velocity);
+
+        controller.Move(controller.velocity * Time.deltaTime);
+    }
+    */
+
+    #endregion Motion Controls
+
+    #region crouching
 
     //crouch by decreasing player speed and making the character controller collider smaller:
     private void Crouch()
@@ -344,68 +423,7 @@ public class ThirdPersonMovement : MonoBehaviour
         }
     }
 
-    //apply movement and rotation to char controller based on input:
-    private void WalkAndRotate()
-    {
-        //get input:
-        float horizontalInput = Input.GetAxisRaw("Horizontal"); //uses 'Raw' axis so no smoothing is applied (for suddent stopping)
-        float verticalInput = Input.GetAxisRaw("Vertical");
-
-        Vector3 direction = new Vector3(horizontalInput, 0f, verticalInput).normalized; //'.normalized' added on so max val is 1, even w/ both vertical and horizontal input are maxed out
-
-        //if want to move in any direction, tell player controller to move in that direction:
-        if (direction.magnitude >= 0.1f)
-        {
-            //calc rads player needs to rot based on direction want to move:
-            float targetAngle = Mathf.Atan2(direction.x, direction.z);
-
-            //convert radians to degrees:
-            targetAngle = targetAngle * Mathf.Rad2Deg;
-
-            //make the target angle dependent on the cam's rotation:
-            float camPointingTargetAngle = targetAngle + playerCam.eulerAngles.y;
-
-            //smooth our target angle using 'turnSmoothTime' to turn slower:
-            float smoothedAngle = Mathf.SmoothDampAngle(transform.eulerAngles.y, camPointingTargetAngle, ref turnSmoothVelocity, turnSmoothTime);
-
-            //set player's rot equal to smoothed angle:
-            transform.rotation = Quaternion.Euler(0f, smoothedAngle, 0f); //use 'Eulers' instead of 'Rotation/Rotate' to match vals in inspector
-
-            //calc new move direction based off the target angle calced based off the camera's rotation:
-            Vector3 moveDirection = Quaternion.Euler(0f, camPointingTargetAngle, 0f) * Vector3.forward; //turn a rotation into a direction by multing by 'Vector3.forward'
-
-            //normalized so never greater than 1:
-            moveDirection = moveDirection.normalized;
-
-            //tell player controller to move in this direction:
-            controller.Move(moveDirection * charSpeed * Time.deltaTime); //mult by 'Time.deltaTime' to make it framerate independant (bc we in update() and not fixedupdate())
-        }
-    }
-
-    //jump and change slope limit, step offset:
-    private void Jump()
-    {
-        //increase slope limit to avoid jitter w/ mid-air
-        controller.slopeLimit = midAirSlopeLimit;
-
-        //lower step offset so dont land on surfaces higher than feet:
-        controller.stepOffset = midAirStepOffset;
-
-        //decrease size of collider to land properly:
-        //controller.height = crouchedHeight;
-        //controller.center = crouchedCenter;
-
-        //set vertical velocity based on jump height want to jump:
-        verticalVelocity = Mathf.Sqrt(jumpHeight * -2f * gravity); // v = sqrt(h * -2 * g) is the velocity req'd to jump certain height
-
-        //check for head collision done in 'update()'
-
-        //make player jump:
-        jump = true;
-
-        //set time w/ char jumped:
-        //jumpTime = Time.time;
-    }
+    #endregion crouching
 
     //dodge character in direction facing:
     private void Dodge()
@@ -420,17 +438,8 @@ public class ThirdPersonMovement : MonoBehaviour
         controller.height = crouchedHeight;
         controller.center = crouchedCenter;
     }
-    #endregion
 
-    /*
-    //continue curr motion for 'time':
-    public void CountinueMotion(float time)
-    {
-        print("Char controller velocity to continue: " + controller.velocity);
-
-        controller.Move(controller.velocity * Time.deltaTime);
-    }
-    */
+    #region Finished Methods
 
     //invoked by 'CharAnimator' w/ a delay to let atk clip play out:
     public void AttackFinished()
@@ -478,18 +487,18 @@ public class ThirdPersonMovement : MonoBehaviour
         //set 'isBeingHurt' to false so cant open UI?
     }
 
-    //enable motion controls if no menus open
-    private void ResumeMotionCntrls()
+    /*
+    private string ResetControllerHeight()
     {
-        //print(playerButtons.paused);
+        Debug.Log("Resetting controller height");
 
-        //if player not paused:
-        if (!playerManager.paused)
-        {
-            //resume motion control:
-            cutMotionControls = false;
-        }
+        controller.height = ogHeight;
+
+        return "ResetControllerHeight";
     }
+    */
+
+    #endregion Finished Methods
 
     //draw black wire sphere around 'groundCheck' obj when player obj is selected:
     private void OnDrawGizmosSelected()

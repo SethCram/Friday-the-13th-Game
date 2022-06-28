@@ -3,6 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// animate entryway through disspearing/reappearing
+/// </summary>
 [RequireComponent(typeof(BoxCollider))]
 public class AnimateDissapear : Entryway
 {

@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// skinned mesh -> regular mesh
+/// </summary>
 public class ConvertToRegularMesh : MonoBehaviour
 {
 

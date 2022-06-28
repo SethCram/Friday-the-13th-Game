@@ -6,6 +6,8 @@ using Photon.Pun;
 
 public class Cam_Instantiator : MonoBehaviour
 {
+    #region Vars
+
     //*******init in inspector*****:
     public GameObject mainCam;
     public GameObject camController;
@@ -23,6 +25,8 @@ public class Cam_Instantiator : MonoBehaviour
     public GameObject minimapCamPrefab;
     private GameObject minimapIconCamCopy;
     private GameObject minimapCamCopy;
+
+    #endregion Vars
 
     // Start is called before the first frame update
     void Start()
@@ -48,6 +52,8 @@ public class Cam_Instantiator : MonoBehaviour
         movement.playerCam = camCopy.transform;
         playManager.thirdPersonCamController = camControlCopy;
     }
+
+    #region Minimap Spawn Methods
 
     public void SpawnRealMinimap()
     {
@@ -83,4 +89,5 @@ public class Cam_Instantiator : MonoBehaviour
         minimapIconCamCopy.GetComponent<MiniMap>().player = transform;
     }
 
+    #endregion Minimap Spawn Methods
 }
