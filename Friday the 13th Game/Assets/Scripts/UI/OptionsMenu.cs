@@ -7,6 +7,8 @@ using TMPro; //need for 'TMP_Dropdown' since I used a text mesh pro dropdown
 
 public class OptionsMenu : MonoBehaviour
 {
+    #region vars
+
     public AudioMixer audioMixer; //to set volume
 
     public TMP_Dropdown resolutionDropdown; //to add resolution dropdown options
@@ -23,6 +25,10 @@ public class OptionsMenu : MonoBehaviour
     private string qualityName = "qualityIndex";
 
     public Toggle fullscreenToggle;
+
+    #endregion
+
+    #region Unity Methods
 
     private void Awake()
     {
@@ -101,6 +107,10 @@ public class OptionsMenu : MonoBehaviour
         resolutionDropdown.RefreshShownValue();
     }
 
+    #endregion
+
+    #region Option Setting Methods
+
     //set resolution using drop down menu:
     public void SetResolution(int resolutionIndex)
     {
@@ -141,4 +151,6 @@ public class OptionsMenu : MonoBehaviour
     {
         Screen.fullScreen = wantFullscreen;
     }
+
+    #endregion
 }

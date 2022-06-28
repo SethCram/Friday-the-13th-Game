@@ -6,10 +6,14 @@ using UnityEngine;
 
 public class SpawnPlayers : MonoBehaviourPunCallbacks
 {
+    #region vars
+
     public GameObject playerPrefab;
     public Transform jasonSpawn;
     public Transform counselorSpawn;
     public Transform customLocalSpawn;
+
+    #endregion
 
     // Start is called before the first frame update
     void Start()
@@ -18,6 +22,8 @@ public class SpawnPlayers : MonoBehaviourPunCallbacks
 
         SpawnPlayersAtStart();
     }
+
+    #region Spawning Methods
 
     /// <summary>
     /// Spawn players at start of game
@@ -91,6 +97,8 @@ public class SpawnPlayers : MonoBehaviourPunCallbacks
                 playerPrefab.transform.rotation);
         }
     }
+
+    #endregion
 
     /// <summary>
     /// close off room to network

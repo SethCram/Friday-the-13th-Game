@@ -74,6 +74,8 @@ public class ThirdPersonMovement : MonoBehaviour
 
     #endregion
 
+    #region Unity Methods
+
     // Start is called before the first frame update
     void Start()
     {
@@ -141,6 +143,10 @@ public class ThirdPersonMovement : MonoBehaviour
         }
     }
 
+    #endregion
+
+    #region Aerial Methods
+
     //reset y velocity, slope limit, and step offset:
     private void GroundedReset()
     {
@@ -154,12 +160,18 @@ public class ThirdPersonMovement : MonoBehaviour
         verticalVelocity = groundedDownwardVelocity; //not zero just incase player not totally on the grnd yet, this will force him to the grnd
     }
 
+
+
     /*
     public void LandedHeight()
     {
         Invoke(ResetControllerHeight(), 3);
     }
+    */
 
+    #endregion Aerial Methods
+
+    /*
     private string ResetControllerHeight()
     {
         Debug.Log("Resetting controller height");

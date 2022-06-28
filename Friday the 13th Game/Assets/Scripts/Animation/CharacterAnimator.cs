@@ -5,6 +5,8 @@ using Photon.Pun;
 
 public class CharacterAnimator : MonoBehaviour
 {
+    #region vars
+
     const float locomotionAnimationSmoothTime = 0.1f; //const bc it never changes
 
     protected Animator animator; //'protected' so accessable to inherited classes
@@ -36,6 +38,10 @@ public class CharacterAnimator : MonoBehaviour
 
     //private bool groundedPreviously = false;
     //private bool landing = false;
+
+    #endregion
+
+    #region Unity Methods
 
     // Start is called before the first frame update
     protected virtual void Awake()
@@ -70,7 +76,7 @@ public class CharacterAnimator : MonoBehaviour
         if( Input.GetKeyDown(KeyCode.T))
         {
             //animate dying
-            //Die();
+            Die();
         }
 
         //if this obj isnt mine and we connected to the photon network:
@@ -154,6 +160,10 @@ public class CharacterAnimator : MonoBehaviour
         //tell w/ player animator in the air:
         animator.SetBool("midair", !(movement.isGrounded));
     }
+
+    #endregion
+
+    #region Action Methods
 
     /*
     private void SetAnimatorMidair()
@@ -317,4 +327,6 @@ public class CharacterAnimator : MonoBehaviour
         playerManager.Invoke("ResetToMainMenu", deathClipLen + 0.3f);
 
     }
+
+    #endregion
 }

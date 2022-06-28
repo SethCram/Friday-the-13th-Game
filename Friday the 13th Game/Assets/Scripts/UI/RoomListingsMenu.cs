@@ -5,6 +5,8 @@ using Photon.Realtime;
 
 public class RoomListingsMenu : MonoBehaviourPunCallbacks
 {
+    #region vars
+
     //to create new room listings:
     public Transform roomListingsParent;
     public RoomListing roomListingPrefab;
@@ -17,11 +19,16 @@ public class RoomListingsMenu : MonoBehaviourPunCallbacks
     private int playerCurrCnt;
     private bool enteredRoomUpdateBefore = false;
 
+    #endregion
+
+    #region Photon Methods
+
+    /// <summary>
+    /// placeholder funct for future use
+    /// </summary>
     public override void OnJoinedLobby()
     {
-        //instantiate all currently open rooms
-        //PhotonNetwork.room
-
+        //placeholder
     }
 
     // w/ ever a visible room created/destroyed, this called:
@@ -147,4 +154,6 @@ public class RoomListingsMenu : MonoBehaviourPunCallbacks
         //init previous players list as starting each entry w/ 1:
         previousPlayers.Add(1);
     }
+
+    #endregion
 }

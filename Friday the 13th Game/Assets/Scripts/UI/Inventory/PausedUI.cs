@@ -3,6 +3,8 @@ using TMPro;
 
 public class PausedUI : MonoBehaviour
 {
+    #region Variables 
+
     //init before instantiation:
     public GameObject inventoryPanel; //gameobj of displayed inventory panel
     public GameObject optionsPanel; //gameobj of displayed options panel
@@ -27,6 +29,10 @@ public class PausedUI : MonoBehaviour
 
     private int numOfChildren = 0;
     private int deactiveChildren = 0;
+
+    #endregion
+
+    #region Unity Methods
 
     // Start is called before the first frame update
     void Start()
@@ -99,16 +105,9 @@ public class PausedUI : MonoBehaviour
         }
     }
 
-    /*
-    //pauses player controls to access menu:
-    public void PauseUIInvoked()
-    {
-        if (playerManager.uiOpenedOrClosedCallback != null ) //if has any methods subscribed to it
-        {
-            playerManager.uiOpenedOrClosedCallback.Invoke(); //executes all methods subscribed to this callback by invoking it
-        }
-    }
-    */
+    #endregion
+
+    #region Multi Option Methods
 
     //called by Inventory Slot script w/ bag slot selected:
     public void MakeMultiOptions(InventorySlot slot)
@@ -135,6 +134,10 @@ public class PausedUI : MonoBehaviour
             Destroy(optionsCopy, 0.2f); //delay destroy to allow buttons to be pressed
         }
     }
+
+    #endregion
+
+    #region Inventory Action Methods
 
     private void CloseInventory()
     {
@@ -163,6 +166,10 @@ public class PausedUI : MonoBehaviour
         escape_UI_Accessible = false;
     }
 
+    #endregion
+
+    #region Escape Menu Action Methods
+
     private void OpenEscapeMenu()
     {
         //set escape panel active:
@@ -183,4 +190,17 @@ public class PausedUI : MonoBehaviour
 
         inventory_UI_Accessible = true;
     }
+
+    #endregion
+
+    /*
+    //pauses player controls to access menu:
+    public void PauseUIInvoked()
+    {
+        if (playerManager.uiOpenedOrClosedCallback != null ) //if has any methods subscribed to it
+        {
+            playerManager.uiOpenedOrClosedCallback.Invoke(); //executes all methods subscribed to this callback by invoking it
+        }
+    }
+    */
 }

@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PausedUICallbacks : MonoBehaviour
 {
+    #region Variables 
+
     public Transform slotsParent; //stores parent transform of all inventory slots
 
     //for bag slots:
@@ -26,6 +28,8 @@ public class PausedUICallbacks : MonoBehaviour
     private InventoryStatDisplay[] inventoryStatDisplays;
     private Stat[] everyStat;      //need to make it a new array? (just for lists?)
     public GameObject StatDisplaysParent; //*****init in inspector***
+
+    #endregion
 
     private void Start()
     {
@@ -88,6 +92,8 @@ public class PausedUICallbacks : MonoBehaviour
         //sub method to update inventory stat UI's:    (cant sub in this script bc then wont call this method until after stats set)
         statApply.onStatChangedCallback += UpdateInventoryStatDisplay;
     }
+
+    #region Update Action Methods
 
     //update the bag UI everytime an item added/removed from the inventory:
     private void UpdateBagUI()
@@ -260,4 +266,6 @@ public class PausedUICallbacks : MonoBehaviour
             }
         }
     }
+
+    #endregion
 }
