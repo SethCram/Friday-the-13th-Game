@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a02eb3caa150f1449b9e0d36b445a52c, type: 3}
   m_Name: GameSettings
   m_EditorClassIdentifier: 
-  gameVersion: 0.0.0
+  gameVersion: 0.6.0
