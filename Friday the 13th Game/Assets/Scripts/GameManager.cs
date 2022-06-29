@@ -4,6 +4,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// game manager for keeping track of game data
+/// NOT A SINGLETON
+/// </summary>
 public class GameManager : MonoBehaviourPun 
 {
     [HideInInspector]

@@ -880,12 +880,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 7413788013251121923}
-  jasonStart: {fileID: 3098914487081475690, guid: 69c72267139d0af48b91ea314cee84a2,
-    type: 3}
-  counselorStart: {fileID: 3712861114661268728, guid: 970eded4ffcde7b42b5a5947d63e7183,
-    type: 3}
-  gameLevel: {fileID: 0}
-  lobbyLevel: {fileID: 0}
   thirdPersonCamController: {fileID: 748000913362258575, guid: 6d04efeff66552e499953611b04eeec4,
     type: 3}
   inventory: {fileID: 7413788013251121933}
@@ -895,7 +889,6 @@ MonoBehaviour:
   overlayUI: {fileID: 0}
   loadingUI: {fileID: 0}
   minimapUI: {fileID: 0}
-  gameManager: {fileID: 0}
 --- !u!114 &7413788013251121925
 MonoBehaviour:
   m_ObjectHideFlags: 0
