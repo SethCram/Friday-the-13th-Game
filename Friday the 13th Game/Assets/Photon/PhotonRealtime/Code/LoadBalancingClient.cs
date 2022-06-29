@@ -211,7 +211,9 @@ namespace Photon.Realtime
         /// <summary>Realtime apps are for gaming / interaction. Also used by PUN 2.</summary>
         Realtime,
         /// <summary>Voice apps stream audio.</summary>
-        Voice
+        Voice,
+        /// <summary>Fusion clients are for matchmaking and relay in Photon Fusion.</summary>
+        Fusion
     }
 
     /// <summary>
@@ -327,7 +329,7 @@ namespace Photon.Realtime
         /// This is nullable by design. In many cases, the protocol on the NameServer is not different from the other servers.
         /// If set, the operation AuthOnce will contain this value and the OpAuth response on the NameServer will execute a protocol switch.
         /// </remarks>
-        public ConnectionProtocol? ExpectedProtocol { get; private set; }
+        public ConnectionProtocol? ExpectedProtocol { get; set; }
 
 
         ///<summary>Simplifies getting the token for connect/init requests, if this feature is enabled.</summary>
@@ -352,7 +354,7 @@ namespace Photon.Realtime
         public bool IsUsingNameServer { get; set; }
 
         /// <summary>Name Server Host Name for Photon Cloud. Without port and without any prefix.</summary>
-        public string NameServerHost = "ns.exitgames.com";
+        public string NameServerHost = "ns.photonengine.io";
 
         /// <summary>Name Server Address for Photon Cloud (based on current protocol). You can use the default values and usually won't have to set this value.</summary>
         public string NameServerAddress { get { return this.GetNameServerAddress(); } }
@@ -863,7 +865,19 @@ namespace Photon.Realtime
                 return false;
             }
 
-            this.AppId = this.ClientType == ClientAppType.Realtime ? appSettings.AppIdRealtime : appSettings.AppIdVoice;
+            switch (this.ClientType)
+            {
+                case ClientAppType.Realtime:
+                    this.AppId = appSettings.AppIdRealtime;
+                    break;
+                case ClientAppType.Voice:
+                    this.AppId = appSettings.AppIdVoice;
+                    break;
+                case ClientAppType.Fusion:
+                    this.AppId = appSettings.AppIdFusion;
+                    break;
+            }
+
             this.AppVersion = appSettings.AppVersion;
 
             this.IsUsingNameServer = appSettings.UseNameServer;
@@ -874,8 +888,17 @@ namespace Photon.Realtime
             this.LoadBalancingPeer.DebugOut = appSettings.NetworkLogging;
 
             this.AuthMode = appSettings.AuthMode;
-            this.LoadBalancingPeer.TransportProtocol = (this.AuthMode == AuthModeOption.AuthOnceWss) ? ConnectionProtocol.WebSocketSecure : appSettings.Protocol;
-            this.ExpectedProtocol = appSettings.Protocol;
+            if (appSettings.AuthMode == AuthModeOption.AuthOnceWss)
+            {
+                this.LoadBalancingPeer.TransportProtocol = ConnectionProtocol.WebSocketSecure;
+                this.ExpectedProtocol = appSettings.Protocol;
+            }
+            else
+            {
+                this.LoadBalancingPeer.TransportProtocol = appSettings.Protocol;
+                this.ExpectedProtocol = null;
+            }
+            
             this.EnableProtocolFallback = appSettings.EnableProtocolFallback;
 
             this.bestRegionSummaryFromStorage = appSettings.BestRegionSummaryFromStorage;
@@ -883,7 +906,6 @@ namespace Photon.Realtime
 
 
             this.CheckConnectSetupWebGl();
-            this.CheckConnectSetupXboxOne(); // may throw an exception if there are issues that can not be corrected
 
 
             if (this.IsUsingNameServer)
@@ -962,7 +984,6 @@ namespace Photon.Realtime
             }
 
             this.CheckConnectSetupWebGl();
-            this.CheckConnectSetupXboxOne(); // may throw an exception if there are issues that can not be corrected
 
             if (this.LoadBalancingPeer.Connect(this.MasterServerAddress, this.ProxyServerAddress, this.AppId, this.TokenForInit))
             {
@@ -995,7 +1016,6 @@ namespace Photon.Realtime
 
 
             this.CheckConnectSetupWebGl();
-            this.CheckConnectSetupXboxOne(); // may throw an exception if there are issues that can not be corrected
 
 
             if (this.AuthMode == AuthModeOption.AuthOnceWss)
@@ -1074,7 +1094,6 @@ namespace Photon.Realtime
 
 
             this.CheckConnectSetupWebGl();
-            this.CheckConnectSetupXboxOne(); // may throw an exception if there are issues that can not be corrected
 
 
             if (this.AuthMode == AuthModeOption.AuthOnceWss)
@@ -1109,36 +1128,6 @@ namespace Photon.Realtime
             }
 
             this.EnableProtocolFallback = false; // no fallback on WebGL
-            #endif
-        }
-
-        [Conditional("UNITY_XBOXONE"), Conditional("UNITY_GAMECORE")]
-        private void CheckConnectSetupXboxOne()
-        {
-            #if (UNITY_XBOXONE || UNITY_GAMECORE) && !UNITY_EDITOR
-            this.AuthMode = AuthModeOption.Auth;
-            if (this.AuthValues == null)
-            {
-                this.DebugReturn(DebugLevel.ERROR, "XBOX builds must set AuthValues. Set this before calling any Connect method. Refer to the online docs for guidance.");
-                throw new Exception("XBOX builds must set AuthValues.");
-            }
-            if (this.AuthValues.AuthPostData == null)
-            {
-                this.DebugReturn(DebugLevel.ERROR,"XBOX builds must use Photon's XBox Authentication and set the XSTS token by calling: PhotonNetwork.AuthValues.SetAuthPostData(xstsToken). Refer to the online docs for guidance.");
-                throw new Exception("XBOX builds must use Photon's XBox Authentication.");
-            }
-            if (this.AuthValues.AuthType != CustomAuthenticationType.Xbox)
-            {
-                this.DebugReturn(DebugLevel.WARNING, "XBOX builds must use AuthValues.AuthType \"CustomAuthenticationType.Xbox\". PUN sets this value now. Refer to the online docs to avoid this warning.");
-                this.AuthValues.AuthType = CustomAuthenticationType.Xbox;
-            }
-            if (this.LoadBalancingPeer.TransportProtocol != ConnectionProtocol.WebSocketSecure)
-            {
-                this.DebugReturn(DebugLevel.INFO, "XBOX builds must use WSS (Secure WebSockets) as Transport Protocol. Changing the protocol now.");
-                this.LoadBalancingPeer.TransportProtocol = ConnectionProtocol.WebSocketSecure;
-            }
-
-            this.EnableProtocolFallback = false; // no transport protocol fallback on XBOX
             #endif
         }
 
@@ -1272,9 +1261,9 @@ namespace Photon.Realtime
         /// <summary>Disconnects the peer from a server or stays disconnected. If the client / peer was connected, a callback will be triggered.</summary>
         /// <remarks>
         /// Disconnect will attempt to notify the server of the client closing the connection.
-        /// 
+        ///
         /// Clients that are in a room, will leave the room. If the room's playerTTL &gt; 0, the player will just become inactive (and may rejoin).
-        /// 
+        ///
         /// This method will not change the current State, if this client State is PeerCreated, Disconnecting or Disconnected.
         /// In those cases, there is also no callback for the disconnect. The DisconnectedCause will only change if the client was connected.
         /// </remarks>
@@ -1775,6 +1764,11 @@ namespace Photon.Realtime
         /// <returns>If the operation could be sent currently (requires connection to Master Server).</returns>
         public bool OpJoinOrCreateRoom(EnterRoomParams enterRoomParams)
         {
+            if (!this.CheckIfOpCanBeSent(OperationCode.JoinGame, this.Server, "JoinOrCreateRoom"))
+            {
+                return false;
+            }
+
             bool onGameServer = this.Server == ServerConnection.GameServer;
             enterRoomParams.JoinMode = JoinMode.CreateIfNotExists;
             enterRoomParams.OnGameServer = onGameServer;
@@ -1839,6 +1833,7 @@ namespace Photon.Realtime
             {
                 return false;
             }
+
             bool onGameServer = this.Server == ServerConnection.GameServer;
             enterRoomParams.OnGameServer = onGameServer;
             if (!onGameServer)
@@ -1875,6 +1870,11 @@ namespace Photon.Realtime
         /// </remarks>
         public bool OpRejoinRoom(string roomName)
         {
+            if (!this.CheckIfOpCanBeSent(OperationCode.JoinGame, this.Server, "RejoinRoom"))
+            {
+                return false;
+            }
+
             bool onGameServer = this.Server == ServerConnection.GameServer;
 
             EnterRoomParams opParams = new EnterRoomParams();
@@ -1938,6 +1938,7 @@ namespace Photon.Realtime
             {
                 return false;
             }
+
             if (string.IsNullOrEmpty(sqlLobbyFilter))
             {
                 this.DebugReturn(DebugLevel.ERROR, "Operation GetGameList requires a filter.");
@@ -2008,6 +2009,7 @@ namespace Photon.Realtime
                 this.DebugReturn(DebugLevel.ERROR, "OpSetCustomPropertiesOfActor() failed. propertiesToSet must not be null nor empty.");
                 return false;
             }
+
             if (this.CurrentRoom == null)
             {
                 // if you attempt to set this player's values without conditions, then fine:
@@ -2042,6 +2044,7 @@ namespace Photon.Realtime
             {
                 return false;
             }
+
             if (actorProperties == null || actorProperties.Count == 0)
             {
                 this.DebugReturn(DebugLevel.ERROR, "OpSetPropertiesOfActor() failed. actorProperties must not be null nor empty.");
@@ -2139,6 +2142,7 @@ namespace Photon.Realtime
             {
                 return false;
             }
+
             if (gameProperties == null || gameProperties.Count == 0)
             {
                 this.DebugReturn(DebugLevel.ERROR, "OpSetPropertiesOfRoom() failed. gameProperties must not be null nor empty.");
@@ -2164,14 +2168,11 @@ namespace Photon.Realtime
         /// <returns>If operation could be enqueued for sending. Sent when calling: Service or SendOutgoingCommands.</returns>
         public virtual bool OpRaiseEvent(byte eventCode, object customEventContent, RaiseEventOptions raiseEventOptions, SendOptions sendOptions)
         {
-            if (this.LoadBalancingPeer == null)
-            {
-                return false;
-            }
             if (!this.CheckIfOpCanBeSent(OperationCode.RaiseEvent, this.Server, "RaiseEvent"))
             {
                 return false;
             }
+
             return this.LoadBalancingPeer.OpRaiseEvent(eventCode, customEventContent, raiseEventOptions, sendOptions);
         }
 
@@ -2193,14 +2194,11 @@ namespace Photon.Realtime
         /// <returns>If operation could be enqueued for sending. Sent when calling: Service or SendOutgoingCommands.</returns>
         public virtual bool OpChangeGroups(byte[] groupsToRemove, byte[] groupsToAdd)
         {
-            if (this.LoadBalancingPeer == null)
-            {
-                return false;
-            }
             if (!this.CheckIfOpCanBeSent(OperationCode.ChangeGroups, this.Server, "ChangeGroups"))
             {
                 return false;
             }
+
             return this.LoadBalancingPeer.OpChangeGroups(groupsToRemove, groupsToAdd);
         }
 
@@ -2250,6 +2248,11 @@ namespace Photon.Realtime
                     foreach (object key in actorProperties.Keys)
                     {
                         actorNr = (int)key;
+                        if (actorNr == 0)
+                        {
+                            continue;
+                        }
+
                         props = (Hashtable)actorProperties[key];
                         newName = (string)props[ActorProperties.PlayerName];
 
@@ -2370,6 +2373,11 @@ namespace Photon.Realtime
             {
                 foreach (int actorNumber in actorsInGame)
                 {
+                    if (actorNumber == 0)
+                    {
+                        continue;
+                    }
+
                     Player target = this.CurrentRoom.GetPlayer(actorNumber);
                     if (target == null)
                     {
@@ -3188,8 +3196,11 @@ namespace Photon.Realtime
 
                     if (originatingPlayer == null)
                     {
-                        originatingPlayer = this.CreatePlayer(string.Empty, actorNr, false, actorProperties);
-                        this.CurrentRoom.StorePlayer(originatingPlayer);
+                        if (actorNr > 0)
+                        {
+                            originatingPlayer = this.CreatePlayer(string.Empty, actorNr, false, actorProperties);
+                            this.CurrentRoom.StorePlayer(originatingPlayer);
+                        }
                     }
                     else
                     {
