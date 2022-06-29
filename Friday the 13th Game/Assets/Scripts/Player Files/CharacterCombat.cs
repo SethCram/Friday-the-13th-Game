@@ -13,6 +13,7 @@ public class CharacterCombat : MonoBehaviourPun
     //private float lastAttackTime; //world time when last attack happened
 
     //needed to make sure cant open UI when atking:
+    [HideInInspector]
     public bool isAtking = false;
 
     //quick, easy way to create a 'delegate' w/ a return type of void and an arg: (called 'Event method')

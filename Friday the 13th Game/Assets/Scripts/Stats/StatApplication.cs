@@ -40,6 +40,7 @@ public class StatApplication : MonoBehaviour
 
     //for hp bar usage
     public int minHealthBar = 5;
+    [HideInInspector]
     public OverlayUI overlayUI;
 
     #endregion

@@ -34,7 +34,7 @@ public class CharacterStats : MonoBehaviourPun
     public PlayerManager playerManager;
 
     private int prevHP;
-
+    [HideInInspector]
     public OverlayUI overlayUI;
 
     #endregion
