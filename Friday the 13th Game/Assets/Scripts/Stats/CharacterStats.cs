@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
+using UnityEngine.SceneManagement;
 
 public class CharacterStats : MonoBehaviourPun
 {
@@ -73,6 +74,9 @@ public class CharacterStats : MonoBehaviourPun
         {
             //test taking dmg
             //TakeDamage(5);
+
+            //animate dying
+            Die();
         }
     }
 
@@ -232,14 +236,16 @@ public class CharacterStats : MonoBehaviourPun
         //start death by animating death:
         if (GetComponent<CharacterAnimator>() != null)
         {
-            //anim dying
-            GetComponent<CharacterAnimator>().Die();
+            //anim dying over a time
+            StartCoroutine( GetComponent<CharacterAnimator>().Die() );
 
             //disable player control (also unlocks cursor so bad)
             // playerManager.DisablePlayerControl();
 
-            //drop all player loot:
+            //drop all player loot now that dead:
             playerManager.DropEverything();
+
+            Debug.Log("All items dropped in " + SceneManager.GetActiveScene().name);
 
         }
         else
@@ -251,6 +257,9 @@ public class CharacterStats : MonoBehaviourPun
 
         //delay scene reset by _ secs so player death anim can play out (done in char animator now)
         //playerManager.Invoke("ResetToMainMenu", 5); //within player manager
+
+        playerManager.SetDead( true );
+
     }
 
     #endregion

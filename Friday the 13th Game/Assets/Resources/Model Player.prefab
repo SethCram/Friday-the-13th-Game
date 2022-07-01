@@ -849,6 +849,7 @@ MonoBehaviour:
     type: 3}
   playerManager: {fileID: 7413788013251121924}
   photonView: {fileID: -2933026003536563205}
+  loseText: You Lose
   equipmentManager: {fileID: 7413788013251121930}
   weaponAnims:
   - weaponName: Scimitar
@@ -887,8 +888,9 @@ MonoBehaviour:
   playerMovement: {fileID: 7413788013251121931}
   paused: 0
   overlayUI: {fileID: 0}
-  loadingUI: {fileID: 0}
+  topOverlayUIObject: {fileID: 0}
   minimapUI: {fileID: 0}
+  deadSpawn: {x: 0, y: 500, z: 0}
 --- !u!114 &7413788013251121925
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   AppSettings:
     AppIdRealtime: a66f4a7c-b93f-4b5f-a5e1-18dec5e0c5dd
+    AppIdFusion: 
     AppIdChat: 
     AppIdVoice: 
     AppVersion: 
@@ -64,6 +65,7 @@ MonoBehaviour:
   - InstantiationPlayer
   - StartPlayer
   - SpawnPlayer
+  - RPC_ChangeCounselorsDead
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1

@@ -108,9 +108,10 @@ public class UI_Instantiator : MonoBehaviour
         statApplication.overlayUI = overlayUICopy;
 
         //create topmost UI for player
-        GameObject loadingUICopy = Instantiate(topmostUIPrefab);
+        GameObject topmostUICopy = Instantiate(topmostUIPrefab);
 
-        //fill player mngers loading UI
-        playerManager.loadingUI = loadingUICopy.GetComponent<Loading>();
+        //fill player mngers loading+topmost UI
+        //playerManager.loadingUI = topmostUICopy.GetComponent<Loading>();
+        playerManager.topOverlayUIObject = topmostUICopy;
     }
 }
