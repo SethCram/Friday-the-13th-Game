@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class StatApplication : MonoBehaviour
 {
+    #region Vars
+
     //event setup:
     public delegate void OnStatChanged(Stat changedStat);
     public OnStatChanged onStatChangedCallback;
@@ -38,7 +40,10 @@ public class StatApplication : MonoBehaviour
 
     //for hp bar usage
     public int minHealthBar = 5;
+    [HideInInspector]
     public OverlayUI overlayUI;
+
+    #endregion
 
     // Start is called before the first frame update
     void Start()

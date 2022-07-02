@@ -9,6 +9,8 @@ public class EscapePanel : MonoBehaviour
     //***init in inspector*****:
     public PausedUI pauseUI;
 
+    #region Button Methods
+
     //called by resume button:
     public void ResumeButton()
     {
@@ -24,6 +26,8 @@ public class EscapePanel : MonoBehaviour
         //disconnect client and load main menu:
         StartCoroutine(DisconnectAndLoad());
     }
+
+    #endregion
 
     //disconnect client and load main menu:
     public IEnumerator DisconnectAndLoad()

@@ -8,6 +8,7 @@ using System.Globalization;
 
 public class EquipmentManager : MonoBehaviourPun
 {
+    #region Vars
 
     //event setup:
     public delegate void OnEquipmentChanged(Equipment newItem, Equipment oldItem); //any methods subscribed to the below def'd 'callback' take these args and need to have this name?
@@ -29,6 +30,10 @@ public class EquipmentManager : MonoBehaviourPun
     public GameObject atkArmObject;
 
     private Inventory inventory; //for caching inventory
+
+    #endregion Vars
+
+    #region Unity Methods
 
     private void Start()
     {
@@ -65,6 +70,20 @@ public class EquipmentManager : MonoBehaviourPun
 
         EquipAllDefaultItems();
     }
+
+    private void Update()
+    {
+        //temporary, test for unequipping:
+        if (Input.GetKeyDown(KeyCode.U))
+        {
+            //UnequipAll();
+        }
+    }
+
+    #endregion Unity Methods
+
+    #region Equip Methods
+
     /*
     equip new item if possible by;       
         using its equip slot's index, 
@@ -121,6 +140,33 @@ public class EquipmentManager : MonoBehaviourPun
 
         return true;
     }
+
+    //equip every piece of default equipment:
+    private void EquipAllDefaultItems()
+    {
+        foreach (Equipment equipmentPiece in defaultEquipment)
+        {
+            Equip(equipmentPiece);
+        }
+    }
+
+    //equip the default equip with the passed in equipment slot:
+    public void EquipDefaultItem(EquipmentSlot equipSlot)
+    {
+        foreach (Equipment equipmentPiece in defaultEquipment)
+        {
+            //compare equipment slot w/ the passed in one:
+            //if (equipmentPiece.equipSlot == equipSlot) //cant directly compare enums
+            if (equipmentPiece.equipSlot.CompareTo(equipSlot) == 0)
+            {
+                Equip(equipmentPiece);
+            }
+        }
+    }
+
+    #endregion Equip Methods
+
+    #region Unequip Methods
 
     //unequip equipment at specified slot index, if possible returns the old item, if not or nothing to unequip returns null:
     public Equipment Unequip(int slotIndex, bool swapping = false) //unequip item at 'slotIndex', bool to signify if swapping equip (automatically set to false, so dont need to pass in two args unless swapping items)
@@ -205,7 +251,22 @@ public class EquipmentManager : MonoBehaviourPun
         return oldEquip;
     }
 
+    //unequip all curr equipment:
+    public void UnequipAll()
+    {
+        for (int i = 0; i < currEquipment.Length; i++) //loop thru all equipment slots
+        {
+            Unequip(i);    //false bc not swapping equip
+        }
+
+        EquipAllDefaultItems(); //equipts default items regardless of if all items were able to successfully unequip
+    }
+
+    #endregion Unequip Methods
+
     #region HelperMethods
+
+    #region List Removal 
 
     //if isWeapon set to false, removing from Shield List, else try and remove from weapon list
     private bool RemoveFromCurrWeaponList(Equipment oldEquip)
@@ -244,6 +305,10 @@ public class EquipmentManager : MonoBehaviourPun
         return false;
     }
 
+    #endregion List Removal 
+
+    #region Change Mesh/Body Methods
+
     [PunRPC]
     private void RPC_ChangeMeshActive(string objName, bool itemState)
     {
@@ -273,59 +338,6 @@ public class EquipmentManager : MonoBehaviourPun
                 break; //stop looking after mesh found
             }
             ChangeMeshActive(objName, child, itemState); //uses recursion for each item, so seems pretty unnecessarily intensive 
-        }
-    }    
-
-    //unequip all curr equipment:
-    public void UnequipAll()
-    {
-        for (int i = 0; i < currEquipment.Length; i++) //loop thru all equipment slots
-        {
-            Unequip(i);    //false bc not swapping equip
-        }
-
-        EquipAllDefaultItems(); //equipts default items regardless of if all items were able to successfully unequip
-    }
-
-    //deform body to move smoothly with armor/clothes:
-    private void SetEquipmentBlendShapes(Equipment item, int weight)
-    {
-        foreach (EquipmentMeshRegion blendShape in item.coveredMeshRegions) //loops thru each blendshape region covered by passed in item
-        {
-            playerMesh.SetBlendShapeWeight((int)blendShape, weight); //set that blendshape weight to desired (usually 100 w/ equiping, and 0 w/ unequiping)
-        }
-    }
-
-    //equip every piece of default equipment:
-    private void EquipAllDefaultItems()
-    {
-        foreach (Equipment equipmentPiece in defaultEquipment)
-        {
-            Equip(equipmentPiece);
-        }
-    }
-    #endregion
-
-    //equip the default equip with the passed in equipment slot:
-    public void EquipDefaultItem(EquipmentSlot equipSlot)
-    {
-        foreach (Equipment equipmentPiece in defaultEquipment)
-        {
-            //compare equipment slot w/ the passed in one:
-                   //if (equipmentPiece.equipSlot == equipSlot) //cant directly compare enums
-            if(equipmentPiece.equipSlot.CompareTo(equipSlot) == 0)
-            {
-                Equip(equipmentPiece);
-            }
-        }
-    }
-
-    private void Update()
-    {
-        //temporary, test for unequipping:
-        if(Input.GetKeyDown(KeyCode.U))
-        {
-            UnequipAll();
         }
     }
 
@@ -362,6 +374,21 @@ public class EquipmentManager : MonoBehaviourPun
         }
         */
     }
+
+    //deform body to move smoothly with armor/clothes:
+    private void SetEquipmentBlendShapes(Equipment item, int weight)
+    {
+        foreach (EquipmentMeshRegion blendShape in item.coveredMeshRegions) //loops thru each blendshape region covered by passed in item
+        {
+            playerMesh.SetBlendShapeWeight((int)blendShape, weight); //set that blendshape weight to desired (usually 100 w/ equiping, and 0 w/ unequiping)
+        }
+    }
+
+    #endregion Change Mesh Methods
+
+    #endregion
+
+    #region Drop Methods
 
     //drops item over photon network
     private void DropEquippedItem(GameObject spawnObj, Vector3 spawnPnt)
@@ -420,4 +447,6 @@ public class EquipmentManager : MonoBehaviourPun
 
         return true;
     }
+
+    #endregion Drop Methods
 }

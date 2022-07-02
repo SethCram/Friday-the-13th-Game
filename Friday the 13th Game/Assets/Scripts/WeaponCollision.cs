@@ -5,9 +5,10 @@ using UnityEngine;
 
 //create a mesh collider w/ script added:
 [RequireComponent(typeof(MeshCollider))]    //*******make sure to init it as convex and a trigger*********
-
 public class WeaponCollision : MonoBehaviour
 {
+    #region vars
+
     //fill in inspector:
     public CharacterCombat myPlayerCombat;
     public CharacterStats myCharStats;
@@ -15,6 +16,10 @@ public class WeaponCollision : MonoBehaviour
     //private string prevDamagedObj = null; //so dont damage obj more than once every atk
     
     private int prevHitID = -1000; //view id should never be negative naturally
+
+    #endregion
+
+    #region Unity Methods
 
     // Update is called once per frame
     void Update()
@@ -72,4 +77,6 @@ public class WeaponCollision : MonoBehaviour
     {
         print("hit " + collision.gameObject.name + " with " + gameObject.name);
     }
+
+    #endregion
 }

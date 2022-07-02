@@ -3,8 +3,13 @@ using UnityEngine.UI; //needed for access to image comp on this slot
 using TMPro;
 using Photon.Pun;
 
+/// <summary>
+/// Slot variant meant for inventory slots 
+/// </summary>
 public class InventorySlot : Slot
 {
+    #region Vars
+
     //specify slot carry size:
     public CarrySize carrySize;
 
@@ -14,10 +19,14 @@ public class InventorySlot : Slot
 
     public TMP_Text descriptionText;
 
+    #endregion Vars
+
     public override void Start()
     {
         base.Start();
     }
+
+    #region Addition Methods
 
     public void AddItemToSlot(Item newItem)
     {
@@ -29,45 +38,6 @@ public class InventorySlot : Slot
 
         //update icon's enabled + whether it's currently interactive:
         base.AddSomethingToSlot();
-    }
-
-    //clear slot of item:
-    public override void ClearSlot()
-    {
-        //clear curr item:
-        item = null;
-
-        base.ClearSlot();
-
-        //disable showing stack amt:
-        ShowStackAmt(false);
-    }
-
-    // w/ 'removeButton' clicked, remove item from this player's inventory:
-    public override void OnRemoveButton() 
-    {
-        //remove item:
-        inventoryAttachedTo.RemoveItemFromInventoryList(item);
-    }
-
-    //instantiate dropdown at mouse position w/ item selected:
-    public void ItemSelected()
-    {
-        //create dropdown if item in slot:
-        if (item != null)
-        {
-            pausedUI.MakeMultiOptions(this);
-        }
-    }
-
-    //called by 'MultiOptions' scipt 'Use' button
-    public void UseItem()
-    {
-        //use item within curr player's inventory:
-        if (item != null) //if have an item
-        {
-            item.Use(inventoryAttachedTo);
-        }
     }
 
     //called by multi options 'eaxmine' button:
@@ -90,6 +60,29 @@ public class InventorySlot : Slot
 
         //destroy text obj in 3 seconds
         Destroy(descriptionCopy.gameObject, 3f);
+    }
+
+    #endregion Addition Methods
+
+    #region Removal Methods
+
+    //clear slot of item:
+    public override void ClearSlot()
+    {
+        //clear curr item:
+        item = null;
+
+        base.ClearSlot();
+
+        //disable showing stack amt:
+        ShowStackAmt(false);
+    }
+
+    // w/ 'removeButton' clicked, remove item from this player's inventory:
+    public override void OnRemoveButton() 
+    {
+        //remove item:
+        inventoryAttachedTo.RemoveItemFromInventoryList(item);
     }
 
     //called by 'MultiOptions' script by 'drop' button:
@@ -130,5 +123,27 @@ public class InventorySlot : Slot
         //remove it from inventory (clears slot for us):
         inventoryAttachedTo.RemoveItemFromInventoryList(item);
 
+    }
+
+    #endregion Removal Methods
+
+    //instantiate dropdown at mouse position w/ item selected:
+    public void ItemSelected()
+    {
+        //create dropdown if item in slot:
+        if (item != null)
+        {
+            pausedUI.MakeMultiOptions(this);
+        }
+    }
+
+    //called by 'MultiOptions' scipt 'Use' button
+    public void UseItem()
+    {
+        //use item within curr player's inventory:
+        if (item != null) //if have an item
+        {
+            item.Use(inventoryAttachedTo);
+        }
     }
 }

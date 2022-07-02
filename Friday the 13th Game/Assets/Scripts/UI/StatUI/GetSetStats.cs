@@ -9,6 +9,8 @@ using System;
 
 public class GetSetStats : MonoBehaviour
 {
+    #region Variables 
+
     //set in ui initer:
     public GameObject pausedUICanvas;
     public StatApplication applyStats;
@@ -35,6 +37,10 @@ public class GetSetStats : MonoBehaviour
 
     //arr of not yet implemented stats: (filled in inspector)
     public string[] notImplementedStats;
+
+    #endregion
+
+    #region Unity Methods
 
     //pause game before any 'Start()' called (pausing time scale wont stop start from bein called tho, only update)
     private void Awake()
@@ -121,6 +127,8 @@ public class GetSetStats : MonoBehaviour
             numTotalText.text = "" + newMaxPnts;
         }
     }
+
+    #endregion
 
     //called w/ press done button:
     public void DoneButton()

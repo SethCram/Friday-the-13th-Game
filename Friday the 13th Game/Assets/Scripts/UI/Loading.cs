@@ -64,7 +64,6 @@ public class Loading : MonoBehaviour
 
             //wait a frame
             yield return null;
-            //yield return new WaitForEndOfFrame();
         }
     }
 }

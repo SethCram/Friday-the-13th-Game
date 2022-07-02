@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// Supclass of child script meant for equipment holding slot
+/// </summary>
 public class EquipmentSlotScript : Slot
 {
     //type of equip slot:
@@ -21,7 +24,6 @@ public class EquipmentSlotScript : Slot
         equipManager = inventoryAttachedTo.GetComponent<EquipmentManager>();
     }
     
-
     public void AddEquipToSlot(Equipment newEquip)
     {
         //set equip:
@@ -33,6 +35,8 @@ public class EquipmentSlotScript : Slot
         //update icon's enabled + whether it's currently interactive:
         base.AddSomethingToSlot();
     }
+
+    #region Removal Methods
 
     //clear slot of equipment:
     public override void ClearSlot()
@@ -68,4 +72,6 @@ public class EquipmentSlotScript : Slot
             equipManager.EquipDefaultItem(unequiptEquipment.equipSlot); //cant use 'equip' here bc the unequip method messes it up somehow
         }
     }
+
+    #endregion Removal Methods
 }

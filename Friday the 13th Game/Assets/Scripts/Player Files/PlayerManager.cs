@@ -33,13 +33,19 @@ public class PlayerManager : MonoBehaviourPunCallbacks
     public OverlayUI overlayUI;
     
     [HideInInspector]
-    public Loading loadingUI;
+    public GameObject topOverlayUIObject;
+    private Loading loadingUI;
+    private GameOver gameOver;
 
     [HideInInspector]
     public GameObject minimapUI;
 
-    [HideInInspector]
-    public int startVotes { private set; get; } = 0; //needa incr/decr over RPC
+    private bool dead = false;
+    private bool lostGame = false;
+    private bool teleportPlayer = false;
+    public Vector3 spectatorSpawn = new Vector3(0, 500, 0);
+
+    private CharacterAnimator characterAnimator;
 
     #endregion
 
@@ -51,6 +57,52 @@ public class PlayerManager : MonoBehaviourPunCallbacks
     {
         //just incase disabled for some reason
         EnableCamControl();
+
+        //cache UI overlay scripts
+        loadingUI = topOverlayUIObject.GetComponent<Loading>();
+        gameOver = topOverlayUIObject.GetComponent<GameOver>();
+
+        characterAnimator = GetComponent<CharacterAnimator>();
+    }
+
+    private void Update()
+    {
+        //if dead & any key pressed
+        if( dead && Input.anyKeyDown )
+        {
+            //reactivate game over screen
+            gameOver.gameOverPanel.SetActive(false);
+
+            //no longer dead
+            dead = false;
+
+            //enable player cntrl
+            EnablePlayerControl();
+
+            //try to tele player
+            teleportPlayer = true;
+
+        }
+
+    }
+
+    /// <summary>
+    /// Fixed update used for teleporting player
+    /// ALWAYS USE FOR PHYSICS
+    /// </summary>
+    private void FixedUpdate()
+    {
+        //if lost game, should teleport player and a counselor
+        if( lostGame && teleportPlayer && tag == "Player" )
+        {
+            //teleport to spectator spawn
+            transform.position = spectatorSpawn;
+
+            //dont teleport player again
+            teleportPlayer = false;
+
+            characterAnimator.SetAnimDead(false);
+        }
     }
 
     #endregion
@@ -308,6 +360,95 @@ public class PlayerManager : MonoBehaviourPunCallbacks
 
     //End of GUI Config --------------
     #endregion
+
+    public void Lose()
+    {
+        GameManager gameManager = FindObjectOfType<GameManager>();
+
+        if(gameManager == null)
+        {
+            Debug.LogError("Game manager null, so lose() failed.");
+            return;
+        }
+
+        //store that lost 
+        lostGame = true;
+
+        //if counselor loses
+        if ( tag == "Player")
+        {
+            Debug.Log("Counselor dead");
+
+            //incr # of dead counselors (locally)
+            gameManager.RPC_ChangeCounselorsDead(gameManager.deadCounselors + 1);
+
+            //if on network
+            if(PhotonNetwork.IsConnected)
+            {
+                //if all players besides 1 or actually all dead 
+                if (gameManager.deadCounselors >= PhotonNetwork.CurrentRoom.PlayerCount - 1)
+                {
+                    //boot player back to main menu 
+                }
+                else
+                {
+
+                }
+            }
+            //not on network
+            else
+            {
+                //boot player back to main menu 
+            }
+
+        }
+    }
+
+    public void Win()
+    {
+
+    }
+
+    public void ShowGameOver( string gameOverTxt )
+    {
+        //not my photon view + connected to network
+        if( !photonView.IsMine && PhotonNetwork.IsConnected )
+        {
+            //game over not shown
+            Debug.Log("game over not shown");
+            return;
+        }
+
+        /*
+        //walk thru top overlay UI children
+        foreach (Transform topOverlayUIChild in topOverlayUIObject.GetComponentsInChildren<Transform>())
+        {
+            //deactivate each child
+            topOverlayUIChild.gameObject.SetActive(false);
+        } 
+        */
+
+        //reactivate game over screen
+        gameOver.gameOverPanel.SetActive(true);
+
+        //update title w/ game over txt
+        gameOver.UpdateTitleText(gameOverTxt);
+
+    }
+
+    #region Dead Methods
+
+    public bool GetDead()
+    {
+        return dead;
+    }
+
+    public void SetDead( bool isDead )
+    {
+        dead = isDead;
+    }
+
+    #endregion Dead Methods
 
     [PunRPC]
     public void DeactivateObject(int viewID)

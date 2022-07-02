@@ -7,6 +7,8 @@ using UnityEngine;
 
 public class RoomListing : MonoBehaviourPunCallbacks
 {
+    #region vars
+
     //to setup room txt:
     public TMP_Text nameText;
     public TMP_Text playersText;
@@ -15,6 +17,10 @@ public class RoomListing : MonoBehaviourPunCallbacks
     public RoomInfo _room_Info;
 
     public CreateAndJoinRooms createJoinRooms;
+
+    #endregion
+
+    #region Photon Methods
 
     //called by 'RoomListingsMenu' w/ Room List Updated:
     public void SetRoomInfo(RoomInfo roomInfo)
@@ -60,5 +66,6 @@ public class RoomListing : MonoBehaviourPunCallbacks
 
         // 'OnJoinedRoom()' callback should call if successful, and will load game scene
     }
-    
+
+    #endregion
 }

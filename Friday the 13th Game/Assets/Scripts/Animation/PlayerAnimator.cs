@@ -73,6 +73,8 @@ public class PlayerAnimator : CharacterAnimator //IPunObservable
         }
     }
 
+    #region Atk Animation Methods
+
     //sync attack anim using its equipment's name:
     [PunRPC]
     private void SyncAttackAnim(string equipName)
@@ -88,6 +90,8 @@ public class PlayerAnimator : CharacterAnimator //IPunObservable
         //reset attack animations:
         currAtkAnimSet = defaultAtkAnimSet;
     }
+
+    #endregion Atk Animation Methods
 
     /*
     public void OnPhotonSerializeView(PhotonStream photonStream, PhotonMessageInfo message)

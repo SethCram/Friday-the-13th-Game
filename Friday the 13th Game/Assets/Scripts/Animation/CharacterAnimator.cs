@@ -5,6 +5,8 @@ using Photon.Pun;
 
 public class CharacterAnimator : MonoBehaviour
 {
+    #region vars
+
     const float locomotionAnimationSmoothTime = 0.1f; //const bc it never changes
 
     protected Animator animator; //'protected' so accessable to inherited classes
@@ -36,6 +38,12 @@ public class CharacterAnimator : MonoBehaviour
 
     //private bool groundedPreviously = false;
     //private bool landing = false;
+    
+    public string loseText = "You Lose";
+
+    #endregion
+
+    #region Unity Methods
 
     // Start is called before the first frame update
     protected virtual void Awake()
@@ -66,12 +74,6 @@ public class CharacterAnimator : MonoBehaviour
     // Update is called once per frame
     protected virtual void Update()
     {
-        //test key
-        if( Input.GetKeyDown(KeyCode.T))
-        {
-            //animate dying
-            //Die();
-        }
 
         //if this obj isnt mine and we connected to the photon network:
         if (!(photonView.IsMine) && PhotonNetwork.IsConnected)
@@ -80,8 +82,10 @@ public class CharacterAnimator : MonoBehaviour
             return;
         }
 
-        if( dying )
+        //if dying or dead
+        if( dying || playerManager.GetDead() )
         {
+            //cut motion cntrls
             movement.cutMotionControls = true;
         }
 
@@ -155,6 +159,10 @@ public class CharacterAnimator : MonoBehaviour
         animator.SetBool("midair", !(movement.isGrounded));
     }
 
+    #endregion
+
+    #region Action Methods
+
     /*
     private void SetAnimatorMidair()
     {
@@ -162,6 +170,8 @@ public class CharacterAnimator : MonoBehaviour
         animator.SetBool("midair", !(movement.isGrounded));
     }
     */
+
+    #region Atk Methods
 
     //activated by the 'onAtkCallback' in 'CharacterCombat' script:
     protected virtual void AnimateAttack(int atkIndex)
@@ -244,6 +254,8 @@ public class CharacterAnimator : MonoBehaviour
 
     }
 
+    #endregion Atk Methods
+
     //disable root motion:
     private void DisableRootMotion()
     {
@@ -293,28 +305,46 @@ public class CharacterAnimator : MonoBehaviour
     }
 
     //called by 'CharacterStats' to activate death anim:
-    public void Die()
+    public IEnumerator Die()
     {
         //set dodge clip length:
         float deathClipLen = deathClip.length;
 
         dying = true;
 
-        Debug.LogWarning("Player should animate dying.");
+        Debug.Log("Player should animate dying.");
 
-        //cut motion controls
+        //cut motion controls (keeps cutting till dying false)
         movement.cutMotionControls = true;
 
         //apply root motion + set trigger to anim
         animator.applyRootMotion = true;
-
-        //try using player manager method
-        //playerManager.DisablePlayerControl();
-
         animator.SetTrigger("dead");
 
-        //delay scene reset by _ secs so player death anim can play out
-        playerManager.Invoke("ResetToMainMenu", deathClipLen + 0.3f);
+        //wait till death clip is played
+        yield return new WaitForSeconds(deathClipLen + 0.3f);
 
+        //no longer dying
+        dying = false;
+
+        //playerManager.ResetToMainMenu();
+
+        //set player as dead
+        playerManager.SetDead(true);
+
+        //make player lose bc died
+        playerManager.ShowGameOver(loseText);
+        playerManager.Lose();
     }
+
+    /// <summary>
+    /// set the animator whether currently dead
+    /// </summary>
+    /// <param name="isDead"></param>
+    public void SetAnimDead( bool isDead)
+    {
+        animator.SetBool("dead", isDead);
+    }
+
+    #endregion
 }

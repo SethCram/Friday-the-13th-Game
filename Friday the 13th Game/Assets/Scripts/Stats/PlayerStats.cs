@@ -5,7 +5,6 @@ using UnityEngine;
 public class PlayerStats : CharacterStats
 {
     //inited beforehand:
-        //public PlayerManager playerManager; //unneeded?
     public EquipmentManager equipManager;
     public StatApplication statApply;
 
@@ -13,9 +12,6 @@ public class PlayerStats : CharacterStats
     void Start()
     {
         equipManager.onEquipmentChangedCallback += EquipmentModsChanged;
-
-        //test this player dying:
-        //Invoke("Die", 5);
     }
 
     // add/remove stat effects granted/subtracted by worn equipment:

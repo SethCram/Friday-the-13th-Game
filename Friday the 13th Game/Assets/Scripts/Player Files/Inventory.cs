@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class Inventory : MonoBehaviour
 {
+    #region Vars
 
     public delegate void OnItemChanged(); //def delegate 'type'
     public OnItemChanged onItemChangedCallback; //implement delegate w/ a var (triggered everytime anything changes in our inventory) 
@@ -21,9 +22,11 @@ public class Inventory : MonoBehaviour
     public int maxBagSlots = 2;
     public int maxTinySlots = 1;
 
-        //public bool destroyed { get; private set; }
+    //public bool destroyed { get; private set; }
 
-        //DropItemsOnDestroy[] dropItemsOnDestroys;
+    //DropItemsOnDestroy[] dropItemsOnDestroys;
+
+    #endregion Vars
 
     /*
     private void Start()
@@ -32,74 +35,8 @@ public class Inventory : MonoBehaviour
     }
     */
 
-    //add item to inventory list by verifying that it's not a default item and there's enough room:
-    public bool AddItemToInventoryList(Item item)
-    {
-        //don't add item to inventory list w/ it's a default item:
-        if(item.isDefaultItem)
-        {
-            Debug.Log("Item not added to inventory list bc it's a default item");
 
-            return false;
-        }
-        //try and add non-default item to list:
-        else
-        {
-            // make a copy of the item (do at top of else so don't return w/ inventory maxed but stack not):
-            Item itemCopy = Instantiate(item);                      //need to 'instantiate' it so we make a copy of the current item and don't change the item's default 'itemAmt'
-
-            //itemsList.Contains(item) //cant use this bc searches list for the og item, but we added a copy of the og item below w/ instantiating (each copy is dif)
-
-            //try to add item to tiny stack:
-            if (TryAddTinyStack(item))
-            {
-                return true;
-                
-            }
-            //if fails, try and add item to medium stack:  (both could fail if item not stackable, then countinue down function)
-            else if (TryAddMedStack(item))
-            {
-                return true;
-            }
-
-            //return false if no room to add item based off of it's carry size:
-            if ((item.carrySize == CarrySize.Tiny && tinyList.Count >= maxTinySlots) 
-                || (item.carrySize == CarrySize.Medium && bagList.Count >= maxBagSlots))
-            {
-                Debug.Log("<color=red> Not enough room. </color>");
-
-                return false;
-            }
-
-            //add item to specified list based off carry size:
-            if(item.carrySize == CarrySize.Tiny)
-            {
-                tinyList.Add(itemCopy);
-            }
-            else
-            {
-                bagList.Add(itemCopy);
-            }
-
-            //invoke item changed callback:
-            if (onItemChangedCallback != null) //if has any methods subscribed to it
-            {
-                onItemChangedCallback.Invoke(); //executes all methods subscribed to this callback by invoking it
-            }
-
-            //update stack txt amt w/ picked up item is bigger than a stack of 1:
-            if (itemCopy.itemAmount > 1)
-            {
-                //update the stack txt amt:
-                if (OnStackAmtChangedCallback != null)
-                {
-                    OnStackAmtChangedCallback.Invoke(itemCopy, null, itemCopy.itemAmount);
-                }
-            }
-
-            return true;
-        }
-    }
+    #region Add to Stack
 
     private bool TryAddTinyStack(Item item)
     {
@@ -153,6 +90,9 @@ public class Inventory : MonoBehaviour
 
         return false;
     }
+
+    #endregion Add to Stack
+
     /*
     private void StoreDropItems()
     {
@@ -167,6 +107,77 @@ public class Inventory : MonoBehaviour
         
     }
     */
+
+    #region List Methods
+
+    //add item to inventory list by verifying that it's not a default item and there's enough room:
+    public bool AddItemToInventoryList(Item item)
+    {
+        //don't add item to inventory list w/ it's a default item:
+        if (item.isDefaultItem)
+        {
+            Debug.Log("Item not added to inventory list bc it's a default item");
+
+            return false;
+        }
+        //try and add non-default item to list:
+        else
+        {
+            // make a copy of the item (do at top of else so don't return w/ inventory maxed but stack not):
+            Item itemCopy = Instantiate(item);                      //need to 'instantiate' it so we make a copy of the current item and don't change the item's default 'itemAmt'
+
+            //itemsList.Contains(item) //cant use this bc searches list for the og item, but we added a copy of the og item below w/ instantiating (each copy is dif)
+
+            //try to add item to tiny stack:
+            if (TryAddTinyStack(item))
+            {
+                return true;
+
+            }
+            //if fails, try and add item to medium stack:  (both could fail if item not stackable, then countinue down function)
+            else if (TryAddMedStack(item))
+            {
+                return true;
+            }
+
+            //return false if no room to add item based off of it's carry size:
+            if ((item.carrySize == CarrySize.Tiny && tinyList.Count >= maxTinySlots)
+                || (item.carrySize == CarrySize.Medium && bagList.Count >= maxBagSlots))
+            {
+                Debug.Log("<color=red> Not enough room. </color>");
+
+                return false;
+            }
+
+            //add item to specified list based off carry size:
+            if (item.carrySize == CarrySize.Tiny)
+            {
+                tinyList.Add(itemCopy);
+            }
+            else
+            {
+                bagList.Add(itemCopy);
+            }
+
+            //invoke item changed callback:
+            if (onItemChangedCallback != null) //if has any methods subscribed to it
+            {
+                onItemChangedCallback.Invoke(); //executes all methods subscribed to this callback by invoking it
+            }
+
+            //update stack txt amt w/ picked up item is bigger than a stack of 1:
+            if (itemCopy.itemAmount > 1)
+            {
+                //update the stack txt amt:
+                if (OnStackAmtChangedCallback != null)
+                {
+                    OnStackAmtChangedCallback.Invoke(itemCopy, null, itemCopy.itemAmount);
+                }
+            }
+
+            return true;
+        }
+    }
 
     //remove item from inventory list:
     public void RemoveItemFromInventoryList(Item item)
@@ -188,6 +199,10 @@ public class Inventory : MonoBehaviour
             onItemChangedCallback.Invoke(); //executes all methods subscribed to this callback by invoking it
         }
     }
+
+    #endregion List Methods
+
+    #region Drop Methods
 
     //drops item over photon network
     private void DropInventoryItem(GameObject spawnObj, Vector3 spawnPnt)
@@ -254,6 +269,8 @@ public class Inventory : MonoBehaviour
 
         return true;
     }
+
+    #endregion Drop Methods
 
     //drop all items in inventory on ground
     private void OnDestroy()

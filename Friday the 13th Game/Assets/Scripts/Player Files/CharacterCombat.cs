@@ -7,10 +7,13 @@ using Photon.Pun;
 [RequireComponent(typeof(CharacterStats))]
 public class CharacterCombat : MonoBehaviourPun
 {
+    #region Vars
+
     //const float combatCooldown = 5f;
     //private float lastAttackTime; //world time when last attack happened
 
     //needed to make sure cant open UI when atking:
+    [HideInInspector]
     public bool isAtking = false;
 
     //quick, easy way to create a 'delegate' w/ a return type of void and an arg: (called 'Event method')
@@ -23,6 +26,8 @@ public class CharacterCombat : MonoBehaviourPun
     public EquipmentManager equipManager; //init in inspector
     private List<Weapon> equiptWeapons;
     private List<Shield> equiptShields;
+
+    #endregion Vars
 
     private void Start()
     {
@@ -58,6 +63,8 @@ public class CharacterCombat : MonoBehaviourPun
         }
 
     }
+
+    #region Damage Methods
 
     //do dmg to passed in stats:      
     public void DoDamage(CharacterStats hitStats)
@@ -153,6 +160,8 @@ public class CharacterCombat : MonoBehaviourPun
         
     }
     */
+
+    #endregion Damage Methods
 
     /*
     //hit anim event passed on from 'CharacterAnimEventReceiver' script to deal damage:

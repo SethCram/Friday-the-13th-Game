@@ -3,16 +3,25 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// animate this entryway
+/// </summary>
 public class AnimateObj : Entryway
 {
-	private Animator anim;
+    #region Vars
+
+    private Animator anim;
 
 	private const string animBoolName = "isOpen_Obj_";
 
 	private MoveableObject moveableObject;
 	private string animBoolNameNum = "";
 
-	public override void Start()
+    #endregion Vars
+
+    #region Unity Methods
+
+    public override void Start()
     {
 		//init player list + collider
         base.Start();
@@ -36,8 +45,10 @@ public class AnimateObj : Entryway
 
 	}
 
-    //override og 'Interact()' to have the interacting player 'animate' the item:
-    public override void Interact(Transform playerInteracting)
+	#endregion Unity Methods
+
+	//override og 'Interact()' to have the interacting player 'animate' the item:
+	public override void Interact(Transform playerInteracting)
     {
 
         base.Interact(playerInteracting);

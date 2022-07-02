@@ -2,9 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
+using UnityEngine.SceneManagement;
 
 public class CharacterStats : MonoBehaviourPun
 {
+    #region Vars
+
     //for making this char animate taking dmg:
     public CharacterAnimator charAnimator;  //******init in inspector**********
 
@@ -32,10 +35,14 @@ public class CharacterStats : MonoBehaviourPun
     public PlayerManager playerManager;
 
     private int prevHP;
-
+    [HideInInspector]
     public OverlayUI overlayUI;
 
-    //awake happens before 'Start()', need filling of 'allStats' array here bc it's used in another script's start
+    #endregion
+
+    #region Unity Methods
+
+    //need filling of 'allStats' array here bc it's used in another script's start
     private void Awake()
     {
 
@@ -60,12 +67,6 @@ public class CharacterStats : MonoBehaviourPun
         OnHealthChangedCallback += CallHealthSlider;
     }
 
-    //call overlay UI health slider to update it
-    public void CallHealthSlider(int maxHP, int currHP)
-    {
-        overlayUI.UpdateHealthSlider(maxHP, currHP);
-    }
-
     private void Update()
     {
         //test key
@@ -73,8 +74,21 @@ public class CharacterStats : MonoBehaviourPun
         {
             //test taking dmg
             //TakeDamage(5);
+
+            //animate dying
+            Die();
         }
     }
+
+    #endregion
+
+    //call overlay UI health slider to update it
+    public void CallHealthSlider(int maxHP, int currHP)
+    {
+        overlayUI.UpdateHealthSlider(maxHP, currHP);
+    }
+
+    #region Number Methods
 
     //spawn numbers above attached player  
     public void SpawnNumbers(int maxHP, int currHP)
@@ -151,32 +165,11 @@ public class CharacterStats : MonoBehaviourPun
         return listOfInts.ToArray();
     }
 
-    public virtual void Die() 
-    {
-        //start death by animating death:
-        if (GetComponent<CharacterAnimator>() != null)
-        {
-            //anim dying
-            GetComponent<CharacterAnimator>().Die();
+    #endregion
 
-            //disable player control (also unlocks cursor so bad)
-            // playerManager.DisablePlayerControl();
+    #region Pain Methods
 
-            //drop all player loot:
-            playerManager.DropEverything();
 
-        }
-        else
-        {
-            Debug.LogWarning("There's no character animator to call");
-        }
-
-        Debug.Log( transform.name + "<color=red> died. </color>");
-
-            //delay scene reset by _ secs so player death anim can play out (done in char animator now)
-            //playerManager.Invoke("ResetToMainMenu", 5); //within player manager
-    }
-    
     //take damage based on enemy atk and my def:
     public void TakeDamage(int dmgDealt)
     {
@@ -190,58 +183,6 @@ public class CharacterStats : MonoBehaviourPun
             //take dmg locally
             RPC_TakeDamage( dmgDealt );
         }
-
-        /*
-        if(charAnimator != null)
-        {
-            //animate this char taking dmg:
-            //charAnimator.AnimateDmgTaken();
-
-            //animate this char taking dmg across the network:
-            photonView.RPC("AnimateDmgTaken", RpcTarget.Others);
-        }
-        else
-        {
-            Debug.LogWarning("No CharAnim script filled for CharStats so cant animate being hit");
-        }
-
-        int damageTaken = dmgDealt;
-        float damageFloatPH;
-
-        //factor def into damage calculation:
-        damageFloatPH = damageTaken;
-        damageFloatPH -= damageFloatPH * (statDict["Defense"].GetValue() * 0.04f); //max damage blocked due to def should be 80%
-        damageTaken = (int)damageFloatPH;
-
-
-        //makes sure damage doesn't go negative and heal:
-        damageTaken = Mathf.Clamp(damageTaken, 1, int.MaxValue);
-
-        //subtract damage amt from curr health and print it:
-        currHealth -= damageTaken;
-        Debug.LogWarning(transform.name + " takes " + damageTaken + " damage.");
-
-        //health changed event:
-        if(OnHealthChangedCallback != null)
-        {
-            OnHealthChangedCallback(maxHealth, currHealth);
-        }
-
-        //if no more hp
-        if(currHealth <= 0)
-        {
-            if( PhotonNetwork.IsConnected)
-            {
-                //tell all of these clients to die
-                photonView.RPC("RPC_Die", RpcTarget.Others);
-            }
-            else
-            {
-                //die locally
-                RPC_Die();
-            }
-        }
-        */
     }
 
     [PunRPC]
@@ -290,5 +231,36 @@ public class CharacterStats : MonoBehaviourPun
         }
     }
 
+    public virtual void Die()
+    {
+        //start death by animating death:
+        if (GetComponent<CharacterAnimator>() != null)
+        {
+            //anim dying over a time
+            StartCoroutine( GetComponent<CharacterAnimator>().Die() );
 
+            //disable player control (also unlocks cursor so bad)
+            // playerManager.DisablePlayerControl();
+
+            //drop all player loot now that dead:
+            playerManager.DropEverything();
+
+            Debug.Log("All items dropped in " + SceneManager.GetActiveScene().name);
+
+        }
+        else
+        {
+            Debug.LogWarning("There's no character animator to call");
+        }
+
+        Debug.Log(transform.name + "<color=red> died. </color>");
+
+        //delay scene reset by _ secs so player death anim can play out (done in char animator now)
+        //playerManager.Invoke("ResetToMainMenu", 5); //within player manager
+
+        playerManager.SetDead( true );
+
+    }
+
+    #endregion
 }

@@ -2,10 +2,15 @@
 using UnityEngine;
 using Photon.Pun;
 
+/// <summary>
+/// Superclass for all types of interactables (pickups and openings)
+/// </summary>
 //need photon view
 [RequireComponent(typeof(PhotonView))]
 public class Interactable : MonoBehaviourPunCallbacks
 {
+    #region Vars
+
     public float interactionRadius = 3f; // distance player has to be from obj to interact with it
 
     //public Transform interactionTransform; //if want interaction pnt to be not around obj, set this to desired pnt
@@ -22,6 +27,10 @@ public class Interactable : MonoBehaviourPunCallbacks
 
     [HideInInspector]
     public bool isOpen = false;
+
+    #endregion Vars
+
+    #region Unity Methods
 
     public virtual void Start()
     {
@@ -42,17 +51,6 @@ public class Interactable : MonoBehaviourPunCallbacks
 
     }
 
-    //arg of transform is player interacting with this:
-    public virtual void Interact(Transform playerInteracting) //'virtual' so this method can be overwritten in any children classes of this class (dif for each child class)
-    {
-        //this method meant to be overwritten
-
-        Debug.Log("Interacting w/: " + transform.name);
-
-        //update msg
-        msg = getGuiMsg(!isOpen);
-    }
-
     private void Update()
     {
         //if any interactable players:
@@ -66,13 +64,13 @@ public class Interactable : MonoBehaviourPunCallbacks
             foreach (Transform player in interactablePlayers)
             {
                 //if player deleted:
-                if(player == null)
+                if (player == null)
                 {
                     //remove player from being able to interact:
                     interactablePlayers.Remove(player);
                 }
 
-                if(player.GetComponent<PlayerButtons>().playerInteract)
+                if (player.GetComponent<PlayerButtons>().playerInteract)
                 {
                     Interact(player);
 
@@ -83,7 +81,7 @@ public class Interactable : MonoBehaviourPunCallbacks
         else
         {
             //showInteractMsg = false;
-            
+
         }
     }
 
@@ -91,7 +89,7 @@ public class Interactable : MonoBehaviourPunCallbacks
     public virtual void OnTriggerEnter(Collider other)
     {
         //only add an interactable player if tagged w/ 'Player' or 'Enemy'
-        if(other.tag != "Player" && other.tag != "Enemy")
+        if (other.tag != "Player" && other.tag != "Enemy")
         {
             return;
         }
@@ -124,6 +122,32 @@ public class Interactable : MonoBehaviourPunCallbacks
         interactablePlayers.Remove(other.transform);
 
         //Debug.Log("Removed: " + other.transform.name);
+    }
+
+    private void OnDestroy()
+    {
+        /*
+        //for every interactable player
+        foreach (Transform player in interactablePlayers)
+        {
+            //make msgs dissapear
+            player.GetComponent<PlayerManager>().SetInteractVisibility(false);
+        }
+        Debug.Log(interactablePlayers.ToString());
+        */
+    }
+
+    #endregion Unity Methods
+
+    //arg of transform is player interacting with this:
+    public virtual void Interact(Transform playerInteracting) //'virtual' so this method can be overwritten in any children classes of this class (dif for each child class)
+    {
+        //this method meant to be overwritten
+
+        Debug.Log("Interacting w/: " + transform.name);
+
+        //update msg
+        msg = getGuiMsg(!isOpen);
     }
 
     #region GUI Config
@@ -172,18 +196,5 @@ public class Interactable : MonoBehaviourPunCallbacks
         Gizmos.color = Color.yellow;
 
         Gizmos.DrawWireSphere(transform.position, interactionRadius);
-    }
-
-    private void OnDestroy()
-    {
-        /*
-        //for every interactable player
-        foreach (Transform player in interactablePlayers)
-        {
-            //make msgs dissapear
-            player.GetComponent<PlayerManager>().SetInteractVisibility(false);
-        }
-        Debug.Log(interactablePlayers.ToString());
-        */
     }
 }

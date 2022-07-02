@@ -16,8 +16,6 @@ public class ConnectToServer : MonoBehaviourPunCallbacks
 
     private void Start()
     {
-
-
         //set nickname to master manager's:
         PhotonNetwork.NickName = MasterManager.gameSettings.Nickname;
 
@@ -27,6 +25,8 @@ public class ConnectToServer : MonoBehaviourPunCallbacks
         //connect to photon server using our settings: (what settings?)
         PhotonNetwork.ConnectUsingSettings();
     }
+
+    #region Photon Methods
 
     //callback funct for w/ server ready for matchmaking so it joins them to the lobby:
     public override void OnConnectedToMaster() //called w/ client connects to server + ready for matchmaking
@@ -49,6 +49,8 @@ public class ConnectToServer : MonoBehaviourPunCallbacks
         //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
         StartCoroutine(LoadLevelAsynch());
     }
+
+    #endregion Photon Methods
 
     /// <summary>
     /// Asynchronously loads level and updates loading bar + text.

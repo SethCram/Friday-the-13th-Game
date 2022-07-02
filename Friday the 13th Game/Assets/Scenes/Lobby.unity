@@ -462,7 +462,10 @@ MonoBehaviour:
   errorCreate: {fileID: 1610450732}
   joinInput: {fileID: 1846093036}
   errorJoin: {fileID: 1424094051}
-  loading: {fileID: 1526047214}
+  loadingScreen: {fileID: 1526047216}
+  roomSelectionScreen: {fileID: 1719741657}
+  slider: {fileID: 1526047215}
+  progressTxt: {fileID: 1526047214}
   maxPlayers: 4
 --- !u!1 &101293121
 GameObject:
@@ -3067,16 +3070,34 @@ PrefabInstance:
   m_SourcePrefab: {fileID: 100100000, guid: ebed5b14def10544c8e5482f2ed0f42f, type: 3}
 --- !u!114 &1526047214 stripped
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5994716150096974418, guid: ebed5b14def10544c8e5482f2ed0f42f,
+  m_CorrespondingSourceObject: {fileID: 3038652601004251669, guid: ebed5b14def10544c8e5482f2ed0f42f,
     type: 3}
   m_PrefabInstance: {fileID: 1526047213}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c9a85af9b4dbce44e8c294e71c982bb0, type: 3}
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1526047215 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3038652600750554867, guid: ebed5b14def10544c8e5482f2ed0f42f,
+    type: 3}
+  m_PrefabInstance: {fileID: 1526047213}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!1 &1526047216 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7461775919031105857, guid: ebed5b14def10544c8e5482f2ed0f42f,
+    type: 3}
+  m_PrefabInstance: {fileID: 1526047213}
+  m_PrefabAsset: {fileID: 0}
 --- !u!224 &1610450731 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 7137078706051159518, guid: cd7334192503a9042a9493e606172676,

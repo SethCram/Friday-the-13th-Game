@@ -10,6 +10,8 @@ using UnityEngine.UI;
 [RequireComponent(typeof(Cam_Instantiator))]
 public class UI_Instantiator : MonoBehaviour
 {
+    #region Vars
+
     //for multiplayer:
     public PhotonView photonView;
 
@@ -33,6 +35,8 @@ public class UI_Instantiator : MonoBehaviour
     public StatApplication statApplication;
 
     public GameObject topmostUIPrefab;
+
+    #endregion
 
     // awake called before start, and sometimes we need comps in start:
     void Awake()
@@ -104,9 +108,10 @@ public class UI_Instantiator : MonoBehaviour
         statApplication.overlayUI = overlayUICopy;
 
         //create topmost UI for player
-        GameObject loadingUICopy = Instantiate(topmostUIPrefab);
+        GameObject topmostUICopy = Instantiate(topmostUIPrefab);
 
-        //fill player mngers loading UI
-        playerManager.loadingUI = loadingUICopy.GetComponent<Loading>();
+        //fill player mngers loading+topmost UI
+        //playerManager.loadingUI = topmostUICopy.GetComponent<Loading>();
+        playerManager.topOverlayUIObject = topmostUICopy;
     }
 }
