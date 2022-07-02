@@ -890,7 +890,7 @@ MonoBehaviour:
   overlayUI: {fileID: 0}
   topOverlayUIObject: {fileID: 0}
   minimapUI: {fileID: 0}
-  deadSpawn: {x: 0, y: 500, z: 0}
+  spectatorSpawn: {x: 0, y: 500, z: 0}
 --- !u!114 &7413788013251121925
 MonoBehaviour:
   m_ObjectHideFlags: 0

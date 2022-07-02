@@ -9,19 +9,27 @@ using Photon.Realtime; //for room options
 
 public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
 {
-    #region Vars
-
     public TMP_InputField createInput;
     public TMP_Text errorCreate;
     public TMP_InputField joinInput;
     public TMP_Text errorJoin;
 
     //for loading 
-    public Loading loading;
+    public GameObject loadingScreen;
+    public GameObject roomSelectionScreen;
+    public Slider slider;
+    public TMP_Text progressTxt;
 
     public int maxPlayers = 4;
 
-    #endregion Vars
+    private void Start()
+    {
+        //set screen visibility 
+
+        roomSelectionScreen.SetActive(true);
+
+        loadingScreen.SetActive(false);
+    }
 
     #region Create Room
 
@@ -29,7 +37,7 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
     public void CreateRoom()
     {
         //output msg if empty room field
-        if ( string.IsNullOrEmpty( createInput.text) )
+        if (string.IsNullOrEmpty(createInput.text))
         {
             AssignErrorText(errorCreate, "CreateRoom failed. A roomname is required.");
 
@@ -107,19 +115,18 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
         Debug.Log("Game scene loading.");
 
         //load level asynchly
-        //StartCoroutine(LoadLevelAsynch());
-        StartCoroutine(loading.LoadLevelAsynch());
+        StartCoroutine(LoadLevelAsynch());
     }
 
     #endregion
 
     //assign error text
-    public void AssignErrorText( TMP_Text errorText, string message, bool error = true)
+    public void AssignErrorText(TMP_Text errorText, string message, bool error = true)
     {
         errorText.text = message;
 
         //if error
-        if( error == true )
+        if (error == true)
         {
             //output error:
             Debug.LogError("Error message: " + message);
@@ -131,6 +138,52 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
             Debug.Log("Client message: " + message);
         }
 
+    }
+
+    private IEnumerator LoadLevelAsynch()
+    {
+        //deactivate room selection screen
+        roomSelectionScreen.SetActive(false);
+
+        //activate loading screen
+        loadingScreen.SetActive(true);
+
+        //have multiplayer server asynchly load next scene in build settings (should be Game scene):
+        PhotonNetwork.LoadLevel(SceneManager.GetActiveScene().buildIndex + 1);
+
+        //check if level loaded yet
+        while (PhotonNetwork.LevelLoadingProgress < 1)
+        {
+            //log progress (breaks it)
+            //Debug.Log(PhotonNetwork.LevelLoadingProgress);
+
+            //set to 100% even if only 90% thru clamping
+            //float progress = Mathf.Clamp01(PhotonNetwork.LevelLoadingProgress / 0.9f);
+            //slider.value = progress;
+
+            slider.value = PhotonNetwork.LevelLoadingProgress;
+
+
+            //if loading is still zero
+            if (PhotonNetwork.LevelLoadingProgress == 0)
+            {
+                slider.fillRect.gameObject.SetActive(false);
+            }
+            //loading is non zero
+            else
+            {
+                slider.fillRect.gameObject.SetActive(true);
+            }
+
+
+            //set progress percentage
+            int progressPercentage = (int)(PhotonNetwork.LevelLoadingProgress * 100f);
+            progressTxt.text = progressPercentage.ToString() + "%";
+
+            //wait a frame
+            yield return null;
+            //yield return new WaitForEndOfFrame();
+        }
     }
 
     /// <summary>
