@@ -69,12 +69,15 @@ public class Interactable : MonoBehaviourPunCallbacks
                     //remove player from being able to interact:
                     interactablePlayers.Remove(player);
                 }
-
-                if (player.GetComponent<PlayerButtons>().playerInteract)
+                //player not deleted
+                else
                 {
-                    Interact(player);
+                    if (player.GetComponent<PlayerButtons>().playerInteract)
+                    {
+                        Interact(player);
 
-                    //could add a private 'interacted' bool to make sure only 1 player picks up item, if becomes a problem 
+                        //could add a private 'interacted' bool to make sure only 1 player picks up item, if becomes a problem 
+                    }
                 }
             }
         }

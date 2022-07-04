@@ -58,11 +58,16 @@ public class PlayerManager : MonoBehaviourPunCallbacks
         //just incase disabled for some reason
         EnableCamControl();
 
-        //cache UI overlay scripts
-        loadingUI = topOverlayUIObject.GetComponent<Loading>();
-        gameOver = topOverlayUIObject.GetComponent<GameOver>();
+        //if my photon view or not connected
+        if(photonView.IsMine || !PhotonNetwork.IsConnected)
+        {
+            //cache UI overlay scripts
+            loadingUI = topOverlayUIObject.GetComponent<Loading>();
+            gameOver = topOverlayUIObject.GetComponent<GameOver>();
+        }
 
         characterAnimator = GetComponent<CharacterAnimator>();
+
     }
 
     private void Update()
