@@ -64,7 +64,9 @@ public class ConnectToServer : MonoBehaviourPunCallbacks
         //check if level loaded yet
         while (PhotonNetwork.LevelLoadingProgress < 1)
         {
-            slider.value = PhotonNetwork.LevelLoadingProgress;
+            //set to 100% even if only 90% thru clamping
+            float progress = Mathf.Clamp01(PhotonNetwork.LevelLoadingProgress / 0.9f);
+            slider.value = progress;
 
             //if loading is still zero
             if (PhotonNetwork.LevelLoadingProgress == 0)
@@ -78,7 +80,7 @@ public class ConnectToServer : MonoBehaviourPunCallbacks
             }
 
             //set progress percentage
-            int progressPercentage = (int)(PhotonNetwork.LevelLoadingProgress * 100f);
+            int progressPercentage = (int)(progress * 100f);
             progressTxt.text = progressPercentage.ToString() + "%";
 
             //wait a frame
