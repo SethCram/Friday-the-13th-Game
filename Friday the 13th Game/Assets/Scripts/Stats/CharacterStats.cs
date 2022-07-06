@@ -258,6 +258,7 @@ public class CharacterStats : MonoBehaviourPun
         //delay scene reset by _ secs so player death anim can play out (done in char animator now)
         //playerManager.Invoke("ResetToMainMenu", 5); //within player manager
 
+        //set player to dead
         playerManager.SetDead( true );
 
     }

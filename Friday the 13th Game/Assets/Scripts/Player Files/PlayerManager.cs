@@ -40,6 +40,7 @@ public class PlayerManager : MonoBehaviourPunCallbacks
     [HideInInspector]
     public GameObject minimapUI;
 
+    //respawn/death vars
     private bool dead = false;
     private bool lostGame = false;
     private bool teleportPlayer = false;
@@ -48,8 +49,6 @@ public class PlayerManager : MonoBehaviourPunCallbacks
     private CharacterAnimator characterAnimator;
 
     #endregion
-
-    #region Methods
 
     #region Unity Methods
 
@@ -72,6 +71,7 @@ public class PlayerManager : MonoBehaviourPunCallbacks
 
     private void Update()
     {
+        /*
         //if dead & any key pressed
         if( dead && Input.anyKeyDown )
         {
@@ -88,7 +88,7 @@ public class PlayerManager : MonoBehaviourPunCallbacks
             teleportPlayer = true;
 
         }
-
+        */
     }
 
     /// <summary>
@@ -104,10 +104,30 @@ public class PlayerManager : MonoBehaviourPunCallbacks
             transform.position = spectatorSpawn;
 
             //dont teleport player again
-            teleportPlayer = false;
+            SetTeleportPlayer( false );
+
+            //allow player to die again
+            SetLostGame( false );
 
             characterAnimator.SetAnimDead(false);
+
+            //allow player control
+            EnablePlayerControl();
         }
+    }
+
+    #endregion
+
+    #region Setters
+
+    public void SetLostGame(bool isGameLost)
+    {
+        lostGame = isGameLost;
+    }
+
+    public void SetTeleportPlayer( bool shouldTeleport)
+    {
+        teleportPlayer = shouldTeleport;
     }
 
     #endregion
@@ -178,7 +198,7 @@ public class PlayerManager : MonoBehaviourPunCallbacks
         Cursor.visible = false;
     }
 
-    private void UnlockCursor()
+    public void UnlockCursor()
     {
         //unlock cursor and make visible:
         Cursor.lockState = CursorLockMode.None;
@@ -336,6 +356,98 @@ public class PlayerManager : MonoBehaviourPunCallbacks
 
     #endregion
 
+    #region Game Over
+
+    public void Lose()
+    {
+        GameManager gameManager = FindObjectOfType<GameManager>();
+
+        if (gameManager == null)
+        {
+            Debug.LogError("Game manager null, so lose() failed.");
+            return;
+        }
+
+        //store that lost 
+        lostGame = true;
+
+        //if counselor loses
+        if (tag == "Player")
+        {
+            Debug.Log("Counselor dead");
+
+            //incr # of dead counselors (locally)
+            gameManager.RPC_ChangeCounselorsDead(gameManager.deadCounselors + 1);
+
+            //if on network
+            if (PhotonNetwork.IsConnected)
+            {
+                //if all players besides 1 or actually all dead 
+                if (gameManager.deadCounselors >= PhotonNetwork.CurrentRoom.PlayerCount - 1)
+                {
+                    //boot player back to main menu 
+                }
+                else
+                {
+
+                }
+            }
+            //not on network
+            else
+            {
+                //boot player back to main menu 
+            }
+
+        }
+        //if jason loses
+        else if( tag == "Enemy" )
+        {
+            //tell all counselors they won
+        }
+    }
+
+    public void Win()
+    {
+
+    }
+
+    public void ShowGameOver(string gameOverTxt)
+    {
+        //not my photon view + connected to network
+        if (!photonView.IsMine && PhotonNetwork.IsConnected)
+        {
+            //game over not shown
+            Debug.Log("game over not shown");
+            return;
+        }
+
+        //reactivate game over screen
+        gameOver.gameOverPanel.SetActive(true);
+
+        //update title w/ game over txt
+        gameOver.UpdateTitleText(gameOverTxt);
+
+        //disable player control
+        DisablePlayerControl();
+
+    }
+
+    #endregion
+
+    #region Dead Methods
+
+    public bool GetDead()
+    {
+        return dead;
+    }
+
+    public void SetDead(bool isDead)
+    {
+        dead = isDead;
+    }
+
+    #endregion Dead Methods
+
     #region GUI Config
 
     //change visibility of interaction msg 
@@ -366,95 +478,6 @@ public class PlayerManager : MonoBehaviourPunCallbacks
     //End of GUI Config --------------
     #endregion
 
-    public void Lose()
-    {
-        GameManager gameManager = FindObjectOfType<GameManager>();
-
-        if(gameManager == null)
-        {
-            Debug.LogError("Game manager null, so lose() failed.");
-            return;
-        }
-
-        //store that lost 
-        lostGame = true;
-
-        //if counselor loses
-        if ( tag == "Player")
-        {
-            Debug.Log("Counselor dead");
-
-            //incr # of dead counselors (locally)
-            gameManager.RPC_ChangeCounselorsDead(gameManager.deadCounselors + 1);
-
-            //if on network
-            if(PhotonNetwork.IsConnected)
-            {
-                //if all players besides 1 or actually all dead 
-                if (gameManager.deadCounselors >= PhotonNetwork.CurrentRoom.PlayerCount - 1)
-                {
-                    //boot player back to main menu 
-                }
-                else
-                {
-
-                }
-            }
-            //not on network
-            else
-            {
-                //boot player back to main menu 
-            }
-
-        }
-    }
-
-    public void Win()
-    {
-
-    }
-
-    public void ShowGameOver( string gameOverTxt )
-    {
-        //not my photon view + connected to network
-        if( !photonView.IsMine && PhotonNetwork.IsConnected )
-        {
-            //game over not shown
-            Debug.Log("game over not shown");
-            return;
-        }
-
-        /*
-        //walk thru top overlay UI children
-        foreach (Transform topOverlayUIChild in topOverlayUIObject.GetComponentsInChildren<Transform>())
-        {
-            //deactivate each child
-            topOverlayUIChild.gameObject.SetActive(false);
-        } 
-        */
-
-        //reactivate game over screen
-        gameOver.gameOverPanel.SetActive(true);
-
-        //update title w/ game over txt
-        gameOver.UpdateTitleText(gameOverTxt);
-
-    }
-
-    #region Dead Methods
-
-    public bool GetDead()
-    {
-        return dead;
-    }
-
-    public void SetDead( bool isDead )
-    {
-        dead = isDead;
-    }
-
-    #endregion Dead Methods
-
     [PunRPC]
     public void DeactivateObject(int viewID)
     {
@@ -467,5 +490,4 @@ public class PlayerManager : MonoBehaviourPunCallbacks
         Debug.Log(deactivatingView.gameObject.name + " set deactive");
     }
 
-    #endregion
 }

@@ -327,14 +327,14 @@ public class CharacterAnimator : MonoBehaviour
         //no longer dying
         dying = false;
 
-        //playerManager.ResetToMainMenu();
-
         //set player as dead
         playerManager.SetDead(true);
 
         //make player lose bc died
         playerManager.ShowGameOver(loseText);
         playerManager.Lose();
+
+        
     }
 
     /// <summary>

@@ -113,5 +113,8 @@ public class UI_Instantiator : MonoBehaviour
         //fill player mngers loading+topmost UI
         //playerManager.loadingUI = topmostUICopy.GetComponent<Loading>();
         playerManager.topOverlayUIObject = topmostUICopy;
+
+        //fill out game over's player field
+        topmostUICopy.GetComponent<GameOver>().player = transform; 
     }
 }
