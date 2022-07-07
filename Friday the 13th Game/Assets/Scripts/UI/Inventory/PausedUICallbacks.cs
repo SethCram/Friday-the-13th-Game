@@ -9,6 +9,7 @@ public class PausedUICallbacks : MonoBehaviour
     public Transform slotsParent; //stores parent transform of all inventory slots
 
     //for bag slots:
+    [HideInInspector]
     public Inventory playerInventory; //made public to init before its instantiation
     private InventorySlot[] inventorySlots; //to store ref to bag slots
     private InventorySlot[] mediumSlots;
@@ -19,11 +20,14 @@ public class PausedUICallbacks : MonoBehaviour
     private List<Item> inventoryTinyList;
 
     //for equipment:
+    [HideInInspector]
     public EquipmentManager equipManager; //init this before instantiation
     private EquipmentSlotScript[] equipSlots;
 
     //for inventory stat display:
+    [HideInInspector]
     public CharacterStats charStats; //*******init in UI_Instantiator***** (for setting names)
+    [HideInInspector]
     public StatApplication statApply; //*******init in UI_Instantiator*****   (for updating vals)
     private InventoryStatDisplay[] inventoryStatDisplays;
     private Stat[] everyStat;      //need to make it a new array? (just for lists?)

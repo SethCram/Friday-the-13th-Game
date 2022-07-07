@@ -12,6 +12,7 @@ public class PausedUI : MonoBehaviour
     
     public Transform txtSpawnPnt; //used by text spawning inventory slots
 
+    [HideInInspector]
     public PlayerManager playerManager; //made public to init before its instantiation
 
     //public PlayerButtons playerButtons; //made public to init before its instantiation
