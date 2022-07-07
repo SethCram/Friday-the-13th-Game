@@ -37,7 +37,7 @@ public class SpawnPlayers : MonoBehaviourPunCallbacks
             if (PhotonNetwork.IsMasterClient)
             {
                 //print out player list
-                Debug.Log("player count =" + PhotonNetwork.PlayerList.Length);
+                Debug.LogError("player count =" + PhotonNetwork.PlayerList.Length);
 
                 int index = 0;
 

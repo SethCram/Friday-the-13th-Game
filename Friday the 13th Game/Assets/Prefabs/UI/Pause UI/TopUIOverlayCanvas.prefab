@@ -509,8 +509,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameOverPanel: {fileID: 4554155779125943609}
   titleText: {fileID: 4554155779014499744}
-  characterAnimator: {fileID: 0}
-  spectatorSpawn: {x: 0, y: 500, z: 0}
+  player: {fileID: 0}
 --- !u!1 &6899225181426183950
 GameObject:
   m_ObjectHideFlags: 0
@@ -631,7 +630,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 5345619335364145205}
-        m_MethodName: ResetToMainMenu
+        m_MethodName: MainMenuButtonWrapper
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
