@@ -153,6 +153,7 @@ public class PlayerManager : MonoBehaviourPunCallbacks
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex); //reloads current scene using its 'buildIndex'
     }
 
+    /*
     //reset player to main menu:
     public void ResetToMainMenu()
     {
@@ -161,6 +162,7 @@ public class PlayerManager : MonoBehaviourPunCallbacks
 
         StartCoroutine(DisconnectAndLoad());
     }
+    */
 
     #endregion 
 
@@ -308,7 +310,7 @@ public class PlayerManager : MonoBehaviourPunCallbacks
     #endregion
 
     #region Photon Methods
-
+    /*
     //disconnect client and load main menu:
     public IEnumerator DisconnectAndLoad()
     {
@@ -326,6 +328,7 @@ public class PlayerManager : MonoBehaviourPunCallbacks
             yield return null;
         }
     }
+    */
 
     //called w/ another client leaves room:
     public override void OnPlayerLeftRoom(Player otherPlayer)
@@ -360,9 +363,9 @@ public class PlayerManager : MonoBehaviourPunCallbacks
 
     public void Lose()
     {
-        GameManager gameManager = FindObjectOfType<GameManager>();
+        //GameManager gameManager = FindObjectOfType<GameManager>();
 
-        if (gameManager == null)
+        if (GameManager.Instance == null)
         {
             Debug.LogError("Game manager null, so lose() failed.");
             return;
@@ -377,13 +380,13 @@ public class PlayerManager : MonoBehaviourPunCallbacks
             Debug.Log("Counselor dead");
 
             //incr # of dead counselors (locally)
-            gameManager.RPC_ChangeCounselorsDead(gameManager.deadCounselors + 1);
+            GameManager.Instance.RPC_ChangeCounselorsDead(GameManager.Instance.deadCounselors + 1);
 
             //if on network
             if (PhotonNetwork.IsConnected)
             {
                 //if all players besides 1 or actually all dead 
-                if (gameManager.deadCounselors >= PhotonNetwork.CurrentRoom.PlayerCount - 1)
+                if (GameManager.Instance.deadCounselors >= PhotonNetwork.CurrentRoom.PlayerCount - 1)
                 {
                     //boot player back to main menu 
                 }

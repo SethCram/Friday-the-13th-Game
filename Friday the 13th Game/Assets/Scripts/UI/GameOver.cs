@@ -21,7 +21,12 @@ public class GameOver : MonoBehaviour
     {
         gameOverPanel.SetActive(false);
 
-        playerManager = player.GetComponent<PlayerManager>();
+        //if player field not filled by UI_instantiator
+        if( player != null)
+        {
+            playerManager = player.GetComponent<PlayerManager>();
+        }
+
     }
 
 
@@ -44,30 +49,12 @@ public class GameOver : MonoBehaviour
         playerManager.SetTeleportPlayer( true );
     }
 
-    //reset player to main menu:
-    public void ResetToMainMenu()
+    /// <summary>
+    /// Call game manager's main menu btn method
+    /// </summary>
+    public void MainMenuButtonWrapper()
     {
-        //use escape panel's disconnect + load
-        //EscapePanel escapePanel = GameObject.FindObjectOfType(typeof(EscapePanel), true); //GameObject.FindObjectOfType(typeof(EscapePanel), true);
-
-        StartCoroutine(DisconnectAndLoad());
-    }
-
-    //disconnect client and load main menu:
-    private IEnumerator DisconnectAndLoad()
-    {
-        //load main menu if no longer connected:
-        SceneManager.LoadScene(0);
-
-        //disconnect client from server:
-        PhotonNetwork.Disconnect();
-
-        //while still connected to network:
-        while (PhotonNetwork.IsConnected)
-        {
-            //dont yet load scene:
-            yield return null;
-        }
+        GameManager.Instance.MainMenuButton();
     }
 
 }

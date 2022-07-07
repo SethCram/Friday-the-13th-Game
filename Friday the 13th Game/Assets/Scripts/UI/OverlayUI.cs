@@ -24,8 +24,8 @@ public class OverlayUI : MonoBehaviour
     [HideInInspector]
     public PlayerManager playerManager;
     private bool startedGame = false;
-    [HideInInspector]
-    public GameManager gameManager;
+    //[HideInInspector]
+    //private GameManager gameManager;
     private Scene currScene;
 
     #endregion
@@ -43,12 +43,14 @@ public class OverlayUI : MonoBehaviour
         //start w/ health slider off
         healthSlider.gameObject.SetActive(false);
 
+        /*
         //if not game lobby scene
         if (currScene.name != "Game Lobby")
         {
             //can do bc singleton
-            gameManager = FindObjectOfType<GameManager>();
+            gameManager = GameManager.Instance; //FindObjectOfType<GameManager>();
         }
+        */
 
         //cache curr scene
         currScene = SceneManager.GetActiveScene();
@@ -86,17 +88,17 @@ public class OverlayUI : MonoBehaviour
                 if (voteToggle.isOn == true)
                 {
                     //should incr votes over RPC so works for everyone
-                    gameManager.photonView.RPC("RPC_ChangeVoteCount",
+                    GameManager.Instance.photonView.RPC("RPC_ChangeVoteCount",
                         RpcTarget.AllBuffered,
-                        gameManager.startVotes + 1);
+                        GameManager.Instance.startVotes + 1);
                 }
                 //not voting to start
                 else
                 {
                     //should descr votes over RPC so works for everyone
-                    gameManager.photonView.RPC("RPC_ChangeVoteCount",
+                    GameManager.Instance.photonView.RPC("RPC_ChangeVoteCount",
                         RpcTarget.AllBuffered,
-                        gameManager.startVotes - 1);
+                        GameManager.Instance.startVotes - 1);
                 }
             }
             //if local
@@ -106,13 +108,13 @@ public class OverlayUI : MonoBehaviour
                 if (voteToggle.isOn == true)
                 {
                     //should incr votes over RPC so works for everyone
-                    gameManager.RPC_ChangeVoteCount(gameManager.startVotes + 1);
+                    GameManager.Instance.RPC_ChangeVoteCount(GameManager.Instance.startVotes + 1);
                 }
                 //not voting to start
                 else
                 {
                     //should descr votes over RPC so works for everyone
-                    gameManager.RPC_ChangeVoteCount(gameManager.startVotes - 1);
+                    GameManager.Instance.RPC_ChangeVoteCount(GameManager.Instance.startVotes - 1);
                 }
             }
         }
@@ -121,7 +123,7 @@ public class OverlayUI : MonoBehaviour
         if (PhotonNetwork.IsConnected)
         {
             //if all players voted to start
-            if (gameManager.startVotes >= PhotonNetwork.CurrentRoom.PlayerCount)
+            if (GameManager.Instance.startVotes >= PhotonNetwork.CurrentRoom.PlayerCount)
             {
                 //Start game for everyone
                 //Debug.LogError("Should start game.");
@@ -136,7 +138,7 @@ public class OverlayUI : MonoBehaviour
         else
         {
             //if voted to start
-            if (gameManager.startVotes >= 1)
+            if (GameManager.Instance.startVotes >= 1)
             {
                 //Start game locally
                 //Debug.LogError("Should start game.");

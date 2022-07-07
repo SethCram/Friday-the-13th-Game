@@ -18,31 +18,13 @@ public class EscapePanel : MonoBehaviour
         pauseUI.CloseEscapeMenu();
     }
 
-    //called by main menu button:
-    public void MainMenuButton()
+    /// <summary>
+    /// Call game manager's main menu btn method
+    /// </summary>
+    public void MainMenuButtonWrapper()
     {
-        //PlayerManager playerManager = FindObjectOfType<PlayerManager>();
-
-        //disconnect client and load main menu:
-        StartCoroutine(DisconnectAndLoad());
+        GameManager.Instance.MainMenuButton();
     }
 
-    #endregion
-
-    //disconnect client and load main menu:
-    public IEnumerator DisconnectAndLoad()
-    {
-        //disconnect client from server:
-        PhotonNetwork.Disconnect();
-
-        //while still connected to network:
-        while(PhotonNetwork.IsConnected)
-        {
-            //dont yet load scene:
-            yield return null;
-        }
-
-        //load main menu if no longer connected:
-        SceneManager.LoadScene(0);
-    }
+    #endregion Button Methods
 }
