@@ -858,7 +858,6 @@ MonoBehaviour:
   fillAmt: {fileID: 6425199522547786684}
   voteToggle: {fileID: 6672450948723679737}
   playerManager: {fileID: 0}
-  gameManager: {fileID: 0}
 --- !u!1 &5854357238480036480
 GameObject:
   m_ObjectHideFlags: 0

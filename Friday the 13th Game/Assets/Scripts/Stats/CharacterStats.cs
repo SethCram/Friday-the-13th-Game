@@ -76,7 +76,7 @@ public class CharacterStats : MonoBehaviourPun
             //TakeDamage(5);
 
             //animate dying
-            Die();
+            //Die();
         }
     }
 
