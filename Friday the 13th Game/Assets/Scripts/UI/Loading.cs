@@ -25,13 +25,24 @@ public class Loading : MonoBehaviour
     /// <returns></returns>
     public IEnumerator LoadLevelAsynch()
     {
+        //set photon network to sync the loading of the next scene
+        PhotonNetwork.AutomaticallySyncScene = true;
+
         //activate loading screen
         loadingScreen.SetActive(true);
+
+        // Temporary disable processing of futher network messages
+        PhotonNetwork.IsMessageQueueRunning = false;
+
         //wait a frame
         yield return null;
 
-        //have multiplayer server asynchly load next scene in build settings:
-        PhotonNetwork.LoadLevel(SceneManager.GetActiveScene().buildIndex + 1);
+        //if master client
+        if( PhotonNetwork.IsMasterClient)
+        {
+            //have multiplayer server asynchly load next scene in build settings:
+            PhotonNetwork.LoadLevel(SceneManager.GetActiveScene().buildIndex + 1);
+        }
 
         //check if level loaded yet
         while (PhotonNetwork.LevelLoadingProgress < 1)
@@ -75,5 +86,8 @@ public class Loading : MonoBehaviour
             //wait a frame
             yield return null;
         }
+
+        //turn msging queue back on w/ scene loaded:
+        PhotonNetwork.IsMessageQueueRunning = true;
     }
 }
