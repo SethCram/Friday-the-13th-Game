@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 
 /// <summary>
 /// game manager for keeping track of game data
-/// NOT A SINGLETON
+/// NOT A PERSISTENT DATA SINGLETON
 /// </summary>
 public class GameManager : MonoBehaviourPun 
 {
@@ -16,6 +16,8 @@ public class GameManager : MonoBehaviourPun
 
     [HideInInspector]
     public int deadCounselors { private set; get; } = 0;
+
+    public int playersGameReady { private set; get; } = 0;
 
     #region Singleton
 
@@ -42,6 +44,8 @@ public class GameManager : MonoBehaviourPun
                     //create new manager in scene:
                     GameObject mnger = new GameObject();
                     mnger.name = "GameManager";
+                    mnger.AddComponent<PhotonView>();
+                    mnger.tag = "GameManager";
                     instance = mnger.AddComponent<GameManager>();
 
                     Debug.LogWarning("new game manager created");
@@ -77,7 +81,7 @@ public class GameManager : MonoBehaviourPun
             Destroy(gameObject);
         }
     }
-    
+
     #region RPC's
 
     /// <summary>
@@ -99,6 +103,17 @@ public class GameManager : MonoBehaviourPun
     {
         deadCounselors = newDeadCounselorsCount;
 
+    }
+
+    /// <summary>
+    /// RPC to incr number of players loaded into game scene
+    /// </summary>
+    [PunRPC]
+    public void RPC_IncrPlayersGameReady()
+    {
+        playersGameReady++;
+
+        //debug: Debug.LogAssertion("players game ready = " + playersGameReady.ToString());
     }
 
     #endregion RPC's
