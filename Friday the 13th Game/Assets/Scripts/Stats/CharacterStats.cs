@@ -75,8 +75,8 @@ public class CharacterStats : MonoBehaviourPun
             //test taking dmg
             //TakeDamage(5);
 
-            //animate dying
-            //Die();
+            //kill player
+            Die();
         }
     }
 

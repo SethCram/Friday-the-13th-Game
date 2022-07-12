@@ -45,7 +45,7 @@ public class ThirdPersonMovement : MonoBehaviour
     //public float jumpCooldown = 2;
     public float midAirSlopeLimit = 90;
     public float midAirStepOffset = 0.1f;
-    public float midAirHeight = 1;
+    //public float midAirHeight = 1;
     //private float jumpTime;
 
     //grounded reset for after jumping:
@@ -72,6 +72,13 @@ public class ThirdPersonMovement : MonoBehaviour
     public bool crouched { get; private set; }
     public bool jump { get; private set; }
 
+    //dead vars
+    public GameObject deadCollider;
+    private float ogRadius;
+    public Vector3 deadCenter = new Vector3(0, 0.3f, 0);
+    public float deadRadius = 0.01f;
+    public float deadHeight = 0.4f;
+
     #endregion
 
     #region Unity Methods
@@ -84,6 +91,7 @@ public class ThirdPersonMovement : MonoBehaviour
         //store curr collider settings:
         ogCenter = controller.center;
         ogHeight = controller.height;
+        ogRadius = controller.radius;
 
         //start char speed out at walk speed:
         charSpeed = walkSpeed;
@@ -160,7 +168,17 @@ public class ThirdPersonMovement : MonoBehaviour
         verticalVelocity = groundedDownwardVelocity; //not zero just incase player not totally on the grnd yet, this will force him to the grnd
     }
 
+    /// <summary>
+    /// Set player char controller to approp midair colliders.
+    /// </summary>
+    private void SetMidairColliders()
+    {
+        //increase slope limit to avoid jitter w/ mid-air
+        controller.slopeLimit = midAirSlopeLimit;
 
+        //lower step offset so dont land on surfaces higher than feet:
+        controller.stepOffset = midAirStepOffset;
+    }
 
     /*
     public void LandedHeight()
@@ -173,10 +191,12 @@ public class ThirdPersonMovement : MonoBehaviour
     private void Jump()
     {
         //increase slope limit to avoid jitter w/ mid-air
-        controller.slopeLimit = midAirSlopeLimit;
+        //controller.slopeLimit = midAirSlopeLimit;
 
         //lower step offset so dont land on surfaces higher than feet:
-        controller.stepOffset = midAirStepOffset;
+        //controller.stepOffset = midAirStepOffset;
+
+        SetMidairColliders();
 
         //decrease size of collider to land properly:
         //controller.height = crouchedHeight;
@@ -425,6 +445,20 @@ public class ThirdPersonMovement : MonoBehaviour
 
     #endregion crouching
 
+    /// <summary>
+    /// Set colliders to dead vals.
+    /// </summary>
+    public void DeadSetColliders()
+    {
+        //activate dead collider
+        deadCollider.SetActive(true);
+
+        //change character controller to go inside dead collider
+        controller.center = deadCenter;
+        controller.radius = deadRadius;
+        controller.height = deadHeight;
+    }
+
     //dodge character in direction facing:
     private void Dodge()
     {
@@ -485,6 +519,31 @@ public class ThirdPersonMovement : MonoBehaviour
         ResumeMotionCntrls();
 
         //set 'isBeingHurt' to false so cant open UI?
+    }
+
+    /// <summary>
+    /// Reset dead collider + char controller to before dead.
+    /// </summary>
+    public void ResetDeadColliders()
+    {
+        //deactivate dead collider
+        deadCollider.SetActive(false);
+
+        //reset dead char controller's changed vars
+        controller.center = ogCenter;
+        controller.radius = ogRadius;
+        controller.height = ogHeight;
+
+        //increase slope limit to avoid jitter w/ mid-air
+        //controller.slopeLimit = midAirSlopeLimit;
+
+        //lower step offset so dont land on surfaces higher than feet:
+        //controller.stepOffset = midAirStepOffset;
+
+        SetMidairColliders();
+
+        //set colliders to midair
+        Jump();
     }
 
     /*

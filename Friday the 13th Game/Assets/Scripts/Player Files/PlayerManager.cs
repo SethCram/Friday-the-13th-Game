@@ -45,6 +45,7 @@ public class PlayerManager : MonoBehaviourPunCallbacks
     private bool lostGame = false;
     private bool teleportPlayer = false;
     public Vector3 spectatorSpawn = new Vector3(0, 500, 0);
+    private bool prevDead = false;
 
     private CharacterAnimator characterAnimator;
 
@@ -444,9 +445,24 @@ public class PlayerManager : MonoBehaviourPunCallbacks
         return dead;
     }
 
+    /// <summary>
+    /// Set dead to what's passed in + reset dead collider if no longer dead.
+    /// </summary>
+    /// <param name="isDead"></param>
     public void SetDead(bool isDead)
     {
+        //set dead to passed in
         dead = isDead;
+
+        //if player set to not dead and was dead
+        if(!dead && prevDead)
+        {
+            //reset dead colliders
+            playerMovement.ResetDeadColliders();
+        }
+
+        //store state of death for nxt time
+        prevDead = dead;
     }
 
     #endregion Dead Methods

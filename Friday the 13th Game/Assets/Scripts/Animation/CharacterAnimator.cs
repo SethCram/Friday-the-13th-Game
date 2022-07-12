@@ -327,6 +327,9 @@ public class CharacterAnimator : MonoBehaviour
         //no longer dying
         dying = false;
 
+        //setup dead colliders
+        movement.DeadSetColliders();
+
         //set player as dead
         playerManager.SetDead(true);
 
