@@ -458,7 +458,18 @@ public class PlayerManager : MonoBehaviourPunCallbacks
         if(!dead && prevDead)
         {
             //reset dead colliders
-            playerMovement.ResetDeadColliders();
+            
+            //if network
+            if(PhotonNetwork.IsConnected)
+            {
+                playerMovement.photonView.RPC("ResetDeadColliders", RpcTarget.AllBuffered);
+            }
+            //if local
+            else
+            {
+                playerMovement.ResetDeadColliders();
+            }
+            
         }
 
         //store state of death for nxt time

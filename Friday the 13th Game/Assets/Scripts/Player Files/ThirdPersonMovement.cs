@@ -448,6 +448,7 @@ public class ThirdPersonMovement : MonoBehaviour
     /// <summary>
     /// Set colliders to dead vals.
     /// </summary>
+    [PunRPC]
     public void DeadSetColliders()
     {
         //activate dead collider
@@ -524,6 +525,7 @@ public class ThirdPersonMovement : MonoBehaviour
     /// <summary>
     /// Reset dead collider + char controller to before dead.
     /// </summary>
+    [PunRPC]
     public void ResetDeadColliders()
     {
         //deactivate dead collider
@@ -540,10 +542,11 @@ public class ThirdPersonMovement : MonoBehaviour
         //lower step offset so dont land on surfaces higher than feet:
         //controller.stepOffset = midAirStepOffset;
 
-        SetMidairColliders();
+        //make sure midair colliders come out for teleport
+        //SetMidairColliders();
 
         //set colliders to midair
-        Jump();
+        //Jump();
     }
 
     /*

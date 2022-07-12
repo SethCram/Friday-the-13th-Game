@@ -328,7 +328,17 @@ public class CharacterAnimator : MonoBehaviour
         dying = false;
 
         //setup dead colliders
-        movement.DeadSetColliders();
+
+        //network connected
+        if(PhotonNetwork.IsConnected)
+        {
+            movement.photonView.RPC("DeadSetColliders", RpcTarget.AllBuffered);
+        }
+        //local play
+        else
+        {
+            movement.DeadSetColliders();
+        }
 
         //set player as dead
         playerManager.SetDead(true);
