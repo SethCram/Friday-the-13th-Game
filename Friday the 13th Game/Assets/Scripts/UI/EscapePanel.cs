@@ -16,6 +16,9 @@ public class EscapePanel : MonoBehaviour
     {
         //tell to close escape menu:
         pauseUI.CloseEscapeMenu();
+
+        //enable player control
+        pauseUI.playerManager.EnablePlayerControl();
     }
 
     /// <summary>

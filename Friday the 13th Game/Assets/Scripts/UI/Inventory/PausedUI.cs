@@ -38,14 +38,8 @@ public class PausedUI : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //set children invisible by default:
-        foreach (Transform child in transform)
-        {
-            //incr num of childs
-            numOfChildren++;
-
-            child.gameObject.SetActive(false);
-        }
+        //set # of children panels
+        numOfChildren = CloseAllChildrenPanels();
     }
 
     // Update pause UI if buttons pressed and not other UI active:
@@ -84,18 +78,27 @@ public class PausedUI : MonoBehaviour
             //if inventory open:
             if(inventoryPanel.activeSelf)
             {
+                //close inventory
                 CloseInventory();
+
+                //re-enable player control:
+                playerManager.EnablePlayerControl();
             }
             //if inventory closed:
             else
             {
                 OpenInventory();
+
+                //disable player control:
+                playerManager.DisablePlayerControl();
             }
         }
         //if pressed escape button, escape panel not active, its accessible, and options panel not active:
         else if(Input.GetButtonDown("Escape") && !(escapePanel.activeSelf) && escape_UI_Accessible && !(optionsPanel.activeSelf))
         {
             OpenEscapeMenu();
+
+            playerManager.DisablePlayerControl();
         }
 
         //if inventory open + left click anywhere, try and destroy the dropdown:
@@ -140,6 +143,36 @@ public class PausedUI : MonoBehaviour
 
     #region Inventory Action Methods
 
+    /// <summary>
+    /// Close all children panels and allow accessibility to any of them
+    /// </summary>
+    /// <returns>number of children panels counted</returns>
+    public int CloseAllChildrenPanels()
+    {
+        int numberOfChildrenPanels = 0;
+
+        //set children invisible by default:
+        foreach (Transform child in transform)
+        {
+            //incr num of childs
+            numberOfChildrenPanels++;
+
+            child.gameObject.SetActive(false);
+        }
+
+        //other UI now accessible:
+        escape_UI_Accessible = true;
+
+        //inventory UI now accessible:
+        inventory_UI_Accessible = true;
+
+        //return number of children panels
+        return numberOfChildrenPanels;
+    }
+
+    /// <summary>
+    /// close inventory and destroy any remaining multi option menus
+    /// </summary>
     private void CloseInventory()
     {
         //close inventory:
@@ -147,9 +180,6 @@ public class PausedUI : MonoBehaviour
 
         //destroy any remaining multi option menus:
         DestroyMultiOptions();
-
-        //re-enable player control:
-        playerManager.EnablePlayerControl();
 
         //other UI now accessible:
         escape_UI_Accessible = true;
@@ -159,9 +189,6 @@ public class PausedUI : MonoBehaviour
     {
         //open inventory:
         inventoryPanel.SetActive(true);
-
-        //disable player control:
-        playerManager.DisablePlayerControl();
 
         //other UI is not accessible:
         escape_UI_Accessible = false;
@@ -176,8 +203,6 @@ public class PausedUI : MonoBehaviour
         //set escape panel active:
         escapePanel.SetActive(true);
 
-        playerManager.DisablePlayerControl();
-
         //other UI not accessible:
         inventory_UI_Accessible = false;
     }
@@ -186,8 +211,6 @@ public class PausedUI : MonoBehaviour
     public void CloseEscapeMenu()
     {
         escapePanel.SetActive(false);
-
-        playerManager.EnablePlayerControl();
 
         inventory_UI_Accessible = true;
     }
