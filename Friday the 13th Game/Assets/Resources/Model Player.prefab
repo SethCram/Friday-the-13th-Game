@@ -895,6 +895,7 @@ MonoBehaviour:
   topOverlayUIObject: {fileID: 0}
   minimapUI: {fileID: 0}
   spectatorSpawn: {x: 0, y: 500, z: 0}
+  pauseUI: {fileID: 0}
 --- !u!114 &7413788013251121925
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -920,6 +921,7 @@ MonoBehaviour:
   statApplication: {fileID: 7413788013251121929}
   topmostUIPrefab: {fileID: 5772637367856045314, guid: ebed5b14def10544c8e5482f2ed0f42f,
     type: 3}
+  characterStats: {fileID: 7413788013251121928}
 --- !u!114 &832983379651791480
 MonoBehaviour:
   m_ObjectHideFlags: 0

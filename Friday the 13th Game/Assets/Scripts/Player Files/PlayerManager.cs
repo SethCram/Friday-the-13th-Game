@@ -48,6 +48,8 @@ public class PlayerManager : MonoBehaviourPunCallbacks
     private bool prevDead = false;
 
     private CharacterAnimator characterAnimator;
+    [HideInInspector]
+    public PausedUI pauseUI;
 
     #endregion
 
@@ -93,7 +95,7 @@ public class PlayerManager : MonoBehaviourPunCallbacks
     }
 
     /// <summary>
-    /// Fixed update used for teleporting player
+    /// Fixed update used for respawning player
     /// ALWAYS USE FOR PHYSICS
     /// </summary>
     private void FixedUpdate()
@@ -101,19 +103,8 @@ public class PlayerManager : MonoBehaviourPunCallbacks
         //if lost game, should teleport player and a counselor
         if( lostGame && teleportPlayer && tag == "Player" )
         {
-            //teleport to spectator spawn
-            transform.position = spectatorSpawn;
-
-            //dont teleport player again
-            SetTeleportPlayer( false );
-
-            //allow player to die again
-            SetLostGame( false );
-
-            characterAnimator.SetAnimDead(false);
-
-            //allow player control
-            EnablePlayerControl();
+            //respawn player 
+            RespawnPlayer();
         }
     }
 
@@ -306,6 +297,8 @@ public class PlayerManager : MonoBehaviourPunCallbacks
 
         //wait till drop all equipment
         while(!equipmentManager.DropEquipment() );
+
+        Debug.Log("All items dropped in " + SceneManager.GetActiveScene().name);
     }
 
     #endregion
@@ -361,6 +354,30 @@ public class PlayerManager : MonoBehaviourPunCallbacks
     #endregion
 
     #region Game Over
+
+    /// <summary>
+    /// respawn player thru teleporting player, allowing player to die again, giving them control and closing menus
+    /// ALWAYS CALL FROM FIXED UPDATE (bc teleport)
+    /// </summary>
+    private void RespawnPlayer()
+    {
+        //teleport to spectator spawn
+        transform.position = spectatorSpawn;
+
+        //dont teleport player again
+        SetTeleportPlayer(false);
+
+        //allow player to die again
+        SetLostGame(false);
+
+        characterAnimator.SetAnimDead(false);
+
+        //allow player control
+        EnablePlayerControl();
+
+        //tell to close all menus
+        pauseUI.CloseAllChildrenPanels();
+    }
 
     public void Lose()
     {

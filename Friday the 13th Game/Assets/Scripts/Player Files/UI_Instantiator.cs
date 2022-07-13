@@ -36,6 +36,8 @@ public class UI_Instantiator : MonoBehaviour
 
     public GameObject topmostUIPrefab;
 
+    public CharacterStats characterStats;
+
     #endregion
 
     // awake called before start, and sometimes we need comps in start:
@@ -59,7 +61,7 @@ public class UI_Instantiator : MonoBehaviour
         pausedUICallbacks = pausedUICanvasPrefab.GetComponent<PausedUICallbacks>();
         pausedUICallbacks.playerInventory = GetComponent<Inventory>();
         pausedUICallbacks.equipManager = GetComponent<EquipmentManager>();
-        pausedUICallbacks.charStats = GetComponent<CharacterStats>();
+        pausedUICallbacks.charStats = characterStats;
         pausedUICallbacks.statApply = statApplication; //GetComponent<StatApplication>();
 
         //start paused canvas as inactive:
@@ -102,7 +104,7 @@ public class UI_Instantiator : MonoBehaviour
         playerIconObj.GetComponent<SpriteRenderer>().sprite = playerIcon;
 
         //fill character stats overlay UI
-        GetComponent<CharacterStats>().overlayUI = overlayUICopy;
+        characterStats.overlayUI = overlayUICopy;
 
         //fill stat application overlay UI
         statApplication.overlayUI = overlayUICopy;
@@ -115,6 +117,9 @@ public class UI_Instantiator : MonoBehaviour
         playerManager.topOverlayUIObject = topmostUICopy;
 
         //fill out game over's player field
-        topmostUICopy.GetComponent<GameOver>().player = transform; 
+        topmostUICopy.GetComponent<GameOver>().player = transform;
+
+        //fill character stats
+        playerManager.pauseUI = pausedUICopy.GetComponent<PausedUI>();
     }
 }

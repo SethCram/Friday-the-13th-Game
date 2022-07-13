@@ -245,8 +245,6 @@ public class CharacterStats : MonoBehaviourPun
             //drop all player loot now that dead:
             playerManager.DropEverything();
 
-            Debug.Log("All items dropped in " + SceneManager.GetActiveScene().name);
-
         }
         else
         {
