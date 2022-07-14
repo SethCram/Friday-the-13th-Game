@@ -7,7 +7,7 @@ assignees: SethCram
 
 ---
 
-**Describe the solution you'd like**
+**Describe the change you'd like**
 - 
 
 **Describe alternatives you've considered**
@@ -18,4 +18,4 @@ assignees: SethCram
 
 **Development**
 - [ ] 
-  -
+  - ...
