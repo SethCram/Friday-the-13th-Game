@@ -9,6 +9,7 @@ public class GameOver : MonoBehaviour
 {
     public GameObject gameOverPanel;
     public TMP_Text titleText;
+    public TMP_Text afterDeathActionBtnTxtObj;
 
     [HideInInspector]
     public Transform player; //fill in UI instantiator
@@ -25,6 +26,19 @@ public class GameOver : MonoBehaviour
         if( player != null)
         {
             playerManager = player.GetComponent<PlayerManager>();
+        }
+
+        //if in game lobby:
+        if (SceneManager.GetActiveScene().name == "Game Lobby")
+        {
+            //set btn to respawn 
+            afterDeathActionBtnTxtObj.text = "RESPAWN";
+        }
+        //if not in game lobby
+        else
+        {
+            //set btn to spectate
+            afterDeathActionBtnTxtObj.text = "SPECTATE";
         }
 
     }

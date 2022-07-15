@@ -261,7 +261,7 @@ GameObject:
   - component: {fileID: 3699059827753006027}
   - component: {fileID: 3876977146314642326}
   m_Layer: 5
-  m_Name: SpectateButton
+  m_Name: Spectate/RespawnButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -509,6 +509,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameOverPanel: {fileID: 4554155779125943609}
   titleText: {fileID: 4554155779014499744}
+  afterDeathActionBtnTxtObj: {fileID: 6332626921242487847}
   player: {fileID: 0}
 --- !u!1 &6899225181426183950
 GameObject:
@@ -872,7 +873,7 @@ MonoBehaviour:
   m_enableAutoSizing: 1
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 1
+  m_fontStyle: 17
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
