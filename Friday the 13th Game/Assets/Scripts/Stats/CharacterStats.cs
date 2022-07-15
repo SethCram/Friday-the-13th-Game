@@ -69,15 +69,19 @@ public class CharacterStats : MonoBehaviourPun
 
     private void Update()
     {
-        //test key
+        /*
+        //test keys
         if (Input.GetKeyDown(KeyCode.T))
         {
             //test taking dmg
-            //TakeDamage(5);
-
+            TakeDamage(5);
+        }
+        if(Input.GetKeyDown(KeyCode.K))
+        { 
             //kill player
             Die();
         }
+        */
     }
 
     #endregion
@@ -173,6 +177,20 @@ public class CharacterStats : MonoBehaviourPun
     //take damage based on enemy atk and my def:
     public void TakeDamage(int dmgDealt)
     {
+        bool notSupposedToTakeDmg;
+
+        //set whether not supposed to take dmg based off if dead or not
+        notSupposedToTakeDmg = playerManager.GetDead();
+
+        //if not supposed to take dmg
+        if( notSupposedToTakeDmg )
+        {
+            Debug.LogAssertion("Damage not taken because " + "player dead.");
+
+            //dont take dmg
+            return;
+        }
+
         if (PhotonNetwork.IsConnected)
         {
             //tell all of these clients to take dmg
