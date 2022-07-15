@@ -34,7 +34,7 @@ public class CharacterStats : MonoBehaviourPun
     //inited beforehand:
     public PlayerManager playerManager;
 
-    private int prevHP;
+    //private int prevHP;
     [HideInInspector]
     public OverlayUI overlayUI;
 
@@ -56,9 +56,9 @@ public class CharacterStats : MonoBehaviourPun
                //print(statDict[stat.name].name);
         }
 
-        currHealth = maxHealth;
+        SetHealthToMax();
 
-        prevHP = currHealth;
+        //prevHP = currHealth;
 
         //subscribe number method
         OnHealthChangedCallback += SpawnNumbers;
@@ -85,6 +85,14 @@ public class CharacterStats : MonoBehaviourPun
     }
 
     #endregion
+
+    /// <summary>
+    /// sets current HP to max HP
+    /// </summary>
+    public void SetHealthToMax()
+    {
+        currHealth = maxHealth;
+    }
 
     //call overlay UI health slider to update it
     public void CallHealthSlider(int maxHP, int currHP)
@@ -255,7 +263,7 @@ public class CharacterStats : MonoBehaviourPun
         if (GetComponent<CharacterAnimator>() != null)
         {
             //anim dying over a time
-            StartCoroutine( GetComponent<CharacterAnimator>().Die() );
+            StartCoroutine( charAnimator.Die() );
 
             //disable player control (also unlocks cursor so bad)
             // playerManager.DisablePlayerControl();

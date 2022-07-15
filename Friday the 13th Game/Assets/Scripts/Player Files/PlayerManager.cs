@@ -51,6 +51,8 @@ public class PlayerManager : MonoBehaviourPunCallbacks
     [HideInInspector]
     public PausedUI pauseUI;
 
+    public CharacterStats characterStats { get; private set; }
+
     #endregion
 
     #region Unity Methods
@@ -69,7 +71,7 @@ public class PlayerManager : MonoBehaviourPunCallbacks
         }
 
         characterAnimator = GetComponent<CharacterAnimator>();
-
+        characterStats = GetComponent<CharacterStats>();
     }
 
     private void Update()
@@ -377,6 +379,9 @@ public class PlayerManager : MonoBehaviourPunCallbacks
 
         //tell to close all menus
         pauseUI.CloseAllChildrenPanels();
+
+        //reset hp to max
+        characterStats.SetHealthToMax();
     }
 
     public void Lose()
