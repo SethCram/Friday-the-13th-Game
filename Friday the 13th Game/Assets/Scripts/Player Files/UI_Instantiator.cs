@@ -40,7 +40,10 @@ public class UI_Instantiator : MonoBehaviour
 
     #endregion
 
-    // awake called before start, and sometimes we need comps in start:
+    /// <summary>
+    /// Link UI scripts, player scripts, and game manager to both
+    /// awake called before start, and sometimes we need comps filled in start
+    /// </summary>
     void Awake()
     {
         //if this obj isnt mine and we connected to the photon network:
@@ -121,5 +124,8 @@ public class UI_Instantiator : MonoBehaviour
 
         //fill character stats
         playerManager.pauseUI = pausedUICopy.GetComponent<PausedUI>();
+
+        //fill out game manager
+        GameManager.Instance.ourPlayer = gameObject;
     }
 }

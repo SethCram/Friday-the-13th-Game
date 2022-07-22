@@ -69,7 +69,13 @@ public class CharacterStats : MonoBehaviourPun
 
     private void Update()
     {
-        /*
+        //if not my photon view + we're on the network
+        if(!photonView.IsMine && PhotonNetwork.IsConnected)
+        {
+            //dont deal dmg or die
+            return;
+        }
+
         //test keys
         if (Input.GetKeyDown(KeyCode.T))
         {
@@ -81,7 +87,7 @@ public class CharacterStats : MonoBehaviourPun
             //kill player
             Die();
         }
-        */
+        
     }
 
     #endregion
@@ -228,13 +234,7 @@ public class CharacterStats : MonoBehaviourPun
         }
 
         int damageTaken = dmgDealt;
-        float damageFloatPH;
-
-        //factor def into damage calculation:
-        damageFloatPH = damageTaken;
-        damageFloatPH -= damageFloatPH * (statDict["Defense"].GetValue() * 0.04f); //max damage blocked due to def should be 80%
-        damageTaken = (int)damageFloatPH;
-
+        damageTaken = CalculateDamageUsingDefense( damageTaken );
 
         //makes sure damage doesn't go negative and heal:
         damageTaken = Mathf.Clamp(damageTaken, 1, int.MaxValue);
@@ -255,6 +255,20 @@ public class CharacterStats : MonoBehaviourPun
             //die locally
             Die();
         }
+    }
+
+    /// <summary>
+    /// Calculate damage taken given the initial amt factored in with our defense.
+    /// </summary>
+    /// <param name="initialDamageTaken"></param>
+    /// <returns></returns>
+    public int CalculateDamageUsingDefense( int initialDamageTaken )
+    {
+        float damageFloatPH;
+
+        damageFloatPH = initialDamageTaken;
+        damageFloatPH -= damageFloatPH * (statDict["Defense"].GetValue() * 0.04f); //max damage blocked due to def should be 80%
+        return (int)damageFloatPH;
     }
 
     public virtual void Die()
