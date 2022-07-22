@@ -43,9 +43,13 @@ public class PlayerManager : MonoBehaviourPunCallbacks
     //respawn/death vars
     private bool dead = false;
     private bool lostGame = false;
+    public bool wonGame { get; private set; } = false;
     private bool teleportPlayer = false;
     public Vector3 spectatorSpawn = new Vector3(0, 500, 0);
     private bool prevDead = false;
+    private string winText = "Congratulations, You Win!";
+    private string loseText = "You Lose";
+    private string gameOverText = "Game Over";
 
     private CharacterAnimator characterAnimator;
     [HideInInspector]
@@ -76,24 +80,7 @@ public class PlayerManager : MonoBehaviourPunCallbacks
 
     private void Update()
     {
-        /*
-        //if dead & any key pressed
-        if( dead && Input.anyKeyDown )
-        {
-            //reactivate game over screen
-            gameOver.gameOverPanel.SetActive(false);
 
-            //no longer dead
-            dead = false;
-
-            //enable player cntrl
-            EnablePlayerControl();
-
-            //try to tele player
-            teleportPlayer = true;
-
-        }
-        */
     }
 
     /// <summary>
@@ -102,8 +89,8 @@ public class PlayerManager : MonoBehaviourPunCallbacks
     /// </summary>
     private void FixedUpdate()
     {
-        //if lost game, should teleport player and a counselor
-        if( lostGame && teleportPlayer && tag == "Player" )
+        //if should tele player and they're a counselor (redundant 2nd check?)
+        if( teleportPlayer && tag == "Player" )
         {
             //respawn player 
             RespawnPlayer();
@@ -117,6 +104,11 @@ public class PlayerManager : MonoBehaviourPunCallbacks
     public void SetLostGame(bool isGameLost)
     {
         lostGame = isGameLost;
+    }
+
+    public bool GetLostGame()
+    {
+        return lostGame;
     }
 
     public void SetTeleportPlayer( bool shouldTeleport)
@@ -369,9 +361,6 @@ public class PlayerManager : MonoBehaviourPunCallbacks
         //dont teleport player again
         SetTeleportPlayer(false);
 
-        //allow player to die again
-        SetLostGame(false);
-
         characterAnimator.SetAnimDead(false);
 
         //allow player control
@@ -384,67 +373,112 @@ public class PlayerManager : MonoBehaviourPunCallbacks
         characterStats.SetHealthToMax();
     }
 
-    public void Lose()
+    /// <summary>
+    /// show game over + death screen w/ only main menu btn
+    /// </summary>
+    public void GenericGameOver()
     {
-        //GameManager gameManager = FindObjectOfType<GameManager>();
+        ShowDeathScreen(gameOverText);
 
+        //show only the main menu btn
+        gameOver.ShowOnlyMainMenuBtn();
+    }
+
+    /// <summary>
+    /// lose game thru showing death screen + setting lose var
+    /// only runs if haven't already won or lost game + game over
+    /// </summary>
+    [PunRPC]
+    public void Lose(bool isGameOver)
+    {
+        //if already lost or won game + game's over
+        if ( (wonGame || lostGame) && isGameOver)
+        {
+            //reroute to generic game over
+            GenericGameOver();
+            return;
+        }
+
+        //if game over
+        if (isGameOver)
+        {
+            //show lose game over screen
+            ShowDeathScreen(gameOverText + " " + loseText);
+
+            //show only the main menu btn
+            gameOver.ShowOnlyMainMenuBtn();
+        }
+        //if not game over
+        else
+        {
+            //show lose game over screen
+            ShowDeathScreen(loseText);
+        }
+
+        //GameManager gameManager = FindObjectOfType<GameManager>();
+        /*
         if (GameManager.Instance == null)
         {
             Debug.LogError("Game manager null, so lose() failed.");
             return;
         }
+        */
 
         //store that lost 
-        lostGame = true;
-
-        //if counselor loses
-        if (tag == "Player")
-        {
-            Debug.Log("Counselor dead");
-
-            //incr # of dead counselors (locally)
-            GameManager.Instance.RPC_ChangeCounselorsDead(GameManager.Instance.deadCounselors + 1);
-
-            //if on network
-            if (PhotonNetwork.IsConnected)
-            {
-                //if all players besides 1 or actually all dead 
-                if (GameManager.Instance.deadCounselors >= PhotonNetwork.CurrentRoom.PlayerCount - 1)
-                {
-                    //boot player back to main menu 
-                }
-                else
-                {
-
-                }
-            }
-            //not on network
-            else
-            {
-                //boot player back to main menu 
-            }
-
-        }
-        //if jason loses
-        else if( tag == "Enemy" )
-        {
-            //tell all counselors they won
-        }
+        SetLostGame(true);
     }
 
-    public void Win()
+    /// <summary>
+    /// win game thru displaying death screen
+    /// if game over don't allow respawn
+    /// </summary>
+    /// <param name="isGameOver"></param>
+    [PunRPC]
+    public void Win(bool isGameOver)
     {
+        //if already lost or won game + game over
+        if( (wonGame || lostGame) && isGameOver )
+        {
+            //reroute to generic game over
+            GenericGameOver();
+            return;
+        }
 
+        //if game over
+        if(isGameOver)
+        {
+           //show win game over screen
+           ShowDeathScreen(gameOverText + " " + winText);
+
+           //show only the main menu btn
+           gameOver.ShowOnlyMainMenuBtn();
+        }
+        //if not game over
+        else
+        {
+            //show win screen
+            ShowDeathScreen(winText);
+        }
+
+        wonGame = true;
     }
 
-    public void ShowGameOver(string gameOverTxt)
+    /// <summary>
+    /// show given game over text 
+    /// </summary>
+    /// <param name="gameOverTxt"></param>
+    public void ShowDeathScreen(string gameOverTxt)
     {
+        
         //not my photon view + connected to network
         if (!photonView.IsMine && PhotonNetwork.IsConnected)
         {
             //game over not shown
-            Debug.Log("game over not shown");
-            return;
+            //Debug.LogAssertion("game over not shown bc not my photon view");
+            //return;
+
+            //find game over script (should only be one)
+            gameOver = FindObjectOfType<GameOver>();
         }
 
         //reactivate game over screen

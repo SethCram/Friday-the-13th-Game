@@ -10,6 +10,7 @@ public class GameOver : MonoBehaviour
     public GameObject gameOverPanel;
     public TMP_Text titleText;
     public TMP_Text afterDeathActionBtnTxtObj;
+    public GameObject afterDeathActionBtn;
 
     [HideInInspector]
     public Transform player; //fill in UI instantiator
@@ -43,14 +44,20 @@ public class GameOver : MonoBehaviour
 
     }
 
-
+    /// <summary>
+    /// show only menu btn thru disabling after death action btn
+    /// </summary>
+    public void ShowOnlyMainMenuBtn()
+    {
+        afterDeathActionBtn.SetActive(false);
+    }
 
     public void UpdateTitleText( string newTitle )
     {
         titleText.text = newTitle;
     }
 
-    //allow player to spectate
+    //allow player to spectate thru btn
     public void Spectate()
     {
         //deactivate game over screen
