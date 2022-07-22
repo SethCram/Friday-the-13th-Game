@@ -13,7 +13,11 @@ public class SpawnPlayers : MonoBehaviourPunCallbacks
     public GameObject playerPrefab;
     public Transform jasonSpawn;
     public Transform counselorSpawn;
+
     public Transform customLocalSpawn;
+    public bool spawnLocalAsJasonTagged = false;
+
+    public bool spawnedPlayer { private set; get; }
 
     #endregion
 
@@ -87,10 +91,16 @@ public class SpawnPlayers : MonoBehaviourPunCallbacks
         else
         {
             //create a local player as counselor:
-            Instantiate(playerPrefab, 
-                customLocalSpawn.position, 
-                playerPrefab.transform.rotation);
+            GameObject localPlayer =  Instantiate(playerPrefab, 
+                                        customLocalSpawn.position, 
+                                        playerPrefab.transform.rotation);
 
+            if (spawnLocalAsJasonTagged)
+            {
+                localPlayer.tag = "Enemy";
+            }
+
+            spawnedPlayer = true;
         }
     }
 
@@ -141,6 +151,11 @@ public class SpawnPlayers : MonoBehaviourPunCallbacks
                 jasonSpawn.position,
                 playerPrefab.transform.rotation);
             spawnedPlayer.tag = "Enemy";
+
+            //give jason player a special identifier 
+            ExitGames.Client.Photon.Hashtable customProperties = new ExitGames.Client.Photon.Hashtable();
+            customProperties.Add((object)"isJason", "True");
+            PhotonNetwork.SetPlayerCustomProperties(customProperties);
         }
         //if not jason
         else
@@ -148,7 +163,13 @@ public class SpawnPlayers : MonoBehaviourPunCallbacks
             PhotonNetwork.Instantiate(playerPrefab.name,
                 counselorSpawn.position + Vector3.right * index,
                 playerPrefab.transform.rotation);
+
+            ExitGames.Client.Photon.Hashtable customProperties = new ExitGames.Client.Photon.Hashtable();
+            customProperties.Add((object)"isJason", "False");
+            PhotonNetwork.SetPlayerCustomProperties(customProperties);
         }
+
+        spawnedPlayer = true;
     }
 
     #endregion
@@ -156,7 +177,7 @@ public class SpawnPlayers : MonoBehaviourPunCallbacks
     /// <summary>
     /// close off room to network
     /// </summary>
-    public void NetworkCloseRoom()
+    private void NetworkCloseRoom()
     {
         //if connected + master client
         if(PhotonNetwork.IsConnected && PhotonNetwork.IsMasterClient)

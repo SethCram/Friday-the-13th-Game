@@ -70,6 +70,9 @@ MonoBehaviour:
   - RPC_IncrPlayersGameReady
   - DeadSetColliders
   - ResetDeadColliders
+  - Win
+  - Lose
+  - RPC_IncrCounselorsDead
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1
