@@ -303,12 +303,10 @@ public class GameManager : MonoBehaviourPun
     /// <summary>
     /// RPC to incr # of dead counselors
     /// </summary>
-    /// <param name="newDeadCounselorsCount"></param>
     [PunRPC]
     public void RPC_IncrCounselorsDead()
     {
         deadCounselors++;
-
     }
 
     /// <summary>

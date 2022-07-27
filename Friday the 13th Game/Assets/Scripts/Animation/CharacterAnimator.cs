@@ -359,7 +359,7 @@ public class CharacterAnimator : MonoBehaviour
             if (PhotonNetwork.IsConnected)
             {
                 //incr # of dead counselors for everyone present + later joining
-                photonView.RPC("RPC_IncrCounselorsDead", RpcTarget.AllBuffered);
+                GameManager.Instance.photonView.RPC("RPC_IncrCounselorsDead", RpcTarget.AllBuffered);
 
                 //if all players besides 1 or actually all dead 
                 if (GameManager.Instance.deadCounselors >= PhotonNetwork.CurrentRoom.PlayerCount - 1)
