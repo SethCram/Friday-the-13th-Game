@@ -348,6 +348,9 @@ public class CharacterAnimator : MonoBehaviour
         //set player as dead
         //playerManager.SetDead(true);
 
+        //store that player lost 
+        //playerManager.SetLostGame(true);
+
         //if counselor loses
         if (tag == "Player")
         {
@@ -364,8 +367,6 @@ public class CharacterAnimator : MonoBehaviour
                 //if all players besides 1 or actually all dead 
                 if (GameManager.Instance.deadCounselors >= PhotonNetwork.CurrentRoom.PlayerCount - 1)
                 {
-                    //tell all counselors they lost + jason he won + game is over (need to exclude jason + tell him he won)
-                    //photonView.RPC("Lose", RpcTarget.All, true);
 
                     object isJason = false;
 
@@ -407,8 +408,8 @@ public class CharacterAnimator : MonoBehaviour
                 //incr dead counselor count
                 GameManager.Instance.RPC_IncrCounselorsDead();
 
-                //tell local player they lost + game over
-                playerManager.Lose(isGameOver: true);
+                //tell local player they lost but game not over (for testing spectator mode)
+                playerManager.Lose(isGameOver: false);
             }
 
         }

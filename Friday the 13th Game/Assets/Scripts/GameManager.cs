@@ -59,6 +59,10 @@ public class GameManager : MonoBehaviourPun
     private bool musicShouldPlay = true;
     private AudioSource audioSrc;
 
+    //game success or failure 
+    private bool lostGame = false;
+    public bool wonGame { get; set; } = false;
+
     #endregion Vars
 
     #region Singleton
@@ -321,6 +325,20 @@ public class GameManager : MonoBehaviourPun
     }
 
     #endregion RPC's
+
+    #region Setters & Getters
+
+    public void SetLostGame(bool isGameLost)
+    {
+        lostGame = isGameLost;
+    }
+
+    public bool GetLostGame()
+    {
+        return lostGame;
+    }
+
+    #endregion Setters & Getters
 
     #region State Methods
 

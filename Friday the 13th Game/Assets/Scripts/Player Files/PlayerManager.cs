@@ -42,8 +42,6 @@ public class PlayerManager : MonoBehaviourPunCallbacks
 
     //respawn/death vars
     private bool dead = false;
-    private bool lostGame = false;
-    public bool wonGame { get; private set; } = false;
     private bool teleportPlayer = false;
     public Vector3 spectatorSpawn = new Vector3(0, 500, 0);
     private bool prevDead = false;
@@ -89,8 +87,8 @@ public class PlayerManager : MonoBehaviourPunCallbacks
     /// </summary>
     private void FixedUpdate()
     {
-        //if should tele player and they're a counselor (redundant 2nd check?)
-        if( teleportPlayer && tag == "Player" )
+        //if should tele player //and they're a counselor (redundant 2nd check?)
+        if( teleportPlayer ) //&& tag == "Player" )
         {
             //respawn player 
             RespawnPlayer();
@@ -100,16 +98,6 @@ public class PlayerManager : MonoBehaviourPunCallbacks
     #endregion
 
     #region Setters
-
-    public void SetLostGame(bool isGameLost)
-    {
-        lostGame = isGameLost;
-    }
-
-    public bool GetLostGame()
-    {
-        return lostGame;
-    }
 
     public void SetTeleportPlayer( bool shouldTeleport)
     {
@@ -392,7 +380,7 @@ public class PlayerManager : MonoBehaviourPunCallbacks
     public void Lose(bool isGameOver)
     {
         //if already lost or won game + game's over
-        if ( (wonGame || lostGame) && isGameOver)
+        if ( (GameManager.Instance.wonGame || GameManager.Instance.GetLostGame() ) && isGameOver)
         {
             //reroute to generic game over
             GenericGameOver();
@@ -425,7 +413,7 @@ public class PlayerManager : MonoBehaviourPunCallbacks
         */
 
         //store that lost 
-        SetLostGame(true);
+        GameManager.Instance.SetLostGame(true);
     }
 
     /// <summary>
@@ -437,7 +425,7 @@ public class PlayerManager : MonoBehaviourPunCallbacks
     public void Win(bool isGameOver)
     {
         //if already lost or won game + game over
-        if( (wonGame || lostGame) && isGameOver )
+        if( (GameManager.Instance.wonGame || GameManager.Instance.GetLostGame() ) && isGameOver )
         {
             //reroute to generic game over
             GenericGameOver();
@@ -460,7 +448,7 @@ public class PlayerManager : MonoBehaviourPunCallbacks
             ShowDeathScreen(winText);
         }
 
-        wonGame = true;
+        GameManager.Instance.wonGame = true;
     }
 
     /// <summary>
