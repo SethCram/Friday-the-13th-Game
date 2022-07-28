@@ -348,22 +348,32 @@ public class CharacterAnimator : MonoBehaviour
         //if in the game scene
         if( GameManager.Instance.currentScene == GameManager.CurrentScene.GAME)
         {
-            //if counselor loses
-            if (tag == "Player")
+            //if lost or won game already
+            if( GameManager.Instance.wonGame || GameManager.Instance.GetLostGame() )
             {
-                CounselorDied();
+                //show generic death screen only locally
+                playerManager.GenericDeathScreen();
             }
-            //if Jason died
-            else if (tag == "Enemy")
+            //if haven't died once yet
+            else
             {
-                JasonDied();
+                //if counselor loses
+                if (tag == "Player")
+                {
+                    CounselorDied();
+                }
+                //if Jason died
+                else if (tag == "Enemy")
+                {
+                    JasonDied();
+                }
             }
         }
         //if in game lobby scene
         else if ( GameManager.Instance.currentScene == GameManager.CurrentScene.GAME_LOBBY )
         {
-            //show death screen 
-            playerManager.ShowDeathScreen("You Died");
+            //show generic death screen 
+            playerManager.GenericDeathScreen();
         }
     }
 

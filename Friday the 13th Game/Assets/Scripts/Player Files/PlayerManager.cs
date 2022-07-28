@@ -45,9 +45,10 @@ public class PlayerManager : MonoBehaviourPunCallbacks
     private bool teleportPlayer = false;
     public Vector3 spectatorSpawn = new Vector3(0, 500, 0);
     private bool prevDead = false;
-    private string winText = "Congratulations, You Win!";
-    private string loseText = "You Lose";
-    private string gameOverText = "Game Over";
+    private const string winText = "Congratulations, You Win!";
+    private const string loseText = "You Lose";
+    private const string gameOverText = "Game Over";
+    private const string dieText = "You Died";
 
     private CharacterAnimator characterAnimator;
     [HideInInspector]
@@ -390,6 +391,14 @@ public class PlayerManager : MonoBehaviourPunCallbacks
     }
 
     /// <summary>
+    /// show death screen w/ generic death txt
+    /// </summary>
+    public void GenericDeathScreen()
+    {
+        ShowDeathScreen(dieText);
+    }
+
+    /// <summary>
     /// lose game thru showing death screen + setting lose var
     /// only runs if haven't already won or lost game + game over
     /// </summary>
@@ -499,7 +508,7 @@ public class PlayerManager : MonoBehaviourPunCallbacks
 
     #endregion
 
-    #region Dead Methods
+    #region Dead Get&Set
 
     public bool GetDead()
     {
