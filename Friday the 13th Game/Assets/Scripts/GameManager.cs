@@ -33,8 +33,6 @@ public class GameManager : MonoBehaviourPun
     private bool jasonLeft = false;
 
     private string currSceneName;
-    private bool notGameScene;
-    private bool gameLobbyScene;
 
     //state mach:
     public enum State { MENU, INIT, PLAY, LOADLEVEL, GAMEOVER, PAUSE, SPECTATE};
@@ -152,9 +150,6 @@ public class GameManager : MonoBehaviourPun
 
     private void Start()
     {
-        
-        notGameScene = currSceneName != "Game";
-        gameLobbyScene = currSceneName == "Game Lobby"; 
 
         //if not starting in the lobby
         if ( currentScene != CurrentScene.LOBBY )

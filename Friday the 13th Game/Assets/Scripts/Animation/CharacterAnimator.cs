@@ -345,89 +345,108 @@ public class CharacterAnimator : MonoBehaviour
             movement.DeadSetColliders();
         }
 
-        //set player as dead
-        //playerManager.SetDead(true);
-
-        //store that player lost 
-        //playerManager.SetLostGame(true);
-
-        //if counselor loses
-        if (tag == "Player")
+        //if in the game scene
+        if( GameManager.Instance.currentScene == GameManager.CurrentScene.GAME)
         {
-            Debug.Log("Counselor dead");
-
-            
-
-            //if on network
-            if (PhotonNetwork.IsConnected)
+            //if counselor loses
+            if (tag == "Player")
             {
-                //incr # of dead counselors for everyone present + later joining
-                GameManager.Instance.photonView.RPC("RPC_IncrCounselorsDead", RpcTarget.AllBuffered);
-
-                //if all players besides 1 or actually all dead 
-                if (GameManager.Instance.deadCounselors >= PhotonNetwork.CurrentRoom.PlayerCount - 1)
-                {
-
-                    object isJason = false;
-
-                    //walk thru players
-                    foreach (Player player in PhotonNetwork.PlayerList)
-                    {
-                        //determine if player is jason
-                        player.CustomProperties.TryGetValue((object)"isJason", out isJason);
-
-                        Debug.LogAssertion("isJason = " + isJason.ToString());
-
-                        //if player is jason
-                        if ( GameManager.Instance.SameString_IgnoreCase( isJason.ToString(), "True") )
-                        {
-                            //tell player they won bc all counselors dead
-                            photonView.RPC("Win", player, true);
-                        }
-                        //if player not jason
-                        else if( GameManager.Instance.SameString_IgnoreCase(isJason.ToString(), "False") )
-                        {
-                            //tell player they lost bc all counselors dead
-                            photonView.RPC("Lose", player, true);
-                        }
-                        
-                    }
-
-                    //should also do this in Update() incase someone leaves
-                }
-                //not all couselors dead
-                else
-                {
-                    //tell counselor they lost but game not over
-                    playerManager.Lose(isGameOver:false);
-                }
+                CounselorDied();
             }
-            //not on network
+            //if Jason died
+            else if (tag == "Enemy")
+            {
+                JasonDied();
+            }
+        }
+        //if in game lobby scene
+        else if ( GameManager.Instance.currentScene == GameManager.CurrentScene.GAME_LOBBY )
+        {
+            //show death screen 
+            playerManager.ShowDeathScreen("You Died");
+        }
+    }
+
+    /// <summary>
+    /// When counselor dies, incr dead counselors + if all are dead game over
+    /// </summary>
+    private void CounselorDied()
+    {
+        Debug.Log("Counselor dead");
+
+        //if on network
+        if (PhotonNetwork.IsConnected)
+        {
+            //incr # of dead counselors for everyone present + later joining
+            GameManager.Instance.photonView.RPC("RPC_IncrCounselorsDead", RpcTarget.AllBuffered);
+
+            //if all players besides 1 or actually all dead 
+            if (GameManager.Instance.deadCounselors >= PhotonNetwork.CurrentRoom.PlayerCount - 1)
+            {
+
+                object isJason = false;
+
+                //walk thru players
+                foreach (Player player in PhotonNetwork.PlayerList)
+                {
+                    //determine if player is jason
+                    player.CustomProperties.TryGetValue((object)"isJason", out isJason);
+
+                    Debug.LogAssertion("isJason = " + isJason.ToString());
+
+                    //if player is jason
+                    if ( GameManager.Instance.SameString_IgnoreCase( isJason.ToString(), "True") )
+                    {
+                        //tell player they won bc all counselors dead
+                        photonView.RPC("Win", player, true);
+                    }
+                    //if player not jason
+                    else if( GameManager.Instance.SameString_IgnoreCase(isJason.ToString(), "False") )
+                    {
+                        //tell player they lost bc all counselors dead
+                        photonView.RPC("Lose", player, true);
+                    }
+                    
+                }
+
+                //should also do this in Update() incase someone leaves
+            }
+            //not all couselors dead
             else
             {
-                //incr dead counselor count
-                GameManager.Instance.RPC_IncrCounselorsDead();
-
-                //tell local player they lost but game not over (for testing spectator mode)
-                playerManager.Lose(isGameOver: false);
+                //tell counselor they lost but game not over
+                playerManager.Lose(isGameOver:false);
             }
-
         }
-        //if Jason died
-        else if (tag == "Enemy")
+        //not on network
+        else
         {
-            //if on network
-            if( PhotonNetwork.IsConnected)
-            {
-                //tell all counselors they won + game is over
-                photonView.RPC("Win", RpcTarget.Others, true);
-            }
+            //incr dead counselor count
+            GameManager.Instance.RPC_IncrCounselorsDead();
 
-            //make jason player lose bc died + game over
-            playerManager.Lose(isGameOver: true);
-
-            //should do this in update incase jason leaves
+            //tell local player they lost but game not over (for testing spectator mode)
+            playerManager.Lose(isGameOver: false);
         }
+    }
+
+    /// <summary>
+    /// When jason dies, tell counselors they won and I lost + game over for everyone
+    /// </summary>
+    private void JasonDied()
+    {
+        Debug.Log("Jason dead");
+
+        //if on network
+        if( PhotonNetwork.IsConnected)
+        {
+            //tell all counselors they won + game is over
+            photonView.RPC("Win", RpcTarget.Others, true);
+        }
+
+        //make jason player lose bc died + game over
+        playerManager.Lose(isGameOver: true);
+
+        //should do this in update incase jason leaves
     }
 
     /// <summary>
