@@ -153,10 +153,13 @@ public class GetSetStats : MonoBehaviour
         //enable player cntrl
         playerManager.EnablePlayerControl();
 
-        //enable paused UI:
+        //enable paused UI: (why?)
         pausedUICanvas.SetActive(true);
 
         //destroy our stats setting UI:
-        Destroy(gameObject);
+        //Destroy(gameObject);
+
+        //make stats menu invisible
+        gameObject.SetActive(false);
     }
 }

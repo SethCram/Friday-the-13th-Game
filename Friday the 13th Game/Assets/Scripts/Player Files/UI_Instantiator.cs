@@ -85,7 +85,7 @@ public class UI_Instantiator : MonoBehaviour
         statsUIPrefab.SetActive(true);
 
         //instantiate player's stats UI:
-        Instantiate(statsUIPrefab);
+        GameObject statsUICopy = Instantiate(statsUIPrefab);
 
         //OVERLAY
 
@@ -127,5 +127,6 @@ public class UI_Instantiator : MonoBehaviour
 
         //fill out game manager
         GameManager.Instance.ourPlayer = gameObject;
+        GameManager.Instance.statsUI = statsUICopy;
     }
 }

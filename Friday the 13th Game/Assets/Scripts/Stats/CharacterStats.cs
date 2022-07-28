@@ -271,6 +271,9 @@ public class CharacterStats : MonoBehaviourPun
         return (int)damageFloatPH;
     }
 
+    /// <summary>
+    /// Kill player thru animating death and dropping everything
+    /// </summary>
     public virtual void Die()
     {
         //start death by animating death:

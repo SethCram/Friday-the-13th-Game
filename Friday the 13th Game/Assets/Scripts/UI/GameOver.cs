@@ -29,14 +29,14 @@ public class GameOver : MonoBehaviour
             playerManager = player.GetComponent<PlayerManager>();
         }
 
-        //if in game lobby:
-        if (SceneManager.GetActiveScene().name == "Game Lobby")
+        //if in game lobby scene:
+        if (GameManager.Instance.currentScene == GameManager.CurrentScene.GAME_LOBBY)
         {
             //set btn to respawn 
             afterDeathActionBtnTxtObj.text = "RESPAWN";
         }
-        //if not in game lobby
-        else
+        //if in game scene:
+        else if (GameManager.Instance.currentScene == GameManager.CurrentScene.GAME)
         {
             //set btn to spectate
             afterDeathActionBtnTxtObj.text = "SPECTATE";

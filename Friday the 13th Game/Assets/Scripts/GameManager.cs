@@ -29,10 +29,11 @@ public class GameManager : MonoBehaviourPun
     public GameObject ourPlayer;
     [HideInInspector]
     public PlayerManager playerManager;
+    public GameObject statsUI {get; set; }
+    [HideInInspector]
+    public GetSetStats getSetStats;
 
     private bool jasonLeft = false;
-
-    private string currSceneName;
 
     //state mach:
     public enum State { MENU, INIT, PLAY, LOADLEVEL, GAMEOVER, PAUSE, SPECTATE};
@@ -43,6 +44,7 @@ public class GameManager : MonoBehaviourPun
     //scene tracking vars
     public enum CurrentScene { LOBBY, GAME_LOBBY, GAME };
     public CurrentScene currentScene { private set; get; }
+    private string currSceneName;
 
     //to keep track of what panel active: (unneeded?)
     private GameObject currPanel;
@@ -191,6 +193,9 @@ public class GameManager : MonoBehaviourPun
 
         //player instance filled so cache player manager
         playerManager = ourPlayer.GetComponent<PlayerManager>();
+
+        //cache more fields
+        getSetStats = statsUI.GetComponent<GetSetStats>();
 
         //startCheckingIfJasonLeft = true;
     }

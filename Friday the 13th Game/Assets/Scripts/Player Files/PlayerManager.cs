@@ -280,7 +280,7 @@ public class PlayerManager : MonoBehaviourPunCallbacks
         //wait till drop all equipment
         while(!equipmentManager.DropEquipment() );
 
-        Debug.Log("All items dropped in " + SceneManager.GetActiveScene().name);
+        Debug.Log("All items dropped in " + GameManager.Instance.currentScene.ToString());
     }
 
     #endregion
@@ -349,6 +349,7 @@ public class PlayerManager : MonoBehaviourPunCallbacks
         //dont teleport player again
         SetTeleportPlayer(false);
 
+        //stop animing dead player
         characterAnimator.SetAnimDead(false);
 
         //allow player control
@@ -359,6 +360,22 @@ public class PlayerManager : MonoBehaviourPunCallbacks
 
         //reset hp to max
         characterStats.SetHealthToMax();
+
+        //if game lobby scene:
+        if( GameManager.Instance.currentScene == GameManager.CurrentScene.GAME_LOBBY )
+        {
+            //show stats menu
+            GameManager.Instance.statsUI.SetActive(true);
+
+            //disable player control of their char to access stats UI
+            DisablePlayerControl();
+        }
+        //if game scene:
+        else if( GameManager.Instance.currentScene == GameManager.CurrentScene.GAME )
+        {
+            //make sure stats menu hidden 
+            GameManager.Instance.statsUI.SetActive(false);
+        }
     }
 
     /// <summary>
