@@ -146,8 +146,8 @@ public class GameManager : MonoBehaviourPun
             currentScene = CurrentScene.GAME;
         }
 
-        //default state to menus
-        _state = State.MENU;
+        //default state
+        _state = State.INIT;
     }
 
     private void Start()
@@ -212,7 +212,7 @@ public class GameManager : MonoBehaviourPun
     }
 
     #endregion Startup
-
+   
     private void Update()
     {
         /*
@@ -305,10 +305,30 @@ public class GameManager : MonoBehaviourPun
     }
 
     /// <summary>
+    /// Global refers to incr couneslor whether online or offline
+    /// </summary>
+    public void GlobalIncrCounselorsDead()
+    {
+        //if on network
+        if (PhotonNetwork.IsConnected)
+        {
+            //incr # of dead counselors for everyone present + later joining
+            photonView.RPC("RPC_IncrCounselorsDead", RpcTarget.AllBuffered);
+        }
+        //not on network
+        else
+        {
+            //incr dead counselor count
+            RPC_IncrCounselorsDead();
+        }
+
+    }
+
+    /// <summary>
     /// RPC to incr # of dead counselors
     /// </summary>
     [PunRPC]
-    public void RPC_IncrCounselorsDead()
+    private void RPC_IncrCounselorsDead()
     {
         deadCounselors++;
     }
@@ -462,4 +482,75 @@ public class GameManager : MonoBehaviourPun
         SceneManager.LoadScene(0);
     }
     #endregion Load Main Menu
+
+    #region Death Methods
+
+    /// <summary>
+    /// If all counselors dead: tell counselors lose() and jason win()
+    /// </summary>
+    public bool CheckAllCounselorsDead()
+    {
+        Debug.Log("dead couneslors = " + deadCounselors);
+
+        // if network not connected
+        if(!PhotonNetwork.IsConnected)
+        {
+            //should not exe method?
+
+            //if any counselors dead
+            if( deadCounselors >= 1)
+            {
+                return true;
+            }
+            //no counselors dead
+            else
+            {
+                return false;
+            }
+        }
+
+        //if all couneslors dead
+        if (deadCounselors >= PhotonNetwork.CurrentRoom.PlayerCount - 1)
+        {
+
+            object isJason = false;
+
+            //walk thru players
+            foreach (Player player in PhotonNetwork.PlayerList)
+            {
+                //if player isn't local
+                if(!player.IsLocal)
+                {
+                    //determine if player is jason
+                    player.CustomProperties.TryGetValue((object)"isJason", out isJason);
+
+                    //Debug.LogAssertion("isJason = " + isJason.ToString());
+
+                    //if player is jason
+                    if (SameString_IgnoreCase(isJason.ToString(), "True"))
+                    {
+                        //tell player they won bc all counselors dead
+                        photonView.RPC("Win", player, true);
+                    }
+                    //if player not jason
+                    else if (SameString_IgnoreCase(isJason.ToString(), "False"))
+                    {
+                        //tell player they lost bc all counselors dead
+                        photonView.RPC("Lose", player, true);
+                    }
+                }
+            }
+
+            return true;
+
+            //should also do this in Update() incase someone leaves
+        }
+        //if not all counselors dead
+        else
+        {
+            return false;
+        }
+    }
+
+    #endregion Death Methods
 }
