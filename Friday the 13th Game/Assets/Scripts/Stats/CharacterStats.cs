@@ -38,6 +38,9 @@ public class CharacterStats : MonoBehaviourPun
     [HideInInspector]
     public OverlayUI overlayUI;
 
+    //event for w/ player death:
+    public System.Action OnDeathCallback;
+
     #endregion
 
     #region Unity Methods
@@ -58,13 +61,18 @@ public class CharacterStats : MonoBehaviourPun
 
         SetHealthToMax();
 
-        //prevHP = currHealth;
-
         //subscribe number method
         OnHealthChangedCallback += SpawnNumbers;
 
         //update health slider using HP changed event
         OnHealthChangedCallback += CallHealthSlider;
+
+        //sub methods to death callback
+
+        OnDeathCallback += AnimateAndSetDeath;
+
+        //drop all player loot now that dead:
+        OnDeathCallback += playerManager.DropEverything;
     }
 
     private void Update()
@@ -83,9 +91,15 @@ public class CharacterStats : MonoBehaviourPun
             TakeDamage(5);
         }
         if(Input.GetKeyDown(KeyCode.K))
-        { 
+        {
             //kill player
-            Die();
+
+            //if any methods sub'd to death callback
+            if (OnDeathCallback != null)
+            {
+                //invoke the sub'd methods
+                OnDeathCallback();
+            }
         }
         
     }
@@ -252,8 +266,15 @@ public class CharacterStats : MonoBehaviourPun
         //if no more hp
         if (currHealth <= 0)
         {
+            //if any methods sub'd to death callback
+            if(OnDeathCallback != null)
+            {
+                //invoke the sub'd methods
+                OnDeathCallback();
+            }
+            
             //die locally
-            Die();
+            AnimateAndSetDeath();
         }
     }
 
@@ -272,21 +293,18 @@ public class CharacterStats : MonoBehaviourPun
     }
 
     /// <summary>
-    /// Kill player thru animating death and dropping everything
+    /// Kill player thru animating death and setting player to dead
     /// </summary>
-    public virtual void Die()
+    public virtual void AnimateAndSetDeath()
     {
         //start death by animating death:
-        if (GetComponent<CharacterAnimator>() != null)
+        if (charAnimator != null)
         {
             //anim dying over a time
             StartCoroutine( charAnimator.Die() );
 
             //disable player control (also unlocks cursor so bad)
             // playerManager.DisablePlayerControl();
-
-            //drop all player loot now that dead:
-            playerManager.DropEverything();
 
         }
         else
