@@ -382,6 +382,7 @@ public class PlayerManager : MonoBehaviourPunCallbacks
     /// <summary>
     /// show game over + death screen w/ only main menu btn
     /// </summary>
+    [PunRPC]
     public void GenericGameOver()
     {
         ShowDeathScreen(gameOverText);
@@ -405,13 +406,9 @@ public class PlayerManager : MonoBehaviourPunCallbacks
     [PunRPC]
     public void Lose(bool isGameOver)
     {
-        //if already lost or won game + game's over
-        if ( (GameManager.Instance.wonGame || GameManager.Instance.GetLostGame() ) && isGameOver)
-        {
-            //reroute to generic game over
-            GenericGameOver();
-            return;
-        }
+
+        //set game as lost just incase player didn't die
+        GameManager.Instance.SetLostGame(true);
 
         //if game over
         if (isGameOver)
@@ -428,18 +425,6 @@ public class PlayerManager : MonoBehaviourPunCallbacks
             //show lose game over screen
             ShowDeathScreen(loseText);
         }
-
-        //GameManager gameManager = FindObjectOfType<GameManager>();
-        /*
-        if (GameManager.Instance == null)
-        {
-            Debug.LogError("Game manager null, so lose() failed.");
-            return;
-        }
-        */
-
-        //store that lost 
-        GameManager.Instance.SetLostGame(true);
     }
 
     /// <summary>
@@ -450,16 +435,12 @@ public class PlayerManager : MonoBehaviourPunCallbacks
     [PunRPC]
     public void Win(bool isGameOver)
     {
-        //if already lost or won game + game over
-        if( (GameManager.Instance.wonGame || GameManager.Instance.GetLostGame() ) && isGameOver )
-        {
-            //reroute to generic game over
-            GenericGameOver();
-            return;
-        }
+
+        //set game as won just incase player didn't die
+        GameManager.Instance.SetWonGame(true);
 
         //if game over
-        if(isGameOver)
+        if (isGameOver)
         {
            //show win game over screen
            ShowDeathScreen(gameOverText + " " + winText);
@@ -473,8 +454,6 @@ public class PlayerManager : MonoBehaviourPunCallbacks
             //show win screen
             ShowDeathScreen(winText);
         }
-
-        GameManager.Instance.wonGame = true;
     }
 
     /// <summary>

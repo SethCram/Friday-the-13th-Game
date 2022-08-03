@@ -351,7 +351,7 @@ public class CharacterAnimator : MonoBehaviour
         if( GameManager.Instance.currentScene == GameManager.CurrentScene.GAME)
         {
             //if lost or won game already
-            if( GameManager.Instance.wonGame || GameManager.Instance.GetLostGame() )
+            if( GameManager.Instance.GetWonGame() || GameManager.Instance.GetLostGame() )
             {
                 //show generic death screen only locally
                 playerManager.GenericDeathScreen();
@@ -389,9 +389,12 @@ public class CharacterAnimator : MonoBehaviour
 
         GameManager.Instance.GlobalIncrCounselorsDead();
 
-        //call lose on counselor
-        // game over deps on if all couneslors dead or not
-        playerManager.Lose(isGameOver: GameManager.Instance.CheckAllCounselorsDead());
+        //set game as lost by local dead counselor
+        GameManager.Instance.SetLostGame(true);
+        
+        //check if all counselors dead
+        Debug.Log( "Check for if all counselors dead resulted in: " + 
+            GameManager.Instance.CheckAllCounselorsDead(localLose: true) );
     }
     
 
@@ -405,8 +408,16 @@ public class CharacterAnimator : MonoBehaviour
         //if on network
         if( PhotonNetwork.IsConnected)
         {
-            //tell all counselors they won + game is over
-            photonView.RPC("Win", RpcTarget.Others, true);
+            //walk thru room players
+            foreach (Player player in PhotonNetwork.PlayerList)
+            {
+                //if player isn't local (isn't jason)
+                if(!player.IsLocal)
+                {
+                    //tell counselor game over and who lost lose and who won win
+                    GameManager.Instance.TellCounselorGameOver(player);
+                }
+            }
         }
 
         //make jason player lose bc died + game over

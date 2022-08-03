@@ -144,6 +144,13 @@ public class SpawnPlayers : MonoBehaviourPunCallbacks
     {
         //create an obj for every new player joining, when they load in
 
+        //make new custom props inst for player
+        ExitGames.Client.Photon.Hashtable customProperties = new ExitGames.Client.Photon.Hashtable();
+
+        //add lost + won game keys
+        customProperties.Add(key: (object)GameManager.LOST_GAME_STR, value: GameManager.CUSTOM_PROP_FALSE);
+        customProperties.Add(key: (object)GameManager.WON_GAME_STR, value: GameManager.CUSTOM_PROP_FALSE);
+
         //if jason
         if (jason)
         {
@@ -153,9 +160,7 @@ public class SpawnPlayers : MonoBehaviourPunCallbacks
             spawnedPlayer.tag = "Enemy";
 
             //give jason player a special identifier 
-            ExitGames.Client.Photon.Hashtable customProperties = new ExitGames.Client.Photon.Hashtable();
-            customProperties.Add((object)"isJason", "True");
-            PhotonNetwork.SetPlayerCustomProperties(customProperties);
+            customProperties.Add(key: (object)GameManager.IS_JASON_STR, value: GameManager.CUSTOM_PROP_TRUE);
         }
         //if not jason
         else
@@ -164,10 +169,12 @@ public class SpawnPlayers : MonoBehaviourPunCallbacks
                 counselorSpawn.position + Vector3.right * index,
                 playerPrefab.transform.rotation);
 
-            ExitGames.Client.Photon.Hashtable customProperties = new ExitGames.Client.Photon.Hashtable();
-            customProperties.Add((object)"isJason", "False");
-            PhotonNetwork.SetPlayerCustomProperties(customProperties);
+            //give jason player a special identifier 
+            customProperties.Add(key: (object)GameManager.IS_JASON_STR, value: GameManager.CUSTOM_PROP_FALSE);
         }
+
+        //cement player custom props
+        PhotonNetwork.SetPlayerCustomProperties(customProperties);
 
         spawnedPlayer = true;
     }

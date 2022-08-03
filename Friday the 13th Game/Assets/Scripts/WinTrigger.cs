@@ -27,8 +27,10 @@ public class WinTrigger : MonoBehaviour
 
             GameManager.Instance.GlobalIncrCounselorsDead();
 
-            //cause counselor to win: gameover based on if all counselors dead
-            playerManager.Win( isGameOver: GameManager.Instance.CheckAllCounselorsDead() );
+            GameManager.Instance.SetWonGame(true);
+
+            //cause counselor to win + check if all counselors dead
+            GameManager.Instance.CheckAllCounselorsDead(localLose: false);
 
             //if all counselors won or lost, need to tell jason generic game over 
 

@@ -61,7 +61,20 @@ public class GameManager : MonoBehaviourPun
 
     //game success or failure 
     private bool lostGame = false;
-    public bool wonGame { get; set; } = false;
+    private bool wonGame = false;
+
+    #region Custom Prop Fields
+
+    public const string WON_GAME_STR = "wonGame";
+    public const string LOST_GAME_STR = "lostGame";
+
+    //is jason fields
+    public const string IS_JASON_STR = "isJason";
+
+    public const string CUSTOM_PROP_TRUE = "True";
+    public const string CUSTOM_PROP_FALSE = "False";
+
+    #endregion Custom Prop Fields
 
     #endregion Vars
 
@@ -305,26 +318,6 @@ public class GameManager : MonoBehaviourPun
     }
 
     /// <summary>
-    /// Global refers to incr couneslor whether online or offline
-    /// </summary>
-    public void GlobalIncrCounselorsDead()
-    {
-        //if on network
-        if (PhotonNetwork.IsConnected)
-        {
-            //incr # of dead counselors for everyone present + later joining
-            photonView.RPC("RPC_IncrCounselorsDead", RpcTarget.AllBuffered);
-        }
-        //not on network
-        else
-        {
-            //incr dead counselor count
-            RPC_IncrCounselorsDead();
-        }
-
-    }
-
-    /// <summary>
     /// RPC to incr # of dead counselors
     /// </summary>
     [PunRPC]
@@ -348,14 +341,76 @@ public class GameManager : MonoBehaviourPun
 
     #region Setters & Getters
 
+    /// <summary>
+    /// Set lost game param and update corresponding player's custom prop.
+    /// </summary>
+    /// <param name="isGameLost"></param>
     public void SetLostGame(bool isGameLost)
     {
         lostGame = isGameLost;
+
+        //make new custom props inst for changing player props
+        ExitGames.Client.Photon.Hashtable customProperties = new ExitGames.Client.Photon.Hashtable();
+
+        //copy over local player's custom props
+        customProperties = PhotonNetwork.LocalPlayer.CustomProperties;
+
+        //if game lost
+        if(isGameLost)
+        {
+            //set lost game custom prop to true
+            customProperties[GameManager.LOST_GAME_STR] = GameManager.CUSTOM_PROP_TRUE;
+        }
+        //if game not lost
+        else
+        {
+            //set lost game custom prop to true
+            customProperties[GameManager.LOST_GAME_STR] = GameManager.CUSTOM_PROP_FALSE;
+        }
+
+        //submit changed custom props
+        PhotonNetwork.LocalPlayer.SetCustomProperties(customProperties);
     }
 
     public bool GetLostGame()
     {
         return lostGame;
+    }
+
+    /// <summary>
+    /// Set won game param and update corresponding player's custom prop.
+    /// </summary>
+    /// <param name="isGameWon"></param>
+    public void SetWonGame(bool isGameWon)
+    {
+        wonGame = isGameWon;
+
+        //make new custom props inst for changing player props
+        ExitGames.Client.Photon.Hashtable customProperties = new ExitGames.Client.Photon.Hashtable();
+
+        //copy over local player's custom props
+        customProperties = PhotonNetwork.LocalPlayer.CustomProperties;
+
+        //if game won
+        if (isGameWon)
+        {
+            //set lost game custom prop to true
+            customProperties[GameManager.WON_GAME_STR] = GameManager.CUSTOM_PROP_TRUE;
+        }
+        //if game not lost
+        else
+        {
+            //set lost game custom prop to false
+            customProperties[GameManager.WON_GAME_STR] = GameManager.CUSTOM_PROP_FALSE;
+        }
+
+        //submit changed custom props
+        PhotonNetwork.LocalPlayer.SetCustomProperties(customProperties);
+    }
+
+    public bool GetWonGame()
+    {
+        return wonGame;
     }
 
     #endregion Setters & Getters
@@ -485,12 +540,37 @@ public class GameManager : MonoBehaviourPun
 
     #region Death Methods
 
+    #region Public Death Methods
+
     /// <summary>
-    /// If all counselors dead: tell counselors lose() and jason win()
+    /// Global refers to incr couneslor whether online or offline
     /// </summary>
-    public bool CheckAllCounselorsDead()
+    public void GlobalIncrCounselorsDead()
     {
-        Debug.Log("dead couneslors = " + deadCounselors);
+        //if on network
+        if (PhotonNetwork.IsConnected)
+        {
+            //incr # of dead counselors for everyone present + later joining
+            photonView.RPC("RPC_IncrCounselorsDead", RpcTarget.AllBuffered);
+        }
+        //not on network
+        else
+        {
+            //incr dead counselor count
+            RPC_IncrCounselorsDead();
+        }
+
+    }
+
+    /// <summary>
+    /// If all counselors dead: Check how many counselors won/lost + act based on it.
+    /// Calls local win/lose too.
+    /// </summary>
+    /// <param name="localLose">True if need call local lost, false if need call local win.</param>
+    /// <returns>Whether all counselors dead or not.</returns>
+    public bool CheckAllCounselorsDead( bool localLose)
+    {
+        Debug.Log("dead counselors = " + deadCounselors);
 
         // if network not connected
         if(!PhotonNetwork.IsConnected)
@@ -500,6 +580,9 @@ public class GameManager : MonoBehaviourPun
             //if any counselors dead
             if( deadCounselors >= 1)
             {
+                //lose locally
+                playerManager.Lose(isGameOver: true);
+
                 return true;
             }
             //no counselors dead
@@ -509,36 +592,33 @@ public class GameManager : MonoBehaviourPun
             }
         }
 
-        //if all couneslors dead
+        //if all counselors dead
         if (deadCounselors >= PhotonNetwork.CurrentRoom.PlayerCount - 1)
         {
+            Debug.LogAssertion("All counselors are dead. Game Over.");
 
-            object isJason = false;
-
-            //walk thru players
-            foreach (Player player in PhotonNetwork.PlayerList)
+            //if all counselors won
+            if (AllCounselorsWon())
             {
-                //if player isn't local
-                if(!player.IsLocal)
-                {
-                    //determine if player is jason
-                    player.CustomProperties.TryGetValue((object)"isJason", out isJason);
+                //counselors win + jason loses
+                Debug.LogAssertion("Tell counselors they won and jason he lost.");
+                BroadCastGameOver(localLose: localLose, allCounselorsWon: true, jasonLost: true);
+            }
+            //if all counselors lost
+            else if (AllCounselorsLost())
+            {
 
-                    //Debug.LogAssertion("isJason = " + isJason.ToString());
-
-                    //if player is jason
-                    if (SameString_IgnoreCase(isJason.ToString(), "True"))
-                    {
-                        //tell player they won bc all counselors dead
-                        photonView.RPC("Win", player, true);
-                    }
-                    //if player not jason
-                    else if (SameString_IgnoreCase(isJason.ToString(), "False"))
-                    {
-                        //tell player they lost bc all counselors dead
-                        photonView.RPC("Lose", player, true);
-                    }
-                }
+                //all counselors lose + jason wins
+                Debug.LogAssertion("Tell counselors they lost and jason he won.");
+                BroadCastGameOver(localLose: localLose, allCounselorsLost: true, jasonWon: true);
+            }
+            //if some counselors lost and others won
+            else
+            {
+                //counselors who won win, those who lost lose, jason generic game over's
+                Debug.LogAssertion("Tell counselors who won they win, " +
+                    "counselors who lost they lose, and jason generic game over.");
+                BroadCastGameOver(localLose: localLose, someCounselorsWonSomeLost: true);
             }
 
             return true;
@@ -548,9 +628,305 @@ public class GameManager : MonoBehaviourPun
         //if not all counselors dead
         else
         {
+            //still call local death
+
+            //if lose locally
+            if (localLose)
+            {
+                //lose locally w/ no game over
+                playerManager.Lose(isGameOver: false);
+            }
+            //if don't lose locally
+            else
+            {
+                //win locally w/ no game over
+                playerManager.Win(isGameOver: false);
+            }
+
             return false;
         }
     }
+
+    #endregion Public Death Methods
+
+    #region Private Death Methods
+
+    /// <summary>
+    /// Broadcast game over to everyone, 
+    ///  using given params and custom props to communicate correctly. 
+    /// Locally trigger win/lose too. 
+    /// </summary>
+    /// <param name="localLose">True if need call local lost, false if need call local win.</param>
+    /// <param name="jasonLost"></param>
+    /// <param name="jasonWon"></param>
+    /// <param name="allCounselorsLost"></param>
+    /// <param name="allCounselorsWon"></param>
+    /// <param name="someCounselorsWonSomeLost"></param>
+    private void BroadCastGameOver(
+        bool localLose,
+        bool jasonLost = false, 
+        bool jasonWon = false, 
+        bool allCounselorsLost = false, 
+        bool allCounselorsWon = false, 
+        bool someCounselorsWonSomeLost = false
+    )
+    {
+        bool gameOver = true;
+
+        object isJason = false;
+
+        //walk thru players
+        foreach (Player player in PhotonNetwork.PlayerList)
+        {
+            //if player isn't local
+            if (!player.IsLocal)
+            {
+                //get val of isJason
+                player.CustomProperties.TryGetValue((object)IS_JASON_STR, out isJason);
+
+                //Debug.LogAssertion("isJason = " + isJason.ToString());
+
+                //if player is jason
+                if (SameString_IgnoreCase(isJason.ToString(), CUSTOM_PROP_TRUE))
+                {
+                    //if jason lost
+                    if( jasonLost )
+                    {
+                        //tell jason they lost 
+                        playerManager.photonView.RPC("Lose", player, gameOver);
+                    }
+                    //if jason won
+                    else if( jasonWon )
+                    {
+                        //tell jason he won
+                        playerManager.photonView.RPC("Win", player, gameOver);
+                    }
+                    //if some couneslors lost + others won
+                    else if( someCounselorsWonSomeLost )
+                    {
+                        //tell jason they generic game over
+                        playerManager.photonView.RPC("GenericGameOver", player);
+                    }
+
+                }
+                //if player not jason
+                else if (SameString_IgnoreCase(isJason.ToString(), CUSTOM_PROP_FALSE))
+                {
+                    //if all counselor lost
+                    if (allCounselorsLost)
+                    {
+                        //tell couneselor he lost
+                        playerManager.photonView.RPC("Lose", player, gameOver);
+                    }
+                    //if all couneselors won
+                    else if (allCounselorsWon)
+                    {
+                        //tell counselor he won
+                        playerManager.photonView.RPC("Win", player, gameOver);
+                    }
+                    //if some couneslors won + some lost
+                    else if (someCounselorsWonSomeLost)
+                    {
+
+                        TellCounselorGameOver(player);
+
+                        /*
+                        object wonGame = false;
+                        object lostGame = false;
+
+                        //get val of wonGame
+                        player.CustomProperties.TryGetValue((object)WON_GAME_STR, out wonGame);
+
+                        //get val of lostGame
+                        player.CustomProperties.TryGetValue((object)LOST_GAME_STR, out lostGame);
+
+                        //if counselor already won game
+                        if (SameString_IgnoreCase(wonGame.ToString(), CUSTOM_PROP_TRUE))
+                        {
+                            //win with gameover
+                            playerManager.photonView.RPC("Win", player, gameOver);
+                        }
+                        //if counselor already lost game
+                        else if (SameString_IgnoreCase(lostGame.ToString(), CUSTOM_PROP_TRUE))
+                        {
+                            //lose with gameover
+                            playerManager.photonView.RPC("Lose", player, gameOver);
+                        }
+                        //
+                        else
+                        {
+                            Debug.LogError("All counselors dead, but player isn't jason and hasn't won or lost the game yet. So, they lost with game over.");
+
+                            //lose with gameover
+                            playerManager.photonView.RPC("Lose", player, gameOver);
+                        }
+                        */
+                    }
+                }
+            }
+            //dying player is local
+            else
+            {
+                //if lose locally
+                if (localLose)
+                {
+                    //lose locally
+                    playerManager.Lose(gameOver);
+                }
+                //if don't lose locally
+                else
+                {
+                    //win locally
+                    playerManager.Win(gameOver);
+                }
+            }
+        }
+    }
+
+
+    /// <summary>
+    /// Tell given counselor game over w/ lose if they've lost, and win if they haven't lost yet.
+    /// </summary>
+    /// <param name="player"></param>
+    /// <param name="gameOver"></param>
+    public void TellCounselorGameOver(Player player, bool gameOver = true)
+    {
+        object isJason = false;
+        player.CustomProperties.TryGetValue((object)IS_JASON_STR, out isJason);
+        //if player is jason
+        if (SameString_IgnoreCase(isJason.ToString(), CUSTOM_PROP_TRUE))
+        {
+            Debug.LogError("Jason player passed into a counselor only method. " +
+                "Method not executed.");
+            return;
+        }
+
+        object wonGame = false;
+        object lostGame = false;
+
+        //get val of wonGame
+        player.CustomProperties.TryGetValue((object)WON_GAME_STR, out wonGame);
+
+        //get val of lostGame
+        player.CustomProperties.TryGetValue((object)LOST_GAME_STR, out lostGame);
+
+        //if counselor already lost game
+        if (SameString_IgnoreCase(lostGame.ToString(), CUSTOM_PROP_TRUE))
+        {
+            //lose with gameover
+            playerManager.photonView.RPC("Lose", player, gameOver);
+        }
+        //if counselor hasn't lost yet
+        else
+        {
+            //win with gameover
+            playerManager.photonView.RPC("Win", player, gameOver);
+        }
+    }
+
+    /// <summary>
+    /// Determines if all counselors won game.
+    /// </summary>
+    /// <returns>Returns false if not all counselors dead yet.</returns>
+    private bool AllCounselorsWon()
+    {
+        //if all counselors won
+        if (CountWonGameCounselors() >= PhotonNetwork.CurrentRoom.PlayerCount - 1)
+        {
+            return true;
+        }
+        //if not all counselors won
+        {
+            return false;
+        }
+    }
+
+    /// <summary>
+    /// Determines if all counselors won game.
+    /// </summary>
+    /// <returns>Returns false if not all counselors dead yet.</returns>
+    private bool AllCounselorsLost()
+    {
+        //if all counselors lost
+        if (CountLostGameCounselors() >= PhotonNetwork.CurrentRoom.PlayerCount - 1)
+        {
+            return true;
+        }
+        //if not all counselors lost
+        {
+            return false;
+        }
+    }
+
+    /// <summary>
+    /// Uses the Photon player list to calculate # of counselors won the game.
+    /// </summary>
+    /// <returns>Returns number of counselors already won the game.</returns>
+    private int CountWonGameCounselors()
+    {
+        object wonGame;
+        object isJason;
+
+        int numOfGameWinningCounselors = 0;
+        
+        //walk thru players
+        foreach (Player player in PhotonNetwork.PlayerList)
+        {
+            //get val of isJason
+            player.CustomProperties.TryGetValue((object)IS_JASON_STR, out isJason);
+
+            //get val of wonGame
+            player.CustomProperties.TryGetValue((object)WON_GAME_STR, out wonGame);
+
+            //if counselor won game
+            if (SameString_IgnoreCase(wonGame.ToString(), CUSTOM_PROP_TRUE) 
+                && SameString_IgnoreCase(isJason.ToString(), CUSTOM_PROP_FALSE))
+            {
+                //incr # of won game counselors
+                numOfGameWinningCounselors++;
+            }
+        }
+
+        Debug.Log($"Number of game winning counselors {numOfGameWinningCounselors}");
+
+        return numOfGameWinningCounselors;
+    }
+
+    /// <summary>
+    /// Uses the Photon player list to calculate # of counselors won the game.
+    /// </summary>
+    /// <returns>Returns number of counselors already lost the game.</returns>
+    private int CountLostGameCounselors()
+    {
+        object lostGame;
+        object isJason;
+
+        int numOfGameLosingCounselors = 0;
+
+        //walk thru players
+        foreach (Player player in PhotonNetwork.PlayerList)
+        {
+            //get val of isJason
+            player.CustomProperties.TryGetValue((object)IS_JASON_STR, out isJason);
+
+            //get val of lostGame
+            player.CustomProperties.TryGetValue((object)LOST_GAME_STR, out lostGame);
+
+            //if player lost game + not jason
+            if (SameString_IgnoreCase(lostGame.ToString(), CUSTOM_PROP_TRUE)
+                && SameString_IgnoreCase(isJason.ToString(), CUSTOM_PROP_FALSE))
+            {
+                //incr # of won game counselors
+                numOfGameLosingCounselors++;
+            }
+        }
+
+        Debug.Log($"Number of game losing counselors {numOfGameLosingCounselors}");
+
+        return numOfGameLosingCounselors;
+    }
+
+    #endregion Private Death Methods
 
     #endregion Death Methods
 }
