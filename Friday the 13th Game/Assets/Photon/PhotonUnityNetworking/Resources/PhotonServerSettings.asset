@@ -74,6 +74,7 @@ MonoBehaviour:
   - Lose
   - RPC_IncrCounselorsDead
   - GenericGameOver
+  - SetTag
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Photon.Pun;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -15,24 +16,30 @@ public class WinTrigger : MonoBehaviour
         PlayerManager playerManager = other.GetComponent<PlayerManager>();
         collidingWithTransform = other.GetComponent<Transform>();
 
-        //if couneslor colliding
-        if ( other.tag == "Player")
+        //if counselor colliding + player not dead
+        if ( other.tag == "Player" && !playerManager.GetDead() )
         {
             shouldLaunchPlayerForward = true;
 
             Debug.Log("Player should launch forward and win.");
 
+            //Debug.LogAssertion($"{other.name} is the collider name.");
+
             //set player as dead
             playerManager.SetDead(true);
 
-            GameManager.Instance.GlobalIncrCounselorsDead();
+            //incr dead counselors locally (bc every client calls)
+            GameManager.Instance.RPC_IncrCounselorsDead();
 
-            GameManager.Instance.SetWonGame(true);
+            //if other photon view is mine
+            if (other.GetComponent<PhotonView>().IsMine)
+            {
+                //set won game to true
+                GameManager.Instance.SetWonGame(true);
 
-            //cause counselor to win + check if all counselors dead
-            GameManager.Instance.CheckAllCounselorsDead(localLose: false);
-
-            //if all counselors won or lost, need to tell jason generic game over 
+                //cause counselor to win + check if all counselors dead
+                GameManager.Instance.CheckAllCounselorsDead(localLose: false);
+            }
 
         }
         //if jason colliding
@@ -40,7 +47,7 @@ public class WinTrigger : MonoBehaviour
         {
             shouldLaunchPlayerBack = true;
 
-            Debug.Log("Player should launch back.");
+            Debug.LogAssertion("Player should launch back.");
         }
     }
 

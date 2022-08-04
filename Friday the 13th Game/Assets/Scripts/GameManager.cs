@@ -321,9 +321,11 @@ public class GameManager : MonoBehaviourPun
     /// RPC to incr # of dead counselors
     /// </summary>
     [PunRPC]
-    private void RPC_IncrCounselorsDead()
+    public void RPC_IncrCounselorsDead()
     {
         deadCounselors++;
+
+        Debug.LogAssertion($"Dead couneslors incr'd to {deadCounselors}");
     }
 
     /// <summary>

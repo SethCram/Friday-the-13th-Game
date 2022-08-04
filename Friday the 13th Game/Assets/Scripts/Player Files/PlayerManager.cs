@@ -88,8 +88,8 @@ public class PlayerManager : MonoBehaviourPunCallbacks
     /// </summary>
     private void FixedUpdate()
     {
-        //if should tele player //and they're a counselor (redundant 2nd check?)
-        if( teleportPlayer ) //&& tag == "Player" )
+        //if should tele player
+        if( teleportPlayer )
         {
             //respawn player 
             RespawnPlayer();
@@ -99,6 +99,18 @@ public class PlayerManager : MonoBehaviourPunCallbacks
     #endregion
 
     #region Setters
+
+    /// <summary>
+    /// Used to sync player tag over RPC.
+    /// </summary>
+    /// <param name="tagName"></param>
+    [PunRPC]
+    public void SetTag(string tagName)
+    {
+        Debug.Log($"Tag set to {tagName}");
+
+        tag = tagName;
+    }
 
     public void SetTeleportPlayer( bool shouldTeleport)
     {
