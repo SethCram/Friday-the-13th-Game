@@ -887,7 +887,7 @@ public class GameManager : MonoBehaviourPun
         object isCounselor = false;
 
         //get val of isCounselor
-        player.CustomProperties.TryGetValue((object)IS_JASON_STR, out isCounselor);
+        player.CustomProperties.TryGetValue((object)IS_COUNSELOR_STR, out isCounselor);
 
         //return if player is counselor
         return SameString_IgnoreCase(isCounselor.ToString(), CUSTOM_PROP_TRUE);
