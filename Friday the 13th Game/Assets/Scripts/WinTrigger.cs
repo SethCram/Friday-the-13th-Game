@@ -31,8 +31,8 @@ public class WinTrigger : MonoBehaviour
             //incr dead counselors locally (bc every client calls)
             GameManager.Instance.RPC_IncrCounselorsDead();
 
-            //if other photon view is mine
-            if (other.GetComponent<PhotonView>().IsMine)
+            //if other photon view is mine or not connected to network
+            if (other.GetComponent<PhotonView>().IsMine || !PhotonNetwork.IsConnected)
             {
                 //set won game to true
                 GameManager.Instance.SetWonGame(true);

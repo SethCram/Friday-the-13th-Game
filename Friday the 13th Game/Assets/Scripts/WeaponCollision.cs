@@ -55,10 +55,9 @@ public class WeaponCollision : MonoBehaviour
             }
 
             //dont damage a previously damaged target:
-                //if(prevDamagedObj == other.name)
             if( prevHitID == hitID )
             {
-                //check: Debug.LogError("dont damage a previously damaged target if already damaged them in this 1 attack");
+                //check: Debug.LogAssertion("dont damage a previously damaged target if already damaged them in this 1 attack");
 
                 return;
             }
@@ -68,7 +67,6 @@ public class WeaponCollision : MonoBehaviour
             myPlayerCombat.DoDamage(hitStats);
 
             //store previously hit person:
-                //prevDamagedObj = other.name;
             prevHitID = hitID;
         }
     }

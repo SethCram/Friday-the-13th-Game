@@ -419,7 +419,7 @@ public class PlayerManager : MonoBehaviourPunCallbacks
     public void Lose(bool isGameOver)
     {
 
-        //set game as lost just incase player didn't die
+        //set game as lost just incase player didn't die (not needed but not bad)
         GameManager.Instance.SetLostGame(true);
 
         //if game over
@@ -448,7 +448,7 @@ public class PlayerManager : MonoBehaviourPunCallbacks
     public void Win(bool isGameOver)
     {
 
-        //set game as won just incase player didn't die
+        //set game as won just incase player didn't die (not needed but not bad)
         GameManager.Instance.SetWonGame(true);
 
         //if game over

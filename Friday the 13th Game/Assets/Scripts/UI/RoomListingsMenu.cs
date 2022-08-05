@@ -95,7 +95,7 @@ public class RoomListingsMenu : MonoBehaviourPunCallbacks
                     roomListingData.expectedPlayerCount++;
                     roomListingDataList[j] = roomListingData;
 
-                    Debug.LogError("Didnt create a new room bc player joined another room.");
+                    Debug.Log("Didnt create a new room bc player joined another room.");
                 }
                 //if room has less players than previously:
                 else if(roomInfo.PlayerCount < roomListingDataList[j].expectedPlayerCount)
@@ -105,7 +105,7 @@ public class RoomListingsMenu : MonoBehaviourPunCallbacks
                     roomListingData.expectedPlayerCount--;
                     roomListingDataList[j] = roomListingData;
 
-                    Debug.LogError("Didnt create a new room bc player left another room.");
+                    Debug.Log("Didnt create a new room bc player left another room.");
                 }
                 /*
                 else
