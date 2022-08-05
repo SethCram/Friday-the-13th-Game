@@ -38,7 +38,7 @@ public class WinTrigger : MonoBehaviour
                 GameManager.Instance.SetWonGame(true);
 
                 //cause counselor to win + check if all counselors dead
-                GameManager.Instance.CheckAllCounselorsDead(localLose: false);
+                GameManager.Instance.CheckAllCounselorsDead(localDie: true, localLose: false);
             }
 
         }

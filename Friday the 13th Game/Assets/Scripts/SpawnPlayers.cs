@@ -64,25 +64,27 @@ public class SpawnPlayers : MonoBehaviourPunCallbacks
         //on network and master of room
         if(PhotonNetwork.IsConnected && PhotonNetwork.IsMasterClient)
         {
-            //print out player list
-            //Debug.LogError("player count = " + PhotonNetwork.PlayerList.Length);
+            //choose jason player randomly
+            int jasonIndex = Random.Range(0, PhotonNetwork.PlayerList.Length - 1);
+
+            Debug.LogAssertion($"Jason index gen'd by master client using random class = {jasonIndex} ");
 
             int index = 0;
 
             //walk thru players
-            foreach (Player pl in PhotonNetwork.PlayerList)
+            foreach (Player player in PhotonNetwork.PlayerList)
             {
-                //if 1st player
-                if (index == 0)
+                //if index matches jason's index
+                if (index == jasonIndex)
                 {
                     //start player as Jason
-                    photonView.RPC("SpawnPlayer", pl, index, true);
+                    photonView.RPC("SpawnPlayer", player, index, true);
                 }
                 //not 1st player
                 else
                 {
                     //start player as counselor
-                    photonView.RPC("SpawnPlayer", pl, index, false);
+                    photonView.RPC("SpawnPlayer", player, index, false);
                 }
                 index++;
             }
@@ -157,10 +159,13 @@ public class SpawnPlayers : MonoBehaviourPunCallbacks
             GameObject spawnedPlayer = PhotonNetwork.Instantiate(playerPrefab.name,
                 jasonSpawn.position,
                 playerPrefab.transform.rotation);
-            spawnedPlayer.tag = "Enemy";
 
-            //give jason player a special identifier 
+            //set tag on player using player manager funct
+            spawnedPlayer.GetPhotonView().RPC("SetTag", RpcTarget.AllBuffered, "Enemy");
+
+            //set jason 
             customProperties.Add(key: (object)GameManager.IS_JASON_STR, value: GameManager.CUSTOM_PROP_TRUE);
+            customProperties.Add(key: (object)GameManager.IS_COUNSELOR_STR, value: GameManager.CUSTOM_PROP_FALSE);
         }
         //if not jason
         else
@@ -169,8 +174,9 @@ public class SpawnPlayers : MonoBehaviourPunCallbacks
                 counselorSpawn.position + Vector3.right * index,
                 playerPrefab.transform.rotation);
 
-            //give jason player a special identifier 
+            //give counselor
             customProperties.Add(key: (object)GameManager.IS_JASON_STR, value: GameManager.CUSTOM_PROP_FALSE);
+            customProperties.Add(key: (object)GameManager.IS_COUNSELOR_STR, value: GameManager.CUSTOM_PROP_TRUE);
         }
 
         //cement player custom props

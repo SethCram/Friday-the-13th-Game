@@ -392,9 +392,9 @@ public class CharacterAnimator : MonoBehaviour
         //set game as lost by local dead counselor
         GameManager.Instance.SetLostGame(true);
         
-        //check if all counselors dead
+        //check if all counselors dead + kill local player w/ loss
         Debug.Log( "Check for if all counselors dead resulted in: " + 
-            GameManager.Instance.CheckAllCounselorsDead(localLose: true) );
+            GameManager.Instance.CheckAllCounselorsDead(localDie: true, localLose: true) );
     }
     
 
