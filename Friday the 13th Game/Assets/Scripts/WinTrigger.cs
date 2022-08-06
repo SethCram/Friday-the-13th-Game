@@ -10,35 +10,38 @@ public class WinTrigger : MonoBehaviour
     private bool shouldLaunchPlayerForward = false;
     private Transform collidingWithTransform;
 
+    /// <summary>
+    /// When counselor triggers, tele them forward and tell them they win.
+    /// When jason triggers, tele them backward.
+    /// </summary>
+    /// <param name="other"></param>
     private void OnTriggerEnter(Collider other)
     {
         //store player manager and colliding w/ transform
-        PlayerManager playerManager = other.GetComponent<PlayerManager>();
+        PlayerManager playerManager = null; 
         collidingWithTransform = other.GetComponent<Transform>();
+
+        //if colliding w/ jason or counselor
+        if (other.tag == "Player" || other.tag == "Enemy")
+        {
+            //store player manager
+            playerManager = other.GetComponent<PlayerManager>();
+
+        }
 
         //if counselor colliding + player not dead
         if ( other.tag == "Player" && !playerManager.GetDead() )
-        {
+        { 
             shouldLaunchPlayerForward = true;
 
             Debug.Log("Player should launch forward and win.");
 
             //Debug.LogAssertion($"{other.name} is the collider name.");
 
-            //set player as dead
-            playerManager.SetDead(true);
-
-            //incr dead counselors locally (bc every client calls)
-            GameManager.Instance.RPC_IncrCounselorsDead();
-
             //if other photon view is mine or not connected to network
             if (other.GetComponent<PhotonView>().IsMine || !PhotonNetwork.IsConnected)
             {
-                //set won game to true
-                GameManager.Instance.SetWonGame(true);
-
-                //cause counselor to win + check if all counselors dead
-                GameManager.Instance.CheckAllCounselorsDead(localDie: true, localLose: false);
+                playerManager.CounselorDied(playerWon: true);
             }
 
         }

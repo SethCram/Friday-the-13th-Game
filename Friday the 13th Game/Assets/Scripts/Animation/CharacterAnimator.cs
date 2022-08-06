@@ -362,12 +362,12 @@ public class CharacterAnimator : MonoBehaviour
                 //if counselor loses
                 if (tag == "Player")
                 {
-                    CounselorDied();
+                    playerManager.CounselorDied(playerWon: false);
                 }
                 //if Jason died
                 else if (tag == "Enemy")
                 {
-                    JasonDied();
+                    playerManager.JasonDied( playerWon: false);
                 }
             }
         }
@@ -377,53 +377,6 @@ public class CharacterAnimator : MonoBehaviour
             //show generic death screen 
             playerManager.GenericDeathScreen();
         }
-    }
-
-    /// <summary>
-    /// When counselor dies, incr dead counselors and lose. 
-    /// Gameover if all counselors dead.
-    /// </summary>
-    private void CounselorDied()
-    {
-        Debug.Log("Counselor dead");
-
-        GameManager.Instance.GlobalIncrCounselorsDead();
-
-        //set game as lost by local dead counselor
-        GameManager.Instance.SetLostGame(true);
-        
-        //check if all counselors dead + kill local player w/ loss
-        Debug.Log( "Check for if all counselors dead resulted in: " + 
-            GameManager.Instance.CheckAllCounselorsDead(localDie: true, localLose: true) );
-    }
-    
-
-    /// <summary>
-    /// When jason dies, tell counselors they won and I lost + game over for everyone
-    /// </summary>
-    private void JasonDied()
-    {
-        Debug.Log("Jason dead");
-
-        //if on network
-        if( PhotonNetwork.IsConnected)
-        {
-            //walk thru room players
-            foreach (Player player in PhotonNetwork.PlayerList)
-            {
-                //if player isn't local (isn't jason)
-                if(!player.IsLocal)
-                {
-                    //tell counselor game over and who lost lose and who won win
-                    GameManager.Instance.TellCounselorGameOver(player);
-                }
-            }
-        }
-
-        //make jason player lose bc died + game over
-        playerManager.Lose(isGameOver: true);
-
-        //should do this in update incase jason leaves
     }
 
     /// <summary>

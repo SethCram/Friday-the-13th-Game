@@ -497,6 +497,73 @@ public class PlayerManager : MonoBehaviourPunCallbacks
 
     }
 
+    /// <summary>
+    /// When jason dies, tell counselors they won/lost and I won/lost + game over for everyone
+    /// </summary>
+    public void JasonDied( bool playerWon)
+    {
+        SetDead(true);
+
+        Debug.Log("Jason dead");
+
+        //if on network
+        if (PhotonNetwork.IsConnected)
+        {
+            //walk thru room players
+            foreach (Player player in PhotonNetwork.PlayerList)
+            {
+                //if player isn't local (isn't jason)
+                if (!player.IsLocal)
+                {
+                    //tell counselor game over and who lost lose and who won win
+                    GameManager.Instance.TellCounselorGameOver(player);
+                }
+            }
+        }
+
+        if( playerWon)
+        {
+            Win(isGameOver: true);
+        }
+        else
+        {
+            //make jason player lose bc died + game over
+            Lose(isGameOver: true);
+        }
+
+        //should do this in update incase jason leaves
+    }
+
+    /// <summary>
+    /// When counselor dies, incr dead counselors and win/lose. 
+    /// Gameover if all counselors dead.
+    /// </summary>
+    public void CounselorDied(bool playerWon)
+    {
+        SetDead(true);
+
+        Debug.Log("Counselor dead");
+
+        GameManager.Instance.GlobalIncrCounselorsDead();
+
+        //if player won 
+        if( playerWon)
+        {
+            GameManager.Instance.SetWonGame(true);
+        }
+        //if player didn't win but dying
+        else
+        {
+            //set game as lost by local dead counselor
+            GameManager.Instance.SetLostGame(true);
+        }
+
+
+        //check if all counselors dead + kill local player 
+        Debug.Log("Check for if all counselors dead resulted in: " +
+            GameManager.Instance.CheckAllCounselorsDead(localDie: true, localLose: !playerWon));
+    }
+
     #endregion
 
     #region Dead Get&Set
@@ -537,7 +604,7 @@ public class PlayerManager : MonoBehaviourPunCallbacks
         prevDead = dead;
     }
 
-    #endregion Dead Methods
+    #endregion Dead Get&Set
 
     #region GUI Config
 
