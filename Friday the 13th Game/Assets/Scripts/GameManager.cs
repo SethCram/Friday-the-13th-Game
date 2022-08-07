@@ -214,7 +214,7 @@ public class GameManager : MonoBehaviourPun
         //wait till all players spawned
         while(!AllPlayersSpawned())
         {
-            Debug.LogAssertion("Wait a frame bc not all players spawned.");
+            //Debug.LogAssertion("Wait a frame bc not all players spawned.");
 
             framesWaited++;
 
@@ -1024,7 +1024,7 @@ public class GameManager : MonoBehaviourPun
             playerExpectedCount = PhotonNetwork.CurrentRoom.MaxPlayers;
         }
 
-        Debug.Log($"Expected players = {playerExpectedCount}, Current players = {PlayerCount()}");
+        //Debug.Log($"Expected players = {playerExpectedCount}, Current players = {PlayerCount()}");
 
         //return whether same number of players counted as expected
         return PlayerCount() == playerExpectedCount;

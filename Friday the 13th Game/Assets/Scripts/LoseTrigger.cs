@@ -7,8 +7,6 @@ public class LoseTrigger : MonoBehaviour
 {
     private void OnTriggerEnter(Collider other)
     {
-        //store colliding w/ transform
-        Transform collidingWithTransform = other.GetComponent<Transform>();
         PlayerManager playerManager = null;
 
         //if colliding w/ jason or counselor

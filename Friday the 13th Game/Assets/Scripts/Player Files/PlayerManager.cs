@@ -128,10 +128,33 @@ public class PlayerManager : MonoBehaviourPunCallbacks
         CutMotionControls();
         DisableCamControl();
 
+        //if scene is game lobby
+        if(GameManager.Instance.currentScene == GameManager.CurrentScene.GAME_LOBBY)
+        {
+            //close room to joining players
+            NetworkCloseRoom();
+        }
+
         //asynchly load nxt scene
         //StartCoroutine(overlayUI.LoadLevelAsynch());
         StartCoroutine(loadingUI.LoadLevelAsynch());
 
+    }
+
+    /// <summary>
+    /// close off room to network + future joining.
+    /// </summary>
+    private void NetworkCloseRoom()
+    {
+        //if connected + master client
+        if (PhotonNetwork.IsConnected && PhotonNetwork.IsMasterClient)
+        {
+            //close room
+            PhotonNetwork.CurrentRoom.IsOpen = false;
+
+            //disable visibility in lobby
+            PhotonNetwork.CurrentRoom.IsVisible = false;
+        }
     }
 
     //reload the scene:

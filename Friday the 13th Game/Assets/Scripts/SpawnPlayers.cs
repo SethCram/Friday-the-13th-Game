@@ -46,10 +46,7 @@ public class SpawnPlayers : MonoBehaviourPunCallbacks
             //spawn local player at start
             SpawnPlayersAtStart();
         }
-        
-        NetworkCloseRoom();
 
-        //SpawnPlayersAtStart();
     }
 
     #region Spawning Methods
@@ -184,20 +181,4 @@ public class SpawnPlayers : MonoBehaviourPunCallbacks
     }
 
     #endregion
-
-    /// <summary>
-    /// close off room to network
-    /// </summary>
-    private void NetworkCloseRoom()
-    {
-        //if connected + master client
-        if(PhotonNetwork.IsConnected && PhotonNetwork.IsMasterClient)
-        {
-            //close room
-            PhotonNetwork.CurrentRoom.IsOpen = false;
-
-            //disable visibility in lobby
-            PhotonNetwork.CurrentRoom.IsVisible = false;
-        }
-    }
 }
