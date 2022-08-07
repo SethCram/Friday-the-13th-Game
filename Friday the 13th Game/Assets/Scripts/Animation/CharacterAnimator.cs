@@ -360,12 +360,12 @@ public class CharacterAnimator : MonoBehaviour
             else
             {
                 //if counselor loses
-                if (tag == "Player")
+                if (GameManager.Instance.TagIsCounselor(tag) )
                 {
                     playerManager.CounselorDied(playerWon: false);
                 }
                 //if Jason died
-                else if (tag == "Enemy")
+                else if (GameManager.Instance.TagIsJason(tag))
                 {
                     playerManager.JasonDied( playerWon: false);
                 }

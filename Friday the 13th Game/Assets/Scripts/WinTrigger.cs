@@ -22,7 +22,7 @@ public class WinTrigger : MonoBehaviour
         collidingWithTransform = other.GetComponent<Transform>();
 
         //if colliding w/ jason or counselor
-        if (other.tag == "Player" || other.tag == "Enemy")
+        if (GameManager.Instance.TagIsCounselor(other.tag) || GameManager.Instance.TagIsJason(other.tag))
         {
             //store player manager
             playerManager = other.GetComponent<PlayerManager>();
@@ -30,7 +30,7 @@ public class WinTrigger : MonoBehaviour
         }
 
         //if counselor colliding + player not dead
-        if ( other.tag == "Player" && !playerManager.GetDead() )
+        if (GameManager.Instance.TagIsCounselor(other.tag) && !playerManager.GetDead() )
         { 
             shouldLaunchPlayerForward = true;
 
@@ -46,7 +46,7 @@ public class WinTrigger : MonoBehaviour
 
         }
         //if jason colliding
-        else if( other.tag ==  "Enemy" )
+        else if(GameManager.Instance.TagIsJason(other.tag))
         {
             shouldLaunchPlayerBack = true;
 

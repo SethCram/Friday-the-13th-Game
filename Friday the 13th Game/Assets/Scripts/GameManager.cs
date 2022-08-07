@@ -14,14 +14,15 @@ public class GameManager : MonoBehaviourPun
 {
     #region Vars
 
+    //needa incr/decr over RPC
     [HideInInspector]
-    public int startVotes { private set; get; } = 0; //needa incr/decr over RPC
+    public int startVotes { private set; get; } = 0; 
 
     [HideInInspector]
     public int deadCounselors { private set; get; } = 0;
 
     [HideInInspector]
-    public int playersGameReady { private set; get; } = 0;
+    public int playersSpawnReady { private set; get; } = 0;
 
     [HideInInspector]
     public GameObject jasonPlayer;
@@ -51,15 +52,6 @@ public class GameManager : MonoBehaviourPun
     public CurrentScene currentScene { private set; get; }
     private string currSceneName;
 
-    //to keep track of what panel active: (unneeded?)
-    private GameObject currPanel;
-    public GameObject panelMenu;
-    public GameObject panelPlay;
-    public GameObject panelLevelCompleted;
-    public GameObject panelGameOver;
-    public GameObject panelPause;
-    public GameObject panelHelp;
-
     //music vars
     private bool musicShouldPlay = true;
     private AudioSource audioSrc;
@@ -86,6 +78,10 @@ public class GameManager : MonoBehaviourPun
     public const string CUSTOM_PROP_FALSE = "False";
 
     #endregion Custom Prop Fields
+
+    //tag fields
+    public const string JASON_TAG = "Enemy";
+    public const string COUNSELOR_TAG = "Player";
 
     #endregion Vars
 
@@ -115,7 +111,7 @@ public class GameManager : MonoBehaviourPun
                     GameObject mnger = new GameObject();
                     mnger.name = "GameManager";
                     mnger.AddComponent<PhotonView>();
-                    mnger.tag = "GameManager";
+                    //mnger.tag = "GameManager";
                     instance = mnger.AddComponent<GameManager>();
 
                     Debug.LogWarning("new game manager created");
@@ -224,10 +220,10 @@ public class GameManager : MonoBehaviourPun
         Debug.LogAssertion($"Waited {framesWaited} frames for all players to spawn.");
 
         //if our player is a counselor
-        if (ourPlayer.tag == "Player")
+        if ( TagIsCounselor(ourPlayer.tag))
         {
             //cache jason player
-            jasonPlayer = GameObject.FindGameObjectWithTag("Enemy");
+            jasonPlayer = GameObject.FindGameObjectWithTag(JASON_TAG);
         }
         //if our player is jason
         else
@@ -319,9 +315,9 @@ public class GameManager : MonoBehaviourPun
     /// RPC to incr number of players loaded into game scene
     /// </summary>
     [PunRPC]
-    public void RPC_IncrPlayersGameReady()
+    public void RPC_IncrPlayersSpawnReady()
     {
-        playersGameReady++;
+        playersSpawnReady++;
 
         //debug: Debug.LogAssertion("players game ready = " + playersGameReady.ToString());
     }
@@ -542,8 +538,7 @@ public class GameManager : MonoBehaviourPun
         yield return new WaitForSeconds(activationDelay);
 
         //if jason left in game scene: (bc can't find his tag)
-        if ( GameObject.FindGameObjectWithTag("Enemy") == null 
-            && currentScene == CurrentScene.GAME)
+        if ( !JasonInRoom() && currentScene == CurrentScene.GAME)
         {
             Debug.LogAssertion("Jason left.");
 
@@ -1030,6 +1025,26 @@ public class GameManager : MonoBehaviourPun
         return PlayerCount() == playerExpectedCount;
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="tag">Tag attached to player.</param>
+    /// <returns>Whether tag is attached to Jason.</returns>
+    public bool TagIsJason(string tag)
+    {
+        return SameString_IgnoreCase(tag, JASON_TAG);
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="tag">Tag attached to player.</param>
+    /// <returns>Whether tag is attached to Counselor.</returns>
+    public bool TagIsCounselor(string tag)
+    {
+        return SameString_IgnoreCase( tag, COUNSELOR_TAG );
+    }
+
     #region Count Methods
 
     /// <summary>
@@ -1042,7 +1057,7 @@ public class GameManager : MonoBehaviourPun
         if(CounselorInRoom())
         {
             //return number of counselors
-            return GameObject.FindGameObjectsWithTag("Player").Length;
+            return GameObject.FindGameObjectsWithTag(COUNSELOR_TAG).Length;
         }
         //if can find a counselor
         else
@@ -1061,7 +1076,7 @@ public class GameManager : MonoBehaviourPun
         if (JasonInRoom())
         {
             //return number of jasons
-            return GameObject.FindGameObjectsWithTag("Enemy").Length;
+            return GameObject.FindGameObjectsWithTag(JASON_TAG).Length;
         }
         //if can find a jason
         else
@@ -1105,7 +1120,7 @@ public class GameManager : MonoBehaviourPun
     /// <returns>Whether a jason player is in the current room.</returns>
     private bool JasonInRoom()
     {
-        return GameObject.FindGameObjectWithTag("Enemy") != null;
+        return GameObject.FindGameObjectWithTag(JASON_TAG) != null;
     }
 
     /// <summary>
@@ -1114,7 +1129,7 @@ public class GameManager : MonoBehaviourPun
     /// <returns>Whether a counselor player is in the current room.</returns>
     private bool CounselorInRoom()
     {
-        bool counselorInRoom = GameObject.FindGameObjectWithTag("Player") != null;
+        bool counselorInRoom = GameObject.FindGameObjectWithTag(COUNSELOR_TAG) != null;
 
         //Debug.Log($"Counselor in room = {counselorInRoom}");
 

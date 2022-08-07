@@ -10,7 +10,8 @@ public class LoseTrigger : MonoBehaviour
         PlayerManager playerManager = null;
 
         //if colliding w/ jason or counselor
-        if (other.tag == "Player" || other.tag == "Enemy")
+        if (GameManager.Instance.TagIsCounselor(other.tag) 
+            || GameManager.Instance.TagIsJason(other.tag))
         {
             //store player manager
             playerManager = other.GetComponent<PlayerManager>();
@@ -21,7 +22,7 @@ public class LoseTrigger : MonoBehaviour
         if (GameManager.Instance.currentScene == GameManager.CurrentScene.GAME)
         {
             //if counselor colliding + player not dead
-            if (other.tag == "Player")
+            if (GameManager.Instance.TagIsCounselor(other.tag))
             {
                 //if other photon view is mine or not connected to network
                 if (other.GetComponent<PhotonView>().IsMine || !PhotonNetwork.IsConnected)
@@ -32,7 +33,7 @@ public class LoseTrigger : MonoBehaviour
 
             }
             //if jason colliding
-            else if (other.tag == "Enemy")
+            else if (GameManager.Instance.TagIsJason(other.tag))
             {
                 //if other photon view is mine or not connected to network
                 if (other.GetComponent<PhotonView>().IsMine || !PhotonNetwork.IsConnected)

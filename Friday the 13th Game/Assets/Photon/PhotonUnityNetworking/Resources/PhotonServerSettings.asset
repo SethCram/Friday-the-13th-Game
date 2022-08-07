@@ -67,7 +67,6 @@ MonoBehaviour:
   - SpawnPlayer
   - RPC_ChangeCounselorsDead
   - RPC_ChangePlayersGameReady
-  - RPC_IncrPlayersGameReady
   - DeadSetColliders
   - ResetDeadColliders
   - Win
@@ -75,6 +74,7 @@ MonoBehaviour:
   - RPC_IncrCounselorsDead
   - GenericGameOver
   - SetTag
+  - RPC_IncrPlayersSpawnReady
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1

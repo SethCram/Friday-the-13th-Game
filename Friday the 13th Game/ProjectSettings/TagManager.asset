@@ -5,11 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - Light
-  - GameLevel
-  - LobbyLevel
-  - JasonStart
-  - CounselorStart
-  - GameManager
+  - Player
   - Enemy
   layers:
   - Default

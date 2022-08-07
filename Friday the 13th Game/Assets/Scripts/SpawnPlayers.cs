@@ -29,7 +29,7 @@ public class SpawnPlayers : MonoBehaviourPunCallbacks
             //debug: Debug.LogError("players game ready = " + (int)(GameManager.Instance.playersGameReady + 1));
 
             //incr # of players game ready on network
-            GameManager.Instance.photonView.RPC("RPC_IncrPlayersGameReady", RpcTarget.AllBuffered);
+            GameManager.Instance.photonView.RPC("RPC_IncrPlayersSpawnReady", RpcTarget.AllBuffered);
 
             //if master client
             if( PhotonNetwork.IsMasterClient)
@@ -94,7 +94,7 @@ public class SpawnPlayers : MonoBehaviourPunCallbacks
 
             if (spawnLocalAsJasonTagged)
             {
-                localPlayer.tag = "Enemy";
+                localPlayer.tag = GameManager.JASON_TAG;
             }
 
             GameManager.Instance.localPlayerSpawned = true;
@@ -110,7 +110,7 @@ public class SpawnPlayers : MonoBehaviourPunCallbacks
         int framesWaited = 0;
 
         // if not all players loaded into room
-        while (PhotonNetwork.CurrentRoom.PlayerCount > GameManager.Instance.playersGameReady)
+        while (PhotonNetwork.CurrentRoom.PlayerCount > GameManager.Instance.playersSpawnReady)
         {
             //wait a frame then check again
             yield return null;
@@ -121,7 +121,7 @@ public class SpawnPlayers : MonoBehaviourPunCallbacks
             if( framesWaited > MAX_FRAMES_WAITED )
             {
                 Debug.LogError("More than " + MAX_FRAMES_WAITED + " frames waited to spawn players, so not spawned all at the same time.");
-                Debug.LogError("Current player count = " + PhotonNetwork.CurrentRoom.PlayerCount + " players loaded into the game = " + GameManager.Instance.playersGameReady);
+                Debug.LogError("Current player count = " + PhotonNetwork.CurrentRoom.PlayerCount + " players loaded into the game = " + GameManager.Instance.playersSpawnReady);
                 break;
             } 
         }
@@ -148,15 +148,17 @@ public class SpawnPlayers : MonoBehaviourPunCallbacks
         customProperties.Add(key: (object)GameManager.LOST_GAME_STR, value: GameManager.CUSTOM_PROP_FALSE);
         customProperties.Add(key: (object)GameManager.WON_GAME_STR, value: GameManager.CUSTOM_PROP_FALSE);
 
+        GameObject spawnedPlayer;
+
         //if jason
         if (jason)
         {
-            GameObject spawnedPlayer = PhotonNetwork.Instantiate(playerPrefab.name,
+            spawnedPlayer = PhotonNetwork.Instantiate(playerPrefab.name,
                 jasonSpawn.position,
                 playerPrefab.transform.rotation);
 
             //set tag on player using player manager funct
-            spawnedPlayer.GetPhotonView().RPC("SetTag", RpcTarget.AllBuffered, "Enemy");
+            spawnedPlayer.GetPhotonView().RPC("SetTag", RpcTarget.AllBuffered, GameManager.JASON_TAG);
 
             //set jason 
             customProperties.Add(key: (object)GameManager.IS_JASON_STR, value: GameManager.CUSTOM_PROP_TRUE);
@@ -165,9 +167,12 @@ public class SpawnPlayers : MonoBehaviourPunCallbacks
         //if not jason
         else
         {
-            PhotonNetwork.Instantiate(playerPrefab.name,
+            spawnedPlayer = PhotonNetwork.Instantiate(playerPrefab.name,
                 counselorSpawn.position + Vector3.right * index,
                 playerPrefab.transform.rotation);
+
+            //set tag on player using player manager funct
+            spawnedPlayer.GetPhotonView().RPC("SetTag", RpcTarget.AllBuffered, GameManager.COUNSELOR_TAG);
 
             //give counselor
             customProperties.Add(key: (object)GameManager.IS_JASON_STR, value: GameManager.CUSTOM_PROP_FALSE);

@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1442065646382208545}
   m_Layer: 0
   m_Name: GameManagerObj
-  m_TagString: GameManager
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -44,9 +44,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7966f97703ea25c4c9ae950d53428f2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  photonView: {fileID: 1442065646382208545}
-  gameLevel: {fileID: 0}
-  lobbyLevel: {fileID: 0}
+  jasonPlayer: {fileID: 0}
+  ourPlayer: {fileID: 0}
+  playerManager: {fileID: 0}
+  getSetStats: {fileID: 0}
+  checkIfPlayersLeftInterval: 1
+  panelMenu: {fileID: 0}
+  panelPlay: {fileID: 0}
+  panelLevelCompleted: {fileID: 0}
+  panelGameOver: {fileID: 0}
+  panelPause: {fileID: 0}
+  panelHelp: {fileID: 0}
 --- !u!114 &1442065646382208545
 MonoBehaviour:
   m_ObjectHideFlags: 0

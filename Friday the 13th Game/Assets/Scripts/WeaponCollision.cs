@@ -40,7 +40,10 @@ public class WeaponCollision : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         //currently atking, and hit a player or enemy:
-        if (myPlayerCombat.isAtking && (other.tag == "Player" || other.tag == "Enemy"))
+        if (myPlayerCombat.isAtking && 
+            (GameManager.Instance.TagIsCounselor(other.tag) || 
+            GameManager.Instance.TagIsJason(other.tag))
+            )
         {
             //cache hit obj stats:
             CharacterStats hitStats = other.GetComponent<CharacterStats>();

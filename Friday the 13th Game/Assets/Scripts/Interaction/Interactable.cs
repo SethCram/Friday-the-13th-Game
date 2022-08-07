@@ -92,7 +92,8 @@ public class Interactable : MonoBehaviourPunCallbacks
     public virtual void OnTriggerEnter(Collider other)
     {
         //only add an interactable player if tagged w/ 'Player' or 'Enemy'
-        if (other.tag != "Player" && other.tag != "Enemy")
+        if (!GameManager.Instance.TagIsCounselor(other.tag) 
+            && !GameManager.Instance.TagIsJason(other.tag))
         {
             return;
         }
@@ -114,7 +115,8 @@ public class Interactable : MonoBehaviourPunCallbacks
     public virtual void OnTriggerExit(Collider other)
     {
         //only remove an interactable player if tagged w/ 'Player' or 'Enemy'
-        if (other.tag != "Player" && other.tag != "Enemy")
+        if (!GameManager.Instance.TagIsCounselor(other.tag)
+            && !GameManager.Instance.TagIsJason(other.tag))
         {
             return;
         }
