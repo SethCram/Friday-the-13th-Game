@@ -10,7 +10,7 @@ using UnityEngine.SceneManagement;
 /// game manager for keeping track of game data
 /// NOT A PERSISTENT DATA SINGLETON
 /// </summary>
-public class GameManager : MonoBehaviourPun 
+public class GameManager : MonoBehaviourPun
 {
     #region Vars
 
@@ -29,14 +29,19 @@ public class GameManager : MonoBehaviourPun
     public GameObject ourPlayer;
     [HideInInspector]
     public PlayerManager playerManager;
-    public GameObject statsUI {get; set; }
+    public GameObject statsUI { get; set; }
     [HideInInspector]
     public GetSetStats getSetStats;
 
     private bool jasonLeft = false;
 
+    /// <summary>
+    /// Number of secs pass before check if players left again.
+    /// </summary>
+    public int checkIfPlayersLeftInterval = 1;
+
     //state mach:
-    public enum State { MENU, INIT, PLAY, LOADLEVEL, GAMEOVER, PAUSE, SPECTATE};
+    public enum State { MENU, INIT, PLAY, LOADLEVEL, GAMEOVER, PAUSE, SPECTATE };
     private State _state;
     private State unpauseState;
     private bool _isSwitchingState;
@@ -62,6 +67,11 @@ public class GameManager : MonoBehaviourPun
     //game success or failure 
     private bool lostGame = false;
     private bool wonGame = false;
+
+    public bool localPlayerSpawned { set; private get; } = false;
+    private int prevCounselorCount = 0;
+    private bool gameReady = false;
+    private bool checkingIfPlayersLeft = false;
 
     #region Custom Prop Fields
 
@@ -166,33 +176,54 @@ public class GameManager : MonoBehaviourPun
 
     private void Start()
     {
-
         //if not starting in the lobby
         if ( currentScene != CurrentScene.LOBBY )
         {
             //wait till our player instance filled to fit vars in
-            StartCoroutine(WaitTillPlayerInstanceFilled());
+            StartCoroutine(WaitTillGameInited());
         }
 
-        
     }
 
     /// <summary>
-    /// Waits asynchly till player instance filled to fill fields
+    /// Waits asynchly till game inited
     /// </summary>
     /// <returns></returns>
-    private IEnumerator WaitTillPlayerInstanceFilled()
+    private IEnumerator WaitTillGameInited()
     {
-        //while player inst not filled
-        while (ourPlayer == null)
+        int framesWaited = 0;
+
+        //wait while player inst not filled 
+        while (ourPlayer == null )
         {
-            Debug.Log("Wait 1 frame bc our player inst not filled.");
+            framesWaited++;
 
             //wait a frame
             yield return null;
         }
+        Debug.LogAssertion($"Waited {framesWaited} frames for player instance to fill.");
 
-        //if our player is counselor
+        //player instance filled so cache player manager
+        playerManager = ourPlayer.GetComponent<PlayerManager>();
+
+        //cache more fields
+        getSetStats = statsUI.GetComponent<GetSetStats>();
+
+        framesWaited = 0;
+
+        //wait till all players spawned
+        while(!AllPlayersSpawned())
+        {
+            Debug.LogAssertion("Wait a frame bc not all players spawned.");
+
+            framesWaited++;
+
+            //wait a frame
+            yield return null;
+        }
+        Debug.LogAssertion($"Waited {framesWaited} frames for all players to spawn.");
+
+        //if our player is a counselor
         if (ourPlayer.tag == "Player")
         {
             //cache jason player
@@ -205,54 +236,13 @@ public class GameManager : MonoBehaviourPun
             jasonPlayer = ourPlayer;
         }
 
-        //player instance filled so cache player manager
-        playerManager = ourPlayer.GetComponent<PlayerManager>();
-
-        //cache more fields
-        getSetStats = statsUI.GetComponent<GetSetStats>();
-
-        //startCheckingIfJasonLeft = true;
+        gameReady = true;
     }
 
     #endregion Startup
 
     private void Update()
     {
-        /*
-        //if not game scene or jason already left or local play
-        if( notGameScene ||  jasonLeft || !PhotonNetwork.IsConnected)
-        {
-            //don't check if jason left
-            return;
-        }
-
-        //if(currentScene)
-
-        //if jason player empty
-        if(jasonPlayer == null)
-        {
-            //find jason player
-            jasonPlayer = GameObject.FindGameObjectWithTag("Enemy");
-
-            //if jason player actually left
-            if (jasonPlayer == null)
-            {
-                //make sure player manager filled
-                playerManager = ourPlayer.GetComponent<PlayerManager>();
-
-                //tell remaining players they won
-                playerManager.Win(isGameOver: true);
-                
-                //don't repeat telling players they won
-                jasonLeft = true;
-            }
-            //jason player didn't actually leave
-            else
-            {
-                playerManager = ourPlayer.GetComponent<PlayerManager>();
-            }
-        }
-        */
 
         //stop playing music if it should stop:
         if (musicShouldPlay == false)
@@ -265,19 +255,26 @@ public class GameManager : MonoBehaviourPun
         switch (_state) 
         {
             case State.INIT:
-                //spawn players and items
-                /*
-                if( playersSpawned )
+                //if spawned local player + game ready
+                if( localPlayerSpawned && gameReady )
                 {
-                    SwitchState(State.MENU);
+                    SwitchState(State.PLAY);
                 }
-                */
 
                 break;
             case State.MENU:
 
                 break;
             case State.PLAY:
+                //if we're the master client and not checking players left yet
+                if (PhotonNetwork.IsMasterClient && !checkingIfPlayersLeft)
+                {
+                    //check players left every _ secs
+                    StartCoroutine(CheckIfPlayersLeft(checkIfPlayersLeftInterval));
+
+                    checkingIfPlayersLeft = true;
+                }
+
                 //alow player control
                 break;
             case State.SPECTATE:
@@ -450,9 +447,8 @@ public class GameManager : MonoBehaviourPun
             case State.MENU:
                 
                 break;
-            case State.INIT: //for resetting score and such
-                
-                SwitchState(State.LOADLEVEL);
+            case State.INIT: //for resetting score and such      
+                //SwitchState(State.LOADLEVEL);
                 break;
             case State.PLAY:
                 break;
@@ -535,6 +531,82 @@ public class GameManager : MonoBehaviourPun
     #region Public Death Methods
 
     /// <summary>
+    /// Every activationDelay, check if a player left + take approp action.
+    /// Works properly in Game + Game Lobby scenes.
+    /// </summary>
+    /// <param name="activationDelay"></param>
+    /// <returns></returns>
+    private IEnumerator CheckIfPlayersLeft( int activationDelay )
+    {
+        //wait for reactivation delay
+        yield return new WaitForSeconds(activationDelay);
+
+        //if jason left in game scene: (bc can't find his tag)
+        if ( GameObject.FindGameObjectWithTag("Enemy") == null 
+            && currentScene == CurrentScene.GAME)
+        {
+            Debug.LogAssertion("Jason left.");
+
+            //walk thru players left
+            foreach (Player player in PhotonNetwork.PlayerList)
+            {
+                //tell each one game over
+                TellCounselorGameOver(player);
+            }
+
+            //switch to game over state
+            SwitchState(State.GAMEOVER);
+        }
+        //if jason didn't leave in game scene:
+        else
+        {
+            //store curr # of counselors in scene
+            int currCounselorCount = PhotonCounselorCount();
+
+            //if counselor left: (bc used to be more)
+            if (prevCounselorCount > currCounselorCount)
+            {
+                Debug.LogAssertion("A counselor left.");
+
+                //update counselor count before recursion
+                prevCounselorCount = currCounselorCount;
+
+                //if in game scene
+                if (currentScene == CurrentScene.GAME)
+                {
+                    //if not all counselors dead (don't die locally)
+                    if (!CheckAllCounselorsDead(localDie: false))
+                    {
+                        //start check again
+                        StartCoroutine(CheckIfPlayersLeft(activationDelay));
+                    }
+                    //if all counselors dead
+                    else
+                    {
+                        //switch to game over state
+                        SwitchState(State.GAMEOVER);
+                    }
+                }
+                //if in game lobby scene
+                else if(currentScene == CurrentScene.GAME_LOBBY)
+                {
+                    //start check again
+                    StartCoroutine(CheckIfPlayersLeft(activationDelay));
+                }
+            }
+            //if counselor didn't leave
+            else
+            {
+                //update counselor count before recursion
+                prevCounselorCount = currCounselorCount;
+
+                //start check again
+                StartCoroutine(CheckIfPlayersLeft(activationDelay));
+            }
+        }
+    }
+
+    /// <summary>
     /// Global refers to incr couneslor whether online or offline
     /// </summary>
     public void GlobalIncrCounselorsDead()
@@ -598,7 +670,7 @@ public class GameManager : MonoBehaviourPun
         }
 
         //if all counselors dead
-        if (deadCounselors >= PhotonNetwork.CurrentRoom.PlayerCount - 1)
+        if (deadCounselors >= PhotonCounselorCount() )
         {
             Debug.LogAssertion("All counselors are dead. Game Over.");
 
@@ -767,11 +839,15 @@ public class GameManager : MonoBehaviourPun
     /// <summary>
     /// Determines if all counselors won game.
     /// </summary>
-    /// <returns>Returns false if not all counselors dead yet.</returns>
+    /// <returns>Returns false if not all counselors dead yet, or no counselors ingame.</returns>
     private bool AllCounselorsWon()
     {
-        //if all counselors won
-        if (CountWonGameCounselors() >= PhotonNetwork.CurrentRoom.PlayerCount - 1)
+        //cache counselor count
+        int counselorCount = CounselorCount();
+
+        //if all counselors won + not all counselors left
+        if (CountWonGameCounselors() >= counselorCount 
+            && counselorCount != 0)
         {
             return true;
         }
@@ -782,13 +858,13 @@ public class GameManager : MonoBehaviourPun
     }
 
     /// <summary>
-    /// Determines if all counselors won game.
+    /// Determines if all counselors lost game.
     /// </summary>
-    /// <returns>Returns false if not all counselors dead yet.</returns>
+    /// <returns>Returns false if not all counselors lost yet.</returns>
     private bool AllCounselorsLost()
     {
-        //if all counselors lost
-        if (CountLostGameCounselors() >= PhotonNetwork.CurrentRoom.PlayerCount - 1)
+        //if all counselors lost (or left)
+        if (CountLostGameCounselors() >= PhotonCounselorCount() )
         {
             return true;
         }
@@ -866,6 +942,8 @@ public class GameManager : MonoBehaviourPun
         return string.Compare(str1, str2, StringComparison.OrdinalIgnoreCase) == 0;
     }
 
+    #region Custom Property Methods
+
     /// <summary>
     /// Determines if player is Jason.
     /// </summary>
@@ -914,6 +992,136 @@ public class GameManager : MonoBehaviourPun
         //if counselor already lost game
         return SameString_IgnoreCase(lostGame.ToString(), CUSTOM_PROP_TRUE);
     }
+
+    #endregion Custom Property Methods
+
+    /// <summary>
+    /// Uses GameObject tags to determine whether all players spawned yet.
+    /// Works in local + networked play.
+    /// </summary>
+    /// <returns>Whether all players spawned yet.</returns>
+    private bool AllPlayersSpawned()
+    {
+        //if local play
+        if(!PhotonNetwork.IsConnected)
+        {
+            //return spawn state of local player
+            return localPlayerSpawned;
+        }
+
+        int playerExpectedCount = 0;
+
+        //if game scene
+        if (currentScene == CurrentScene.GAME)
+        {
+            //init expected players to curr player count
+            playerExpectedCount = PhotonNetwork.CurrentRoom.PlayerCount;
+        }
+        //if game lobby
+        else if( currentScene == CurrentScene.GAME_LOBBY)
+        {
+            //set expected players to max players for room
+            playerExpectedCount = PhotonNetwork.CurrentRoom.MaxPlayers;
+        }
+
+        Debug.Log($"Expected players = {playerExpectedCount}, Current players = {PlayerCount()}");
+
+        //return whether same number of players counted as expected
+        return PlayerCount() == playerExpectedCount;
+    }
+
+    #region Count Methods
+
+    /// <summary>
+    /// Counts number of counselors.
+    /// </summary>
+    /// <returns>Number of counselors spawned in.</returns>
+    private int CounselorCount()
+    {
+        //if can find a counselor
+        if(CounselorInRoom())
+        {
+            //return number of counselors
+            return GameObject.FindGameObjectsWithTag("Player").Length;
+        }
+        //if can find a counselor
+        else
+        {
+            return 0;
+        }
+    }
+
+    /// <summary>
+    /// Counts number of jasons.
+    /// </summary>
+    /// <returns>Number of jasons spawned in.</returns>
+    private int JasonCount()
+    {
+        //if can find a jason
+        if (JasonInRoom())
+        {
+            //return number of jasons
+            return GameObject.FindGameObjectsWithTag("Enemy").Length;
+        }
+        //if can find a jason
+        else
+        {
+            return 0;
+        }
+    }
+
+    /// <summary>
+    /// Counselor count according to Photon and the scene.
+    /// Assumes only 1 jason in game scene.
+    /// </summary>
+    private int PhotonCounselorCount()
+    {
+        if (currentScene == CurrentScene.GAME)
+        {
+            return PhotonNetwork.CurrentRoom.PlayerCount - 1;
+        }
+        else
+        {
+            return PhotonNetwork.CurrentRoom.PlayerCount;
+        }
+    }
+
+    /// <summary>
+    /// Count number of players in room.
+    /// </summary>
+    /// <returns>Number of players in room.</returns>
+    private int PlayerCount()
+    {
+        return JasonCount() + CounselorCount();
+    }
+
+    #endregion Count Methods
+
+    #region Existence Methods
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <returns>Whether a jason player is in the current room.</returns>
+    private bool JasonInRoom()
+    {
+        return GameObject.FindGameObjectWithTag("Enemy") != null;
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <returns>Whether a counselor player is in the current room.</returns>
+    private bool CounselorInRoom()
+    {
+        bool counselorInRoom = GameObject.FindGameObjectWithTag("Player") != null;
+
+        //Debug.Log($"Counselor in room = {counselorInRoom}");
+
+        return counselorInRoom;
+    }
+
+    #endregion Existence Methods
 
     #endregion General Utility
 }

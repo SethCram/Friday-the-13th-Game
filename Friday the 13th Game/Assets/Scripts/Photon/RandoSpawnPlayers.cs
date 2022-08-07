@@ -36,11 +36,13 @@ public class RandoSpawnPlayers : MonoBehaviour
         }
         else
         {
-            //create a local scimitar:
+            //create a local obj:
             Instantiate(spawnableObj, randomPos, spawnableObj.transform.rotation);
 
             //print("local obj inst'd");
         }
+
+        GameManager.Instance.localPlayerSpawned = true;
     }
 
     private void OnDrawGizmos()

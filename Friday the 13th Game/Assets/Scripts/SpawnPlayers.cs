@@ -17,8 +17,6 @@ public class SpawnPlayers : MonoBehaviourPunCallbacks
     public Transform customLocalSpawn;
     public bool spawnLocalAsJasonTagged = false;
 
-    public bool spawnedPlayer { private set; get; }
-
     #endregion
 
     // Start is called before the first frame update
@@ -102,7 +100,7 @@ public class SpawnPlayers : MonoBehaviourPunCallbacks
                 localPlayer.tag = "Enemy";
             }
 
-            spawnedPlayer = true;
+            GameManager.Instance.localPlayerSpawned = true;
         }
     }
 
@@ -182,7 +180,7 @@ public class SpawnPlayers : MonoBehaviourPunCallbacks
         //cement player custom props
         PhotonNetwork.SetPlayerCustomProperties(customProperties);
 
-        spawnedPlayer = true;
+        GameManager.Instance.localPlayerSpawned = true;
     }
 
     #endregion
