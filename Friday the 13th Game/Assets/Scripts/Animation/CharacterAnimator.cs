@@ -362,12 +362,12 @@ public class CharacterAnimator : MonoBehaviour
                 //if counselor loses
                 if (GameManager.Instance.TagIsCounselor(tag) )
                 {
-                    playerManager.CounselorDied(playerWon: false);
+                    playerManager.CounselorDied(localPlayerWon: false);
                 }
                 //if Jason died
                 else if (GameManager.Instance.TagIsJason(tag))
                 {
-                    playerManager.JasonDied( playerWon: false);
+                    playerManager.JasonDied( locaPlayerWon: false);
                 }
             }
         }

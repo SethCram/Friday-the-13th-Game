@@ -41,7 +41,7 @@ public class WinTrigger : MonoBehaviour
             //if other photon view is mine or not connected to network
             if (other.GetComponent<PhotonView>().IsMine || !PhotonNetwork.IsConnected)
             {
-                playerManager.CounselorDied(playerWon: true);
+                playerManager.CounselorDied(localPlayerWon: true);
             }
 
         }

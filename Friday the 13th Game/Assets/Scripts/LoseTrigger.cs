@@ -28,7 +28,7 @@ public class LoseTrigger : MonoBehaviour
                 if (other.GetComponent<PhotonView>().IsMine || !PhotonNetwork.IsConnected)
                 {
                     //cause counselor to lose + check if all counselors dead
-                    playerManager.CounselorDied(playerWon: false);
+                    playerManager.CounselorDied(localPlayerWon: false);
                 }
 
             }
@@ -39,7 +39,7 @@ public class LoseTrigger : MonoBehaviour
                 if (other.GetComponent<PhotonView>().IsMine || !PhotonNetwork.IsConnected)
                 {
                     //tell jason died + lost
-                    playerManager.JasonDied(playerWon: false);
+                    playerManager.JasonDied(locaPlayerWon: false);
                 }
             }
         }

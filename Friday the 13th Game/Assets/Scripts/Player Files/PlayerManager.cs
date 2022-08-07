@@ -523,14 +523,15 @@ public class PlayerManager : MonoBehaviourPunCallbacks
     /// <summary>
     /// When jason dies, tell counselors they won/lost and I won/lost + game over for everyone
     /// </summary>
-    public void JasonDied( bool playerWon)
+    public void JasonDied( bool locaPlayerWon)
     {
         SetDead(true);
 
-        Debug.Log("Jason dead");
+        Debug.LogAssertion("Jason dead");
 
-        //if on network
-        if (PhotonNetwork.IsConnected)
+        //if on network and more than 1 player in room
+        if (PhotonNetwork.IsConnected 
+            && GameManager.Instance.PlayerCount() > 1)
         {
             //walk thru room players
             foreach (Player player in PhotonNetwork.PlayerList)
@@ -544,7 +545,7 @@ public class PlayerManager : MonoBehaviourPunCallbacks
             }
         }
 
-        if( playerWon)
+        if( locaPlayerWon)
         {
             Win(isGameOver: true);
         }
@@ -561,7 +562,7 @@ public class PlayerManager : MonoBehaviourPunCallbacks
     /// When counselor dies, incr dead counselors and win/lose. 
     /// Gameover if all counselors dead.
     /// </summary>
-    public void CounselorDied(bool playerWon)
+    public void CounselorDied(bool localPlayerWon)
     {
         SetDead(true);
 
@@ -570,7 +571,7 @@ public class PlayerManager : MonoBehaviourPunCallbacks
         GameManager.Instance.GlobalIncrCounselorsDead();
 
         //if player won 
-        if( playerWon)
+        if( localPlayerWon)
         {
             GameManager.Instance.SetWonGame(true);
         }
@@ -584,7 +585,7 @@ public class PlayerManager : MonoBehaviourPunCallbacks
 
         //check if all counselors dead + kill local player 
         Debug.Log("Check for if all counselors dead resulted in: " +
-            GameManager.Instance.CheckAllCounselorsDead(localDie: true, localLose: !playerWon));
+            GameManager.Instance.CheckAllCounselorsDead(localDie: true, localLose: !localPlayerWon));
     }
 
     #endregion

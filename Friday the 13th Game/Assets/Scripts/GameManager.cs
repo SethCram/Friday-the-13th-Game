@@ -80,8 +80,8 @@ public class GameManager : MonoBehaviourPun
     #endregion Custom Prop Fields
 
     //tag fields
-    public const string JASON_TAG = "Enemy";
-    public const string COUNSELOR_TAG = "Player";
+    public const string JASON_TAG = "Jason";
+    public const string COUNSELOR_TAG = "Counselor";
 
     #endregion Vars
 
@@ -1105,7 +1105,7 @@ public class GameManager : MonoBehaviourPun
     /// Count number of players in room.
     /// </summary>
     /// <returns>Number of players in room.</returns>
-    private int PlayerCount()
+    public int PlayerCount()
     {
         return JasonCount() + CounselorCount();
     }
