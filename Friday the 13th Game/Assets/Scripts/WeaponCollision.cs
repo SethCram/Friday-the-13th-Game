@@ -39,11 +39,9 @@ public class WeaponCollision : MonoBehaviour
     //if there's a collision:
     private void OnTriggerEnter(Collider other)
     {
-        //currently atking, and hit a player or enemy:
+        //currently atking, and hit a playable char:
         if (myPlayerCombat.isAtking && 
-            (GameManager.Instance.TagIsCounselor(other.tag) || 
-            GameManager.Instance.TagIsJason(other.tag))
-            )
+            GameManager.Instance.TagIsPlayableCharacter(other.tag))
         {
             //cache hit obj stats:
             CharacterStats hitStats = other.GetComponent<CharacterStats>();

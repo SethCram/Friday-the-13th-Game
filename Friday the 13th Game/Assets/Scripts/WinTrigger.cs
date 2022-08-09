@@ -21,8 +21,9 @@ public class WinTrigger : MonoBehaviour
         PlayerManager playerManager = null; 
         collidingWithTransform = other.GetComponent<Transform>();
 
-        //if colliding w/ jason or counselor
-        if (GameManager.Instance.TagIsCounselor(other.tag) || GameManager.Instance.TagIsJason(other.tag))
+        //if colliding w/ jason or counselor or player
+        if (GameManager.Instance.TagIsCounselor(other.tag) 
+            || GameManager.Instance.TagIsJason(other.tag))
         {
             //store player manager
             playerManager = other.GetComponent<PlayerManager>();

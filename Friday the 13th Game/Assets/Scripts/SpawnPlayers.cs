@@ -15,7 +15,6 @@ public class SpawnPlayers : MonoBehaviourPunCallbacks
     public Transform counselorSpawn;
 
     public Transform customLocalSpawn;
-    public bool spawnLocalAsJasonTagged = false;
 
     #endregion
 
@@ -28,31 +27,117 @@ public class SpawnPlayers : MonoBehaviourPunCallbacks
         {
             //debug: Debug.LogError("players game ready = " + (int)(GameManager.Instance.playersGameReady + 1));
 
-            //incr # of players game ready on network
-            GameManager.Instance.photonView.RPC("RPC_IncrPlayersSpawnReady", RpcTarget.AllBuffered);
-
             //if master client
             if( PhotonNetwork.IsMasterClient)
             {
                 //debug: Debug.LogAssertion("isMasterClient = " + PhotonNetwork.IsMasterClient);
 
+                //assign jason + counselor custom props
+                AssignCustomProps();
+
                 //check if all players are ready
-                StartCoroutine(CheckAllPlayersReady());
+                StartCoroutine(CheckAllPlayersReady(PhotonNetwork.CurrentRoom.PlayerCount));
             }
         }
         //if local 
         else
         {
-            //spawn local player at start
-            SpawnPlayersAtStart();
+            //check if all players are ready
+            StartCoroutine(CheckAllPlayersReady(expectedPlayerCount: 1));
         }
 
+    }
+
+    /// <summary>
+    /// If networked + master client, assign all the players custom props.
+    /// </summary>
+    public void AssignCustomProps()
+    {
+        //on network and master of room
+        if (PhotonNetwork.IsConnected && PhotonNetwork.IsMasterClient)
+        {
+            //choose jason player randomly
+            int jasonIndex = Random.Range(0, PhotonNetwork.PlayerList.Length - 1);
+
+            Debug.LogAssertion($"Jason index gen'd by master client using random class = {jasonIndex} ");
+
+            int index = 0;
+
+            //walk thru players
+            foreach (Player player in PhotonNetwork.PlayerList)
+            {
+                //make new custom props inst for player
+                ExitGames.Client.Photon.Hashtable customProperties = new ExitGames.Client.Photon.Hashtable();
+
+                //add lost + won game keys
+                customProperties.Add(key: (object)GameManager.LOST_GAME_STR, value: GameManager.CUSTOM_PROP_FALSE);
+                customProperties.Add(key: (object)GameManager.WON_GAME_STR, value: GameManager.CUSTOM_PROP_FALSE);
+
+                //if jason index
+                if (index == jasonIndex)
+                {
+                    //set as jason custom props
+                    customProperties.Add(key: (object)GameManager.IS_JASON_STR, value: GameManager.CUSTOM_PROP_TRUE);
+                    customProperties.Add(key: (object)GameManager.IS_COUNSELOR_STR, value: GameManager.CUSTOM_PROP_FALSE);
+                }
+                //if not jason index
+                else
+                {
+                    //set as counselor custom props
+                    customProperties.Add(key: (object)GameManager.IS_JASON_STR, value: GameManager.CUSTOM_PROP_FALSE);
+                    customProperties.Add(key: (object)GameManager.IS_COUNSELOR_STR, value: GameManager.CUSTOM_PROP_TRUE);
+                }
+
+                //cement player custom props
+                PhotonNetwork.SetPlayerCustomProperties(customProperties);
+
+                index++;
+            }
+
+            GameManager.Instance.customPropsSet = true;
+        }
+    }
+
+    /// <summary>
+    /// Checks whether all players loaded into the scene yet.
+    /// </summary>
+    /// <returns></returns>
+    public IEnumerator CheckAllPlayersReady(int expectedPlayerCount)
+    {
+        int framesWaited = 0;
+
+        // if not all players loaded into room
+        while (expectedPlayerCount > GameManager.Instance.playersSpawnReady)
+        {
+            //wait a frame then check again
+            yield return null;
+
+            framesWaited++;
+
+            /*
+            //if more than max num of frames waited
+            if (framesWaited > MAX_FRAMES_WAITED)
+            {
+                Debug.LogError("More than " + MAX_FRAMES_WAITED + " frames waited to spawn players, so not spawned all at the same time.");
+                Debug.LogError("Expected player count = " + expectedPlayerCount + ", players spawn ready = " + GameManager.Instance.playersSpawnReady);
+                break;
+            }
+            */
+        }
+
+        Debug.LogAssertion("number of frames waited to spawn players = " + framesWaited);
+
+        //deactivate game intro panel
+        GameManager.Instance.gameIntro.gameIntroPanel.SetActive(false);
+
+        //spawn players
+        SpawnPlayersAtStart();
     }
 
     #region Spawning Methods
 
     /// <summary>
-    /// Spawn players at start of game
+    /// Spawns players at the start of the game
     /// </summary>
     public void SpawnPlayersAtStart()
     {
@@ -69,14 +154,14 @@ public class SpawnPlayers : MonoBehaviourPunCallbacks
             //walk thru players
             foreach (Player player in PhotonNetwork.PlayerList)
             {
-                //if index matches jason's index
-                if (index == jasonIndex)
+                //if player is jason
+                if (GameManager.Instance.PlayerIsJason(player))
                 {
                     //start player as Jason
                     photonView.RPC("SpawnPlayer", player, index, true);
                 }
-                //not 1st player
-                else
+                //if player is counselor
+                else if(GameManager.Instance.PlayerIsCounselor(player))
                 {
                     //start player as counselor
                     photonView.RPC("SpawnPlayer", player, index, false);
@@ -92,9 +177,17 @@ public class SpawnPlayers : MonoBehaviourPunCallbacks
                                         customLocalSpawn.position, 
                                         playerPrefab.transform.rotation);
 
-            if (spawnLocalAsJasonTagged)
+            //if local player is jason
+            if (GameManager.Instance.localPlayerIsJason)
             {
+                //tag as jason
                 localPlayer.tag = GameManager.JASON_TAG;
+            }
+            //if local player isnt jason
+            else
+            {
+                //tag as counselor
+                localPlayer.tag = GameManager.COUNSELOR_TAG;
             }
 
             GameManager.Instance.localPlayerSpawned = true;
@@ -102,52 +195,13 @@ public class SpawnPlayers : MonoBehaviourPunCallbacks
     }
 
     /// <summary>
-    /// Checks whether all players loaded into the scene yet.
+    /// Spawn player based on whether jason or not and set their tags.
     /// </summary>
-    /// <returns></returns>
-    public IEnumerator CheckAllPlayersReady()
-    {
-        int framesWaited = 0;
-
-        // if not all players loaded into room
-        while (PhotonNetwork.CurrentRoom.PlayerCount > GameManager.Instance.playersSpawnReady)
-        {
-            //wait a frame then check again
-            yield return null;
-
-            framesWaited++;
-
-            //if more than max num of frames waited
-            if( framesWaited > MAX_FRAMES_WAITED )
-            {
-                Debug.LogError("More than " + MAX_FRAMES_WAITED + " frames waited to spawn players, so not spawned all at the same time.");
-                Debug.LogError("Current player count = " + PhotonNetwork.CurrentRoom.PlayerCount + " players loaded into the game = " + GameManager.Instance.playersSpawnReady);
-                break;
-            } 
-        }
-
-        Debug.LogAssertion("number of frames waited to spawn players = " + framesWaited);
-
-        SpawnPlayersAtStart();
-    }
-
-    /// <summary>
-    /// Spawn player based on whether jason or not
-    /// </summary>
-    /// <param name="index"></param>
-    /// <param name="jason"></param>
+    /// <param name="index">Index of this player.</param>
+    /// <param name="jason">Whether this player is jason.</param>
     [PunRPC]
     private void SpawnPlayer(int index, bool jason = false)
     {
-        //create an obj for every new player joining, when they load in
-
-        //make new custom props inst for player
-        ExitGames.Client.Photon.Hashtable customProperties = new ExitGames.Client.Photon.Hashtable();
-
-        //add lost + won game keys
-        customProperties.Add(key: (object)GameManager.LOST_GAME_STR, value: GameManager.CUSTOM_PROP_FALSE);
-        customProperties.Add(key: (object)GameManager.WON_GAME_STR, value: GameManager.CUSTOM_PROP_FALSE);
-
         GameObject spawnedPlayer;
 
         //if jason
@@ -159,10 +213,6 @@ public class SpawnPlayers : MonoBehaviourPunCallbacks
 
             //set tag on player using player manager funct
             spawnedPlayer.GetPhotonView().RPC("SetTag", RpcTarget.AllBuffered, GameManager.JASON_TAG);
-
-            //set jason 
-            customProperties.Add(key: (object)GameManager.IS_JASON_STR, value: GameManager.CUSTOM_PROP_TRUE);
-            customProperties.Add(key: (object)GameManager.IS_COUNSELOR_STR, value: GameManager.CUSTOM_PROP_FALSE);
         }
         //if not jason
         else
@@ -173,14 +223,7 @@ public class SpawnPlayers : MonoBehaviourPunCallbacks
 
             //set tag on player using player manager funct
             spawnedPlayer.GetPhotonView().RPC("SetTag", RpcTarget.AllBuffered, GameManager.COUNSELOR_TAG);
-
-            //give counselor
-            customProperties.Add(key: (object)GameManager.IS_JASON_STR, value: GameManager.CUSTOM_PROP_FALSE);
-            customProperties.Add(key: (object)GameManager.IS_COUNSELOR_STR, value: GameManager.CUSTOM_PROP_TRUE);
         }
-
-        //cement player custom props
-        PhotonNetwork.SetPlayerCustomProperties(customProperties);
 
         GameManager.Instance.localPlayerSpawned = true;
     }

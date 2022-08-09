@@ -14,7 +14,7 @@ public class GameManager : MonoBehaviourPun
 {
     #region Vars
 
-    //needa incr/decr over RPC
+    #region needa incr/decr over RPC
     [HideInInspector]
     public int startVotes { private set; get; } = 0; 
 
@@ -24,6 +24,9 @@ public class GameManager : MonoBehaviourPun
     [HideInInspector]
     public int playersSpawnReady { private set; get; } = 0;
 
+    #endregion needa incr/decr over RPC
+
+    #region Player Fields
     [HideInInspector]
     public GameObject jasonPlayer;
     [HideInInspector]
@@ -33,13 +36,19 @@ public class GameManager : MonoBehaviourPun
     public GameObject statsUI { get; set; }
     [HideInInspector]
     public GetSetStats getSetStats;
+    #endregion Player Fields
 
-    private bool jasonLeft = false;
+    #region Top UI Fields
+    //fill in game scene's inspector
+    public GameIntro gameIntro;
+    #endregion Top UI Fields
 
     /// <summary>
     /// Number of secs pass before check if players left again.
     /// </summary>
     public int checkIfPlayersLeftInterval = 1;
+
+    #region Enums + Related Fields
 
     //state mach:
     public enum State { MENU, INIT, PLAY, LOADLEVEL, GAMEOVER, PAUSE, SPECTATE };
@@ -51,6 +60,8 @@ public class GameManager : MonoBehaviourPun
     public enum CurrentScene { LOBBY, GAME_LOBBY, GAME };
     public CurrentScene currentScene { private set; get; }
     private string currSceneName;
+
+    #endregion Enums + Related Fields
 
     //music vars
     private bool musicShouldPlay = true;
@@ -64,6 +75,9 @@ public class GameManager : MonoBehaviourPun
     private int prevCounselorCount = 0;
     private bool gameReady = false;
     private bool checkingIfPlayersLeft = false;
+    public bool customPropsSet { get; set; } = false;
+
+    public bool localPlayerIsJason = false;
 
     #region Custom Prop Fields
 
@@ -82,6 +96,7 @@ public class GameManager : MonoBehaviourPun
     //tag fields
     public const string JASON_TAG = "Jason";
     public const string COUNSELOR_TAG = "Counselor";
+    public const string PLAYER_TAG = "Player";
 
     #endregion Vars
 
@@ -111,7 +126,6 @@ public class GameManager : MonoBehaviourPun
                     GameObject mnger = new GameObject();
                     mnger.name = "GameManager";
                     mnger.AddComponent<PhotonView>();
-                    //mnger.tag = "GameManager";
                     instance = mnger.AddComponent<GameManager>();
 
                     Debug.LogWarning("new game manager created");
@@ -940,7 +954,7 @@ public class GameManager : MonoBehaviourPun
     #region Custom Property Methods
 
     /// <summary>
-    /// Determines if player is Jason.
+    /// Determines if player is Jason using custom props.
     /// </summary>
     /// <param name="player"></param>
     /// <returns>Whether given player is Jason.</returns>
@@ -951,10 +965,26 @@ public class GameManager : MonoBehaviourPun
         //get val of isJason
         player.CustomProperties.TryGetValue((object)IS_JASON_STR, out isJason);
 
-        //return if player is jason
-        return SameString_IgnoreCase(isJason.ToString(), CUSTOM_PROP_TRUE);
+        //if is jason returned as filled
+        if( isJason != null)
+        {
+            //return if player is jason
+            return SameString_IgnoreCase(isJason.ToString(), CUSTOM_PROP_TRUE);
+        }
+        //if cant find isJason custom prop
+        else
+        {
+            Debug.LogError("Couldn't find isJason custom prop.");
+            return false;
+        }
+
     }
 
+    /// <summary>
+    /// Determines if player is Customer using custom props.
+    /// </summary>
+    /// <param name="player"></param>
+    /// <returns></returns>
     public bool PlayerIsCounselor( Player player)
     {
         object isCounselor = false;
@@ -962,8 +992,18 @@ public class GameManager : MonoBehaviourPun
         //get val of isCounselor
         player.CustomProperties.TryGetValue((object)IS_COUNSELOR_STR, out isCounselor);
 
-        //return if player is counselor
-        return SameString_IgnoreCase(isCounselor.ToString(), CUSTOM_PROP_TRUE);
+        //if is counselor returned as filled
+        if (isCounselor != null)
+        {
+            //return if player is counselor
+            return SameString_IgnoreCase(isCounselor.ToString(), CUSTOM_PROP_TRUE);
+        }
+        //if cant find isCounselor custom prop
+        else
+        {
+            Debug.LogError("Couldn't find isCounselor custom prop.");
+            return false;
+        }
     }
 
     public bool PlayerAlreadyWon( Player player )
@@ -1025,6 +1065,8 @@ public class GameManager : MonoBehaviourPun
         return PlayerCount() == playerExpectedCount;
     }
 
+    #region Tag Methods
+
     /// <summary>
     /// 
     /// </summary>
@@ -1044,6 +1086,31 @@ public class GameManager : MonoBehaviourPun
     {
         return SameString_IgnoreCase( tag, COUNSELOR_TAG );
     }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="tag">Tag attached to player.</param>
+    /// <returns>Whether tag is attached to Player.</returns>
+    public bool TagIsPlayer(string tag)
+    {
+        return SameString_IgnoreCase(tag, PLAYER_TAG);
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="tag">Tag attached to player.</param>
+    /// <returns>Whether tag is attached to a playable character.</returns>
+    public bool TagIsPlayableCharacter(string tag)
+    {
+        //return if tagged w/ jason or counselor or player
+        return (GameManager.Instance.TagIsCounselor(tag)
+            || GameManager.Instance.TagIsJason(tag)
+            || GameManager.Instance.TagIsPlayer(tag));
+    }
+
+    #endregion Tag Methods
 
     #region Count Methods
 

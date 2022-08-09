@@ -34,8 +34,17 @@ public class Cam_Instantiator : MonoBehaviour
         //if this obj isnt mine and we connected to the photon network:
         if (!(photonView.IsMine) && PhotonNetwork.IsConnected)
         {
-            //dont execute any movement code:
+            //dont spawn any cams for them:
             return;
+        }
+
+        //find cam already in scene
+        Camera preExistingCamera = FindObjectOfType<Camera>();
+        //if already a camera in the scene
+        if ( preExistingCamera != null )
+        {
+            //destroy it
+            Destroy(preExistingCamera.gameObject);
         }
 
         //instantiate main cam w/ settings:

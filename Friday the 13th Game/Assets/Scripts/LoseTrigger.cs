@@ -9,9 +9,8 @@ public class LoseTrigger : MonoBehaviour
     {
         PlayerManager playerManager = null;
 
-        //if colliding w/ jason or counselor
-        if (GameManager.Instance.TagIsCounselor(other.tag) 
-            || GameManager.Instance.TagIsJason(other.tag))
+        //if colliding w/ jason or counselor or player
+        if (GameManager.Instance.TagIsPlayableCharacter(other.tag) )
         {
             //store player manager
             playerManager = other.GetComponent<PlayerManager>();

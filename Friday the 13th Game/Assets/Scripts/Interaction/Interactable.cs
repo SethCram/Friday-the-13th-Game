@@ -91,42 +91,37 @@ public class Interactable : MonoBehaviourPunCallbacks
     //add player to interactable players list w/ enter radius:
     public virtual void OnTriggerEnter(Collider other)
     {
-        //only add an interactable player if tagged w/ 'Player' or 'Enemy'
-        if (!GameManager.Instance.TagIsCounselor(other.tag) 
-            && !GameManager.Instance.TagIsJason(other.tag))
+        //only add an interactable player if tagged as playable character
+        if( GameManager.Instance.TagIsPlayableCharacter(other.tag))
         {
-            return;
+            PlayerManager playerManager = other.gameObject.GetComponent<PlayerManager>();
+
+            //update msg
+            playerManager.SetInteractMsg(msg);
+
+            //show interaction msg
+            playerManager.SetInteractVisibility(true);
+
+            interactablePlayers.Add(other.transform);
+
+            //Debug.Log("Added: " + other.transform.name);
+
         }
-
-        PlayerManager playerManager = other.gameObject.GetComponent<PlayerManager>();
-
-        //update msg
-        playerManager.SetInteractMsg(msg);
-
-        //show interaction msg
-        playerManager.SetInteractVisibility(true);
-
-        interactablePlayers.Add(other.transform);
-
-        //Debug.Log("Added: " + other.transform.name);
     }
 
     //remove player from interactable players list w/ exit radius:
     public virtual void OnTriggerExit(Collider other)
     {
-        //only remove an interactable player if tagged w/ 'Player' or 'Enemy'
-        if (!GameManager.Instance.TagIsCounselor(other.tag)
-            && !GameManager.Instance.TagIsJason(other.tag))
+        //only add an interactable player if tagged as playable character
+        if (GameManager.Instance.TagIsPlayableCharacter(other.tag))
         {
-            return;
+            //unshow interaction msg
+            other.gameObject.GetComponent<PlayerManager>().SetInteractVisibility(false);
+
+            interactablePlayers.Remove(other.transform);
+
+            //Debug.Log("Removed: " + other.transform.name);
         }
-
-        //unshow interaction msg
-        other.gameObject.GetComponent<PlayerManager>().SetInteractVisibility(false);
-
-        interactablePlayers.Remove(other.transform);
-
-        //Debug.Log("Removed: " + other.transform.name);
     }
 
     private void OnDestroy()
