@@ -42,13 +42,6 @@ public class GetSetStats : MonoBehaviour
 
     #region Unity Methods
 
-    //pause game before any 'Start()' called (pausing time scale wont stop start from bein called tho, only update)
-    private void Awake()
-    {
-        //pause game:
-        //Time.timeScale = 0; //doesnt work correctly
-    }
-
     // Start is called before the first frame update
     void Start()
     {
@@ -147,13 +140,10 @@ public class GetSetStats : MonoBehaviour
             }
         }
 
-        //enable time:
-        //Time.timeScale = 1;
-
         //enable player cntrl
         playerManager.EnablePlayerControl();
 
-        //enable paused UI: (why?)
+        //enable paused UI: (needed to get pause menu working for some reason)
         pausedUICanvas.SetActive(true);
 
         //destroy our stats setting UI:

@@ -157,6 +157,8 @@ public class PausedUI : MonoBehaviour
             //incr num of childs
             numberOfChildrenPanels++;
 
+            //Debug.Log(child.gameObject.name + " closed.");
+
             child.gameObject.SetActive(false);
         }
 

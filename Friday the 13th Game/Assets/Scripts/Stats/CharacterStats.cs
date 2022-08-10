@@ -131,6 +131,15 @@ public class CharacterStats : MonoBehaviourPun
     //spawn numbers above attached player  
     public void SpawnNumbers(int maxHP, int currHP)
     {
+        //if networked + not my photon view
+        if(PhotonNetwork.IsConnected && !photonView.IsMine)
+        {
+            //dont spawn numbers
+            return;
+        }
+
+        Debug.LogAssertion("Numbers being spawned.");
+
         //turn curr HP into an arr of ints
         int[] intArr = GetIntArray(currHP);
         //int[] intArr = GetIntArray(prevHP - currHP);
