@@ -117,7 +117,13 @@ public class CharacterStats : MonoBehaviourPun
     //call overlay UI health slider to update it
     public void CallHealthSlider(int maxHP, int currHP)
     {
-        overlayUI.UpdateHealthSlider(maxHP, currHP);
+        //if local play or my player
+        if(!PhotonNetwork.IsConnected || photonView.IsMine)
+        {
+            //update hp slider
+            overlayUI.UpdateHealthSlider(maxHP, currHP);
+        }
+
     }
 
     #region Number Methods
