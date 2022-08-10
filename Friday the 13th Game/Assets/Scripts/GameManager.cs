@@ -1,4 +1,5 @@
-﻿using Photon.Pun;
+﻿using Cinemachine;
+using Photon.Pun;
 using Photon.Realtime;
 using System;
 using System.Collections;
@@ -38,10 +39,8 @@ public class GameManager : MonoBehaviourPun
     public GetSetStats getSetStats;
     #endregion Player Fields
 
-    #region Top UI Fields
     //fill in game scene's inspector
     public GameIntro gameIntro;
-    #endregion Top UI Fields
 
     /// <summary>
     /// Number of secs pass before check if players left again.
@@ -75,7 +74,7 @@ public class GameManager : MonoBehaviourPun
     private int prevCounselorCount = 0;
     private bool gameReady = false;
     private bool checkingIfPlayersLeft = false;
-    public bool customPropsSet { get; set; } = false;
+    private bool customPropsSet = false;
 
     public bool localPlayerIsJason = false;
 
@@ -224,14 +223,14 @@ public class GameManager : MonoBehaviourPun
         //wait till all players spawned
         while(!AllPlayersSpawned())
         {
-            //Debug.LogAssertion("Wait a frame bc not all players spawned.");
+            Debug.Log("Waiting for all players to spawn.");
 
             framesWaited++;
 
             //wait a frame
             yield return null;
         }
-        Debug.LogAssertion($"Waited {framesWaited} frames for all players to spawn.");
+        Debug.LogAssertion($"Waited {framesWaited} frames for all other players to spawn.");
 
         //if our player is a counselor
         if ( TagIsCounselor(ourPlayer.tag))
@@ -340,6 +339,17 @@ public class GameManager : MonoBehaviourPun
 
     #region Setters & Getters
 
+    [PunRPC]
+    public void SetWhetherCustomPropsSet(bool ifCustomPropsSet)
+    {
+        customPropsSet = ifCustomPropsSet;
+    }
+
+    public bool GetWhetherCustomPropsSet()
+    {
+        return customPropsSet;
+    }
+
     /// <summary>
     /// Set lost game param and update corresponding player's custom prop.
     /// </summary>
@@ -394,13 +404,13 @@ public class GameManager : MonoBehaviourPun
         if (isGameWon)
         {
             //set lost game custom prop to true
-            customProperties[GameManager.WON_GAME_STR] = GameManager.CUSTOM_PROP_TRUE;
+            customProperties[WON_GAME_STR] = CUSTOM_PROP_TRUE;
         }
         //if game not lost
         else
         {
             //set lost game custom prop to false
-            customProperties[GameManager.WON_GAME_STR] = GameManager.CUSTOM_PROP_FALSE;
+            customProperties[WON_GAME_STR] = CUSTOM_PROP_FALSE;
         }
 
         //submit changed custom props
@@ -938,6 +948,29 @@ public class GameManager : MonoBehaviourPun
 
     #endregion Death Methods
 
+    #region Cursor Methods
+
+    /// <summary>
+    /// Lock cursor to center of screen and make invisible.
+    /// </summary>
+    public void LockCursor()
+    {
+        //lock cursor and make invisible:
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+    }
+
+    /// <summary>
+    /// Unlock cursor from the center of screen + make visible.
+    /// </summary>
+    public void UnlockCursor()
+    {
+        //unlock cursor and make visible:
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+    }
+    #endregion Cursor Methods
+
     #region General Utility
 
     /// <summary>
@@ -1030,6 +1063,20 @@ public class GameManager : MonoBehaviourPun
 
     #endregion Custom Property Methods
 
+    #region Player Spawn/Intro Methods
+
+    public void HideGameIntroPanel()
+    {
+        //deactivate game intro panel
+        gameIntro.gameIntroPanel.SetActive(false);
+    }
+
+    public void ShowGameIntroPanel()
+    {
+        //activate game intro panel
+        gameIntro.gameIntroPanel.SetActive(true);
+    }
+
     /// <summary>
     /// Uses GameObject tags to determine whether all players spawned yet.
     /// Works in local + networked play.
@@ -1064,6 +1111,8 @@ public class GameManager : MonoBehaviourPun
         //return whether same number of players counted as expected
         return PlayerCount() == playerExpectedCount;
     }
+
+    #endregion Player Spawn/Intro Methods
 
     #region Tag Methods
 

@@ -75,6 +75,7 @@ MonoBehaviour:
   - GenericGameOver
   - SetTag
   - RPC_IncrPlayersSpawnReady
+  - SetWhetherCustomPropsSet
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1

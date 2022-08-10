@@ -16,6 +16,10 @@ public class SpawnPlayers : MonoBehaviourPunCallbacks
 
     public Transform customLocalSpawn;
 
+    //event setup:
+    public delegate void OnLocalPlayerSpawned(); 
+    public OnLocalPlayerSpawned onLocalPlayerSpawnedCallback;
+
     #endregion
 
     // Start is called before the first frame update
@@ -33,7 +37,7 @@ public class SpawnPlayers : MonoBehaviourPunCallbacks
                 //debug: Debug.LogAssertion("isMasterClient = " + PhotonNetwork.IsMasterClient);
 
                 //assign jason + counselor custom props
-                AssignCustomProps();
+                StartCoroutine( AssignCustomProps() );
 
                 //check if all players are ready
                 StartCoroutine(CheckAllPlayersReady(PhotonNetwork.CurrentRoom.PlayerCount));
@@ -46,12 +50,15 @@ public class SpawnPlayers : MonoBehaviourPunCallbacks
             StartCoroutine(CheckAllPlayersReady(expectedPlayerCount: 1));
         }
 
+        //sub methods to callback
+        onLocalPlayerSpawnedCallback += GameManager.Instance.UnlockCursor;
+        onLocalPlayerSpawnedCallback += GameManager.Instance.HideGameIntroPanel;
     }
 
     /// <summary>
     /// If networked + master client, assign all the players custom props.
     /// </summary>
-    public void AssignCustomProps()
+    public IEnumerator AssignCustomProps()
     {
         //on network and master of room
         if (PhotonNetwork.IsConnected && PhotonNetwork.IsMasterClient)
@@ -88,13 +95,36 @@ public class SpawnPlayers : MonoBehaviourPunCallbacks
                     customProperties.Add(key: (object)GameManager.IS_COUNSELOR_STR, value: GameManager.CUSTOM_PROP_TRUE);
                 }
 
-                //cement player custom props
-                PhotonNetwork.SetPlayerCustomProperties(customProperties);
+                //cement player custom props 
+                // if set properly
+                if( player.SetCustomProperties(customProperties) )
+                {
+                    Debug.Log($"Set custom props of player {index}");
+                }
+                else
+                {
+                    Debug.LogError($"Couldn't set custom props of player {index}");
+                }
+
+                int framesWaited = 0;
+
+                //wait till custom props actually assigned
+                //while(player.CustomProperties != customProperties)
+                while(player.CustomProperties.Count == 0)
+                {
+                    framesWaited++;
+
+                    Debug.Log($"Waiting for player {index}'s custom props to be filled.");
+
+                    yield return null;
+                }
+                Debug.LogAssertion($"Waited {framesWaited} frames for player {index}'s custom props to be filled.");
 
                 index++;
             }
 
-            GameManager.Instance.customPropsSet = true;
+            //send RPC to everyone that custom props now set
+            GameManager.Instance.photonView.RPC("SetWhetherCustomPropsSet", RpcTarget.All, true);
         }
     }
 
@@ -113,22 +143,9 @@ public class SpawnPlayers : MonoBehaviourPunCallbacks
             yield return null;
 
             framesWaited++;
-
-            /*
-            //if more than max num of frames waited
-            if (framesWaited > MAX_FRAMES_WAITED)
-            {
-                Debug.LogError("More than " + MAX_FRAMES_WAITED + " frames waited to spawn players, so not spawned all at the same time.");
-                Debug.LogError("Expected player count = " + expectedPlayerCount + ", players spawn ready = " + GameManager.Instance.playersSpawnReady);
-                break;
-            }
-            */
         }
 
         Debug.LogAssertion("number of frames waited to spawn players = " + framesWaited);
-
-        //deactivate game intro panel
-        GameManager.Instance.gameIntro.gameIntroPanel.SetActive(false);
 
         //spawn players
         SpawnPlayersAtStart();
@@ -190,12 +207,16 @@ public class SpawnPlayers : MonoBehaviourPunCallbacks
                 localPlayer.tag = GameManager.COUNSELOR_TAG;
             }
 
+            //deactivate game intro panel
+            GameManager.Instance.gameIntro.gameIntroPanel.SetActive(false);
+
             GameManager.Instance.localPlayerSpawned = true;
         }
     }
 
     /// <summary>
-    /// Spawn player based on whether jason or not and set their tags.
+    /// Spawn player based on whether jason or not, set their tags, 
+    ///  and call local player spawned callback
     /// </summary>
     /// <param name="index">Index of this player.</param>
     /// <param name="jason">Whether this player is jason.</param>
@@ -226,6 +247,13 @@ public class SpawnPlayers : MonoBehaviourPunCallbacks
         }
 
         GameManager.Instance.localPlayerSpawned = true;
+
+        //if any methods sub'd to callback
+        if(onLocalPlayerSpawnedCallback != null)
+        {
+            //invoke callback
+            onLocalPlayerSpawnedCallback.Invoke();
+        }
     }
 
     #endregion

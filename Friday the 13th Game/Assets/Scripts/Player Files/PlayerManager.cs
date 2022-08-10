@@ -63,7 +63,7 @@ public class PlayerManager : MonoBehaviourPunCallbacks
     private void Start()
     {
         //just incase disabled for some reason
-        EnableCamControl();
+        //EnableCamControl();
 
         //if my photon view or not connected
         if(photonView.IsMine || !PhotonNetwork.IsConnected)
@@ -121,7 +121,9 @@ public class PlayerManager : MonoBehaviourPunCallbacks
 
     #region Scene Change Methods
 
-    //Load the nxt scene:
+    /// <summary>
+    /// Load the nxt scene through cutting motion + cam controls and closing the room.
+    /// </summary>
     public void AdvanceScene()
     {
         //cut player motion + disable cam movement
@@ -178,7 +180,7 @@ public class PlayerManager : MonoBehaviourPunCallbacks
 
     #region Player Control
 
-    //let player control character:
+    //let player control character + lock cursor:
     public void EnablePlayerControl()
     {
         EnableCamControl();
@@ -186,10 +188,10 @@ public class PlayerManager : MonoBehaviourPunCallbacks
         ResumeMotionControls();
 
         //lock cursor and make invisible:
-        LockCursor();
+        GameManager.Instance.LockCursor();
     }
 
-    //dont let player control character:
+    //dont let player control character + unlock cursor:
     public void DisablePlayerControl()
     {
         CutMotionControls();
@@ -197,25 +199,13 @@ public class PlayerManager : MonoBehaviourPunCallbacks
         DisableCamControl();
 
         //unlock cursor and make visible:
-        UnlockCursor();
+        GameManager.Instance.UnlockCursor();
     }
 
     #endregion
 
     #region Small Player Control Methods
-    private void LockCursor()
-    {
-        //lock cursor and make invisible:
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
-    }
-
-    public void UnlockCursor()
-    {
-        //unlock cursor and make visible:
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
-    }
+    
 
     public void DisableCamControl()
     {
@@ -228,6 +218,7 @@ public class PlayerManager : MonoBehaviourPunCallbacks
         //re-enable mouse controls:
         CinemachineCore.UniformDeltaTimeOverride = -1; //reset time value
     }
+    
 
     public void CutMotionControls()
     {

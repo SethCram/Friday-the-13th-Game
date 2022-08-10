@@ -1,4 +1,5 @@
 ﻿using Photon.Pun;
+using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -14,8 +15,11 @@ public class GameIntro : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        //unlock cursor + make visible
+        GameManager.Instance.UnlockCursor();
+
         //start w/ intro panel deactive
-        gameIntroPanel.SetActive(false);
+        GameManager.Instance.HideGameIntroPanel();
 
         StartCoroutine(ShowIntroWhenCustomPropsSet());
     }
@@ -27,7 +31,7 @@ public class GameIntro : MonoBehaviour
     private IEnumerator ShowIntroWhenCustomPropsSet()
     {
         //while custom props not set + on network
-        while( !GameManager.Instance.customPropsSet 
+        while( !GameManager.Instance.GetWhetherCustomPropsSet() 
             && PhotonNetwork.IsConnected )
         {
             Debug.Log("Custom props not set yet so waited a frame.");
@@ -39,15 +43,18 @@ public class GameIntro : MonoBehaviour
         //if network is connected
         if( PhotonNetwork.IsConnected )
         {
-            //if local player is jason
-            if (GameManager.Instance.PlayerIsJason(PhotonNetwork.LocalPlayer))
+            //cache local player
+            Player localPlayer = PhotonNetwork.LocalPlayer;
+
+            //if our player is jason
+            if (GameManager.Instance.PlayerIsJason(localPlayer))
             {
-                LocalPlayerIsJason();
+                ShowJasonText_HideCounselorText();
             }
-            //if local player is counselor
-            else if (GameManager.Instance.PlayerIsCounselor(PhotonNetwork.LocalPlayer))
+            //if our player is counselor
+            else if (GameManager.Instance.PlayerIsCounselor(localPlayer))
             {
-                LocalPlayerIsCounselor();
+                ShowCounselorText_HideJasonText();
             }
             //if local player isn't counselor or jason
             else
@@ -61,25 +68,25 @@ public class GameIntro : MonoBehaviour
             //if local player is jason
             if(GameManager.Instance.localPlayerIsJason)
             {
-                LocalPlayerIsJason();
+                ShowJasonText_HideCounselorText();
             }
             //if local player isnt jason
             else
             {
                 //assume local player is counselor
-                LocalPlayerIsCounselor();
+                ShowCounselorText_HideJasonText();
             }
 
         }
 
         //start game w/ intro active
-        gameIntroPanel.SetActive(true);
+        GameManager.Instance.ShowGameIntroPanel();
     }
 
     /// <summary>
     /// Local player is jason so activate jason txt + disable counselor txt.
     /// </summary>
-    public void LocalPlayerIsJason()
+    public void ShowJasonText_HideCounselorText()
     {
         jasonTextGameObj.SetActive(true);
 
@@ -89,7 +96,7 @@ public class GameIntro : MonoBehaviour
     /// <summary>
     /// Local player is counselor so activate counselor txt + disable jason txt.
     /// </summary>
-    public void LocalPlayerIsCounselor()
+    public void ShowCounselorText_HideJasonText()
     {
         jasonTextGameObj.SetActive(false);
 
