@@ -56,7 +56,7 @@ public class GameManager : MonoBehaviourPun
     private bool _isSwitchingState;
 
     //scene tracking vars
-    public enum CurrentScene { LOBBY, GAME_LOBBY, GAME };
+    public enum CurrentScene { MAIN_MENU, LOBBY, GAME_LOBBY, GAME };
     public CurrentScene currentScene { private set; get; }
     private string currSceneName;
 
@@ -98,7 +98,7 @@ public class GameManager : MonoBehaviourPun
     public const string PLAYER_TAG = "Player";
     #endregion Tag Names
     #region Scene Names
-    public const string MAIN_MENU_SCENE_NAME = "Main Menu";
+    public const string MAIN_MENU_SCENE_NAME = "Start Menu";
     public const string LOBBY_SCENE_NAME = "Lobby";
     public const string GAME_LOBBY_SCENE_NAME = "Game Lobby";
     public const string GAME_SCENE_NAME = "Game";
@@ -173,7 +173,11 @@ public class GameManager : MonoBehaviourPun
         currSceneName = SceneManager.GetActiveScene().name;
 
         //determine current scene
-        if (SameString_IgnoreCase(currSceneName, LOBBY_SCENE_NAME))
+        if(SameString_IgnoreCase(currSceneName, MAIN_MENU_SCENE_NAME))
+        {
+            currentScene = CurrentScene.MAIN_MENU;
+        }
+        else if (SameString_IgnoreCase(currSceneName, LOBBY_SCENE_NAME))
         {
             currentScene = CurrentScene.LOBBY;
         }
