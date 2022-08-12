@@ -57,18 +57,17 @@ public class UI_Instantiator : MonoBehaviour
 
         //init script:
         pausedUIScript = pausedUICanvasPrefab.GetComponent<PausedUI>();
-        pausedUIScript.playerManager = playerManager; //GetComponent<PlayerManager>();
-        //pausedUIScript.playerButtons = GetComponent<PlayerButtons>();
+        pausedUIScript.playerManager = playerManager; 
 
         //init callback script:
         pausedUICallbacks = pausedUICanvasPrefab.GetComponent<PausedUICallbacks>();
         pausedUICallbacks.playerInventory = GetComponent<Inventory>();
         pausedUICallbacks.equipManager = GetComponent<EquipmentManager>();
         pausedUICallbacks.charStats = characterStats;
-        pausedUICallbacks.statApply = statApplication; //GetComponent<StatApplication>();
+        pausedUICallbacks.statApply = statApplication;
 
-        //start paused canvas as inactive:
-        pausedUICanvasPrefab.SetActive(false);
+        //start paused canvas as active: (for options to take effect)
+        pausedUICanvasPrefab.SetActive(true);
         
         //instantiate player's pause UI:
         GameObject pausedUICopy = Instantiate(pausedUICanvasPrefab);
@@ -78,7 +77,7 @@ public class UI_Instantiator : MonoBehaviour
         statSetter = statsUIPrefab.GetComponent<GetSetStats>();
         statSetter.pausedUICanvas = pausedUICopy;
         statSetter.playerStats = GetComponent<PlayerStats>();
-        statSetter.applyStats = statApplication; //GetComponent<StatApplication>();
+        statSetter.applyStats = statApplication; 
         statSetter.playerManager = playerManager;
 
         //start stats UI canvas as active:
@@ -86,8 +85,6 @@ public class UI_Instantiator : MonoBehaviour
 
         //instantiate player's stats UI:
         GameObject statsUICopy = Instantiate(statsUIPrefab);
-
-        //OVERLAY
 
         //start overlay UI canvas as active:
         overlayUICanvasPrefab.SetActive(true);
@@ -101,7 +98,7 @@ public class UI_Instantiator : MonoBehaviour
         playerManager.overlayUI = overlayUICopy; //overlayCopy.GetComponent<OverlayUI>();
 
         //fill minimap UI obj using the mask attached to the minimap
-        playerManager.minimapUI = overlayUICopy.minimap; //overlayCopy.GetComponentInChildren<Mask>(includeInactive:true).gameObject;
+        playerManager.minimapUI = overlayUICopy.minimap; 
 
         //fill player icon in
         playerIconObj.GetComponent<SpriteRenderer>().sprite = playerIcon;
@@ -116,7 +113,6 @@ public class UI_Instantiator : MonoBehaviour
         GameObject topmostUICopy = Instantiate(topmostUIPrefab);
 
         //fill player mngers loading+topmost UI
-        //playerManager.loadingUI = topmostUICopy.GetComponent<Loading>();
         playerManager.topOverlayUIObject = topmostUICopy;
 
         //fill out game over's player field

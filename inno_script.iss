@@ -2,7 +2,9 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "Friday the 13th -DND Edition-"
-#define MyAppVersion "0.6"
+;CHANGE EVERY NEW INSTALLER:
+#define MyAppVersion "0.7.1"
+
 #define MyAppPublisher "CramCo"
 #define MyAppURL "https://sethcram.weebly.com/"
 #define MyAppExeName "Friday the 13th Game.exe"
@@ -27,7 +29,9 @@ DisableProgramGroupPage=yes
 ; Uncomment the following line to run in non administrative install mode (install for current user only.)
 ;PrivilegesRequired=lowest
 PrivilegesRequiredOverridesAllowed=dialog
-OutputDir=C:\Users\crazy\Documents\ExportedGames\Installer - Fridaythe13th-FriendBuild
+;CHANGE EVERY NEW MACHINE
+OutputDir=C:\Users\crazy\source\repos\Friday-the-13th-Installers
+
 OutputBaseFilename=Friday the 13th - Installer {#MyAppVersion}
 Compression=lzma
 SolidCompression=yes
@@ -40,11 +44,12 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Files]
-Source: "C:\Users\crazy\Documents\ExportedGames\Installer - Fridaythe13th-FriendBuild\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\crazy\Documents\ExportedGames\Installer - Fridaythe13th-FriendBuild\UnityCrashHandler64.exe"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\crazy\Documents\ExportedGames\Installer - Fridaythe13th-FriendBuild\UnityPlayer.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\crazy\Documents\ExportedGames\Installer - Fridaythe13th-FriendBuild\MonoBleedingEdge\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "C:\Users\crazy\Documents\ExportedGames\Installer - Fridaythe13th-FriendBuild\Friday the 13th Game_Data\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+;CHANGE EVERY NEW FILE SYSTEM CHANGE
+Source: "C:\Users\crazy\source\Installers\FT13\Windows\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Users\crazy\source\Installers\FT13\Windows\UnityCrashHandler64.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Users\crazy\source\Installers\FT13\Windows\UnityPlayer.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Users\crazy\source\Installers\FT13\Windows\MonoBleedingEdge\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "C:\Users\crazy\source\Installers\FT13\Windows\Friday the 13th Game_Data\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Registry]
