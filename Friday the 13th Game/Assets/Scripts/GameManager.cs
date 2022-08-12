@@ -92,10 +92,17 @@ public class GameManager : MonoBehaviourPun
 
     #endregion Custom Prop Fields
 
-    //tag fields
+    #region Tag Names
     public const string JASON_TAG = "Jason";
     public const string COUNSELOR_TAG = "Counselor";
     public const string PLAYER_TAG = "Player";
+    #endregion Tag Names
+    #region Scene Names
+    public const string MAIN_MENU_SCENE_NAME = "Main Menu";
+    public const string LOBBY_SCENE_NAME = "Lobby";
+    public const string GAME_LOBBY_SCENE_NAME = "Game Lobby";
+    public const string GAME_SCENE_NAME = "Game";
+    #endregion Scene Names
 
     #endregion Vars
 
@@ -166,15 +173,15 @@ public class GameManager : MonoBehaviourPun
         currSceneName = SceneManager.GetActiveScene().name;
 
         //determine current scene
-        if (SameString_IgnoreCase(currSceneName, "Lobby"))
+        if (SameString_IgnoreCase(currSceneName, LOBBY_SCENE_NAME))
         {
             currentScene = CurrentScene.LOBBY;
         }
-        else if (SameString_IgnoreCase(currSceneName, "Game Lobby"))
+        else if (SameString_IgnoreCase(currSceneName, GAME_LOBBY_SCENE_NAME))
         {
             currentScene = CurrentScene.GAME_LOBBY;
         }
-        else if (SameString_IgnoreCase(currSceneName, "Game"))
+        else if (SameString_IgnoreCase(currSceneName, GAME_SCENE_NAME))
         {
             currentScene = CurrentScene.GAME;
         }

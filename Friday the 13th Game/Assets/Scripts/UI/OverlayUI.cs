@@ -24,9 +24,6 @@ public class OverlayUI : MonoBehaviour
     [HideInInspector]
     public PlayerManager playerManager;
     private bool startedGame = false;
-    //[HideInInspector]
-    //private GameManager gameManager;
-    private Scene currScene;
 
     #endregion
 
@@ -43,20 +40,8 @@ public class OverlayUI : MonoBehaviour
         //start w/ health slider off
         healthSlider.gameObject.SetActive(false);
 
-        /*
         //if not game lobby scene
-        if (currScene.name != "Game Lobby")
-        {
-            //can do bc singleton
-            gameManager = GameManager.Instance; //FindObjectOfType<GameManager>();
-        }
-        */
-
-        //cache curr scene
-        currScene = SceneManager.GetActiveScene();
-
-        //if not game lobby scene
-        if(currScene.name != "Game Lobby")
+        if( GameManager.Instance.currentScene != GameManager.CurrentScene.GAME_LOBBY)
         {
             //inactivate vote overlay
             voteToggle.gameObject.SetActive(false);
@@ -67,7 +52,8 @@ public class OverlayUI : MonoBehaviour
     private void Update()
     {
         //if started game already or not in game lobby
-        if (startedGame || currScene.name != "Game Lobby")
+        if ( startedGame || 
+            GameManager.Instance.currentScene != GameManager.CurrentScene.GAME_LOBBY)
         {
             //Debug.Log("Game already started");
 
