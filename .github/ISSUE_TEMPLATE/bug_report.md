@@ -19,7 +19,7 @@ Steps to reproduce the behavior:
 
 **Desktop (please complete the following information):**
  - OS: Windows
- - Game Version: 0.6.0
+ - Game Version: 0.7.1
 
 **Additional context**
 - 
