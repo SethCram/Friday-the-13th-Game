@@ -19,7 +19,9 @@ namespace Tests
             //wait till lobby loaded
             yield return TestLoadingMainMenuToLobby();
 
-            print("After coroutine called.");
+            Debug.Log("After coroutine called.");
+
+            Assert.Inconclusive("Requires manual intervention to pass.");
         }
 
         /// <summary>
