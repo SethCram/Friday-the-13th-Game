@@ -4,7 +4,9 @@
         "UnityEngine.TestRunner",
         "UnityEditor.TestRunner",
         "Scripts",
-        "PhotonUnityNetworking"
+        "PhotonUnityNetworking",
+        "Unity.TextMeshPro",
+        "PhotonRealtime"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

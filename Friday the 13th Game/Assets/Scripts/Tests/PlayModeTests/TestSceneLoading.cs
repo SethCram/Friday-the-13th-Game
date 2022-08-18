@@ -12,27 +12,31 @@ namespace Tests
 {
     public class TestSceneLoading: MonoBehaviour
     {
+        int MAX_FRAMES_WAIT = 5000;
 
-        [UnityTest]
-        public IEnumerator TestCallingMainMenuToLobby()
-        {
-            //wait till lobby loaded
-            yield return TestLoadingMainMenuToLobby();
+        #region Unity Tests
 
-            Debug.Log("After coroutine called.");
+        //[UnityTest]
+        //public IEnumerator TestCalling_MainMenuToLobby()
+        //{
+        //    //wait till lobby loaded
+        //    yield return TestLoading_MainMenuToLobby();
 
-            Assert.Inconclusive("Requires manual intervention to pass.");
-        }
+        //    Debug.Log("After coroutine called.");
+
+        //    Assert.Inconclusive("Requires manual intervention to pass.");
+        //}
 
         /// <summary>
-        /// Load from the main menu into the lobby using play button function.
-        /// By default: verifies we're in lobby scene + Photon Network connected.
+        /// Load into the lobby using play button function.
+        /// Verifies we're in lobby scene + Photon Network connected.
+        /// Assumes not currently in main menu scene, so loads us into it at the start.
         /// </summary>
         /// <returns></returns>
         [UnityTest]
-        public IEnumerator TestLoadingMainMenuToLobby()
+        public IEnumerator TestLoading_ToLobby()
         {
-            int framesWaited = 0;
+            //int framesWaited = 0;
 
             //lobbySceneLoadedAndItsMethodsExed = false;
 
@@ -40,50 +44,177 @@ namespace Tests
             SceneManager.LoadScene(GameManager.MAIN_MENU_SCENE_NAME);
 
             //wait for main menu to load
-            while (GameManager.Instance.currentScene != GameManager.CurrentScene.MAIN_MENU)
-            {
-                yield return null;
+            yield return WaitTillSceneLoadedUsingEnums(GameManager.CurrentScene.MAIN_MENU);
 
-                framesWaited++;
-            }
-            Debug.Log($"{framesWaited} frames waited for main menu to load.");
-            framesWaited = 0;
+            //wait till obj of type main menu found in scene
+            yield return WaitTillTypeFound<MainMenu>();
 
-            //try and find main menu in scene
+            //find main menu in scene
             MainMenu mainManu = FindObjectOfType<MainMenu>();
-
-            //while can't find main menu
-            while (mainManu == null)
-            {
-                yield return null;
-
-                framesWaited++;
-
-                //try and find it again
-                mainManu = FindObjectOfType<MainMenu>();
-            }
-            Debug.Log($"{framesWaited} frames waited to find main menu.");
-            framesWaited = 0;
 
             //simulate user clicking play
             mainManu.PlayGame();
 
             //loading scene also gone thru here
 
-            //wait for lobby to load
-            while (GameManager.Instance.currentScene != GameManager.CurrentScene.LOBBY)
-            {
-                yield return null;
-                framesWaited++;
-            }
-            Debug.Log($"{framesWaited} frames waited for lobby to load.");
+            //wait for scene to load
+            yield return WaitTillSceneLoadedUsingEnums(GameManager.CurrentScene.LOBBY);
 
             //verify we're in the lobby scene
-            VerifyCurrentScene(desiredSceneName: GameManager.LOBBY_SCENE_NAME);
+            VerifyCurrentSceneByStr(desiredSceneName: GameManager.LOBBY_SCENE_NAME);
 
             //verify connnected to Photon network
             VerifyNetworkConnected();
+
+            Debug.Log("Main menu to Lobby loaded successfully.");
         }
+
+        /// <summary>
+        /// Test loading to game lobby using two coroutines.
+        /// </summary>
+        /// <returns></returns>
+        [UnityTest]
+        public IEnumerator TestLoading_ToGameLobby()
+        {
+            //wait till lobby loaded
+            yield return TestLoading_ToLobby();
+
+            //wait till game lobby loaded
+            yield return Load_LobbyToGameLobby();
+
+            Debug.Log("Main menu to Game Lobby loaded successfully.");
+        }
+
+        [UnityTest]
+        public IEnumerator TestLoading_ToGame()
+        {
+            //wait till loaded into game lobby
+            yield return TestLoading_ToGameLobby();
+
+            //wait till loaded into game
+            yield return Load_GameLobbyToGame();
+        }
+
+        #endregion Unity Tests
+
+        /// <summary>
+        /// Load lobby -> game lobby.
+        /// Verifies started in lobby scene, game lobby loaded into, player count incrs to 1.
+        /// </summary>
+        /// <returns></returns>
+        private IEnumerator Load_LobbyToGameLobby()
+        {
+            //verify we're in lobby scene
+            VerifyCurrentSceneByStr(desiredSceneName: GameManager.LOBBY_SCENE_NAME);
+
+            //wait till can find create + join rooms script in scene
+            yield return WaitTillTypeFound<CreateAndJoinRooms>();
+
+            //find create+join room script in scene
+            CreateAndJoinRooms createAndJoinRooms = FindObjectOfType<CreateAndJoinRooms>();
+
+            //simulate user entering room name
+            createAndJoinRooms.createInput.text = "generic room name";
+
+            //simulate user pressing Create btn
+            createAndJoinRooms.CreateRoom();
+
+            //wait for scene to load
+            yield return WaitTillSceneLoadedUsingEnums(GameManager.CurrentScene.GAME_LOBBY);
+
+            //verify we're in the game lobby scene
+            VerifyCurrentSceneByStr(desiredSceneName: GameManager.GAME_LOBBY_SCENE_NAME);
+
+            //verify player count incr'd to one
+            VerifyPlayerCount(expectedPlayerCount: 1);
+
+            Debug.Log("Lobby to Game Lobby loaded successfully.");
+        }
+
+        /// <summary>
+        /// Load game lobby -> game scene.
+        /// Verifies start in game lobby and game scene loaded.
+        /// </summary>
+        /// <returns></returns>
+        private IEnumerator Load_GameLobbyToGame()
+        {
+            //verify curr scene is game lobby
+            VerifyCurrentSceneByStr(desiredSceneName: GameManager.GAME_LOBBY_SCENE_NAME);
+
+            //simulate user vote 
+            //Event.KeyboardEvent("v");
+
+            //wait till overlay UI found in scene
+            yield return WaitTillTypeFound<OverlayUI>();
+
+            //activate method used when vote to start given
+            OverlayUI overlayUI = FindObjectOfType<OverlayUI>();
+            overlayUI.VoteToggleAndIncrStartVotes();
+
+            //wait for scene to load
+            yield return WaitTillSceneLoadedUsingEnums(GameManager.CurrentScene.GAME);
+
+            //verify curr scene is game
+            VerifyCurrentSceneByStr(desiredSceneName: GameManager.GAME_SCENE_NAME);
+        }
+
+        /// <summary>
+        /// Wait till desired scene loaded using enums. 
+        /// Verify max frames wait not exceeded.
+        /// </summary>
+        /// <param name="desiredScene">Desired scene enum from GameManager script.</param>
+        /// <returns></returns>
+        private IEnumerator WaitTillSceneLoadedUsingEnums(GameManager.CurrentScene desiredScene)
+        {
+            int framesWaited = 0;
+
+            //wait for scene to load
+            while (GameManager.Instance.currentScene != desiredScene)
+            {
+                //wait a frame
+                yield return null;
+
+                //incr bc frame waited
+                framesWaited++;
+
+                VerifyMaxFramesNotExceeded(framesWaited);
+            }
+            Debug.Log($"{framesWaited} frames waited for {desiredScene} to load.");
+        }
+
+        /// <summary>
+        /// Waits till the object with the given type's found in the current scene.
+        /// Verify max frames wait not exceeded.
+        /// </summary>
+        /// <typeparam name="T">
+        /// Type looking for in the current scene. 
+        /// Constrained to be a UnityEngine Object.
+        /// </typeparam>
+        /// <returns></returns>
+        private IEnumerator WaitTillTypeFound<T>() where T : UnityEngine.Object
+        {
+            int framesWaited = 0;
+
+            //try and find main menu in scene
+            var foundObject = FindObjectOfType<T>();
+
+            //while can't find main menu
+            while (foundObject == null)
+            {
+                yield return null;
+
+                framesWaited++;
+
+                VerifyMaxFramesNotExceeded(framesWaited);
+
+                //try and find it again
+                foundObject = FindObjectOfType<T>();
+            }
+            Debug.Log($"{framesWaited} frames waited to find main menu.");
+            framesWaited = 0;
+        }
+
+        #region Verification Methods
 
         /// <summary>
         /// Verify we're connected to the Photon Network.
@@ -97,10 +228,10 @@ namespace Tests
         }
     
         /// <summary>
-        /// Verify the current and desired scene names are the same.
+        /// Verify the current and desired string scene names are the same.
         /// </summary>
         /// <param name="desiredSceneName"></param>
-        public void VerifyCurrentScene(string desiredSceneName)
+        public void VerifyCurrentSceneByStr(string desiredSceneName)
         {
             string currSceneName = SceneManager.GetActiveScene().name;
 
@@ -118,5 +249,44 @@ namespace Tests
             //success msg
             Debug.Log($"Current scene is {desiredSceneName}.");
         }
+
+        /// <summary>
+        /// Verify player count comparing expected to actual 
+        ///  using Photon player count in curr room.
+        /// </summary>
+        /// <param name="expectedPlayerCount">Expected number of players in curr room.</param>
+        public void VerifyPlayerCount(int expectedPlayerCount)
+        {
+            //cache actual player count
+            int actualPlayerCount = PhotonNetwork.CurrentRoom.PlayerCount;
+            
+            //cache feedback msg bc success + failure same
+            string feedbackMsg = $"Expected player count = {expectedPlayerCount}, " + 
+                $"Actual player count = {actualPlayerCount}";
+
+            //verify expected + actual are equal
+            Assert.AreEqual
+                (
+                    expected: expectedPlayerCount, 
+                    actual: actualPlayerCount, 
+                    feedbackMsg
+                );
+            //success msg
+            Debug.Log(feedbackMsg);
+        }
+
+        public void VerifyMaxFramesNotExceeded(int framesWaited)
+        {
+            //verify current frames waited less than maximum wait lim
+            Assert.Less
+                (
+                    framesWaited, 
+                    MAX_FRAMES_WAIT, 
+                    $"Frames waited exceeds the maximum {MAX_FRAMES_WAIT} allowed. " +
+                        $"Please increase the max or look into the problem."
+                );
+        }
+
+        #endregion Verification Methods
     }
 }
