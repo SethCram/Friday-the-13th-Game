@@ -34,7 +34,7 @@ public class SpawnPlayers : MonoBehaviourPunCallbacks
             //if master client
             if( PhotonNetwork.IsMasterClient)
             {
-                //debug: Debug.LogAssertion("isMasterClient = " + PhotonNetwork.IsMasterClient);
+                //debug: Debug.Log($"<color=yellow>isMasterClient = " + PhotonNetwork.IsMasterClient);
 
                 //assign jason + counselor custom props
                 StartCoroutine( AssignCustomProps() );
@@ -66,7 +66,7 @@ public class SpawnPlayers : MonoBehaviourPunCallbacks
             //choose jason player randomly
             int jasonIndex = Random.Range(0, PhotonNetwork.PlayerList.Length - 1);
 
-            Debug.LogAssertion($"Jason index gen'd by master client using random class = {jasonIndex} ");
+            Debug.Log($"<color=yellow>Jason index gen'd by master client using random class = {jasonIndex} </color>");
 
             int index = 0;
 
@@ -118,7 +118,7 @@ public class SpawnPlayers : MonoBehaviourPunCallbacks
 
                     yield return null;
                 }
-                Debug.LogAssertion($"Waited {framesWaited} frames for player {index}'s custom props to be filled.");
+                Debug.Log($"<color=yellow>Waited {framesWaited} frames for player {index}'s custom props to be filled.</color>");
 
                 index++;
             }
@@ -145,7 +145,7 @@ public class SpawnPlayers : MonoBehaviourPunCallbacks
             framesWaited++;
         }
 
-        Debug.LogAssertion("number of frames waited to spawn players = " + framesWaited);
+        Debug.Log($"<color=yellow>number of frames waited to spawn players = {framesWaited}</color>");
 
         //spawn players
         SpawnPlayersAtStart();
@@ -164,7 +164,7 @@ public class SpawnPlayers : MonoBehaviourPunCallbacks
             //choose jason player randomly
             int jasonIndex = Random.Range(0, PhotonNetwork.PlayerList.Length - 1);
 
-            Debug.LogAssertion($"Jason index gen'd by master client using random class = {jasonIndex} ");
+            Debug.Log($"<color=yellow>Jason index gen'd by master client using random class = {jasonIndex} </color>");
 
             int index = 0;
 

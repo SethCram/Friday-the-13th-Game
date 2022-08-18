@@ -138,7 +138,7 @@ public class CharacterStats : MonoBehaviourPun
             return;
         }
 
-        Debug.LogAssertion("Numbers being spawned.");
+        Debug.Log($"<color=yellow>Numbers being spawned.</color>");
 
         //turn curr HP into an arr of ints
         int[] intArr = GetIntArray(currHP);
@@ -228,7 +228,7 @@ public class CharacterStats : MonoBehaviourPun
         //if not supposed to take dmg
         if( notSupposedToTakeDmg )
         {
-            Debug.LogAssertion("Damage not taken because " + "player dead.");
+            Debug.Log($"<color=yellow>Damage not taken because player dead.</color>");
 
             //dont take dmg
             return;
@@ -327,7 +327,7 @@ public class CharacterStats : MonoBehaviourPun
             Debug.LogWarning("There's no character animator to call");
         }
 
-        Debug.Log(transform.name + "<color=red> died. </color>");
+        Debug.Log($"<color=red>{transform.name} died. </color>");
 
         //delay scene reset by _ secs so player death anim can play out (done in char animator now)
         //playerManager.Invoke("ResetToMainMenu", 5); //within player manager
