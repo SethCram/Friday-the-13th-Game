@@ -97,6 +97,8 @@ namespace Tests
 
         #endregion Unity Tests
 
+        #region Heavy Lifting
+
         /// <summary>
         /// Load lobby -> game lobby.
         /// Verifies started in lobby scene, game lobby loaded into, player count incrs to 1.
@@ -158,6 +160,10 @@ namespace Tests
             VerifyCurrentSceneByStr(desiredSceneName: GameManager.GAME_SCENE_NAME);
         }
 
+        #endregion Heavy Lifting
+
+        #region Wait Methods
+
         /// <summary>
         /// Wait till desired scene loaded using enums. 
         /// Verify max frames wait not exceeded.
@@ -211,8 +217,9 @@ namespace Tests
                 foundObject = FindObjectOfType<T>();
             }
             Debug.Log($"<color=orange>{framesWaited} frames waited to find main menu.</color>");
-            framesWaited = 0;
         }
+
+        #endregion Wait Methods
 
         #region Verification Methods
 
@@ -288,5 +295,20 @@ namespace Tests
         }
 
         #endregion Verification Methods
+
+        /// <summary>
+        /// Teardown after each test through disconnecting from Photon.
+        /// </summary>
+        [TearDown]
+        public void Loading_Teardown()
+        {
+            //unload the finishing scene
+            //SceneManager.UnloadSceneAsync(SceneManager.GetActiveScene());
+
+            //disconnect from Photon
+            PhotonNetwork.Disconnect();
+
+            Debug.Log("<color=orange>Disconnect from Photon.</color>");
+        }
     }
 }
