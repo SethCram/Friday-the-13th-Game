@@ -22,7 +22,7 @@ namespace Tests
         //    //wait till lobby loaded
         //    yield return TestLoading_MainMenuToLobby();
 
-        //    Debug.Log("After coroutine called.");
+        //    Debug.Log($"<color=orange>After coroutine called.</color>");
 
         //    Assert.Inconclusive("Requires manual intervention to pass.");
         //}
@@ -66,7 +66,7 @@ namespace Tests
             //verify connnected to Photon network
             VerifyNetworkConnected();
 
-            Debug.Log("Main menu to Lobby loaded successfully.");
+            Debug.Log($"<color=orange>Main menu to Lobby loaded successfully.</color>");
         }
 
         /// <summary>
@@ -82,7 +82,7 @@ namespace Tests
             //wait till game lobby loaded
             yield return Load_LobbyToGameLobby();
 
-            Debug.Log("Main menu to Game Lobby loaded successfully.");
+            Debug.Log($"<color=orange>Main menu to Game Lobby loaded successfully.</color>");
         }
 
         [UnityTest]
@@ -128,7 +128,7 @@ namespace Tests
             //verify player count incr'd to one
             VerifyPlayerCount(expectedPlayerCount: 1);
 
-            Debug.Log("Lobby to Game Lobby loaded successfully.");
+            Debug.Log($"<color=orange>Lobby to Game Lobby loaded successfully.</color>");
         }
 
         /// <summary>
@@ -179,7 +179,7 @@ namespace Tests
 
                 VerifyMaxFramesNotExceeded(framesWaited);
             }
-            Debug.Log($"{framesWaited} frames waited for {desiredScene} to load.");
+            Debug.Log($"<color=orange>{framesWaited} frames waited for {desiredScene} to load.</color>");
         }
 
         /// <summary>
@@ -210,7 +210,7 @@ namespace Tests
                 //try and find it again
                 foundObject = FindObjectOfType<T>();
             }
-            Debug.Log($"{framesWaited} frames waited to find main menu.");
+            Debug.Log($"<color=orange>{framesWaited} frames waited to find main menu.</color>");
             framesWaited = 0;
         }
 
@@ -224,7 +224,7 @@ namespace Tests
             //pass test if connected to photon network
             Assert.True(PhotonNetwork.IsConnected, "Not connected to the Photon Network.");
             //success msg
-            Debug.Log("Connected to the Photon Network.");
+            Debug.Log($"<color=orange>Connected to the Photon Network.</color>");
         }
     
         /// <summary>
@@ -247,7 +247,7 @@ namespace Tests
                     $"Current scene is {currSceneName} not {desiredSceneName}."
                 );
             //success msg
-            Debug.Log($"Current scene is {desiredSceneName}.");
+            Debug.Log($"<color=orange>Current scene is {desiredSceneName}.</color>");
         }
 
         /// <summary>
@@ -261,8 +261,8 @@ namespace Tests
             int actualPlayerCount = PhotonNetwork.CurrentRoom.PlayerCount;
             
             //cache feedback msg bc success + failure same
-            string feedbackMsg = $"Expected player count = {expectedPlayerCount}, " + 
-                $"Actual player count = {actualPlayerCount}";
+            string feedbackMsg = $"<color=orange>Expected player count = {expectedPlayerCount}, " + 
+                $"Actual player count = {actualPlayerCount}</color>";
 
             //verify expected + actual are equal
             Assert.AreEqual
