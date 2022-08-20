@@ -518,7 +518,7 @@ public class PlayerManager : MonoBehaviourPunCallbacks
     {
         SetDead(true);
 
-        Debug.LogAssertion("Jason dead");
+        Debug.LogAssertion("<color=yellow>Jason dead</color>");
 
         //if on network and more than 1 player in room
         if (PhotonNetwork.IsConnected 

@@ -64,45 +64,8 @@ public class OverlayUI : MonoBehaviour
         //if press V
         if (Input.GetKeyDown(key: KeyCode.V))
         {
-            //invert toggle
-            voteToggle.isOn = !voteToggle.isOn;
 
-            //if online
-            if (PhotonNetwork.IsConnected)
-            {
-                //if now voting to start
-                if (voteToggle.isOn == true)
-                {
-                    //should incr votes over RPC so works for everyone
-                    GameManager.Instance.photonView.RPC("RPC_ChangeVoteCount",
-                        RpcTarget.AllBuffered,
-                        GameManager.Instance.startVotes + 1);
-                }
-                //not voting to start
-                else
-                {
-                    //should descr votes over RPC so works for everyone
-                    GameManager.Instance.photonView.RPC("RPC_ChangeVoteCount",
-                        RpcTarget.AllBuffered,
-                        GameManager.Instance.startVotes - 1);
-                }
-            }
-            //if local
-            else
-            {
-                //if now voting to start
-                if (voteToggle.isOn == true)
-                {
-                    //should incr votes over RPC so works for everyone
-                    GameManager.Instance.RPC_ChangeVoteCount(GameManager.Instance.startVotes + 1);
-                }
-                //not voting to start
-                else
-                {
-                    //should descr votes over RPC so works for everyone
-                    GameManager.Instance.RPC_ChangeVoteCount(GameManager.Instance.startVotes - 1);
-                }
-            }
+            VoteToggleAndIncrStartVotes();
         }
 
         //if online
@@ -140,6 +103,52 @@ public class OverlayUI : MonoBehaviour
     #endregion
 
     #region Update UI
+
+    /// <summary>
+    /// Toggle the vote check box and incr # of votes to start the game.
+    /// </summary>
+    public void VoteToggleAndIncrStartVotes()
+    {
+        //invert toggle
+        voteToggle.isOn = !voteToggle.isOn;
+
+        //if online
+        if (PhotonNetwork.IsConnected)
+        {
+            //if now voting to start
+            if (voteToggle.isOn == true)
+            {
+                //should incr votes over RPC so works for everyone
+                GameManager.Instance.photonView.RPC("RPC_ChangeVoteCount",
+                    RpcTarget.AllBuffered,
+                    GameManager.Instance.startVotes + 1);
+            }
+            //not voting to start
+            else
+            {
+                //should descr votes over RPC so works for everyone
+                GameManager.Instance.photonView.RPC("RPC_ChangeVoteCount",
+                    RpcTarget.AllBuffered,
+                    GameManager.Instance.startVotes - 1);
+            }
+        }
+        //if local
+        else
+        {
+            //if now voting to start
+            if (voteToggle.isOn == true)
+            {
+                //should incr vote anyways
+                GameManager.Instance.RPC_ChangeVoteCount(GameManager.Instance.startVotes + 1);
+            }
+            //not voting to start
+            else
+            {
+                //should descr vote anyways
+                GameManager.Instance.RPC_ChangeVoteCount(GameManager.Instance.startVotes - 1);
+            }
+        }
+    }
 
     //update health slider using HP changed event
     public void UpdateHealthSlider(int maxHP, int currHP)

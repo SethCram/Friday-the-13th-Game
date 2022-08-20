@@ -3,7 +3,10 @@
     "references": [
         "UnityEngine.TestRunner",
         "UnityEditor.TestRunner",
-        "Scripts"
+        "Scripts",
+        "PhotonUnityNetworking",
+        "Unity.TextMeshPro",
+        "PhotonRealtime"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

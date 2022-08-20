@@ -51,7 +51,7 @@ public class WinTrigger : MonoBehaviour
         {
             shouldLaunchPlayerBack = true;
 
-            Debug.LogAssertion("Player should launch back.");
+            Debug.Log($"<color=yellow>Player should launch back.</color>");
         }
     }
 
@@ -98,6 +98,6 @@ public class WinTrigger : MonoBehaviour
         //set position to setBack on the z
         collidingWithTransform.position = newPosition;
 
-        Debug.LogAssertion("Player transform should be " + collidingWithTransform.position.ToString());
+        Debug.Log($"<color=yellow>Player transform should be {collidingWithTransform.position.ToString()} </color>");
     }
 }

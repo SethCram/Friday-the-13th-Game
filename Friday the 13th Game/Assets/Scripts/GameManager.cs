@@ -56,7 +56,7 @@ public class GameManager : MonoBehaviourPun
     private bool _isSwitchingState;
 
     //scene tracking vars
-    public enum CurrentScene { LOBBY, GAME_LOBBY, GAME };
+    public enum CurrentScene { MAIN_MENU, LOADING, LOBBY, GAME_LOBBY, GAME };
     public CurrentScene currentScene { private set; get; }
     private string currSceneName;
 
@@ -98,7 +98,8 @@ public class GameManager : MonoBehaviourPun
     public const string PLAYER_TAG = "Player";
     #endregion Tag Names
     #region Scene Names
-    public const string MAIN_MENU_SCENE_NAME = "Main Menu";
+    public const string MAIN_MENU_SCENE_NAME = "Start Menu";
+    public const string LOADING_SCENE_NAME = "Loading";
     public const string LOBBY_SCENE_NAME = "Lobby";
     public const string GAME_LOBBY_SCENE_NAME = "Game Lobby";
     public const string GAME_SCENE_NAME = "Game";
@@ -173,7 +174,15 @@ public class GameManager : MonoBehaviourPun
         currSceneName = SceneManager.GetActiveScene().name;
 
         //determine current scene
-        if (SameString_IgnoreCase(currSceneName, LOBBY_SCENE_NAME))
+        if(SameString_IgnoreCase(currSceneName, MAIN_MENU_SCENE_NAME))
+        {
+            currentScene = CurrentScene.MAIN_MENU;
+        }
+        else if (SameString_IgnoreCase(currSceneName, LOADING_SCENE_NAME))
+        {
+            currentScene = CurrentScene.LOADING;
+        }
+        else if (SameString_IgnoreCase(currSceneName, LOBBY_SCENE_NAME))
         {
             currentScene = CurrentScene.LOBBY;
         }
@@ -217,7 +226,7 @@ public class GameManager : MonoBehaviourPun
             //wait a frame
             yield return null;
         }
-        Debug.LogAssertion($"Waited {framesWaited} frames for player instance to fill.");
+        Debug.Log($"<color=yellow>Waited {framesWaited} frames for player instance to fill.</color>");
 
         //player instance filled so cache player manager
         playerManager = ourPlayer.GetComponent<PlayerManager>();
@@ -230,14 +239,14 @@ public class GameManager : MonoBehaviourPun
         //wait till all players spawned
         while(!AllPlayersSpawned())
         {
-            Debug.Log("Waiting for all players to spawn.");
+            //Debug.Log("Waiting for all players to spawn.");
 
             framesWaited++;
 
             //wait a frame
             yield return null;
         }
-        Debug.LogAssertion($"Waited {framesWaited} frames for all other players to spawn.");
+        Debug.Log($"<color=yellow>Waited {framesWaited} frames for all other players to spawn.</color>");
 
         //if our player is a counselor
         if ( TagIsCounselor(ourPlayer.tag))
@@ -328,7 +337,7 @@ public class GameManager : MonoBehaviourPun
     {
         deadCounselors++;
 
-        Debug.LogAssertion($"Dead couneslors incr'd to {deadCounselors}");
+        Debug.Log($"<color=yellow>Dead couneslors incr'd to {deadCounselors}</color>");
     }
 
     /// <summary>
@@ -339,7 +348,7 @@ public class GameManager : MonoBehaviourPun
     {
         playersSpawnReady++;
 
-        //debug: Debug.LogAssertion("players game ready = " + playersGameReady.ToString());
+        //debug: Debug.Log($"<color=yellow>players game ready = " + playersGameReady.ToString());
     }
 
     #endregion RPC's
@@ -571,7 +580,7 @@ public class GameManager : MonoBehaviourPun
         //if jason left in game scene: (bc can't find his tag)
         if ( !JasonInRoom() && currentScene == CurrentScene.GAME)
         {
-            Debug.LogAssertion("Jason left.");
+            Debug.Log($"<color=yellow>Jason left.</color>");
 
             //walk thru players left
             foreach (Player player in PhotonNetwork.PlayerList)
@@ -592,7 +601,7 @@ public class GameManager : MonoBehaviourPun
             //if counselor left: (bc used to be more)
             if (prevCounselorCount > currCounselorCount)
             {
-                Debug.LogAssertion("A counselor left.");
+                Debug.Log($"<color=yellow>A counselor left.</color>");
 
                 //update counselor count before recursion
                 prevCounselorCount = currCounselorCount;
@@ -698,13 +707,13 @@ public class GameManager : MonoBehaviourPun
         //if all counselors dead
         if (deadCounselors >= PhotonCounselorCount() )
         {
-            Debug.LogAssertion("All counselors are dead. Game Over.");
+            Debug.Log($"<color=yellow>All counselors are dead. Game Over.</color>");
 
             //if all counselors won
             if (AllCounselorsWon())
             {
                 //counselors win + jason loses
-                Debug.LogAssertion("Tell counselors they won and jason he lost.");
+                Debug.Log($"<color=yellow>Tell counselors they won and jason he lost.</color>");
                 BroadCastGameOver(allCounselorsWon: true, jasonLost: true);
             }
             //if all counselors lost
@@ -712,15 +721,15 @@ public class GameManager : MonoBehaviourPun
             {
 
                 //all counselors lose + jason wins
-                Debug.LogAssertion("Tell counselors they lost and jason he won.");
+                Debug.Log($"<color=yellow>Tell counselors they lost and jason he won.</color>");
                 BroadCastGameOver(allCounselorsLost: true, jasonWon: true);
             }
             //if some counselors lost and others won
             else
             {
                 //counselors who won win, those who lost lose, jason generic game over's
-                Debug.LogAssertion("Tell counselors who won they win, " +
-                    "counselors who lost they lose, and jason generic game over.");
+                Debug.Log($"<color=yellow>Tell counselors who won they win, " +
+                    "counselors who lost they lose, and jason generic game over.</color>");
                 BroadCastGameOver(someCounselorsWonSomeLost: true);
             }
 
