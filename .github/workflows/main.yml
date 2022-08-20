@@ -16,8 +16,8 @@ jobs:
       # Cache
       - uses: actions/cache@v2
         with:
-          path: Friday the 13th Game/Library
-          key: Library-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
+          path: Library
+          key: Library-${{ hashFiles('Friday the 13th Game/Assets/**', 'Friday the 13th Game/Packages/**', 'Friday the 13th Game/ProjectSettings/**') }}
           restore-keys: |
             Library-
 
