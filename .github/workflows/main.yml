@@ -25,19 +25,21 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
         with:
-          fetch-depth: 0
           lfs: true
+
       # Cache
       - uses: actions/cache@v2
         with:
           path: ${{ matrix.projectPath }}/Library
-          key:
-            Library-${{ matrix.projectPath }}-${{ matrix.targetPlatform }}-${{
-            hashFiles(matrix.projectPath) }}
+          key: 
+            Library-${{ matrix.projectPath }}-
+            ${{ hashFiles(matrix.projectPath) }}-
+            Library-
           restore-keys: |
-            Library-${{ matrix.projectPath }}-${{ matrix.targetPlatform }}-
+            Library-${{ matrix.projectPath }}-
             Library-${{ matrix.projectPath }}-
             Library-
+
       # Test
       - name: Run tests
         uses: game-ci/unity-test-runner@v2
@@ -46,14 +48,8 @@ jobs:
           UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
         with:
           projectPath: ${{ matrix.projectPath }}
-          unityVersion: ${{ matrix.unityVersion }}
           githubToken: ${{ secrets.GITHUB_TOKEN }}
-      #pPush to artifactory?
-      - uses: actions/upload-artifact@v2
-        if: always()
-        with:
-          name: Test results (all modes)
-          path: ${{ steps.testRunner.outputs.artifactsPath }}
+
       # Build
       - name: Build project
         uses: game-ci/unity-builder@v2
@@ -62,10 +58,8 @@ jobs:
           UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
           UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
         with:
-          projectPath: ${{ matrix.projectPath }}
-          unityVersion: ${{ matrix.unityVersion }}
-          targetPlatform: ${{ matrix.targetPlatform }}
-          customParameters: '-myParameter myValue -myBoolean -ThirdParameter andItsValue'
+          targetPlatform: WebGL
+
       # Output
       - uses: actions/upload-artifact@v2
         with:
