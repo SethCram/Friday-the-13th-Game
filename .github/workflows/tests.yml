@@ -3,7 +3,7 @@ name: Run tests
 on: 
   pull_request: {}
   push: 
-    branches: [ master ] 
+    branches: [ main ] 
   workflow_dispatch: {}
 
 jobs:
@@ -33,6 +33,7 @@ jobs:
           UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
         with:
           githubToken: ${{ secrets.GITHUB_TOKEN }}
+          coverageOptions: 'generateAdditionalMetrics;generateHtmlReport;generateBadgeReport;generateTestReferences;assemblyFilters:+Scripts.assembly,+PlayModeTests.assembly'
 
       # Storing test results
       - uses: actions/upload-artifact@v2
