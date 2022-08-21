@@ -51,4 +51,4 @@ jobs:
         if: always()
         with:
           name: Coverage results
-          path: CodeCoverage
+          path: artifacts/CodeCoverage
