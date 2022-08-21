@@ -33,10 +33,6 @@ jobs:
           UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
         with:
           githubToken: ${{ secrets.GITHUB_TOKEN }}
-      # View test results
-      - uses: game-ci/unity-test-runner@v2
-        with:
-          githubToken: ${{ secrets.GITHUB_TOKEN }}
 
       # Storing test results
       - uses: actions/upload-artifact@v2
