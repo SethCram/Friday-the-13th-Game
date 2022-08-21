@@ -15,7 +15,8 @@ jobs:
           lfs: true
 
       # Cache
-      - uses: actions/cache@v2
+      - name: Cache libraries
+        uses: actions/cache@v2
         with:
           path: Library
           key: Library-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
@@ -33,7 +34,8 @@ jobs:
           targetPlatform: StandaloneWindows64
 
       # Output
-      - uses: actions/upload-artifact@v2
+      - name: Output build
+        uses: actions/upload-artifact@v2
         with:
           name: Build
           path: build
