@@ -5,7 +5,7 @@ on:
 
 jobs:
   build:
-    name: Build my project ✨
+    name: Build my project 
     runs-on: ubuntu-latest
     steps:
       # Checkout
@@ -32,8 +32,20 @@ jobs:
           UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
         with:
           targetPlatform: StandaloneWindows64
-
-      # Output
+  
+  UploadArtifact:
+    name: Upload build artifact
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      # Require manual reviewer approval
+      - name: Require manual intervention
+        uses: trstringer/manual-approval@v1
+        with:
+          secret: ${{ github.TOKEN }}
+          approvers: SethCram
+      
+      # Output build
       - name: Output build
         uses: actions/upload-artifact@v2
         with:
