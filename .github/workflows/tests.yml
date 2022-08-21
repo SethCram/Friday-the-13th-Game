@@ -1,4 +1,4 @@
-name: Run tests 
+name: Run Tests
 
 on: 
   pull_request: {}
@@ -18,7 +18,8 @@ jobs:
           lfs: true
 
       # Cache
-      - uses: actions/cache@v2
+      - name: Cache libraries
+        uses: actions/cache@v2
         with:
           path: Library
           key: Library-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
@@ -36,14 +37,16 @@ jobs:
           coverageOptions: 'generateAdditionalMetrics;generateHtmlReport;generateBadgeReport;generateTestReferences;assemblyFilters:+Scripts.assembly,+PlayModeTests.assembly'
 
       # Storing test results
-      - uses: actions/upload-artifact@v2
+      - name: Upload test results
+        uses: actions/upload-artifact@v2
         if: always()
         with:
           name: Test results
           path: artifacts
           
       # Get coverage results
-      - uses: actions/upload-artifact@v2
+      - name: Upload coverage results
+        uses: actions/upload-artifact@v2
         if: always()
         with:
           name: Coverage results
