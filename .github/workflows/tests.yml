@@ -30,12 +30,12 @@ jobs:
       - name: Run tests
         uses: game-ci/unity-test-runner@v2
         id: tests
-        timeout-minutes: 10 #raise timeout limit
+        timeout-minutes: 20 #raise timeout limit
         env:
           UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
         with:
           githubToken: ${{ secrets.GITHUB_TOKEN }}
-          coverageOptions: 'generateAdditionalMetrics;generateHtmlReport;generateBadgeReport;generateTestReferences;assemblyFilters:+Scripts.assembly,+PlayModeTests.assembly'
+          coverageOptions: 'generateAdditionalMetrics;generateHtmlReport;generateBadgeReport;generateTestReferences;assemblyFilters:+Scripts.*,+PlayModeTests.*'
 
       # Storing test results
       - name: Upload test results
@@ -46,9 +46,8 @@ jobs:
           path: artifacts
           
       # Get coverage results
-      - name: Upload coverage results
-        uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v2
         if: always()
         with:
           name: Coverage results
-          path: artifacts/CodeCoverage
+          path: ${{ steps.tests.outputs.coveragePath }}
