@@ -35,7 +35,7 @@ jobs:
           UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
         with:
           githubToken: ${{ secrets.GITHUB_TOKEN }}
-          coverageOptions: 'generateAdditionalMetrics;generateHtmlReport;generateBadgeReport;generateTestReferences;assemblyFilters:+<assets>'
+          coverageOptions: 'generateAdditionalMetrics;generateHtmlReport;generateBadgeReport;generateTestReferences;assemblyFilters:+Scripts.asmdef, +PlayModeTests.asmdef'
 
       # Storing test results
       - name: Upload test results
