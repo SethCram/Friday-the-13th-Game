@@ -75,4 +75,7 @@ crashlytics-build.properties
 /[Aa]ssets/[Ss]treamingAssets/aa/*
 
 #ignore artifacts for clean CI builds
-/artifacts
+/artifacts/
+
+#ignore local code coverage runs
+/CodeCoverage/
