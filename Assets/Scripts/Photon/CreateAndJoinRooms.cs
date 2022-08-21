@@ -39,7 +39,7 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
         //output msg if empty room field
         if (string.IsNullOrEmpty(createInput.text))
         {
-            AssignErrorText(errorCreate, "CreateRoom failed. A roomname is required.");
+            AssignMsgText(errorCreate, "CreateRoom failed. A roomname is required.", error: true);
 
             //dont create room
             return;
@@ -53,7 +53,7 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
         //roomOptions.PublishUserId = true;
 
         //clear error msg w/ client msg
-        AssignErrorText(errorCreate, "Creating room...", false);
+        AssignMsgText(errorCreate, "Creating room...", error: false);
 
         //make and join room:
         PhotonNetwork.CreateRoom(createInput.text, roomOptions);
@@ -66,14 +66,19 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
         Debug.Log("Room successfully created");
     }
 
+    /// <summary>
+    /// When create room fails, output return code in log + tell user it failed.
+    /// </summary>
+    /// <param name="returnCode"></param>
+    /// <param name="message"></param>
     public override void OnCreateRoomFailed(short returnCode, string message)
     {
         base.OnCreateRoomFailed(returnCode, message);
 
         //output why cant create room:
-        Debug.LogWarning("Room not created bc: " + message);
+        Debug.Log($"Room not created. Return code = {returnCode}. ");
 
-        AssignErrorText(errorCreate, message);
+        AssignMsgText(errorCreate, message, error: true);
 
     }
 
@@ -88,31 +93,38 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
         if (string.IsNullOrEmpty(joinInput.text))
         {
             //output error msg
-            AssignErrorText(errorJoin, "JoinRoom failed. A roomname is required.");
+            AssignMsgText(errorJoin, "JoinRoom failed. A roomname is required.", error: true);
 
             //dont join room
             return;
         }
 
         //output client msg
-        AssignErrorText(errorJoin, "Joining room...", false);
+        AssignMsgText(errorJoin, "Joining room...", error: false);
 
         //join room
         PhotonNetwork.JoinRoom(joinInput.text);
     }
 
+    /// <summary>
+    /// When join room failed, tell user message and log return code.
+    /// </summary>
+    /// <param name="returnCode"></param>
+    /// <param name="message"></param>
     public override void OnJoinRoomFailed(short returnCode, string message)
     {
         base.OnJoinRoomFailed(returnCode, message);
 
-        AssignErrorText(errorJoin, message);
+        Debug.Log($"On Join room failed. Return code = {returnCode}.");
+
+        AssignMsgText(errorJoin, message, error: true);
     }
 
     //callback for w/ any client joins room then multiplayer game loaded:
     public override void OnJoinedRoom() //called both w/ client and other people join room
     {
         //isnt displayed
-        Debug.Log("Game scene loading.");
+        Debug.Log("Game lobby scene loading.");
 
         //load level asynchly
         StartCoroutine(LoadLevelAsynch());
@@ -120,16 +132,21 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
 
     #endregion
 
-    //assign error text
-    public void AssignErrorText(TMP_Text errorText, string message, bool error = true)
+    /// <summary>
+    /// Assign given message to the msg text, logging color depends on if error or not.
+    /// </summary>
+    /// <param name="msgText"></param>
+    /// <param name="message"></param>
+    /// <param name="error"></param>
+    public void AssignMsgText(TMP_Text msgText, string message, bool error = false)
     {
-        errorText.text = message;
+        msgText.text = message;
 
         //if error
         if (error == true)
         {
-            //output error:
-            Debug.LogError("Error message: " + message);
+            //output error as red txt:
+            Debug.Log($"<color=red>Error message: {message} </color>");
         }
         // not error
         else
@@ -198,7 +215,7 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
         string disconnectMsg = "Disconnected for reason: " + cause.ToString();
 
         //print out why disconnected:
-        AssignErrorText(errorText: errorJoin, message: disconnectMsg);
+        AssignMsgText(msgText: errorJoin, message: disconnectMsg);
 
         //load menu menu
         SceneManager.LoadScene(0);

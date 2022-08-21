@@ -58,8 +58,8 @@ public class RoomListing : MonoBehaviourPunCallbacks
         //call createJoinRooms join room call
         //createJoinRooms.JoinRoom();
 
-        //clear error msg
-        createJoinRooms.AssignErrorText(createJoinRooms.errorJoin, "Joining room...", false);
+        // tell client joining room
+        createJoinRooms.AssignMsgText(createJoinRooms.errorJoin, "Joining room...", error: false);
 
         //join room:
         PhotonNetwork.JoinRoom(nameText.text);
