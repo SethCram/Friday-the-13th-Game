@@ -7,7 +7,7 @@ on:
   workflow_dispatch: {}
 
 jobs:
-  build:
+  RunTests:
     name: Run tests
     runs-on: ubuntu-latest
     steps:
@@ -30,6 +30,7 @@ jobs:
       - name: Run tests
         uses: game-ci/unity-test-runner@v2
         id: tests
+        timeout-minutes: 10 #raise timeout limit
         env:
           UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
         with:
@@ -50,4 +51,4 @@ jobs:
         if: always()
         with:
           name: Coverage results
-          path: ${{ steps.tests.outputs.coveragePath }}
+          path: CodeCoverage
