@@ -132,7 +132,7 @@ namespace Tests
 
             Debug.Log($"<color=orange>Lobby to Game Lobby loaded successfully.</color>");
 
-            yield return new WaitForSeconds(1);
+            //yield return new WaitForSeconds(1);
         }
 
         /// <summary>
