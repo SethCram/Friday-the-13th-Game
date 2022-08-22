@@ -1,4 +1,4 @@
-name: Run Tests With No Coverage Reported
+name: Run Tests - No Coverage
 
 on: 
   pull_request: {}
@@ -8,7 +8,7 @@ on:
 
 jobs:
   RunTests:
-    name: Run tests With No Coverage Reported
+    name: Run Tests - No Coverage
     runs-on: ubuntu-latest
     steps:
       # Checkout
