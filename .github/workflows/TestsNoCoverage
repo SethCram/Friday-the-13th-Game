@@ -1,0 +1,45 @@
+name: Run Tests With No Coverage Reported
+
+on: 
+  pull_request: {}
+  #push: 
+  #  branches: [ main ] 
+  workflow_dispatch: {}
+
+jobs:
+  RunTests:
+    name: Run tests
+    runs-on: ubuntu-latest
+    steps:
+      # Checkout
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        with:
+          lfs: true
+
+      # Cache
+      - name: Cache libraries
+        uses: actions/cache@v2
+        with:
+          path: Library
+          key: Library-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
+          restore-keys: |
+            Library-
+      
+      # Test
+      - name: Run tests
+        uses: game-ci/unity-test-runner@v2
+        id: tests
+        timeout-minutes: 20 #raise timeout limit
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+        with:
+          githubToken: ${{ secrets.GITHUB_TOKEN }}
+
+      # Storing test results
+      - name: Upload test results
+        uses: actions/upload-artifact@v2
+        if: always()
+        with:
+          name: Test results
+          path: artifacts
