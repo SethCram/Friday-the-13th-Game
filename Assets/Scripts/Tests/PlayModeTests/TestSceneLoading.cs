@@ -34,6 +34,7 @@ namespace Tests
         /// </summary>
         /// <returns></returns>
         [UnityTest]
+        [Timeout(timeout: 240000)] //this many ms is 4 minutes
         public IEnumerator TestLoading_ToLobby()
         {
             //int framesWaited = 0;
@@ -48,6 +49,9 @@ namespace Tests
 
             //wait till obj of type main menu found in scene
             yield return WaitTillTypeFound<MainMenu>();
+
+            //make sure only 1 script found in scene
+            VerifyOnlyOneInScene<MainMenu>();
 
             //find main menu in scene
             MainMenu mainManu = FindObjectOfType<MainMenu>();
@@ -74,6 +78,7 @@ namespace Tests
         /// </summary>
         /// <returns></returns>
         [UnityTest]
+        [Timeout(timeout: 360000)] //this many ms is 6 minutes
         public IEnumerator TestLoading_ToGameLobby()
         {
             //wait till lobby loaded
@@ -85,7 +90,12 @@ namespace Tests
             Debug.Log($"<color=orange>Main menu to Game Lobby loaded successfully.</color>");
         }
 
+        /// <summary>
+        /// Test loading to game scene using an extended timeout and 2 coroutines.
+        /// </summary>
+        /// <returns></returns>
         [UnityTest]
+        [Timeout(timeout:600000)] //this many ms is 10 minutes
         public IEnumerator TestLoading_ToGame()
         {
             //wait till loaded into game lobby
@@ -111,6 +121,9 @@ namespace Tests
 
             //wait till can find create + join rooms script in scene
             yield return WaitTillTypeFound<CreateAndJoinRooms>();
+
+            //make sure only 1 script found in scene
+            VerifyOnlyOneInScene<CreateAndJoinRooms>();
 
             //find create+join room script in scene
             CreateAndJoinRooms createAndJoinRooms = FindObjectOfType<CreateAndJoinRooms>();
@@ -150,6 +163,9 @@ namespace Tests
 
             //wait till overlay UI found in scene
             yield return WaitTillTypeFound<OverlayUI>();
+
+            //make sure only 1 script found in scene
+            VerifyOnlyOneInScene<OverlayUI>();
 
             //activate method used when vote to start given
             OverlayUI overlayUI = FindObjectOfType<OverlayUI>();
@@ -224,6 +240,24 @@ namespace Tests
         #endregion Wait Methods
 
         #region Verification Methods
+
+        /// <summary>
+        /// Verify only one object is present in the current scene.
+        /// </summary>
+        /// <typeparam name="T">Type of object looking for.</typeparam>
+        public void VerifyOnlyOneInScene<T>() where T : UnityEngine.Object
+        {
+            //cache objs of type found in scene
+            T[] genericArr = FindObjectsOfType<T>();
+
+            //Make sure atleast one object found
+            Assert.AreNotEqual(genericArr, null, $"No objects of type {typeof(T)} found in {GameManager.Instance.currentScene} scene.");
+
+            //make sure only one obj found
+            Assert.AreEqual(genericArr.Length, 1, $"More than one object of type {typeof(T)} found in {GameManager.Instance.currentScene} scene.");
+            
+            Debug.Log($"<color=orange>Only one object of type {typeof(T)} found in {GameManager.Instance.currentScene} scene.</color>");
+        }
 
         /// <summary>
         /// Verify we're connected to the Photon Network.
