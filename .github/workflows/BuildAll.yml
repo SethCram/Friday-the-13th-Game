@@ -87,5 +87,9 @@ jobs:
           cd MacOS
           echo 10. Contents of MacOS folder:
           ls
-          echo 11. Running cmd to give exe privileges
+          echo 11. Check to see permissions before change
+          sudo ls -l
+          echo 12. Running cmd to give exe privileges
           sudo chmod -R 777 Friday\ the\ 13th\ Game
+          echo 13. Check to see if permissions changed
+          sudo ls -l
