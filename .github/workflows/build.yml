@@ -1,4 +1,4 @@
-name: Build for all supported platforms
+name: Build - all supported platforms
 
 on: 
   workflow_dispatch: {}
