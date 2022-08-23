@@ -137,15 +137,6 @@ jobs:
         with:
           targetPlatform: ${{ matrix.targetPlatform }}
       
-      # Require manual reviewer approval within 20 mins or fail
-      - name: Require manual intervention
-        uses: trstringer/manual-approval@v1
-        timeout-minutes: 20 
-        with:
-          secret: ${{ github.TOKEN }}
-          approvers: SethCram
-          issue-title: Deploying ${{ matrix.targetPlatform }} build to artifactory
-      
       # Give exe privileges to mac/linux build 
       - name: Give exe privilege to MacOS/Linux build
         if: |
