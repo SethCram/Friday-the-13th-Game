@@ -88,4 +88,4 @@ jobs:
           echo 10. Contents of MacOS folder:
           ls
           echo 11. Running cmd to give exe privileges
-          chmod -R 777 Friday\ the\ 13th\ Game
+          sudo chmod -R 777 Friday\ the\ 13th\ Game
