@@ -1,4 +1,4 @@
-name: Build - all supported platforms
+name: Build for Mac
 
 on: 
   # A release, pre-release, or draft of a release is published
