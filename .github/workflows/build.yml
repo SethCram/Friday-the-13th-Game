@@ -1,6 +1,10 @@
 name: Build - all supported platforms
 
 on: 
+  # A release, pre-release, or draft of a release is published
+  release:
+    types: published
+  # Manual
   workflow_dispatch: {}
 
 jobs:
@@ -17,7 +21,7 @@ jobs:
           #- StandaloneLinux64 # Build a Linux 64-bit standalone.
           #- iOS # Build an iOS player.
           #- Android # Build an Android .apk standalone app.
-          - WebGL # WebGL.
+          #- WebGL # WebGL.
     steps:
       # Checkout
       - name: Checkout repository
@@ -45,8 +49,8 @@ jobs:
         with:
           targetPlatform: ${{ matrix.targetPlatform }}
   
-  UploadArtifact:
-    name: Upload build artifacts
+  UploadArtifacts:
+    name: Upload build artifact for ${{ matrix.targetPlatform }}
     runs-on: ubuntu-latest
     needs: buildForAllSupportedPlatforms
     steps:
