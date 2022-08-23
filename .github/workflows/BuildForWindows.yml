@@ -35,6 +35,14 @@ jobs:
           UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
         with:
           targetPlatform: StandaloneWindows64
+          
+      # Require manual reviewer approval
+      - name: Require manual intervention
+        uses: trstringer/manual-approval@v1
+        with:
+          secret: ${{ github.TOKEN }}
+          approvers: SethCram
+          issue-title: "Deploying Windows build to artifactory"
       
       # Output build
       - name: Output build
