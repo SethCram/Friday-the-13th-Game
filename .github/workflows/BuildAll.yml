@@ -12,7 +12,7 @@ jobs:
     name: Build for ${{ matrix.targetPlatform }}
     runs-on: ubuntu-latest
     strategy:
-      fail-fast: false
+      #fail-fast: false
       matrix:
         targetPlatform:
           - StandaloneOSX # Build a macOS standalone (Intel 64-bit).
@@ -67,11 +67,21 @@ jobs:
       # Give exe privileges to mac build 
       - name: Give exe privilege to MacOS build
         run: |
-          echo 3. Navigating to build folder
+          echo 1. Navigating to build folder
           cd build
-          #echo 4. Contents of build folder:
-          #ls 
-          echo 5. Navigating the rest of the way down
-          cd StandaloneOSX/Contents/MacOS/
-          echo 6. Running cmd to give exe privileges
+          echo 2. Contents of build folder:
+          ls 
+          echo 3. Navigating to game folder
+          cd StandaloneOSX
+          echo 4. Contents of game folder:
+          ls 
+          echo 5. Navigating to Contents folder
+          cd Contents
+          echo 6. Contents of Contents folder:
+          ls
+          echo 7. Navigating to MacOS folder
+          cd MacOS
+          echo 8. Contents of MacOS folder:
+          ls
+          echo 9. Running cmd to give exe privileges
           chmod -R 777 Friday\ the\ 13th\ Game
