@@ -2,8 +2,8 @@ name: Build for Windows
 
 on: 
   # A release, pre-release, or draft of a release is published
-  release:
-    types: published
+  #release:
+  #  types: published
   # Manual 
   workflow_dispatch: {}
 
@@ -42,11 +42,12 @@ jobs:
     needs: build
     steps:
       # Require manual reviewer approval
-      - name: Require manual intervention
-        uses: trstringer/manual-approval@v1
-        with:
-          secret: ${{ github.TOKEN }}
-          approvers: SethCram
+      
+      #- name: Require manual intervention
+      #  uses: trstringer/manual-approval@v1
+      #  with:
+      #    secret: ${{ github.TOKEN }}
+      #    approvers: SethCram
       
       # Output build
       - name: Output build
