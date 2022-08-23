@@ -57,8 +57,11 @@ jobs:
           approvers: SethCram
           issue-title: Deploying ${{ matrix.targetPlatform }} build to artifactory
       
-      # Give exe privileges to mac build 
-      - name: Give exe privilege to MacOS build
+      # Give exe privileges to mac/linux build 
+      - name: Give exe privilege to MacOS/Linux build
+        if: |
+          ${{ matrix.targetPlatform }} == StandaloneOSX || 
+            ${{ matrix.targetPlatform }} == StandaloneLinux64
         run: |
           echo 1. Navigating to build folder
           cd build
