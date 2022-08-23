@@ -47,18 +47,13 @@ jobs:
           UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
         with:
           targetPlatform: ${{ matrix.targetPlatform }}
-  
-  UploadArtifacts:
-    name: Upload build artifact for ${{ matrix.targetPlatform }}
-    runs-on: ubuntu-latest
-    needs: buildForAllSupportedPlatforms
-    steps:
+      
       # Require manual reviewer approval
-      #- name: Require manual intervention
-      #  uses: trstringer/manual-approval@v1
-      #  with:
-      #    secret: ${{ github.TOKEN }}
-      #    approvers: SethCram
+      - name: Require manual intervention
+        uses: trstringer/manual-approval@v1
+        with:
+          secret: ${{ github.TOKEN }}
+          approvers: SethCram
       
       # Output build
       - name: Output build
@@ -66,10 +61,8 @@ jobs:
         with:
           name: Build-${{ matrix.targetPlatform }}
           path: build/${{ matrix.targetPlatform }}
+      
   #CreateInstaller:
   #  name: Create the Windows installer
   #  needs: UploadArtifact
-  #  runs-on: windows
-  
-  #UploadWebGL:
-    
+  #  runs-on: windows    
