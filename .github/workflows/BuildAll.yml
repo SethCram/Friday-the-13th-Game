@@ -67,14 +67,10 @@ jobs:
       # Give exe privileges to mac build 
       - name: Give exe privilege to MacOS build
         run: |
-          echo 1. What is in this dir?
-          ls -a
-          echo 2. What's the working dir?
-          pwd
           echo 3. Navigating to build folder
           cd build
-          echo 4. Contents of build folder:
-          ls -a
+          #echo 4. Contents of build folder:
+          #ls 
           echo 5. Navigating the rest of the way down
           cd StandaloneOSX/Contents/MacOS/
           echo 6. Running cmd to give exe privileges
