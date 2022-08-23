@@ -22,6 +22,7 @@ jobs:
           #- iOS # Build an iOS player.
           #- Android # Build an Android .apk standalone app.
           #- WebGL # WebGL.
+          - StandaloneOSX # Build a macOS standalone.
     steps:
       # Checkout
       - name: Checkout repository
@@ -54,6 +55,7 @@ jobs:
         with:
           secret: ${{ github.TOKEN }}
           approvers: SethCram
+          issue-title: Deploying ${{ matrix.targetPlatform }} build to artifactory
       
       # Output build
       - name: Output build
