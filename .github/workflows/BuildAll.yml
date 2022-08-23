@@ -75,13 +75,17 @@ jobs:
           cd StandaloneOSX
           echo 4. Contents of game folder:
           ls 
-          echo 5. Navigating to Contents folder
+          echo 5. Navigating to App folder
+          cd StandaloneOSX.app
+          echo 6. Contents of App folder:
+          ls
+          echo 7. Navigating to Contents folder
           cd Contents
-          echo 6. Contents of Contents folder:
+          echo 8. Contents of Contents folder:
           ls
-          echo 7. Navigating to MacOS folder
+          echo 9. Navigating to MacOS folder
           cd MacOS
-          echo 8. Contents of MacOS folder:
+          echo 10. Contents of MacOS folder:
           ls
-          echo 9. Running cmd to give exe privileges
+          echo 11. Running cmd to give exe privileges
           chmod -R 777 Friday\ the\ 13th\ Game
