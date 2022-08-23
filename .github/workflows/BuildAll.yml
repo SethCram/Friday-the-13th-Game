@@ -57,13 +57,6 @@ jobs:
           approvers: SethCram
           issue-title: Deploying ${{ matrix.targetPlatform }} build to artifactory
       
-      # Output build
-      - name: Output build
-        uses: actions/upload-artifact@v2
-        with:
-          name: Build-${{ matrix.targetPlatform }}
-          path: build/${{ matrix.targetPlatform }}
-      
       # Give exe privileges to mac build 
       - name: Give exe privilege to MacOS build
         run: |
@@ -93,3 +86,10 @@ jobs:
           sudo chmod -R 777 Friday\ the\ 13th\ Game
           echo 13. Check to see if permissions changed
           sudo ls -l
+      
+      # Output build
+      - name: Output build as artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: Build-${{ matrix.targetPlatform }}
+          path: build/${{ matrix.targetPlatform }}
