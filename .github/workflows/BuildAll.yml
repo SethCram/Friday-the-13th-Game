@@ -79,8 +79,3 @@ jobs:
           cd StandaloneOSX/Contents/MacOS/
           echo 6. Running cmd to give exe privileges
           chmod -R 777 Friday\ the\ 13th\ Game
-      
-  #CreateInstaller:
-  #  name: Create the Windows installer
-  #  needs: UploadArtifact
-  #  runs-on: windows    
