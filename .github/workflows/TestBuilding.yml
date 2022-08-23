@@ -1,7 +1,7 @@
 name: Actions 😎
 
 on: 
-  manual_dispatch: {}
+  workflow_dispatch: {}
 
 jobs:
   build:
