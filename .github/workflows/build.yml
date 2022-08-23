@@ -27,7 +27,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
         with:
-          fetch-depth: 0
           lfs: true
 
       # Cache
@@ -55,11 +54,11 @@ jobs:
     needs: buildForAllSupportedPlatforms
     steps:
       # Require manual reviewer approval
-      - name: Require manual intervention
-        uses: trstringer/manual-approval@v1
-        with:
-          secret: ${{ github.TOKEN }}
-          approvers: SethCram
+      #- name: Require manual intervention
+      #  uses: trstringer/manual-approval@v1
+      #  with:
+      #    secret: ${{ github.TOKEN }}
+      #    approvers: SethCram
       
       # Output build
       - name: Output build
