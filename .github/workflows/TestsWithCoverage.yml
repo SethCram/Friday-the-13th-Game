@@ -1,9 +1,9 @@
 name: Run Tests - Coverage
 
 on: 
-  pull_request: {}
-  #push: 
-  #  branches: [ main ] 
+  # Every push to any branch
+  #push: {}
+  # Manual
   workflow_dispatch: {}
 
 jobs:
