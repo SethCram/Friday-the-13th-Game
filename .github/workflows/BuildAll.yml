@@ -17,8 +17,8 @@ jobs:
         targetPlatform:
           - StandaloneOSX # Build a macOS standalone (Intel 64-bit).
           #- StandaloneWindows # Build a Windows 32-bit standalone.
-          - StandaloneWindows64 # Build a Windows 64-bit standalone.
-          - StandaloneLinux64 # Build a Linux 64-bit standalone.
+          #- StandaloneWindows64 # Build a Windows 64-bit standalone.
+          #- StandaloneLinux64 # Build a Linux 64-bit standalone.
           #- iOS # Build an iOS player.
           #- Android # Build an Android .apk standalone app.
           #- WebGL # WebGL.
@@ -48,9 +48,10 @@ jobs:
         with:
           targetPlatform: ${{ matrix.targetPlatform }}
       
-      # Require manual reviewer approval
+      # Require manual reviewer approval within 20 mins or fail
       - name: Require manual intervention
         uses: trstringer/manual-approval@v1
+        timeout-minutes: 20 
         with:
           secret: ${{ github.TOKEN }}
           approvers: SethCram
@@ -62,6 +63,22 @@ jobs:
         with:
           name: Build-${{ matrix.targetPlatform }}
           path: build/${{ matrix.targetPlatform }}
+      
+      # Give exe privileges to mac build 
+      - name: Give exe privilege to MacOS build
+        run: |
+          echo 1. What is in this dir?
+          ls -a
+          echo 2. What's the working dir?
+          pwd
+          echo 3. Navigating to build folder
+          cd build
+          echo 4. Contents of build folder:
+          ls -a
+          echo 5. Navigating the rest of the way down
+          cd StandaloneOSX/Contents/MacOS/
+          echo 6. Running cmd to give exe privileges
+          chmod -R 777 Friday\ the\ 13th\ Game
       
   #CreateInstaller:
   #  name: Create the Windows installer
