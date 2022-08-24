@@ -10,7 +10,7 @@ on:
 jobs:
   buildForMac:
       name: Build for Mac
-      runs-on: ubuntu-latest #macos-latest
+      runs-on: macos-latest
       strategy:
         fail-fast: false
         matrix:
