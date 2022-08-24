@@ -74,11 +74,18 @@ jobs:
         
         # Tar Mac build files to maintain file permissions
         - name: Tar Mac build files
-          run: tar -cvf my_files.tar /build/StandaloneOSX/
+          run: |
+            echo 1. current path and their files:
+            pwd
+            ls
+            echo 2. go into build dir and output files
+            cd build
+            ls
+            tar -cvf my_files.tar StandaloneOSX
 
         # Output build
         - name: Output build as artifact
           uses: actions/upload-artifact@v3
           with:
             name: Build-${{ matrix.targetPlatform }}
-            path: build/${{ matrix.targetPlatform }}
+            path: build/my_files.tar
