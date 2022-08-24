@@ -110,7 +110,7 @@ jobs:
           cd build
           ls
           echo 3. tar mac build folder
-          tar -cvf my_files.tar StandaloneOSX
+          sudo tar -cvf my_files.tar StandaloneOSX
           echo 4. go back to src dir
           cd ..
           pwd
