@@ -109,9 +109,11 @@ jobs:
           echo 2. go into build dir and output files
           cd build
           ls
-          echo 3. tar mac build folder
-          sudo tar -cvf my_files.tar StandaloneOSX
-          echo 4. go back to src dir
+          echo 3. tar mac build folder + remove og files
+          sudo tar -cvf my_files.tar StandaloneOSX --remove-files
+          echo 4. remove empty folder
+          sudo rmdir StandaloneOSX
+          echo 5. go back to src dir
           cd ..
           pwd
           ls
