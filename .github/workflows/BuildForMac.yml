@@ -59,10 +59,10 @@ jobs:
               sudo apt-get install -y xattr
             else
               echo "xattr exists" 
-              #xattr -cr mygame.app
+              #xattr -cr StandaloneOSX.app
             fi
             
-            xattr -cr mygame.app
+            xattr -cr StandaloneOSX.app
 
             find . -type f -iname "MapFileParser" -exec chmod +x {} \;
             find . -type f -iname "*.sh" -exec chmod +x {} \;
