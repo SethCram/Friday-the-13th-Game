@@ -22,6 +22,7 @@ jobs:
           #- iOS # Build an iOS player.
           #- Android # Build an Android .apk standalone app.
           #- WebGL # WebGL.
+          
     steps:
       # Checkout
       - name: Checkout repository
@@ -57,13 +58,13 @@ jobs:
           approvers: SethCram
           issue-title: Deploying ${{ matrix.targetPlatform }} build to artifactory
       
-      # Give exe privileges to mac/linux build 
-      - name: Give exe privilege to MacOS/Linux build
-        if: |
-          ${{ matrix.targetPlatform }} == StandaloneOSX || 
-            ${{ matrix.targetPlatform }} == StandaloneLinux64
+      # Give exe privileges to mac build 
+      - name: Give exe privilege to MacOS build
+        if: ${{ matrix.targetPlatform }} == StandaloneOSX 
         run: |
           echo 1. Navigating to build folder
+          pwd
+          ls
           cd build
           echo 2. Contents of build folder:
           ls 
@@ -89,90 +90,44 @@ jobs:
           sudo chmod -R 777 Friday\ the\ 13th\ Game
           echo 13. Check to see if permissions changed
           sudo ls -l
+          echo 14. Navigate back to og dir
+          cd ..
+          cd .. 
+          cd ..
+          cd ..
+          cd .. 
+          pwd
+          ls
       
-      # Output build
+      # Tar Mac build files to maintain file permissions
+      - name: Tar Mac build files
+        if: ${{ matrix.targetPlatform }} == StandaloneOSX
+        run: |
+          echo 1. current path and their files:
+          pwd
+          ls
+          echo 2. go into build dir and output files
+          cd build
+          ls
+          echo 3. tar mac build folder
+          tar -cvf my_files.tar StandaloneOSX
+          echo 4. go back to src dir
+          cd ..
+          pwd
+          ls
+      
+      # Output tar build if mac build
       - name: Output build as artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
+        if: ${{ matrix.targetPlatform }} != StandaloneOSX
         with:
           name: Build-${{ matrix.targetPlatform }}
-          path: build/${{ matrix.targetPlatform }}
-          
-  buildForMac:
-    name: Build for Mac
-    runs-on: macos-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        targetPlatform:
-          - StandaloneOSX # Build a macOS standalone (Intel 64-bit).
-          #- StandaloneWindows # Build a Windows 32-bit standalone.
-          #- StandaloneWindows64 # Build a Windows 64-bit standalone.
-          #- StandaloneLinux64 # Build a Linux 64-bit standalone.
-          #- iOS # Build an iOS player.
-          #- Android # Build an Android .apk standalone app.
-          #- WebGL # WebGL.
-    steps:
-      # Checkout
-      - name: Checkout repository
-        uses: actions/checkout@v2
-        with:
-          lfs: true
-
-      # Cache
-      - name: Cache libraries
-        uses: actions/cache@v2
-        with:
-          path: Library
-          key: Library-${{ matrix.targetPlatform }}
-          restore-keys: |
-            Library-
-
-      # Build
-      - name: Build project
-        uses: game-ci/unity-builder@v2
-        env:
-          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
-          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
-          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
-        with:
-          targetPlatform: ${{ matrix.targetPlatform }}
+          path: build/my_files.tar
       
-      # Give exe privileges to mac/linux build 
-      - name: Give exe privilege to MacOS/Linux build
-        if: |
-          ${{ matrix.targetPlatform }} == StandaloneOSX || 
-            ${{ matrix.targetPlatform }} == StandaloneLinux64
-        run: |
-          echo 1. Navigating to build folder
-          cd build
-          echo 2. Contents of build folder:
-          ls 
-          echo 3. Navigating to game folder
-          cd StandaloneOSX
-          echo 4. Contents of game folder:
-          ls 
-          echo 5. Navigating to App folder
-          cd StandaloneOSX.app
-          echo 6. Contents of App folder:
-          ls
-          echo 7. Navigating to Contents folder
-          cd Contents
-          echo 8. Contents of Contents folder:
-          ls
-          echo 9. Navigating to MacOS folder
-          cd MacOS
-          echo 10. Contents of MacOS folder:
-          ls
-          echo 11. Check to see permissions before change
-          sudo ls -l
-          echo 12. Running cmd to give exe privileges
-          sudo chmod -R 777 Friday\ the\ 13th\ Game
-          echo 13. Check to see if permissions changed
-          sudo ls -l
-      
-      # Output build
+      # Output build if non mac build
       - name: Output build as artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
+        if: ${{ matrix.targetPlatform }} != StandaloneOSX
         with:
           name: Build-${{ matrix.targetPlatform }}
           path: build/${{ matrix.targetPlatform }}
