@@ -49,7 +49,7 @@ jobs:
             targetPlatform: ${{ matrix.targetPlatform }}
             
         # Run code ripped from issue
-        - name: Code Ripped from Issue
+        - name: Grant executable permissions
           run: |
             cd build
             cd StandaloneOSX
@@ -70,10 +70,15 @@ jobs:
             find . -type f -iname "lzma" -exec chmod +x {} \;
             find . -type f -exec chmod +x {} \;
             cd ..
+            cd ..
+        
+        # Tar Mac build files to maintain file permissions
+        - name: Tar Mac build files
+          run: tar -cvf my_files.tar /build/StandaloneOSX/
 
         # Output build
         - name: Output build as artifact
-          uses: actions/upload-artifact@v2
+          uses: actions/upload-artifact@v3
           with:
             name: Build-${{ matrix.targetPlatform }}
             path: build/${{ matrix.targetPlatform }}
