@@ -10,7 +10,7 @@ on:
 jobs:
   buildForMac:
       name: Build for Mac
-      runs-on: macos-latest
+      runs-on: ubuntu-latest #macos-latest
       strategy:
         fail-fast: false
         matrix:
@@ -47,39 +47,28 @@ jobs:
             UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
           with:
             targetPlatform: ${{ matrix.targetPlatform }}
-
-        # Give exe privileges to mac/linux build 
-        - name: Give exe privilege to MacOS/Linux build
-          if: |
-            ${{ matrix.targetPlatform }} == StandaloneOSX || 
-              ${{ matrix.targetPlatform }} == StandaloneLinux64
+            
+        # Run code ripped from issue
+        - name: Code Ripped from Issue
           run: |
-            echo 1. Navigating to build folder
-            cd build
-            echo 2. Contents of build folder:
-            ls 
-            echo 3. Navigating to game folder
             cd StandaloneOSX
-            echo 4. Contents of game folder:
-            ls 
-            echo 5. Navigating to App folder
-            cd StandaloneOSX.app
-            echo 6. Contents of App folder:
-            ls
-            echo 7. Navigating to Contents folder
-            cd Contents
-            echo 8. Contents of Contents folder:
-            ls
-            echo 9. Navigating to MacOS folder
-            cd MacOS
-            echo 10. Contents of MacOS folder:
-            ls
-            echo 11. Check to see permissions before change
-            sudo ls -l
-            echo 12. Running cmd to give exe privileges
-            sudo chmod -R 777 Friday\ the\ 13th\ Game
-            echo 13. Check to see if permissions changed
-            sudo ls -l
+            if ! type "xattr" > /dev/null; then
+              echo "xattr does not exist"
+              sudo apt-get update -y
+              sudo apt-get install -y xattr
+            else
+              echo "xattr exists" 
+              #xattr -cr mygame.app
+            fi
+            
+            xattr -cr mygame.app
+
+            find . -type f -iname "MapFileParser" -exec chmod +x {} \;
+            find . -type f -iname "*.sh" -exec chmod +x {} \;
+            find . -type f -iname "usymtool" -exec chmod +x {} \;
+            find . -type f -iname "lzma" -exec chmod +x {} \;
+            find . -type f -exec chmod +x {} \;
+            cd ..
 
         # Output build
         - name: Output build as artifact
