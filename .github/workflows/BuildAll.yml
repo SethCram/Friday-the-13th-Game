@@ -121,7 +121,7 @@ jobs:
       # Output tar build if mac build
       - name: Output build as artifact
         uses: actions/upload-artifact@v3
-        if: ${{ matrix.targetPlatform }} != StandaloneOSX
+        if: ${{ matrix.targetPlatform }} == StandaloneOSX
         with:
           name: Build-${{ matrix.targetPlatform }}
           path: build/my_files.tar
