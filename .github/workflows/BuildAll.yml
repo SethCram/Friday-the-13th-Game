@@ -67,72 +67,65 @@ jobs:
       - name: Give exe privilege to MacOSX build
         if: ${{ matrix.targetPlatform == 'StandaloneOSX' }}
         run: |
-          echo Name of the game is $NAME_OF_GAME
-          echo Name of app folder is "${NAME_OF_GAME}-${{ matrix.targetPlatform }}.app"
-          if [ ${{ matrix.targetPlatform }} == "StandaloneOSX" ]
-          then
-            echo 1. Navigating to build folder
-            pwd
-            ls
-            cd build
-            echo 2. Contents of build folder:
-            ls 
-            echo 3. Navigating to game folder
-            cd StandaloneOSX
-            echo 4. Contents of game folder:
-            ls 
-            echo 5. Navigating to App folder
-            cd "${NAME_OF_GAME}-${{ matrix.targetPlatform }}.app"
-            echo 6. Contents of App folder:
-            ls
-            echo 7. Navigating to Contents folder
-            cd Contents
-            echo 8. Contents of Contents folder:
-            ls
-            echo 9. Navigating to MacOS folder
-            cd MacOS
-            echo 10. Contents of MacOS folder:
-            ls
-            echo 11. Check to see permissions before change
-            sudo ls -l
-            echo 12. Running cmd to give exe privileges
-            sudo chmod -R 777 Friday\ the\ 13th\ Game
-            echo 13. Check to see if permissions changed
-            sudo ls -l
-            echo 14. Navigate back to og dir
-            cd ..
-            cd .. 
-            cd ..
-            cd ..
-            cd .. 
-            pwd
-            ls
-          else
-            echo "No commands run bc this is a ${{ matrix.targetPlatform }} build"
-          fi
+          echo 1. Navigating to build folder
+          pwd
+          ls
+          cd build
+          echo 2. Contents of build folder:
+          ls 
+          echo 3. Navigating to game folder
+          cd ${{ matrix.targetPlatform }}
+          echo 4. Give a variety of files executable privileges
+          find . -type f -iname "MapFileParser" -exec sudo chmod +x {} \;
+          find . -type f -iname "*.sh" -exec sudo chmod +x {} \;
+          find . -type f -iname "usymtool" -exec sudo chmod +x {} \;
+          find . -type f -iname "lzma" -exec sudo chmod +x {} \;
+          find . -type f -exec sudo chmod +x {} \;
+          echo 5. Contents of game folder:
+          ls 
+          echo 6. Navigating to App folder
+          cd "${NAME_OF_GAME}-${{ matrix.targetPlatform }}.app"
+          echo 7. Contents of App folder:
+          ls
+          echo 8. Navigating to Contents folder
+          cd Contents
+          echo 9. Contents of Contents folder:
+          ls
+          echo 10. Navigating to MacOS folder
+          cd MacOS
+          echo 11. Contents of MacOS folder:
+          ls
+          echo 12. Check to see permissions before change
+          sudo ls -l
+          echo 13. Running cmd to give exe privileges
+          sudo chmod -R 777 "*.exe*" #Friday\ the\ 13th\ Game
+          echo 14. Check to see if permissions changed
+          sudo ls -l
+          echo 15. Navigate back to og dir
+          cd ..
+          cd .. 
+          cd ..
+          cd ..
+          cd .. 
+          pwd
+          ls
       
       # Tar Mac build files to maintain file permissions
       - name: Tar MacOSX build files
         if: ${{ matrix.targetPlatform == 'StandaloneOSX' }}
         run: |
-          echo Tar file should be called ${NAME_OF_GAME}.tar
-          if [ ${{ matrix.targetPlatform }} == "StandaloneOSX" ]
-          then
-            echo 1. current path and their files:
-            pwd
-            ls
-            echo 2. go into build dir and output files
-            cd build
-            ls
-            echo 3. tar mac build folder + remove og files
-            sudo tar -cvf "${NAME_OF_GAME}.tar" ${{ matrix.targetPlatform }} --remove-files
-            echo 4. go back to src dir
-            cd ..
-            pwd
-            ls
-          else
-            echo "No commands run bc this is a ${{ matrix.targetPlatform }} build"
-          fi
+          echo 1. current path and their files:
+          pwd
+          ls
+          echo 2. go into build dir and output files
+          cd build
+          ls
+          echo 3. tar mac build folder + remove og files
+          sudo tar -cvf "${NAME_OF_GAME}.tar" ${{ matrix.targetPlatform }} --remove-files
+          echo 4. go back to src dir
+          cd ..
+          pwd
+          ls
       
       # Output tar build if mac build
       - name: Output macOSX build as artifact
