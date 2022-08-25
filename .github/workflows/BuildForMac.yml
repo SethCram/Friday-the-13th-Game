@@ -10,7 +10,7 @@ on:
 jobs:
   buildForMac:
       name: Build for Mac
-      runs-on: macos-latest
+      runs-on: ubuntu-latest
       strategy:
         fail-fast: false
         matrix:
@@ -27,6 +27,7 @@ jobs:
         - name: Checkout repository
           uses: actions/checkout@v2
           with:
+            fetch-depth: 0
             lfs: true
 
         # Cache
@@ -41,51 +42,34 @@ jobs:
         # Build
         - name: Build project
           uses: game-ci/unity-builder@v2
+          id: buildStep
           env:
             UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
             UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
             UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
           with:
             targetPlatform: ${{ matrix.targetPlatform }}
+            versioning: Semantic
+            buildName: Fridaythe13th-${{ matrix.targetPlatform }}
             
-        # Run code ripped from issue
+        # Grant executable permissions
         - name: Grant executable permissions
           run: |
-            cd build
-            cd StandaloneOSX
-            if ! type "xattr" > /dev/null; then
-              echo "xattr does not exist"
-              sudo apt-get update -y
-              sudo apt-get install -y xattr
-            else
-              echo "xattr exists" 
-              #xattr -cr StandaloneOSX.app
-            fi
-            
-            xattr -cr StandaloneOSX.app
-
-            find . -type f -iname "MapFileParser" -exec chmod +x {} \;
-            find . -type f -iname "*.sh" -exec chmod +x {} \;
-            find . -type f -iname "usymtool" -exec chmod +x {} \;
-            find . -type f -iname "lzma" -exec chmod +x {} \;
-            find . -type f -exec chmod +x {} \;
-            cd ..
-            cd ..
+            sudo chmod -R 777 /build/Fridaythe13th-${{ matrix.targetPlatform }}/Fridaythe13th-${{ matrix.targetPlatform }}.app/Contents/MacOS/Friday\ the\ 13th\ Game
         
         # Tar Mac build files to maintain file permissions
         - name: Tar Mac build files
           run: |
-            echo 1. current path and their files:
-            pwd
-            ls
-            echo 2. go into build dir and output files
-            cd build
-            ls
-            sudo tar -cvf my_files.tar StandaloneOSX
+            sudo tar -cvf Fridaythe13th.tar /build/Fridaythe13th-${{ matrix.targetPlatform }}
+            
+        - name: Test non-mac build step for a mac build
+          if: ${{ matrix.targetPlatform }} != "StandaloneOSX"
+          run: |
+            echo "Non mac build step run on mac build!"
 
         # Output build
         - name: Output build as artifact
           uses: actions/upload-artifact@v3
           with:
             name: Build-${{ matrix.targetPlatform }}
-            path: build/my_files.tar
+            path: build/Fridaythe13th.tar
