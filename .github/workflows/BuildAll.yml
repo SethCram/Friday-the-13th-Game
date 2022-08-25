@@ -20,8 +20,8 @@ jobs:
         targetPlatform:
           - StandaloneOSX # Build a macOS standalone (Intel 64-bit).
           #- StandaloneWindows # Build a Windows 32-bit standalone.
-          #- StandaloneWindows64 # Build a Windows 64-bit standalone.
-          #- StandaloneLinux64 # Build a Linux 64-bit standalone.
+          - StandaloneWindows64 # Build a Windows 64-bit standalone.
+          - StandaloneLinux64 # Build a Linux 64-bit standalone.
           #- iOS # Build an iOS player.
           #- Android # Build an Android .apk standalone app.
           #- WebGL # WebGL.
@@ -53,16 +53,7 @@ jobs:
           targetPlatform: ${{ matrix.targetPlatform }}
           versioning: Semantic
           buildName: ${{ env.NAME_OF_GAME }}-${{ matrix.targetPlatform }}
-      
-      # Require manual reviewer approval within 20 mins or fail
-      - name: Require manual intervention
-        uses: trstringer/manual-approval@v1
-        timeout-minutes: 20 
-        with:
-          secret: ${{ github.TOKEN }}
-          approvers: SethCram
-          issue-title: Deploying ${{ env.NAME_OF_GAME }}-${{ matrix.targetPlatform }} build to artifactory
-      
+          
       # Give exe privileges to mac build 
       - name: Give exe privilege to MacOSX build
         if: ${{ matrix.targetPlatform == 'StandaloneOSX' }}
@@ -106,6 +97,16 @@ jobs:
           echo 5. src dir contents
           pwd
           ls
+     
+      # Require manual reviewer approval within 20 mins or fail
+      - name: Require manual intervention
+        uses: trstringer/manual-approval@v1
+        timeout-minutes: 20 
+        with:
+          secret: ${{ github.TOKEN }}
+          approvers: SethCram
+          issue-title: Deploying ${{ env.NAME_OF_GAME }}-${{ matrix.targetPlatform }} build to artifactory
+
       
       # Output tar build if mac build
       - name: Output macOSX build as artifact
@@ -116,7 +117,7 @@ jobs:
           path: build/${{ env.NAME_OF_GAME }}.tar
       
       # Output build if non mac build
-      - name: Output non-Mac build as artifact
+      - name: Output non-MacOSX build as artifact
         uses: actions/upload-artifact@v3
         if: ${{ matrix.targetPlatform != 'StandaloneOSX' }}
         with:
