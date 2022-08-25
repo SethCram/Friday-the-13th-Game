@@ -1,0 +1,98 @@
+name: TestBuild - all supported platforms
+
+on: 
+  # Every push to any branch
+  push: {}
+  # Manual
+  workflow_dispatch: {}
+
+env:
+  NAME_OF_GAME: Friday-the-13th-DND-Ed
+
+jobs:
+  buildForAllSupportedPlatforms:
+    name: Build for ${{ matrix.targetPlatform }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        targetPlatform:
+          - StandaloneOSX # Build a macOS standalone (Intel 64-bit).
+          #- StandaloneWindows # Build a Windows 32-bit standalone.
+          - StandaloneWindows64 # Build a Windows 64-bit standalone.
+          - StandaloneLinux64 # Build a Linux 64-bit standalone.
+          #- iOS # Build an iOS player.
+          #- Android # Build an Android .apk standalone app.
+          #- WebGL # WebGL.
+          
+    steps:
+      # Checkout
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        with:
+          lfs: true
+
+      # Cache
+      - name: Cache libraries
+        uses: actions/cache@v2
+        with:
+          path: Library
+          key: Library-${{ matrix.targetPlatform }}
+          restore-keys: |
+            Library-
+
+      # Build
+      - name: Build project
+        uses: game-ci/unity-builder@v2
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+        with:
+          targetPlatform: ${{ matrix.targetPlatform }}
+          versioning: Semantic
+          buildName: ${{ env.NAME_OF_GAME }}-${{ matrix.targetPlatform }}
+          
+      # Give exe privileges to mac build 
+      - name: Give exe privilege to MacOSX build
+        if: ${{ matrix.targetPlatform == 'StandaloneOSX' }}
+        run: |
+          echo 1. Contents of src dir:
+          pwd
+          ls
+          echo 2. Navigate into build folder
+          cd build
+          echo 3. Contents of build folder:
+          ls 
+          echo 4. Navigate into game folder
+          cd ${{ matrix.targetPlatform }}
+          echo 5. Give a variety of files executable privileges
+          find . -type f -iname "MapFileParser" -exec sudo chmod +x {} \;
+          find . -type f -iname "*.sh" -exec sudo chmod +x {} \;
+          find . -type f -iname "usymtool" -exec sudo chmod +x {} \;
+          find . -type f -iname "lzma" -exec sudo chmod +x {} \;
+          find . -type f -exec sudo chmod +x {} \;
+          echo 5. Navigate back to src dir
+          cd ..
+          cd .. 
+          echo 6. Contents of src dir:
+          pwd
+          ls
+      
+      # Tar Mac build files to maintain file permissions
+      - name: Tar MacOSX build files
+        if: ${{ matrix.targetPlatform == 'StandaloneOSX' }}
+        run: |
+          echo 1. current path and their files:
+          pwd
+          ls
+          echo 2. go into build dir and output files
+          cd build
+          ls
+          echo 3. tar mac build folder + remove og files
+          sudo tar -cvf "${NAME_OF_GAME}.tar" ${{ matrix.targetPlatform }} --remove-files
+          echo 4. go back to src dir
+          cd ..
+          echo 5. src dir contents
+          pwd
+          ls
