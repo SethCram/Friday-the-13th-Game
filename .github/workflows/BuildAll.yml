@@ -65,8 +65,10 @@ jobs:
       
       # Give exe privileges to mac build 
       - name: Give exe privilege to MacOSX build
-        if: ${{ ${{ matrix.targetPlatform }} == 'StandaloneOSX' }}
+        if: ${{ matrix.targetPlatform == 'StandaloneOSX' }}
         run: |
+          echo Name of the game is $NAME_OF_GAME
+          echo Name of app folder is "${NAME_OF_GAME}-${{ matrix.targetPlatform }}.app"
           if [ ${{ matrix.targetPlatform }} == "StandaloneOSX" ]
           then
             echo 1. Navigating to build folder
@@ -80,7 +82,7 @@ jobs:
             echo 4. Contents of game folder:
             ls 
             echo 5. Navigating to App folder
-            cd ${{ env.NAME_OF_GAME }}-${{ matrix.targetPlatform }}.app
+            cd "${NAME_OF_GAME}-${{ matrix.targetPlatform }}.app"
             echo 6. Contents of App folder:
             ls
             echo 7. Navigating to Contents folder
@@ -94,7 +96,7 @@ jobs:
             echo 11. Check to see permissions before change
             sudo ls -l
             echo 12. Running cmd to give exe privileges
-            sudo chmod -R 777 ${{ env.NAME_OF_GAME }}
+            sudo chmod -R 777 "$NAME_OF_GAME"
             echo 13. Check to see if permissions changed
             sudo ls -l
             echo 14. Navigate back to og dir
@@ -111,8 +113,9 @@ jobs:
       
       # Tar Mac build files to maintain file permissions
       - name: Tar MacOSX build files
-        if: ${{ ${{ matrix.targetPlatform }} == 'StandaloneOSX' }}
+        if: ${{ matrix.targetPlatform == 'StandaloneOSX' }}
         run: |
+          echo Tar file should be called ${NAME_OF_GAME}.tar
           if [ ${{ matrix.targetPlatform }} == "StandaloneOSX" ]
           then
             echo 1. current path and their files:
@@ -122,7 +125,7 @@ jobs:
             cd build
             ls
             echo 3. tar mac build folder + remove og files
-            sudo tar -cvf ${{ env.NAME_OF_GAME }}.tar ${{ matrix.targetPlatform }} --remove-files
+            sudo tar -cvf "${NAME_OF_GAME}.tar" ${{ matrix.targetPlatform }} --remove-files
             echo 4. go back to src dir
             cd ..
             pwd
@@ -134,7 +137,7 @@ jobs:
       # Output tar build if mac build
       - name: Output macOSX build as artifact
         uses: actions/upload-artifact@v3
-        if: ${{ ${{ matrix.targetPlatform }} == 'StandaloneOSX' }}
+        if: ${{ matrix.targetPlatform == 'StandaloneOSX' }}
         with:
           name: Build-${{ matrix.targetPlatform }}
           path: build/${{ env.NAME_OF_GAME }}.tar
@@ -142,7 +145,7 @@ jobs:
       # Output build if non mac build
       - name: Output non-Mac build as artifact
         uses: actions/upload-artifact@v3
-        if: ${{ ${{ matrix.targetPlatform }} != 'StandaloneOSX' }}
+        if: ${{ matrix.targetPlatform != 'StandaloneOSX' }}
         with:
           name: Build-${{ matrix.targetPlatform }}
           path: build/${{ matrix.targetPlatform }}
