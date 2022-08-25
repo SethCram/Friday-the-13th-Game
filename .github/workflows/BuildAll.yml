@@ -54,9 +54,11 @@ jobs:
           versioning: Semantic
           buildName: ${{ env.NAME_OF_GAME }}-${{ matrix.targetPlatform }}
           
-      # Give exe privileges to mac build 
-      - name: Give exe privilege to MacOSX build
-        if: ${{ matrix.targetPlatform == 'StandaloneOSX' }}
+      # Give exe privileges to build 
+      - name: Give exe privilege to MacOSX/Linx build
+        if: |
+          ${{ matrix.targetPlatform == 'StandaloneOSX' }} || 
+            ${{ matrix.targetPlatform == 'StandaloneLinux64' }}
         run: |
           echo 1. Contents of src dir:
           pwd
@@ -80,9 +82,11 @@ jobs:
           pwd
           ls
       
-      # Tar Mac build files to maintain file permissions
-      - name: Tar MacOSX build files
-        if: ${{ matrix.targetPlatform == 'StandaloneOSX' }}
+      # Tar build files to maintain file permissions
+      - name: Tar MacOSX/Linux build files
+        if: |
+          ${{ matrix.targetPlatform == 'StandaloneOSX' }} || 
+            ${{ matrix.targetPlatform == 'StandaloneLinux64' }}
         run: |
           echo 1. current path and their files:
           pwd
@@ -108,18 +112,22 @@ jobs:
           issue-title: Deploying ${{ env.NAME_OF_GAME }}-${{ matrix.targetPlatform }} build to artifactory
 
       
-      # Output tar build if mac build
-      - name: Output macOSX build as artifact
+      # Output tar build if mac/linux build
+      - name: Output macOSX/Linux build as artifact
         uses: actions/upload-artifact@v3
-        if: ${{ matrix.targetPlatform == 'StandaloneOSX' }}
+        if: |
+          ${{ matrix.targetPlatform == 'StandaloneOSX' }} || 
+            ${{ matrix.targetPlatform == 'StandaloneLinux64' }}
         with:
           name: Build-${{ matrix.targetPlatform }}
           path: build/${{ env.NAME_OF_GAME }}.tar
       
       # Output build if non mac build
-      - name: Output non-MacOSX build as artifact
+      - name: Output non-MacOSX/Linux build as artifact
         uses: actions/upload-artifact@v3
-        if: ${{ matrix.targetPlatform != 'StandaloneOSX' }}
+        if: |
+          ${{ matrix.targetPlatform != 'StandaloneOSX' }} && 
+            ${{ matrix.targetPlatform != 'StandaloneLinux64' }}
         with:
           name: Build-${{ matrix.targetPlatform }}
           path: build/${{ matrix.targetPlatform }}
