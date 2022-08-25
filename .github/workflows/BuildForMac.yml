@@ -81,7 +81,7 @@ jobs:
             echo 2. go into build dir and output files
             cd build
             ls
-            tar -cvf my_files.tar StandaloneOSX
+            sudo tar -cvf my_files.tar StandaloneOSX
 
         # Output build
         - name: Output build as artifact
