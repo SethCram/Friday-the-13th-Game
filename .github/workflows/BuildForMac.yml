@@ -52,20 +52,62 @@ jobs:
             versioning: Semantic
             buildName: Fridaythe13th-${{ matrix.targetPlatform }}
             
-        # Grant executable permissions
-        - name: Grant executable permissions
-          run: |
-            sudo chmod -R 777 /build/Fridaythe13th-${{ matrix.targetPlatform }}/Fridaythe13th-${{ matrix.targetPlatform }}.app/Contents/MacOS/Friday\ the\ 13th\ Game
-        
-        # Tar Mac build files to maintain file permissions
-        - name: Tar Mac build files
-          run: |
-            sudo tar -cvf Fridaythe13th.tar /build/Fridaythe13th-${{ matrix.targetPlatform }}
-            
         - name: Test non-mac build step for a mac build
           if: ${{ matrix.targetPlatform }} != "StandaloneOSX"
           run: |
             echo "Non mac build step run on mac build!"
+            
+        # Grant executable permissions
+        - name: Grant executable permissions
+          run: |
+            echo 1. Navigating to build folder
+            pwd
+            ls
+            cd build
+            echo 2. Contents of build folder:
+            ls 
+            echo 3. Navigating to game folder
+            cd Fridaythe13th-${{ matrix.targetPlatform }}
+            echo 4. Contents of game folder:
+            ls 
+            echo 5. Navigating to App folder
+            cd Fridaythe13th-${{ matrix.targetPlatform }}.app
+            echo 6. Contents of App folder:
+            ls
+            echo 7. Navigating to Contents folder
+            cd Contents
+            echo 8. Contents of Contents folder:
+            ls
+            echo 9. Navigating to MacOS folder
+            cd MacOS
+            echo 10. Contents of MacOS folder:
+            ls
+            echo 11. Running cmd to give exe privileges
+            sudo chmod -R 777 /build/Fridaythe13th-${{ matrix.targetPlatform }}/Fridaythe13th-${{ matrix.targetPlatform }}.app/Contents/MacOS/Friday\ the\ 13th\ Game
+            echo 12. Navigate back to og dir
+            cd ..
+            cd .. 
+            cd ..
+            cd ..
+            cd .. 
+            pwd
+            ls
+        
+        # Tar Mac build files to maintain file permissions
+        - name: Tar Mac build files
+          run: |
+            echo 1. current path and their files:
+            pwd
+            ls
+            echo 2. go into build dir and output files
+            cd build
+            ls
+            echo 3. tar mac build folder + remove og files
+            sudo tar -cvf Fridaythe13th.tar /build/Fridaythe13th-${{ matrix.targetPlatform }} --remove-files
+            echo 4. go back to src dir
+            cd ..
+            pwd
+            ls
 
         # Output build
         - name: Output build as artifact
