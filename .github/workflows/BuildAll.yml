@@ -67,46 +67,25 @@ jobs:
       - name: Give exe privilege to MacOSX build
         if: ${{ matrix.targetPlatform == 'StandaloneOSX' }}
         run: |
-          echo 1. Navigating to build folder
+          echo 1. Contents of src dir:
           pwd
           ls
+          echo 2. Navigate into build folder
           cd build
-          echo 2. Contents of build folder:
+          echo 3. Contents of build folder:
           ls 
-          echo 3. Navigating to game folder
+          echo 4. Navigate into game folder
           cd ${{ matrix.targetPlatform }}
-          echo 4. Give a variety of files executable privileges
+          echo 5. Give a variety of files executable privileges
           find . -type f -iname "MapFileParser" -exec sudo chmod +x {} \;
           find . -type f -iname "*.sh" -exec sudo chmod +x {} \;
           find . -type f -iname "usymtool" -exec sudo chmod +x {} \;
           find . -type f -iname "lzma" -exec sudo chmod +x {} \;
           find . -type f -exec sudo chmod +x {} \;
-          echo 5. Contents of game folder:
-          ls 
-          echo 6. Navigating to App folder
-          cd "${NAME_OF_GAME}-${{ matrix.targetPlatform }}.app"
-          echo 7. Contents of App folder:
-          ls
-          echo 8. Navigating to Contents folder
-          cd Contents
-          echo 9. Contents of Contents folder:
-          ls
-          echo 10. Navigating to MacOS folder
-          cd MacOS
-          echo 11. Contents of MacOS folder:
-          ls
-          echo 12. Check to see permissions before change
-          sudo ls -l
-          echo 13. Running cmd to give exe privileges
-          sudo chmod -R 777 "*.exe*" #Friday\ the\ 13th\ Game
-          echo 14. Check to see if permissions changed
-          sudo ls -l
-          echo 15. Navigate back to og dir
+          echo 5. Navigate back to src dir
           cd ..
           cd .. 
-          cd ..
-          cd ..
-          cd .. 
+          echo 6. Contents of src dir:
           pwd
           ls
       
@@ -124,6 +103,7 @@ jobs:
           sudo tar -cvf "${NAME_OF_GAME}.tar" ${{ matrix.targetPlatform }} --remove-files
           echo 4. go back to src dir
           cd ..
+          echo 5. src dir contents
           pwd
           ls
       
