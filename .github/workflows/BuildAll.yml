@@ -8,7 +8,7 @@ on:
   workflow_dispatch: {}
 
 env:
-  NAME_OF_GAME: Friday\ the\ 13th\ Game
+  NAME_OF_GAME: Friday-the-13th-DND-Ed
 
 jobs:
   buildForAllSupportedPlatforms:
@@ -96,7 +96,7 @@ jobs:
             echo 11. Check to see permissions before change
             sudo ls -l
             echo 12. Running cmd to give exe privileges
-            sudo chmod -R 777 "$NAME_OF_GAME"
+            sudo chmod -R 777 Friday\ the\ 13th\ Game
             echo 13. Check to see if permissions changed
             sudo ls -l
             echo 14. Navigate back to og dir
