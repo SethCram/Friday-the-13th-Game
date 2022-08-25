@@ -52,7 +52,7 @@ jobs:
         with:
           targetPlatform: ${{ matrix.targetPlatform }}
           versioning: Semantic
-          buildName: $NAME_OF_GAME-${{ matrix.targetPlatform }}
+          buildName: ${{ NAME_OF_GAME }}-${{ matrix.targetPlatform }}
       
       # Require manual reviewer approval within 20 mins or fail
       - name: Require manual intervention
@@ -61,7 +61,7 @@ jobs:
         with:
           secret: ${{ github.TOKEN }}
           approvers: SethCram
-          issue-title: Deploying $NAME_OF_GAME-${{ matrix.targetPlatform }} build to artifactory
+          issue-title: Deploying ${{ NAME_OF_GAME }}-${{ matrix.targetPlatform }} build to artifactory
       
       # Give exe privileges to mac build 
       - name: Give exe privilege to MacOSX build
@@ -80,7 +80,7 @@ jobs:
             echo 4. Contents of game folder:
             ls 
             echo 5. Navigating to App folder
-            cd $NAME_OF_GAME-${{ matrix.targetPlatform }}.app
+            cd ${{ NAME_OF_GAME }}-${{ matrix.targetPlatform }}.app
             echo 6. Contents of App folder:
             ls
             echo 7. Navigating to Contents folder
@@ -94,7 +94,7 @@ jobs:
             echo 11. Check to see permissions before change
             sudo ls -l
             echo 12. Running cmd to give exe privileges
-            sudo chmod -R 777 $NAME_OF_GAME
+            sudo chmod -R 777 ${{ NAME_OF_GAME }}
             echo 13. Check to see if permissions changed
             sudo ls -l
             echo 14. Navigate back to og dir
@@ -122,7 +122,7 @@ jobs:
             cd build
             ls
             echo 3. tar mac build folder + remove og files
-            sudo tar -cvf $NAME_OF_GAME.tar ${{ matrix.targetPlatform }} --remove-files
+            sudo tar -cvf ${{ NAME_OF_GAME }}.tar ${{ matrix.targetPlatform }} --remove-files
             echo 4. go back to src dir
             cd ..
             pwd
@@ -137,7 +137,7 @@ jobs:
         if: ${{ matrix.targetPlatform }} == StandaloneOSX
         with:
           name: Build-${{ matrix.targetPlatform }}
-          path: build/$NAME_OF_GAME.tar
+          path: build/${{ NAME_OF_GAME }}.tar
       
       # Output build if non mac build
       - name: Output non-Mac build as artifact
