@@ -128,7 +128,7 @@ jobs:
             pwd
             ls
             echo 4. tar mac build folder + remove og files
-            sudo tar -cvf Fridaythe13th.tar /build/${{ matrix.targetPlatform }} --remove-files
+            sudo tar -cvf Friday\ the\ 13th.tar /build/${{ matrix.targetPlatform }} --remove-files
 
         # Output build
         - name: Output build as artifact
