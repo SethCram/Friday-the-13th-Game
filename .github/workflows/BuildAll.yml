@@ -55,8 +55,8 @@ jobs:
           buildName: ${{ env.NAME_OF_GAME }}-${{ matrix.targetPlatform }}
           
       # Give exe privileges to build 
-      - name: Give exe privilege to MacOSX/Linx build
-        if: ${{ matrix.targetPlatform == 'StandaloneOSX' }} || ${{ matrix.targetPlatform == 'StandaloneLinux64' }}
+      - name: Give exe privilege to MacOSX/Linux build
+        if: ${{ matrix.targetPlatform == 'StandaloneOSX' || matrix.targetPlatform == 'StandaloneLinux64' }}
         run: |
           echo 1. Contents of src dir:
           pwd
@@ -97,12 +97,6 @@ jobs:
           echo 5. src dir contents
           pwd
           ls
-          
-      - name: test step
-        if: matrix.targetPlatform == 'StandaloneOSX' || matrix.targetPlatform == 'StandaloneLinux64'
-        run: |
-          echo target plat is ${{ matrix.targetPlatform }}. 
-          echo this step should only be entered by Mac or Linux
      
       # Require manual reviewer approval within 20 mins or fail
       - name: Require manual intervention
@@ -117,8 +111,7 @@ jobs:
       # Output tar build if mac/linux build
       - name: Output macOSX/Linux build as artifact
         uses: actions/upload-artifact@v3
-        if: |
-          ${{ matrix.targetPlatform == 'StandaloneOSX' || matrix.targetPlatform == 'StandaloneLinux64' }}
+        if: ${{ matrix.targetPlatform == 'StandaloneOSX' || matrix.targetPlatform == 'StandaloneLinux64' }}
         with:
           name: Build-${{ matrix.targetPlatform }}
           path: build/${{ env.NAME_OF_GAME }}.tar
@@ -126,8 +119,7 @@ jobs:
       # Output build if non mac build
       - name: Output non-MacOSX/Linux build as artifact
         uses: actions/upload-artifact@v3
-        if: |
-          ${{ matrix.targetPlatform != 'StandaloneOSX' && matrix.targetPlatform != 'StandaloneLinux64' }}
+        if: ${{ matrix.targetPlatform != 'StandaloneOSX' && matrix.targetPlatform != 'StandaloneLinux64' }}
         with:
           name: Build-${{ matrix.targetPlatform }}
           path: build/${{ matrix.targetPlatform }}
