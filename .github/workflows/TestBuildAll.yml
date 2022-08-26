@@ -55,8 +55,7 @@ jobs:
           
       # Give exe privileges to build 
       - name: Give exe privilege to MacOSX/Linx build
-        if: |
-          ${{ matrix.targetPlatform == 'StandaloneOSX' || matrix.targetPlatform == 'StandaloneLinux64' }}
+        if: ${{ matrix.targetPlatform == 'StandaloneOSX' || matrix.targetPlatform == 'StandaloneLinux64' }}
         run: |
           echo 1. Contents of src dir:
           pwd
@@ -82,8 +81,7 @@ jobs:
       
       # Tar build files to maintain file permissions
       - name: Tar MacOSX/Linux build files
-        if: |
-          ${{ matrix.targetPlatform == 'StandaloneOSX' || matrix.targetPlatform == 'StandaloneLinux64' }}
+        if: ${{ matrix.targetPlatform == 'StandaloneOSX' || matrix.targetPlatform == 'StandaloneLinux64' }}
         run: |
           echo 1. current path and their files:
           pwd
