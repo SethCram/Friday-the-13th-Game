@@ -12,7 +12,7 @@ namespace Tests
 {
     public class TestSceneLoading: MonoBehaviour
     {
-        int MAX_FRAMES_WAIT = 5000;
+        int MAX_FRAMES_WAIT = 20000;
 
         #region Unity Tests
 
@@ -197,6 +197,12 @@ namespace Tests
             {
                 //wait a frame
                 yield return null;
+
+                //if enough frames have been waited for
+                //if( framesWaited > MAX_FRAMES_WAIT / 2)
+                //{
+                //    Debug.Log($"<color=orange>Current scene {GameManager.Instance.currentScene} isn't the desired scene {desiredScene}. </color>");
+                //}
 
                 //incr bc frame waited
                 framesWaited++;
