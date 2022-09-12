@@ -37,6 +37,7 @@ jobs:
           UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
         with:
           githubToken: ${{ secrets.GITHUB_TOKEN }}
+          customParameters: -debugCodeOptimization -enableCodeCoverage
           coverageOptions: 'generateAdditionalMetrics;generateHtmlReport;generateBadgeReport;generateTestReferences;assemblyFilters:+*Scripts*;pathFilters:**Assets/Scripts/**'
 
       # Storing test results
