@@ -1,6 +1,8 @@
 name: TestBuild - all supported platforms
 
 on: 
+  # Every pull request
+  pull_request: {}
   # Every push to any branch
   push: {}
   # Manual
