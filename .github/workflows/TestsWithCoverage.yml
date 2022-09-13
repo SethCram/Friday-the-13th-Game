@@ -37,7 +37,8 @@ jobs:
           UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
         with:
           githubToken: ${{ secrets.GITHUB_TOKEN }}
-          customParameters: -debugCodeOptimization -enableCodeCoverage
+          Minimum version: 2020.1
+          customParameters: -debugCodeOptimization -enableCodeCoverage #only for unity versions after Unity 2020.1
           coverageOptions: 'generateAdditionalMetrics;generateHtmlReport;generateBadgeReport;generateTestReferences;assemblyFilters:+*Scripts*;pathFilters:**Assets/Scripts/**'
 
       # Storing test results
