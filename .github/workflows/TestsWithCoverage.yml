@@ -39,7 +39,7 @@ jobs:
           githubToken: ${{ secrets.GITHUB_TOKEN }}
           Minimum version: 2020.1
           customParameters: -debugCodeOptimization -enableCodeCoverage #only for unity versions after Unity 2020.1
-          coverageOptions: 'generateAdditionalMetrics;generateHtmlReport;generateBadgeReport;generateTestReferences;assemblyFilters:+*Scripts*;pathFilters:**Assets/Scripts/**'
+          customParamters: -debugCodeOptimization -enableCodeCoverage
 
       # Storing test results
       - name: Upload test results
