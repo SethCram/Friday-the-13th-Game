@@ -1,8 +1,11 @@
 name: TestBuild - all supported platforms
 
 on: 
-  # Every push to any branch
-  push: {}
+  # Every pull request
+  pull_request: {}
+  # Every push to main
+  push: 
+    branches: [ main ] 
   # Manual
   workflow_dispatch: {}
 

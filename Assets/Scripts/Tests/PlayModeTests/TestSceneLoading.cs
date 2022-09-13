@@ -12,7 +12,7 @@ namespace Tests
 {
     public class TestSceneLoading: MonoBehaviour
     {
-        int MAX_FRAMES_WAIT = 5000;
+        int MAX_FRAMES_WAIT = 20000;
 
         #region Unity Tests
 
@@ -198,10 +198,16 @@ namespace Tests
                 //wait a frame
                 yield return null;
 
+                //if enough frames have been waited for
+                //if( framesWaited > MAX_FRAMES_WAIT / 2)
+                //{
+                //    Debug.Log($"<color=orange>Current scene {GameManager.Instance.currentScene} isn't the desired scene {desiredScene}. </color>");
+                //}
+
                 //incr bc frame waited
                 framesWaited++;
 
-                VerifyMaxFramesNotExceeded(framesWaited);
+                VerifyMaxFramesNotExceeded(framesWaited, maxFramesWaitFor: 10*MAX_FRAMES_WAIT);
             }
             Debug.Log($"<color=orange>{framesWaited} frames waited for {desiredScene} to load.</color>");
         }
@@ -229,7 +235,7 @@ namespace Tests
 
                 framesWaited++;
 
-                VerifyMaxFramesNotExceeded(framesWaited);
+                VerifyMaxFramesNotExceeded(framesWaited, MAX_FRAMES_WAIT);
 
                 //try and find it again
                 foundObject = FindObjectOfType<T>();
@@ -318,14 +324,14 @@ namespace Tests
             Debug.Log(feedbackMsg);
         }
 
-        public void VerifyMaxFramesNotExceeded(int framesWaited)
+        public void VerifyMaxFramesNotExceeded(int framesWaited, int maxFramesWaitFor)
         {
             //verify current frames waited less than maximum wait lim
             Assert.Less
                 (
-                    framesWaited, 
-                    MAX_FRAMES_WAIT, 
-                    $"Frames waited exceeds the maximum {MAX_FRAMES_WAIT} allowed. " +
+                    framesWaited,
+                    maxFramesWaitFor, 
+                    $"Frames waited exceeds the maximum {maxFramesWaitFor} allowed. " +
                         $"Please increase the max or look into the problem."
                 );
         }

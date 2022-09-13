@@ -32,12 +32,12 @@ jobs:
       - name: Run tests
         uses: game-ci/unity-test-runner@v2
         id: tests
-        timeout-minutes: 20 #raise timeout limit
+        timeout-minutes: 40 #raise timeout limit
         env:
           UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
         with:
           githubToken: ${{ secrets.GITHUB_TOKEN }}
-          customParamters: -debugCodeOptimization -enableCodeCoverage
+          customParameters: -debugCodeOptimization -enableCodeCoverage #needed for unity versions 2020.1 and above
           coverageOptions: 'generateAdditionalMetrics;generateHtmlReport;generateBadgeReport;generateTestReferences;assemblyFilters:+*Scripts*;pathFilters:**Assets/Scripts/**'
 
       # Storing test results
