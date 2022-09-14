@@ -60,6 +60,16 @@ public class PlayerManager : MonoBehaviourPunCallbacks
 
     #region Unity Methods
 
+    private void Awake()
+    {
+        //if my photon view
+        if(photonView.IsMine)
+        {
+            //add audio listener to model player
+            gameObject.AddComponent<AudioListener>();
+        }
+    }
+
     private void Start()
     {
         //just incase disabled for some reason
