@@ -20,9 +20,9 @@ public class OptionsMenu : MonoBehaviour
     public TMP_Dropdown qualityDropdown; 
 
     //player pref names:
-    private string resName = "resolutionIndex";
-    private string volName = "volumeFloat";
-    private string qualityName = "qualityIndex";
+    private const string resName = "resolutionIndex";
+    private const string volName = "volumeFloat";
+    private const string qualityName = "qualityIndex";
 
     public Toggle fullscreenToggle;
 
@@ -35,7 +35,7 @@ public class OptionsMenu : MonoBehaviour
         //set options menu deactive 
         gameObject.SetActive(false);
 
-        //set toggle to current state of game
+       //set toggle to current state of game
         fullscreenToggle.isOn = Screen.fullScreen;
 
         Debug.Log("Options menu awake called");
@@ -125,14 +125,32 @@ public class OptionsMenu : MonoBehaviour
     }
 
     //set volume with its arg passed in by volume slider:
-    public void SetVolume(float volume) //unity feeds in curr value of slider as 'volume' here when this funct set 'on val change'
+    public void SetVolume(float desiredVolume) //unity feeds in curr value of slider as 'volume' here when this funct set 'on val change'
     {
-        audioMixer.SetFloat("volume", Mathf.Log10(volume) * 20); //use Math class bc the audioMixer volume isn't linear
+        Debug.Log("volume desired: " + desiredVolume);
 
-        Debug.Log("volume: " + volume);
+        float setVolume;
+
+        //if volume small enough
+        if( desiredVolume < 0.05 )
+        {
+            //set desired vol to a threshold below human hearing
+            setVolume = -75;
+        }
+        //if volume isn't tiny
+        else
+        {
+            //use Math class bc the audioMixer volume isn't linear
+            setVolume = Mathf.Log10(desiredVolume) * 20;
+        }
+
+        //set volume
+        audioMixer.SetFloat("volume", setVolume); 
+
+        Debug.Log("Volume set: " + setVolume + " db");
 
         //save volume:
-        PlayerPrefs.SetFloat(volName, volume);
+        PlayerPrefs.SetFloat(volName, setVolume);
     }
 
     //set GFX with its index passed in by graphics dropdown:
