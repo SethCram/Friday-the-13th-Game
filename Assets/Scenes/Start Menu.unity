@@ -2349,13 +2349,43 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1973434242}
   m_CullTransparentMesh: 0
---- !u!1001 &2101736153
+--- !u!1001 &2028324320
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1468959856976471778, guid: d4b1a143a9b89314d9ddd567e4b728c7,
+        type: 3}
+      propertyPath: sounds.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1468959856976471778, guid: d4b1a143a9b89314d9ddd567e4b728c7,
+        type: 3}
+      propertyPath: sounds.Array.data[1].clip
+      value: 
+      objectReference: {fileID: 8300000, guid: 3c0978e1fc92ea345a5b9ae0cc2952e7, type: 3}
+    - target: {fileID: 1468959856976471778, guid: d4b1a143a9b89314d9ddd567e4b728c7,
+        type: 3}
+      propertyPath: sounds.Array.data[1].loop
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1468959856976471778, guid: d4b1a143a9b89314d9ddd567e4b728c7,
+        type: 3}
+      propertyPath: sounds.Array.data[1].name
+      value: Menu Music
+      objectReference: {fileID: 0}
+    - target: {fileID: 1468959856976471778, guid: d4b1a143a9b89314d9ddd567e4b728c7,
+        type: 3}
+      propertyPath: sounds.Array.data[1].pitch
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1468959856976471778, guid: d4b1a143a9b89314d9ddd567e4b728c7,
+        type: 3}
+      propertyPath: sounds.Array.data[1].volume
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5262028603132888097, guid: d4b1a143a9b89314d9ddd567e4b728c7,
         type: 3}
       propertyPath: m_RootOrder
@@ -2574,6 +2604,31 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Interactable
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5514810632921631378, guid: ba6d5a6a8e56fb64c94546c2c1734bbd,
+        type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5514810632921631378, guid: ba6d5a6a8e56fb64c94546c2c1734bbd,
+        type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5514810632921631378, guid: ba6d5a6a8e56fb64c94546c2c1734bbd,
+        type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5514810632921631378, guid: ba6d5a6a8e56fb64c94546c2c1734bbd,
+        type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: OptionsMenu, Scripts
+      objectReference: {fileID: 0}
+    - target: {fileID: 5514810632921631378, guid: ba6d5a6a8e56fb64c94546c2c1734bbd,
+        type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: OptionsMenu, Scripts
       objectReference: {fileID: 0}
     - target: {fileID: 5514810632929662174, guid: ba6d5a6a8e56fb64c94546c2c1734bbd,
         type: 3}

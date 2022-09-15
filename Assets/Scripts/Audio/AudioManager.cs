@@ -21,6 +21,8 @@ public class AudioManager : MonoBehaviour
 {
     public Sound[] sounds;
 
+    public AudioMixerGroup outputAudioMixerGroup;
+
     public static AudioManager instance;
 
     /*
@@ -54,17 +56,32 @@ public class AudioManager : MonoBehaviour
             s.source.volume = s.volume;
             s.source.pitch = s.pitch;
             s.source.loop = s.loop;
+            s.source.outputAudioMixerGroup = outputAudioMixerGroup;
         }
     }
 
+    /// <summary>
+    /// On startup, play music if main menu or lobby. If main menu, also set volume to saved volume.
+    /// </summary>
     private void Start()
     {
+        bool onMainMenu = GameManager.Instance.currentScene == GameManager.CurrentScene.MAIN_MENU;
+
         //if on beginning menus
-       if( GameManager.Instance.currentScene == GameManager.CurrentScene.LOBBY || 
-            GameManager.Instance.currentScene == GameManager.CurrentScene.MAIN_MENU )
+       if ( GameManager.Instance.currentScene == GameManager.CurrentScene.LOBBY || 
+            onMainMenu )
         {
             Play("Menu Music");
         }
+
+       //if on main menu
+       if( onMainMenu)
+        {
+            //set options menu initial val
+            OptionsMenu optionsMenu = FindObjectOfType<OptionsMenu>(includeInactive: true);
+            optionsMenu.SetVolume(optionsMenu.volumeSlider.value);
+        }
+
     }
 
     /*
