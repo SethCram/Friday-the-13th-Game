@@ -62,9 +62,11 @@ public class PlayerManager : MonoBehaviourPunCallbacks
 
     private void Awake()
     {
-        //if my photon view
-        if(photonView.IsMine)
+        //if my photon view or not online
+        if(photonView.IsMine || !PhotonNetwork.IsConnected)
         {
+            Debug.Log("Audio Listener added to player.");
+
             //add audio listener to model player
             gameObject.AddComponent<AudioListener>();
         }
