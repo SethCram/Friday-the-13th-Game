@@ -14,9 +14,23 @@ public class ItemPickup : Interactable //this class is now derived from/a child 
 
     private GameObject itemIconCopy;
 
+    private const string audioClipNamePickup = "Pickup";
+    private const string audioClipNameDrop = "Drop";
+
     public override void Start()
     {
         base.Start();
+
+        //fill audio src copied over from audio manager
+        addedAudioSrc = gameObject.AddComponent<AudioSource>(AudioManager.instance.soundsDict[audioClipNameDrop].source);
+        //play audio source once added (bc obj dropped on spawn in)
+        addedAudioSrc.Play();
+
+        //not being called
+        Debug.Log("Audio should play");
+
+        //change audo source clip to play pickup sound for w/ interact
+        addedAudioSrc.clip = AudioManager.instance.soundsDict[audioClipNamePickup].source.clip;
 
         //create item's icon in world space for rendering
         itemIconCopy = new GameObject(name: "pickupIcon");
@@ -28,7 +42,7 @@ public class ItemPickup : Interactable //this class is now derived from/a child 
                                                         itemIconCopy.transform.eulerAngles.z);
         //set to minimap layer
         itemIconCopy.layer = 12; 
-        //set to spawn position with 100 in the y
+        //set icon to spawn position with 100 in the y
         itemIconCopy.transform.position = new Vector3(transform.transform.position.x, 
                                                         100, 
                                                         transform.transform.position.z); 

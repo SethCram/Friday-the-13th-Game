@@ -9,7 +9,29 @@ public class Entryway : Interactable
     //pickups in container
     public GameObject[] pickups;
 
-    public override void Interact(Transform playerInteracting)
+	private const string audioClipNameOpen = "Open";
+	private const string audioClipNameClose = "Close";
+
+	private AudioClip audioClipOpen;
+	private AudioClip audioClipClose;
+
+	public override void Start()
+	{
+		//cache sounds dict open sound
+		Sound soundsDictOpenSound = AudioManager.instance.soundsDict[audioClipNameOpen];
+
+		//set open+close clips
+		audioClipOpen = soundsDictOpenSound.source.clip;
+		audioClipClose = AudioManager.instance.soundsDict[audioClipNameClose].source.clip;
+
+		//fill audio src copied over from audio manager
+		addedAudioSrc = gameObject.AddComponent<AudioSource>(soundsDictOpenSound.source);
+
+		base.Start();
+	}
+
+
+	public override void Interact(Transform playerInteracting)
 	{
 		base.Interact(playerInteracting); //calls 'Interactable' Interact() method
 
@@ -26,6 +48,20 @@ public class Entryway : Interactable
 			//local
 			RPC_InvertPickups();
 		}
+
+		//if entryway open and closing
+		if(isOpen)
+        {
+			addedAudioSrc.clip = audioClipClose;
+        }
+		//if entrway closing and opening
+        else
+        {
+			addedAudioSrc.clip = audioClipOpen;
+        }
+
+		//addedAudioSrc.Play();
+
 	}
 
 	[PunRPC]

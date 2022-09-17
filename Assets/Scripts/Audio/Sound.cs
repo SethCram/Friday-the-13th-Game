@@ -30,6 +30,8 @@ public class Sound
     public float pitch = 1f;
     [Range(0f, 1f)]
     public float spatialBlend = 0f;
+    [Range(2f, 9000)] //upper lim can be raised, but lower lim set so not lower than min hearin volume
+    public float maxHearingDistance = 25f;
 
     public bool loop = false;
 

@@ -28,10 +28,19 @@ public class Interactable : MonoBehaviourPunCallbacks
     [HideInInspector]
     public bool isOpen = false;
 
+    //audio src used in subclasses
+    [HideInInspector]
+    public AudioSource addedAudioSrc;
+
     #endregion Vars
 
     #region Unity Methods
 
+    /// <summary>
+    /// Setup sphere collider if comp attached. 
+    /// Init list of interactable players.
+    /// Add subclass set audio source and play it once.
+    /// </summary>
     public virtual void Start()
     {
         //setup sphere trigger
@@ -49,6 +58,11 @@ public class Interactable : MonoBehaviourPunCallbacks
         //init list of transforms:
         interactablePlayers = new List<Transform>();
 
+        //add audio source as cached one and overwrite cached one
+        //audioSource = gameObject.AddComponent<AudioSource>(audioSource);
+        //AudioSource addedAudioSrc = gameObject.AddComponent<AudioSource>(audioSource);
+        //play audio source once added
+        //addedAudioSrc.Play();
     }
 
     private void Update()
@@ -145,6 +159,18 @@ public class Interactable : MonoBehaviourPunCallbacks
         //this method meant to be overwritten
 
         Debug.Log("Interacting w/: " + transform.name);
+
+        //if audio clip playing
+        if(addedAudioSrc.isPlaying)
+        {
+            //stop it from playing
+            addedAudioSrc.Stop();
+        }
+
+        //play audio
+        addedAudioSrc.Play();
+
+        Debug.Log("Audio should play");
 
         //update msg
         msg = getGuiMsg(!isOpen);

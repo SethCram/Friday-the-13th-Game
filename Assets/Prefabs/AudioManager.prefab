@@ -51,6 +51,7 @@ MonoBehaviour:
     volume: 1
     pitch: 1
     spatialBlend: 0
+    maxHearingDistance: 25
     loop: 1
     source: {fileID: 0}
   - name: Open
@@ -58,6 +59,7 @@ MonoBehaviour:
     volume: 1
     pitch: 1
     spatialBlend: 1
+    maxHearingDistance: 25
     loop: 0
     source: {fileID: 0}
   - name: Close
@@ -65,6 +67,7 @@ MonoBehaviour:
     volume: 1
     pitch: 1
     spatialBlend: 1
+    maxHearingDistance: 25
     loop: 0
     source: {fileID: 0}
   - name: Pickup
@@ -72,6 +75,7 @@ MonoBehaviour:
     volume: 1
     pitch: 1
     spatialBlend: 1
+    maxHearingDistance: 25
     loop: 0
     source: {fileID: 0}
   - name: Drop
@@ -79,6 +83,7 @@ MonoBehaviour:
     volume: 1
     pitch: 1
     spatialBlend: 1
+    maxHearingDistance: 25
     loop: 0
     source: {fileID: 0}
   outputAudioMixerGroup: {fileID: 24300002, guid: a279699fa98e4bc408a4470e7e8988f0,

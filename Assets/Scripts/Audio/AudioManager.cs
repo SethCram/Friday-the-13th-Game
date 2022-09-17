@@ -19,8 +19,6 @@ using UnityEngine.Audio;
 */
 public class AudioManager : MonoBehaviour
 {
-    public GameObject audioManager;
-
     //public Sound[] sounds;
     [SerializeField] private Sound[] soundsArr;
     public Dictionary<string, Sound> soundsDict;
@@ -71,6 +69,7 @@ public class AudioManager : MonoBehaviour
             s.source.pitch = s.pitch;
             s.source.loop = s.loop;
             s.source.spatialBlend = s.spatialBlend;
+            s.source.maxDistance = s.maxHearingDistance;
             s.source.outputAudioMixerGroup = outputAudioMixerGroup;
 
             //don't ever play on awake

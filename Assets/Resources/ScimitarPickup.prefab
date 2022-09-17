@@ -80,6 +80,7 @@ MonoBehaviour:
   interactionRadius: 2
   interactablePlayers: []
   isOpen: 0
+  addedAudioSrc: {fileID: 0}
   item: {fileID: 11400000, guid: 86e8b2759a59eb3469bfd6e46cdd967b, type: 2}
   shouldDelete: 0
 --- !u!54 &6041833074042394759
