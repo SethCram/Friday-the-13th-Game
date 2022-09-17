@@ -127,7 +127,7 @@ public class OptionsMenu : MonoBehaviour
     //set volume with its arg passed in by volume slider:
     public void SetVolume(float desiredVolume) //unity feeds in curr value of slider as 'volume' here when this funct set 'on val change'
     {
-        Debug.Log("volume desired: " + desiredVolume);
+        //Debug.Log("volume desired: " + desiredVolume);
 
         float setVolume;
 
@@ -147,10 +147,10 @@ public class OptionsMenu : MonoBehaviour
         //set volume
         audioMixer.SetFloat("volume", setVolume); 
 
-        Debug.Log("Volume set: " + setVolume + " db");
+        Debug.Log("Volume set as: " + setVolume + " db");
 
-        //save volume:
-        PlayerPrefs.SetFloat(volName, setVolume);
+        //save desired volume bc slider set directly
+        PlayerPrefs.SetFloat(volName, desiredVolume);
     }
 
     //set GFX with its index passed in by graphics dropdown:
