@@ -19,7 +19,11 @@ using UnityEngine.Audio;
 */
 public class AudioManager : MonoBehaviour
 {
-    public Sound[] sounds;
+    public GameObject audioManager;
+
+    //public Sound[] sounds;
+    [SerializeField] private Sound[] soundsArr;
+    public Dictionary<string, Sound> soundsDict;
 
     public AudioMixerGroup outputAudioMixerGroup;
 
@@ -49,14 +53,31 @@ public class AudioManager : MonoBehaviour
         //don't need persistence across scenes
         //DontDestroyOnLoad(gameObject);
 
-        foreach (Sound s in sounds)
+        //init new dict
+        soundsDict = new Dictionary<string, Sound>();
+
+        foreach (Sound s in soundsArr)
         {
+            //could only add audio src if "music" is in name (but then audio src would need creating instead of copying)
+            //if(s.name.Contains("music", StringComparison.OrdinalIgnoreCase))
+            //{
+
+            //}
+
+            //create an audio src attached to audio manager for ever sound (incase need to play from audio manager)
             s.source = gameObject.AddComponent<AudioSource>();
             s.source.clip = s.clip;
             s.source.volume = s.volume;
             s.source.pitch = s.pitch;
             s.source.loop = s.loop;
+            s.source.spatialBlend = s.spatialBlend;
             s.source.outputAudioMixerGroup = outputAudioMixerGroup;
+
+            //don't ever play on awake
+            s.source.playOnAwake = false;
+
+            //dynamically construct sounds dict on startup
+            soundsDict[s.name] = s;
         }
     }
 
@@ -95,7 +116,10 @@ public class AudioManager : MonoBehaviour
     */
     public void Play (string name)
     {
-        Sound s = Array.Find(sounds, sound => sound.name == name);
+        //Sound s = Array.Find(sounds, sound => sound.name == name);
+
+        Sound s = soundsDict[name];
+
         // don't do anything if the sound doesn't exist
         if (s == null)
         {
@@ -108,7 +132,10 @@ public class AudioManager : MonoBehaviour
 
     public void StopPlaying(string sound)
     {
-        Sound s = Array.Find(sounds, item => item.name == sound);
+        //Sound s = Array.Find(sounds, item => item.name == sound);
+
+        Sound s = soundsDict[sound];
+
         if (s == null)
         {
             Debug.LogWarning("Sound: " + name + " not found!");
