@@ -160,18 +160,6 @@ public class Interactable : MonoBehaviourPunCallbacks
 
         Debug.Log("Interacting w/: " + transform.name);
 
-        //if audio clip playing
-        if(addedAudioSrc.isPlaying)
-        {
-            //stop it from playing
-            addedAudioSrc.Stop();
-        }
-
-        //play audio
-        addedAudioSrc.Play();
-
-        Debug.Log("Audio should play");
-
         //update msg
         msg = getGuiMsg(!isOpen);
     }

@@ -31,9 +31,36 @@ public class Entryway : Interactable
 	}
 
 
+	/// <summary>
+	/// Play entryway closing/opening sound and invert the state of the entryway
+	/// </summary>
+	/// <param name="playerInteracting">Player that triggered interaction.</param>
 	public override void Interact(Transform playerInteracting)
 	{
-		base.Interact(playerInteracting); //calls 'Interactable' Interact() method
+        //if audio clip playing
+        if (addedAudioSrc.isPlaying)
+        {
+            //stop it from playing
+            addedAudioSrc.Stop();
+
+            Debug.Log("Audio had to be stopped to change clip.");
+        }
+
+        //if entryway open and closing
+        if (isOpen)
+        {
+            addedAudioSrc.clip = audioClipClose;
+        }
+        //if entrway closing and opening
+        else
+        {
+            addedAudioSrc.clip = audioClipOpen;
+        }
+
+        //play audio
+        addedAudioSrc.Play();
+
+        base.Interact(playerInteracting); //calls 'Interactable' Interact() method
 
 		//should invert state of entryway
 		if (PhotonNetwork.IsConnected)
@@ -48,17 +75,6 @@ public class Entryway : Interactable
 			//local
 			RPC_InvertPickups();
 		}
-
-		//if entryway open and closing
-		if(isOpen)
-        {
-			addedAudioSrc.clip = audioClipClose;
-        }
-		//if entrway closing and opening
-        else
-        {
-			addedAudioSrc.clip = audioClipOpen;
-        }
 
 		//addedAudioSrc.Play();
 
