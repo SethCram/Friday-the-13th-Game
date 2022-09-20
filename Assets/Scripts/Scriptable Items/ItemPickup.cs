@@ -26,12 +26,6 @@ public class ItemPickup : Interactable //this class is now derived from/a child 
         //play audio source once added (bc obj dropped on spawn in)
         addedAudioSrc.Play();
 
-        //not being called
-        Debug.Log("Audio should play");
-
-        //change audo source clip to play pickup sound for w/ interact
-        addedAudioSrc.clip = AudioManager.instance.soundsDict[audioClipNamePickup].source.clip;
-
         //create item's icon in world space for rendering
         itemIconCopy = new GameObject(name: "pickupIcon");
         //fill sprite field
@@ -53,6 +47,41 @@ public class ItemPickup : Interactable //this class is now derived from/a child 
     //override og 'Interact()' to have the interacting player 'Pickup()' the item:
     public override void Interact(Transform playerInteracting)
     {
+        //if audio clip playing
+        if (addedAudioSrc.isPlaying)
+        {
+            //stop it from playing
+            addedAudioSrc.Stop();
+
+            Debug.Log("Audio stopped play pickup sound.");
+        }
+
+        //change audo source clip to play pickup sound
+        //addedAudioSrc.clip = AudioManager.instance.soundsDict[audioClipNamePickup].source.clip;
+
+        //cache interacting player's audio src
+        AudioSource playersSoundEffectsAudioSrc = playerInteracting.GetComponent<PlayerManager>().soundEffectsAudioSrc;
+
+        if (playersSoundEffectsAudioSrc != null)
+        {
+            if(playersSoundEffectsAudioSrc.isPlaying)
+            {
+                playersSoundEffectsAudioSrc.Stop();
+            }
+
+            //slide approp clip into player audio src
+            playersSoundEffectsAudioSrc.clip = AudioManager.instance.soundsDict[audioClipNamePickup].source.clip;
+
+            //play player's sound (needs to be in an RPC prolly)
+            playersSoundEffectsAudioSrc.Play();
+        }
+        else
+        {
+            Debug.LogWarning("Interacting player's audio src not found!");
+        }
+
+        //addedAudioSrc.Play();
+
         base.Interact(playerInteracting); //calls 'Interactable' Interact() method
 
         /*

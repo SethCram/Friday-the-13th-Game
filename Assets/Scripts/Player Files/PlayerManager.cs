@@ -56,6 +56,8 @@ public class PlayerManager : MonoBehaviourPunCallbacks
 
     public CharacterStats characterStats { get; private set; }
 
+    public AudioSource soundEffectsAudioSrc;
+
     #endregion
 
     #region Unity Methods
