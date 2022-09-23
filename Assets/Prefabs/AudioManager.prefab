@@ -44,7 +44,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b966bf1b3c75dbc459b0fcd2951bc9c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  audioManager: {fileID: 0}
   soundsArr:
   - name: Menu Music
     clip: {fileID: 8300000, guid: 3c0978e1fc92ea345a5b9ae0cc2952e7, type: 3}
@@ -55,7 +54,7 @@ MonoBehaviour:
     loop: 1
     source: {fileID: 0}
   - name: Open
-    clip: {fileID: 8300000, guid: da9e7c376deb9d24188ecdfbb63b6bb0, type: 3}
+    clip: {fileID: 8300000, guid: 950922c07a9fef948b42687a7dd9c818, type: 3}
     volume: 1
     pitch: 1
     spatialBlend: 1
@@ -63,7 +62,7 @@ MonoBehaviour:
     loop: 0
     source: {fileID: 0}
   - name: Close
-    clip: {fileID: 8300000, guid: 4c16cf7662701a140af9e1332463d963, type: 3}
+    clip: {fileID: 8300000, guid: 7626c0e44ee3e594e8168571add85769, type: 3}
     volume: 1
     pitch: 1
     spatialBlend: 1
