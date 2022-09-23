@@ -44,68 +44,65 @@ public class ItemPickup : Interactable //this class is now derived from/a child 
         itemIconCopy.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f); 
     }
 
-    //override og 'Interact()' to have the interacting player 'Pickup()' the item:
+    /// <summary>
+    /// Play whoever Interacted with item's sound effects audio using the pickup audio clip.
+    /// Disables interact msg for interacting player.
+    /// Pickup item.
+    /// </summary>
+    /// <param name="playerInteracting"></param>
     public override void Interact(Transform playerInteracting)
     {
-        //if audio clip playing
-        if (addedAudioSrc.isPlaying)
+        base.Interact(playerInteracting);
+
+        //cache player manager
+        PlayerManager interactingPlayerManager = playerInteracting.GetComponent<PlayerManager>();
+
+        //if interacting player manager found
+        if (interactingPlayerManager != null)
         {
-            //stop it from playing
-            addedAudioSrc.Stop();
-
-            Debug.Log("Audio stopped play pickup sound.");
-        }
-
-        //change audo source clip to play pickup sound
-        //addedAudioSrc.clip = AudioManager.instance.soundsDict[audioClipNamePickup].source.clip;
-
-        //cache interacting player's audio src
-        AudioSource playersSoundEffectsAudioSrc = playerInteracting.GetComponent<PlayerManager>().soundEffectsAudioSrc;
-
-        if (playersSoundEffectsAudioSrc != null)
-        {
-            if(playersSoundEffectsAudioSrc.isPlaying)
+            //network connected
+            if (PhotonNetwork.IsConnected)
             {
-                playersSoundEffectsAudioSrc.Stop();
+                //over network
+                //photonView.RPC("RPC_InvertPickups", RpcTarget.AllBufferedViaServer, !isOpen);
+                interactingPlayerManager.photonView.RPC("PlaySoundFXAudioSource", RpcTarget.All, audioClipNamePickup);
+
+            }
+            else
+            {
+                interactingPlayerManager.PlaySoundFXAudioSource(audioClipNamePickup);
             }
 
-            //slide approp clip into player audio src
-            playersSoundEffectsAudioSrc.clip = AudioManager.instance.soundsDict[audioClipNamePickup].source.clip;
+            /*
+            //for every interactable player
+            foreach (Transform player in interactablePlayers)
+            {
+                //make msgs blank
+                player.GetComponent<PlayerManager>().SetInteractMsg("");
 
-            //play player's sound (needs to be in an RPC prolly)
-            playersSoundEffectsAudioSrc.Play();
+                //make msgs dissapear
+                player.GetComponent<PlayerManager>().SetInteractVisibility(false);
+            }
+            */
+
+            //Debug.Log(interactablePlayers.ToString());
+
+            //dissapear interact msg (what if someone else picks up while we in range??)
+            //playerInteracting.GetComponent<PlayerManager>().photonView.RPC("SetInteractVisibility", RpcTarget.Others, false);
+            interactingPlayerManager.SetInteractVisibility(false);
         }
         else
         {
-            Debug.LogWarning("Interacting player's audio src not found!");
+            Debug.LogWarning("Couldn't find interacting player's player manager.");
         }
-
-        //addedAudioSrc.Play();
-
-        base.Interact(playerInteracting); //calls 'Interactable' Interact() method
-
-        /*
-        //for every interactable player
-        foreach (Transform player in interactablePlayers)
-        {
-            //make msgs blank
-            player.GetComponent<PlayerManager>().SetInteractMsg("");
-
-            //make msgs dissapear
-            player.GetComponent<PlayerManager>().SetInteractVisibility(false);
-        }
-        */
-
-        //Debug.Log(interactablePlayers.ToString());
-        
-        //dissapear interact msg (what if someone else picks up while we in range??)
-        //playerInteracting.GetComponent<PlayerManager>().photonView.RPC("SetInteractVisibility", RpcTarget.Others, false);
-        playerInteracting.GetComponent<PlayerManager>().SetInteractVisibility(false);
 
         Pickup(playerInteracting);
     }
 
-    //add item to interacting player's inventory and destroy its scene obj:
+    /// <summary>
+    /// Add item to interacting player's inventory and destroy its scene obj.
+    /// </summary>
+    /// <param name="playerInteracting"></param>
     private void Pickup(Transform playerInteracting)
     {
         Debug.Log("Picking up " + item.name);

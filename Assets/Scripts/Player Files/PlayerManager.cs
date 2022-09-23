@@ -637,7 +637,10 @@ public class PlayerManager : MonoBehaviourPunCallbacks
 
     #region GUI Config
 
-    //change visibility of interaction msg 
+    /// <summary>
+    /// Change visibility of interaction msg 
+    /// </summary>
+    /// <param name="state">Is the interactable message visible?</param>
     public void SetInteractVisibility(bool state)
     {
         //if txt showing and overlay UI set
@@ -677,4 +680,39 @@ public class PlayerManager : MonoBehaviourPunCallbacks
         Debug.Log(deactivatingView.gameObject.name + " set deactive");
     }
 
+    /// <summary>
+    /// Play sound FX player audio. Callable over RPC.
+    /// </summary>
+    /// <param name="audioClipName">Used to get the audio clip to play from the Audio Manager.</param>
+    [PunRPC]
+    public void PlaySoundFXAudioSource(string audioClipName)
+    {
+        Debug.Log("Play the player's sound FX audio source.");
+
+        if (soundEffectsAudioSrc != null)
+        {
+            if (soundEffectsAudioSrc.isPlaying)
+            {
+                soundEffectsAudioSrc.Stop();
+            }
+
+            Sound desiredSound = AudioManager.instance.soundsDict[audioClipName];
+
+            if(desiredSound != null)
+            {
+                //slide approp clip into player audio src
+                soundEffectsAudioSrc.clip = desiredSound.source.clip;
+            }
+            else
+            {
+                Debug.LogWarning("Played sound FX audio src, but passed in clip not found.");
+            }
+
+            soundEffectsAudioSrc.Play();
+        }
+        else
+        {
+            Debug.LogWarning("Sound effects audio src needs filling.");
+        }
+    }
 }

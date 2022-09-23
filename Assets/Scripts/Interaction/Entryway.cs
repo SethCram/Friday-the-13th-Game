@@ -37,6 +37,33 @@ public class Entryway : Interactable
 	/// <param name="playerInteracting">Player that triggered interaction.</param>
 	public override void Interact(Transform playerInteracting)
 	{
+        base.Interact(playerInteracting);
+
+		//should invert state of entryway
+		if (PhotonNetwork.IsConnected)
+		{
+			//over network
+			photonView.RPC("RPC_InvertPickups", RpcTarget.AllBufferedViaServer);
+			photonView.RPC("PlayAudioSource", RpcTarget.All);
+
+		}
+		else
+		{
+            //local
+            RPC_InvertPickups();
+			PlayAudioSource();
+		}
+
+		//addedAudioSrc.Play();
+
+	}
+
+	/// <summary>
+	/// Plays correct entryway clip according to isOpen upon interaction.
+	/// </summary>
+	[PunRPC]
+	public void PlayAudioSource()
+	{
         //if audio clip playing
         if (addedAudioSrc.isPlaying)
         {
@@ -59,27 +86,11 @@ public class Entryway : Interactable
 
         //play audio
         addedAudioSrc.Play();
+    }
 
-        base.Interact(playerInteracting); //calls 'Interactable' Interact() method
-
-		//should invert state of entryway
-		if (PhotonNetwork.IsConnected)
-		{
-			//over network
-			//photonView.RPC("RPC_InvertPickups", RpcTarget.AllBufferedViaServer, !isOpen);
-			photonView.RPC("RPC_InvertPickups", RpcTarget.AllBufferedViaServer);
-
-		}
-		else
-		{
-			//local
-			RPC_InvertPickups();
-		}
-
-		//addedAudioSrc.Play();
-
-	}
-
+	/// <summary>
+	/// If a container has pickups, invert their visibility.
+	/// </summary>
 	[PunRPC]
 	public void RPC_InvertPickups()
     {

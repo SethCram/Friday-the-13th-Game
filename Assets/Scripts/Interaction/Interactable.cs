@@ -153,7 +153,10 @@ public class Interactable : MonoBehaviourPunCallbacks
 
     #endregion Unity Methods
 
-    //arg of transform is player interacting with this:
+    /// <summary>
+    /// Updates GUI interactable msg.
+    /// </summary>
+    /// <param name="playerInteracting">player interacting with this interactable</param>
     public virtual void Interact(Transform playerInteracting) //'virtual' so this method can be overwritten in any children classes of this class (dif for each child class)
     {
         //this method meant to be overwritten
