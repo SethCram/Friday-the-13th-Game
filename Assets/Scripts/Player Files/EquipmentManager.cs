@@ -6,6 +6,8 @@ using System;
 using System.Text.RegularExpressions;
 using System.Globalization;
 
+[RequireComponent(typeof(PlayerManager))] //for audio
+[RequireComponent(typeof(Inventory))]
 public class EquipmentManager : MonoBehaviourPun
 {
     #region Vars
@@ -31,12 +33,19 @@ public class EquipmentManager : MonoBehaviourPun
 
     private Inventory inventory; //for caching inventory
 
+    private const string equipAudioClipName = "Equip";
+    private const string unequipAudioClipName = "Unequip";
+
+    private PlayerManager playerManager;
+
     #endregion Vars
 
     #region Unity Methods
 
     private void Start()
     {
+        playerManager = GetComponent<PlayerManager>();
+
         //make sure the default equipment array is filled, if not output an error:
         if(defaultEquipment.Length > 0)
         {
@@ -84,13 +93,16 @@ public class EquipmentManager : MonoBehaviourPun
 
     #region Equip Methods
 
-    /*
-    equip new item if possible by;       
-        using its equip slot's index, 
-        calling the equipChangedCallback, 
-        activating equip in scene, both equip and mesh arrays, 
-        and deforming the correct body part:
-    */
+    /// <summary>
+    /// equip new item if possible by;       
+    ///    using its equip slot 's index, 
+    ///    calling the equipChangedCallback,
+    ///    activating equip in scene, both equip and mesh arrays,
+    ///    and deforming the correct body part
+    /// Also plays an equip noise.
+    /// </summary>
+    /// <param name="newEquip"></param>
+    /// <returns></returns>
     public bool Equip(Equipment newEquip) //equip passed in 'newItem', but placement matters
     {
         int slotIndex = (int)newEquip.equipSlot; //enum converted to int to find its correct placement slot (add 1 bc added 'none' field?)
@@ -138,6 +150,15 @@ public class EquipmentManager : MonoBehaviourPun
             onEquipmentChangedCallback.Invoke(newEquip, oldItem); //run methods subscribed
         }
 
+        if( PhotonNetwork.IsConnected )
+        {
+            photonView.RPC("PlaySoundFXAudioSource", RpcTarget.All, equipAudioClipName);
+        }
+        else
+        {
+            playerManager.PlaySoundFXAudioSource(audioClipName: equipAudioClipName);
+        }
+
         return true;
     }
 
@@ -168,7 +189,13 @@ public class EquipmentManager : MonoBehaviourPun
 
     #region Unequip Methods
 
-    //unequip equipment at specified slot index, if possible returns the old item, if not or nothing to unequip returns null:
+    /// <summary>
+    /// Unequip equipment at specified slot index, if possible returns the old item, if not or nothing to unequip returns null. 
+    /// Also plays an unequip noise.
+    /// </summary>
+    /// <param name="slotIndex"></param>
+    /// <param name="swapping"></param>
+    /// <returns></returns>
     public Equipment Unequip(int slotIndex, bool swapping = false) //unequip item at 'slotIndex', bool to signify if swapping equip (automatically set to false, so dont need to pass in two args unless swapping items)
     {
         //if specified equipment slot is empty, return null bc we dont unequip anything:
@@ -246,6 +273,15 @@ public class EquipmentManager : MonoBehaviourPun
         if (onEquipmentChangedCallback != null && !(swapping)) //if any methods subscribed to call back
         {
             onEquipmentChangedCallback.Invoke(null, oldEquip); //run methods subscribe (no newItem bc unequiping an item)
+        }
+
+        if (PhotonNetwork.IsConnected)
+        {
+            photonView.RPC("PlaySoundFXAudioSource", RpcTarget.All, unequipAudioClipName);
+        }
+        else
+        {
+            playerManager.PlaySoundFXAudioSource(audioClipName: unequipAudioClipName);
         }
 
         return oldEquip;

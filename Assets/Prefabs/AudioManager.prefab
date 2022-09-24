@@ -85,5 +85,37 @@ MonoBehaviour:
     maxHearingDistance: 25
     loop: 0
     source: {fileID: 0}
+  - name: Equip
+    clip: {fileID: 8300000, guid: 67dd73a8fb8b99e4d8c8d793c86c4324, type: 3}
+    volume: 1
+    pitch: 1
+    spatialBlend: 1
+    maxHearingDistance: 25
+    loop: 0
+    source: {fileID: 0}
+  - name: Unequip
+    clip: {fileID: 8300000, guid: 8a9561fcd9095b1469759d77d166ae6a, type: 3}
+    volume: 1
+    pitch: 1
+    spatialBlend: 1
+    maxHearingDistance: 25
+    loop: 0
+    source: {fileID: 0}
+  - name: Swing
+    clip: {fileID: 8300000, guid: 13182107f288fdc47a11f9216c8f062b, type: 3}
+    volume: 1
+    pitch: 1
+    spatialBlend: 1
+    maxHearingDistance: 25
+    loop: 0
+    source: {fileID: 0}
+  - name: Slice
+    clip: {fileID: 8300000, guid: 80151380c0f818243b66a78ef69c9fcd, type: 3}
+    volume: 1
+    pitch: 1
+    spatialBlend: 1
+    maxHearingDistance: 25
+    loop: 0
+    source: {fileID: 0}
   outputAudioMixerGroup: {fileID: 24300002, guid: a279699fa98e4bc408a4470e7e8988f0,
     type: 2}
