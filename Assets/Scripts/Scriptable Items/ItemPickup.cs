@@ -60,18 +60,6 @@ public class ItemPickup : Interactable //this class is now derived from/a child 
         //if interacting player manager found
         if (interactingPlayerManager != null)
         {
-            //network connected
-            if (PhotonNetwork.IsConnected)
-            {
-                //over network
-                //photonView.RPC("RPC_InvertPickups", RpcTarget.AllBufferedViaServer, !isOpen);
-                interactingPlayerManager.photonView.RPC("PlaySoundFXAudioSource", RpcTarget.All, audioClipNamePickup);
-
-            }
-            else
-            {
-                interactingPlayerManager.PlaySoundFXAudioSource(audioClipNamePickup);
-            }
 
             /*
             //for every interactable player
@@ -96,14 +84,38 @@ public class ItemPickup : Interactable //this class is now derived from/a child 
             Debug.LogWarning("Couldn't find interacting player's player manager.");
         }
 
-        Pickup(playerInteracting);
+        bool itemPickedUp = Pickup(playerInteracting);
+
+        //if item actually picked up
+        if( itemPickedUp )
+        {
+            //if interacting player manager found
+            if (interactingPlayerManager != null)
+            {
+                //network connected
+                if (PhotonNetwork.IsConnected)
+                {
+                    //play sound over network
+                    interactingPlayerManager.photonView.RPC("PlaySoundFXAudioSource", RpcTarget.All, audioClipNamePickup);
+
+                }
+                else
+                {
+                    interactingPlayerManager.PlaySoundFXAudioSource(audioClipNamePickup);
+                }
+            }
+            else
+            {
+                Debug.LogWarning("Couldn't find interacting player's player manager.");
+            }
+        }
     }
 
     /// <summary>
     /// Add item to interacting player's inventory and destroy its scene obj.
     /// </summary>
     /// <param name="playerInteracting"></param>
-    private void Pickup(Transform playerInteracting)
+    private bool Pickup(Transform playerInteracting)
     {
         Debug.Log("Picking up " + item.name);
 
@@ -131,6 +143,9 @@ public class ItemPickup : Interactable //this class is now derived from/a child 
             }
             
         }
+
+        //ret whether picked up or not
+        return wasPickedUp;
     }
 
     [PunRPC]
