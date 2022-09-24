@@ -33,9 +33,6 @@ public class EquipmentManager : MonoBehaviourPun
 
     private Inventory inventory; //for caching inventory
 
-    private const string equipAudioClipName = "Equip";
-    private const string unequipAudioClipName = "Unequip";
-
     private PlayerManager playerManager;
 
     #endregion Vars
@@ -152,11 +149,11 @@ public class EquipmentManager : MonoBehaviourPun
 
         if( PhotonNetwork.IsConnected )
         {
-            photonView.RPC("PlaySoundFXAudioSource", RpcTarget.All, equipAudioClipName);
+            photonView.RPC("PlaySoundFXAudioSource", RpcTarget.All, AudioManager.equipAudioClipName);
         }
         else
         {
-            playerManager.PlaySoundFXAudioSource(audioClipName: equipAudioClipName);
+            playerManager.PlaySoundFXAudioSource(audioClipName: AudioManager.equipAudioClipName);
         }
 
         return true;
@@ -277,11 +274,11 @@ public class EquipmentManager : MonoBehaviourPun
 
         if (PhotonNetwork.IsConnected)
         {
-            photonView.RPC("PlaySoundFXAudioSource", RpcTarget.All, unequipAudioClipName);
+            photonView.RPC("PlaySoundFXAudioSource", RpcTarget.All, AudioManager.unequipAudioClipName);
         }
         else
         {
-            playerManager.PlaySoundFXAudioSource(audioClipName: unequipAudioClipName);
+            playerManager.PlaySoundFXAudioSource(audioClipName: AudioManager.unequipAudioClipName);
         }
 
         return oldEquip;

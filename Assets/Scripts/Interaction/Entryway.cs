@@ -9,20 +9,17 @@ public class Entryway : Interactable
     //pickups in container
     public GameObject[] pickups;
 
-	private const string audioClipNameOpen = "Open";
-	private const string audioClipNameClose = "Close";
-
 	private AudioClip audioClipOpen;
 	private AudioClip audioClipClose;
 
 	public override void Start()
 	{
 		//cache sounds dict open sound
-		Sound soundsDictOpenSound = AudioManager.instance.soundsDict[audioClipNameOpen];
+		Sound soundsDictOpenSound = AudioManager.instance.soundsDict[AudioManager.openAudioClipName];
 
 		//set open+close clips
 		audioClipOpen = soundsDictOpenSound.source.clip;
-		audioClipClose = AudioManager.instance.soundsDict[audioClipNameClose].source.clip;
+		audioClipClose = AudioManager.instance.soundsDict[AudioManager.closeAudioClipName].source.clip;
 
 		//fill audio src copied over from audio manager
 		addedAudioSrc = gameObject.AddComponent<AudioSource>(soundsDictOpenSound.source);

@@ -31,3 +31,4 @@ MonoBehaviour:
   damage: 6
   handsRequired: 0
   statUsedForDamage: 0
+  weaponContactSoundClipName: Slice

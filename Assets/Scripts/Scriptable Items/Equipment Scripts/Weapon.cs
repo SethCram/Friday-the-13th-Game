@@ -14,6 +14,8 @@ public class Weapon : Equipment
     //specifies which stat we use for dmg calc w/ this weapon:
     public StatUsedForDamage statUsedForDamage;
 
+    public string weaponContactSoundClipName;
+
     //call the 'Equipment' use method, not the 'Item' one (bc we wanna equip this):
     public override void Use(Inventory playerInventory)
     {

@@ -101,8 +101,16 @@ MonoBehaviour:
     maxHearingDistance: 25
     loop: 0
     source: {fileID: 0}
-  - name: Swing
-    clip: {fileID: 8300000, guid: 13182107f288fdc47a11f9216c8f062b, type: 3}
+  - name: Punch
+    clip: {fileID: 8300000, guid: f066f3ebedc79dc429b921d5076e5491, type: 3}
+    volume: 1
+    pitch: 1
+    spatialBlend: 1
+    maxHearingDistance: 25
+    loop: 0
+    source: {fileID: 0}
+  - name: Stab
+    clip: {fileID: 8300000, guid: 2375dadc4293d3f4380b59887ce8416b, type: 3}
     volume: 1
     pitch: 1
     spatialBlend: 1

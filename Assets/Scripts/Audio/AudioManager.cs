@@ -23,6 +23,15 @@ public class AudioManager : MonoBehaviour
     [SerializeField] private Sound[] soundsArr;
     public Dictionary<string, Sound> soundsDict;
 
+    //sound clip names for dict calling
+    public const string punchSoundClipName = "Punch";
+    public const string openAudioClipName = "Open";
+    public const string closeAudioClipName = "Close";
+    public const string equipAudioClipName = "Equip";
+    public const string unequipAudioClipName = "Unequip";
+    public const string pickupAudioClipName = "Pickup";
+    public const string dropAudioClipName= "Drop";
+
     public AudioMixerGroup outputAudioMixerGroup;
 
     public static AudioManager instance;

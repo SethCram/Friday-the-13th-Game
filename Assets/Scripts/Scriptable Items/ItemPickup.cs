@@ -14,15 +14,12 @@ public class ItemPickup : Interactable //this class is now derived from/a child 
 
     private GameObject itemIconCopy;
 
-    private const string audioClipNamePickup = "Pickup";
-    private const string audioClipNameDrop = "Drop";
-
     public override void Start()
     {
         base.Start();
 
         //fill audio src copied over from audio manager
-        addedAudioSrc = gameObject.AddComponent<AudioSource>(AudioManager.instance.soundsDict[audioClipNameDrop].source);
+        addedAudioSrc = gameObject.AddComponent<AudioSource>(AudioManager.instance.soundsDict[AudioManager.dropAudioClipName].source);
         //play audio source once added (bc obj dropped on spawn in)
         addedAudioSrc.Play();
 
@@ -96,12 +93,12 @@ public class ItemPickup : Interactable //this class is now derived from/a child 
                 if (PhotonNetwork.IsConnected)
                 {
                     //play sound over network
-                    interactingPlayerManager.photonView.RPC("PlaySoundFXAudioSource", RpcTarget.All, audioClipNamePickup);
+                    interactingPlayerManager.photonView.RPC("PlaySoundFXAudioSource", RpcTarget.All, AudioManager.pickupAudioClipName);
 
                 }
                 else
                 {
-                    interactingPlayerManager.PlaySoundFXAudioSource(audioClipNamePickup);
+                    interactingPlayerManager.PlaySoundFXAudioSource(AudioManager.pickupAudioClipName);
                 }
             }
             else
