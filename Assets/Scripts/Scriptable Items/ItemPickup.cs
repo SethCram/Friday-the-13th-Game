@@ -93,12 +93,12 @@ public class ItemPickup : Interactable //this class is now derived from/a child 
                 if (PhotonNetwork.IsConnected)
                 {
                     //play sound over network
-                    interactingPlayerManager.photonView.RPC("PlaySoundFXAudioSource", RpcTarget.All, AudioManager.pickupAudioClipName);
+                    interactingPlayerManager.photonView.RPC("PlayOrCreateAudioSource", RpcTarget.All, AudioManager.pickupAudioClipName);
 
                 }
                 else
                 {
-                    interactingPlayerManager.PlaySoundFXAudioSource(AudioManager.pickupAudioClipName);
+                    interactingPlayerManager.PlayOrCreateAudioSource(AudioManager.pickupAudioClipName);
                 }
             }
             else

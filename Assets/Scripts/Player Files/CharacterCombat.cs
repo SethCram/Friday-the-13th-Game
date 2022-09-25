@@ -200,11 +200,11 @@ public class CharacterCombat : MonoBehaviourPun
 
                 if(PhotonNetwork.IsConnected)
                 {
-                    photonView.RPC("PlaySoundFXAudioSource", RpcTarget.All, contactClipName);
+                    photonView.RPC("PlayOrCreateAudioSource", RpcTarget.All, contactClipName);
                 }
                 else
                 {
-                    playerManager.PlaySoundFXAudioSource(contactClipName);
+                    playerManager.PlayOrCreateAudioSource(contactClipName);
                 }
             }
         }
@@ -213,11 +213,11 @@ public class CharacterCombat : MonoBehaviourPun
         {
             if (PhotonNetwork.IsConnected)
             {
-                photonView.RPC("PlaySoundFXAudioSource", RpcTarget.All, AudioManager.punchSoundClipName);
+                photonView.RPC("PlayOrCreateAudioSource", RpcTarget.All, AudioManager.punchSoundClipName);
             }
             else
             {
-                playerManager.PlaySoundFXAudioSource(AudioManager.punchSoundClipName);
+                playerManager.PlayOrCreateAudioSource(AudioManager.punchSoundClipName);
             }
         }
     }

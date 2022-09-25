@@ -149,11 +149,11 @@ public class EquipmentManager : MonoBehaviourPun
 
         if( PhotonNetwork.IsConnected )
         {
-            photonView.RPC("PlaySoundFXAudioSource", RpcTarget.All, AudioManager.equipAudioClipName);
+            photonView.RPC("PlayOrCreateAudioSource", RpcTarget.All, AudioManager.equipAudioClipName);
         }
         else
         {
-            playerManager.PlaySoundFXAudioSource(audioClipName: AudioManager.equipAudioClipName);
+            playerManager.PlayOrCreateAudioSource(audioClipName: AudioManager.equipAudioClipName);
         }
 
         return true;
@@ -274,11 +274,11 @@ public class EquipmentManager : MonoBehaviourPun
 
         if (PhotonNetwork.IsConnected)
         {
-            photonView.RPC("PlaySoundFXAudioSource", RpcTarget.All, AudioManager.unequipAudioClipName);
+            photonView.RPC("PlayOrCreateAudioSource", RpcTarget.All, AudioManager.unequipAudioClipName);
         }
         else
         {
-            playerManager.PlaySoundFXAudioSource(audioClipName: AudioManager.unequipAudioClipName);
+            playerManager.PlayOrCreateAudioSource(audioClipName: AudioManager.unequipAudioClipName);
         }
 
         return oldEquip;

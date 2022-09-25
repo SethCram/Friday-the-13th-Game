@@ -58,6 +58,8 @@ public class PlayerManager : MonoBehaviourPunCallbacks
 
     public AudioSource soundEffectsAudioSrc;
 
+    public Dictionary<string, AudioSource> playerAudioSrcDict = new Dictionary<string, AudioSource>();
+
     #endregion
 
     #region Unity Methods
@@ -681,38 +683,44 @@ public class PlayerManager : MonoBehaviourPunCallbacks
     }
 
     /// <summary>
-    /// Play sound FX player audio. Callable over RPC.
+    /// Play desired player-attached audio source. Callable over RPC.
+    /// If audio source not found, copied from audio manager.
     /// </summary>
-    /// <param name="audioClipName">Used to get the audio clip to play from the Audio Manager.</param>
+    /// <param name="audioClipName">Used to get the audio source to play from the player/Audio Manager.</param>
     [PunRPC]
-    public void PlaySoundFXAudioSource(string audioClipName)
+    public void PlayOrCreateAudioSource(string audioClipName)
     {
-        Debug.Log("Play the player's sound FX audio source.");
-
-        if (soundEffectsAudioSrc != null)
+        Sound desiredSound;
+        AudioSource desiredAudioSrc;
+       
+        //if audio src already on the player
+        if( playerAudioSrcDict.TryGetValue(audioClipName, out desiredAudioSrc))
         {
-            if (soundEffectsAudioSrc.isPlaying)
+            //stop audio src if playing
+            if (desiredAudioSrc.isPlaying)
             {
-                soundEffectsAudioSrc.Stop();
+                desiredAudioSrc.Stop();
             }
 
-            Sound desiredSound = AudioManager.instance.soundsDict[audioClipName];
-
-            if(desiredSound != null)
+            desiredAudioSrc.Play();
+        }
+        //audio src not attached to player yet
+        else
+        {
+            //if clip name in dict
+            if (AudioManager.instance.soundsDict.TryGetValue(audioClipName, out desiredSound))
             {
-                //slide approp clip into player audio src
-                soundEffectsAudioSrc.clip = desiredSound.source.clip;
+                //copy audio src comp from audio manager to player
+                playerAudioSrcDict[audioClipName] = gameObject.AddComponent<AudioSource>(desiredSound.source);
+
+                //play added audio src
+                playerAudioSrcDict[audioClipName].Play();
             }
             else
             {
-                Debug.LogWarning("Played sound FX audio src, but passed in clip not found.");
+                Debug.LogWarning($"Audio clip not found for {audioClipName}.");
             }
+        }
 
-            soundEffectsAudioSrc.Play();
-        }
-        else
-        {
-            Debug.LogWarning("Sound effects audio src needs filling.");
-        }
     }
 }
