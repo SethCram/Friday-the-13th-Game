@@ -28,10 +28,19 @@ public class Interactable : MonoBehaviourPunCallbacks
     [HideInInspector]
     public bool isOpen = false;
 
+    //audio src used in subclasses
+    [HideInInspector]
+    public AudioSource addedAudioSrc;
+
     #endregion Vars
 
     #region Unity Methods
 
+    /// <summary>
+    /// Setup sphere collider if comp attached. 
+    /// Init list of interactable players.
+    /// Add subclass set audio source and play it once.
+    /// </summary>
     public virtual void Start()
     {
         //setup sphere trigger
@@ -49,6 +58,11 @@ public class Interactable : MonoBehaviourPunCallbacks
         //init list of transforms:
         interactablePlayers = new List<Transform>();
 
+        //add audio source as cached one and overwrite cached one
+        //audioSource = gameObject.AddComponent<AudioSource>(audioSource);
+        //AudioSource addedAudioSrc = gameObject.AddComponent<AudioSource>(audioSource);
+        //play audio source once added
+        //addedAudioSrc.Play();
     }
 
     private void Update()
@@ -139,7 +153,10 @@ public class Interactable : MonoBehaviourPunCallbacks
 
     #endregion Unity Methods
 
-    //arg of transform is player interacting with this:
+    /// <summary>
+    /// Updates GUI interactable msg.
+    /// </summary>
+    /// <param name="playerInteracting">player interacting with this interactable</param>
     public virtual void Interact(Transform playerInteracting) //'virtual' so this method can be overwritten in any children classes of this class (dif for each child class)
     {
         //this method meant to be overwritten

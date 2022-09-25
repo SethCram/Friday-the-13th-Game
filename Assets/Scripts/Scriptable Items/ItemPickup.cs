@@ -18,6 +18,11 @@ public class ItemPickup : Interactable //this class is now derived from/a child 
     {
         base.Start();
 
+        //fill audio src copied over from audio manager
+        addedAudioSrc = gameObject.AddComponent<AudioSource>(AudioManager.instance.soundsDict[AudioManager.dropAudioClipName].source);
+        //play audio source once added (bc obj dropped on spawn in)
+        addedAudioSrc.Play();
+
         //create item's icon in world space for rendering
         itemIconCopy = new GameObject(name: "pickupIcon");
         //fill sprite field
@@ -28,7 +33,7 @@ public class ItemPickup : Interactable //this class is now derived from/a child 
                                                         itemIconCopy.transform.eulerAngles.z);
         //set to minimap layer
         itemIconCopy.layer = 12; 
-        //set to spawn position with 100 in the y
+        //set icon to spawn position with 100 in the y
         itemIconCopy.transform.position = new Vector3(transform.transform.position.x, 
                                                         100, 
                                                         transform.transform.position.z); 
@@ -36,34 +41,78 @@ public class ItemPickup : Interactable //this class is now derived from/a child 
         itemIconCopy.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f); 
     }
 
-    //override og 'Interact()' to have the interacting player 'Pickup()' the item:
+    /// <summary>
+    /// Play whoever Interacted with item's sound effects audio using the pickup audio clip.
+    /// Disables interact msg for interacting player.
+    /// Pickup item.
+    /// </summary>
+    /// <param name="playerInteracting"></param>
     public override void Interact(Transform playerInteracting)
     {
-        base.Interact(playerInteracting); //calls 'Interactable' Interact() method
+        base.Interact(playerInteracting);
 
-        /*
-        //for every interactable player
-        foreach (Transform player in interactablePlayers)
+        //cache player manager
+        PlayerManager interactingPlayerManager = playerInteracting.GetComponent<PlayerManager>();
+
+        //if interacting player manager found
+        if (interactingPlayerManager != null)
         {
-            //make msgs blank
-            player.GetComponent<PlayerManager>().SetInteractMsg("");
 
-            //make msgs dissapear
-            player.GetComponent<PlayerManager>().SetInteractVisibility(false);
+            /*
+            //for every interactable player
+            foreach (Transform player in interactablePlayers)
+            {
+                //make msgs blank
+                player.GetComponent<PlayerManager>().SetInteractMsg("");
+
+                //make msgs dissapear
+                player.GetComponent<PlayerManager>().SetInteractVisibility(false);
+            }
+            */
+
+            //Debug.Log(interactablePlayers.ToString());
+
+            //dissapear interact msg (what if someone else picks up while we in range??)
+            //playerInteracting.GetComponent<PlayerManager>().photonView.RPC("SetInteractVisibility", RpcTarget.Others, false);
+            interactingPlayerManager.SetInteractVisibility(false);
         }
-        */
+        else
+        {
+            Debug.LogWarning("Couldn't find interacting player's player manager.");
+        }
 
-        //Debug.Log(interactablePlayers.ToString());
-        
-        //dissapear interact msg (what if someone else picks up while we in range??)
-        //playerInteracting.GetComponent<PlayerManager>().photonView.RPC("SetInteractVisibility", RpcTarget.Others, false);
-        playerInteracting.GetComponent<PlayerManager>().SetInteractVisibility(false);
+        bool itemPickedUp = Pickup(playerInteracting);
 
-        Pickup(playerInteracting);
+        //if item actually picked up
+        if( itemPickedUp )
+        {
+            //if interacting player manager found
+            if (interactingPlayerManager != null)
+            {
+                //network connected
+                if (PhotonNetwork.IsConnected)
+                {
+                    //play sound over network
+                    interactingPlayerManager.photonView.RPC("PlayOrCreateAudioSource", RpcTarget.All, AudioManager.pickupAudioClipName);
+
+                }
+                else
+                {
+                    interactingPlayerManager.PlayOrCreateAudioSource(AudioManager.pickupAudioClipName);
+                }
+            }
+            else
+            {
+                Debug.LogWarning("Couldn't find interacting player's player manager.");
+            }
+        }
     }
 
-    //add item to interacting player's inventory and destroy its scene obj:
-    private void Pickup(Transform playerInteracting)
+    /// <summary>
+    /// Add item to interacting player's inventory and destroy its scene obj.
+    /// </summary>
+    /// <param name="playerInteracting"></param>
+    private bool Pickup(Transform playerInteracting)
     {
         Debug.Log("Picking up " + item.name);
 
@@ -91,6 +140,9 @@ public class ItemPickup : Interactable //this class is now derived from/a child 
             }
             
         }
+
+        //ret whether picked up or not
+        return wasPickedUp;
     }
 
     [PunRPC]

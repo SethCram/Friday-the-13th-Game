@@ -65,7 +65,11 @@ public class WeaponCollision : MonoBehaviour
 
             Debug.Log("Weapon hit: " + other.name);
 
+            //deal the dmg to passed in hit stats
             myPlayerCombat.DoDamage(hitStats);
+
+            //play hit sound
+            myPlayerCombat.PlayHitSound();
 
             //store previously hit person:
             prevHitID = hitID;

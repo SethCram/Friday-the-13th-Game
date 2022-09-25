@@ -56,9 +56,25 @@ public class PlayerManager : MonoBehaviourPunCallbacks
 
     public CharacterStats characterStats { get; private set; }
 
+    public AudioSource soundEffectsAudioSrc;
+
+    public Dictionary<string, AudioSource> playerAudioSrcDict = new Dictionary<string, AudioSource>();
+
     #endregion
 
     #region Unity Methods
+
+    private void Awake()
+    {
+        //if my photon view or not online
+        if(photonView.IsMine || !PhotonNetwork.IsConnected)
+        {
+            Debug.Log("Audio Listener added to player.");
+
+            //add audio listener to model player
+            gameObject.AddComponent<AudioListener>();
+        }
+    }
 
     private void Start()
     {
@@ -623,7 +639,10 @@ public class PlayerManager : MonoBehaviourPunCallbacks
 
     #region GUI Config
 
-    //change visibility of interaction msg 
+    /// <summary>
+    /// Change visibility of interaction msg 
+    /// </summary>
+    /// <param name="state">Is the interactable message visible?</param>
     public void SetInteractVisibility(bool state)
     {
         //if txt showing and overlay UI set
@@ -663,4 +682,45 @@ public class PlayerManager : MonoBehaviourPunCallbacks
         Debug.Log(deactivatingView.gameObject.name + " set deactive");
     }
 
+    /// <summary>
+    /// Play desired player-attached audio source. Callable over RPC.
+    /// If audio source not found, copied from audio manager.
+    /// </summary>
+    /// <param name="audioClipName">Used to get the audio source to play from the player/Audio Manager.</param>
+    [PunRPC]
+    public void PlayOrCreateAudioSource(string audioClipName)
+    {
+        Sound desiredSound;
+        AudioSource desiredAudioSrc;
+       
+        //if audio src already on the player
+        if( playerAudioSrcDict.TryGetValue(audioClipName, out desiredAudioSrc))
+        {
+            //stop audio src if playing
+            if (desiredAudioSrc.isPlaying)
+            {
+                desiredAudioSrc.Stop();
+            }
+
+            desiredAudioSrc.Play();
+        }
+        //audio src not attached to player yet
+        else
+        {
+            //if clip name in dict
+            if (AudioManager.instance.soundsDict.TryGetValue(audioClipName, out desiredSound))
+            {
+                //copy audio src comp from audio manager to player
+                playerAudioSrcDict[audioClipName] = gameObject.AddComponent<AudioSource>(desiredSound.source);
+
+                //play added audio src
+                playerAudioSrcDict[audioClipName].Play();
+            }
+            else
+            {
+                Debug.LogWarning($"Audio clip not found for {audioClipName}.");
+            }
+        }
+
+    }
 }

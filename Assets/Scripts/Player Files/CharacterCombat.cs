@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
+using System.Linq;
 
 //create a 'CharacterStats' comp if one not already attached to obj:
 [RequireComponent(typeof(CharacterStats))]
@@ -21,6 +22,7 @@ public class CharacterCombat : MonoBehaviourPun
 
     private CharacterStats myStats;
     private CharacterStats opponentStats;
+    private PlayerManager playerManager;
 
     //for dealing dmg:
     public EquipmentManager equipManager; //init in inspector
@@ -32,10 +34,13 @@ public class CharacterCombat : MonoBehaviourPun
     private void Start()
     {
         myStats = GetComponent<CharacterStats>();
+        playerManager = GetComponent<PlayerManager>();
 
         //cache weapon and shield lists:
         equiptWeapons = equipManager.currWeapons;
         equiptShields = equipManager.currShields;
+
+        //OnAttackCallback += PlayAttackSound;
     }
 
     //left mouse click atk:
@@ -63,6 +68,26 @@ public class CharacterCombat : MonoBehaviourPun
         }
 
     }
+
+    /*
+    /// <summary>
+    /// Every attack, plays an attack sound.
+    /// </summary>
+    /// <param name="atkIndex"></param>
+    public void PlayAttackSound(int atkIndex)
+    {
+        if(equiptWeapons == null)
+        {
+            //use fist atk sound
+        }
+        else
+        {
+            //use weapon atk sound
+
+
+        }
+    }
+    */
 
     #region Damage Methods
 
@@ -160,6 +185,42 @@ public class CharacterCombat : MonoBehaviourPun
         
     }
     */
+
+    public void PlayHitSound()
+    {
+        Debug.Log("Play hit sound.");
+
+        //if weapon equipt
+        if (equiptWeapons != null && equiptWeapons.Count() > 0)
+        {
+            //find the main slot weapon:
+            foreach (Weapon weapon in equiptWeapons)
+            {
+                string contactClipName = weapon.weaponContactSoundClipName;
+
+                if(PhotonNetwork.IsConnected)
+                {
+                    photonView.RPC("PlayOrCreateAudioSource", RpcTarget.All, contactClipName);
+                }
+                else
+                {
+                    playerManager.PlayOrCreateAudioSource(contactClipName);
+                }
+            }
+        }
+        //if no weapon equipt
+        else
+        {
+            if (PhotonNetwork.IsConnected)
+            {
+                photonView.RPC("PlayOrCreateAudioSource", RpcTarget.All, AudioManager.punchSoundClipName);
+            }
+            else
+            {
+                playerManager.PlayOrCreateAudioSource(AudioManager.punchSoundClipName);
+            }
+        }
+    }
 
     #endregion Damage Methods
 

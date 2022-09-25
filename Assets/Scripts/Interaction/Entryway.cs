@@ -9,25 +9,85 @@ public class Entryway : Interactable
     //pickups in container
     public GameObject[] pickups;
 
-    public override void Interact(Transform playerInteracting)
+	private AudioClip audioClipOpen;
+	private AudioClip audioClipClose;
+
+	public override void Start()
 	{
-		base.Interact(playerInteracting); //calls 'Interactable' Interact() method
+		//cache sounds dict open sound
+		Sound soundsDictOpenSound = AudioManager.instance.soundsDict[AudioManager.openAudioClipName];
+
+		//set open+close clips
+		audioClipOpen = soundsDictOpenSound.source.clip;
+		audioClipClose = AudioManager.instance.soundsDict[AudioManager.closeAudioClipName].source.clip;
+
+		//fill audio src copied over from audio manager
+		addedAudioSrc = gameObject.AddComponent<AudioSource>(soundsDictOpenSound.source);
+
+		base.Start();
+	}
+
+
+	/// <summary>
+	/// Play entryway closing/opening sound and invert the state of the entryway
+	/// </summary>
+	/// <param name="playerInteracting">Player that triggered interaction.</param>
+	public override void Interact(Transform playerInteracting)
+	{
+        base.Interact(playerInteracting);
 
 		//should invert state of entryway
 		if (PhotonNetwork.IsConnected)
 		{
 			//over network
-			//photonView.RPC("RPC_InvertPickups", RpcTarget.AllBufferedViaServer, !isOpen);
 			photonView.RPC("RPC_InvertPickups", RpcTarget.AllBufferedViaServer);
+			photonView.RPC("PlayAudioSource", RpcTarget.All);
 
 		}
 		else
 		{
-			//local
-			RPC_InvertPickups();
+            //local
+            RPC_InvertPickups();
+			PlayAudioSource();
 		}
+
+		//addedAudioSrc.Play();
+
 	}
 
+	/// <summary>
+	/// Plays correct entryway clip according to isOpen upon interaction.
+	/// </summary>
+	[PunRPC]
+	public void PlayAudioSource()
+	{
+        //if audio clip playing
+        if (addedAudioSrc.isPlaying)
+        {
+            //stop it from playing
+            addedAudioSrc.Stop();
+
+            Debug.Log("Audio had to be stopped to change clip.");
+        }
+
+        //if entryway open and closing
+        if (isOpen)
+        {
+            addedAudioSrc.clip = audioClipClose;
+        }
+        //if entrway closing and opening
+        else
+        {
+            addedAudioSrc.clip = audioClipOpen;
+        }
+
+        //play audio
+        addedAudioSrc.Play();
+    }
+
+	/// <summary>
+	/// If a container has pickups, invert their visibility.
+	/// </summary>
 	[PunRPC]
 	public void RPC_InvertPickups()
     {

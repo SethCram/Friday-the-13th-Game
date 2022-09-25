@@ -11,7 +11,10 @@ public class AnimateDissapear : Entryway
 {
 	public GameObject[] dissapearingGameobjs;
 
-    //override og 'Interact()' to have the interacting player 'animate' the item:
+    /// <summary>
+	/// override og 'Interact()' to have the interacting player 'animate' the item:
+	/// </summary>
+	/// <param name="playerInteracting"></param>
     public override void Interact(Transform playerInteracting)
     {
         base.Interact(playerInteracting); //calls 'Interactable' Interact() method

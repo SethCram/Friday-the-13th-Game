@@ -14,6 +14,8 @@ public class Shield : Equipment
     //hands required to wield:
     public HandsRequired handsRequired;
 
+    public string weaponContactSoundClipName;
+
     //call the 'Equipment' use method, not the 'Item' one (bc we wanna equip this):
     public override void Use(Inventory playerInventory)
     {

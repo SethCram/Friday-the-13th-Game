@@ -31,3 +31,4 @@ MonoBehaviour:
   damage: 2
   handsRequired: 0
   statUsedForDamage: 0
+  weaponContactSoundClipName: Stab

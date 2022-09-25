@@ -1000,6 +1000,8 @@ public class GameManager : MonoBehaviourPun
         return string.Compare(str1, str2, StringComparison.OrdinalIgnoreCase) == 0;
     }
 
+
+
     #region Custom Property Methods
 
     /// <summary>
