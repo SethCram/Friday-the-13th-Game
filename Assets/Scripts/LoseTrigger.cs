@@ -38,7 +38,7 @@ public class LoseTrigger : MonoBehaviour
                 if (other.GetComponent<PhotonView>().IsMine || !PhotonNetwork.IsConnected)
                 {
                     //tell jason died + lost
-                    playerManager.JasonDied(locaPlayerWon: false);
+                    playerManager.JasonDied(localPlayerWon: false);
                 }
             }
         }

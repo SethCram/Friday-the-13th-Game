@@ -431,6 +431,9 @@ public class PlayerManager : MonoBehaviourPunCallbacks
 
         //show only the main menu btn
         gameOver.ShowOnlyMainMenuBtn();
+
+        //game is over
+        GameManager.Instance.gameOver = true;
     }
 
     /// <summary>
@@ -460,6 +463,9 @@ public class PlayerManager : MonoBehaviourPunCallbacks
 
             //show only the main menu btn
             gameOver.ShowOnlyMainMenuBtn();
+
+            //game is over
+            GameManager.Instance.gameOver = true;
         }
         //if not game over
         else
@@ -489,6 +495,9 @@ public class PlayerManager : MonoBehaviourPunCallbacks
 
            //show only the main menu btn
            gameOver.ShowOnlyMainMenuBtn();
+
+            //game is over
+            GameManager.Instance.gameOver = true;
         }
         //if not game over
         else
@@ -530,11 +539,11 @@ public class PlayerManager : MonoBehaviourPunCallbacks
     /// <summary>
     /// When jason dies, tell counselors they won/lost and I won/lost + game over for everyone
     /// </summary>
-    public void JasonDied( bool locaPlayerWon)
+    public void JasonDied( bool localPlayerWon)
     {
         SetDead(true);
 
-        Debug.LogAssertion("<color=yellow>Jason dead</color>");
+        Debug.Log("<color=yellow>Jason dead</color>");
 
         //if on network and more than 1 player in room
         if (PhotonNetwork.IsConnected 
@@ -552,7 +561,7 @@ public class PlayerManager : MonoBehaviourPunCallbacks
             }
         }
 
-        if( locaPlayerWon)
+        if( localPlayerWon)
         {
             Win(isGameOver: true);
         }

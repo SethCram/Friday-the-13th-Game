@@ -147,7 +147,7 @@ MonoBehaviour:
     pitch: 1
     spatialBlend: 0
     maxHearingDistance: 9000
-    loop: 0
+    loop: 1
     source: {fileID: 0}
   outputAudioMixerGroup: {fileID: 24300002, guid: a279699fa98e4bc408a4470e7e8988f0,
     type: 2}
