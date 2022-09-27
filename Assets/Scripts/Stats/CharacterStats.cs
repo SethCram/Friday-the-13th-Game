@@ -73,6 +73,8 @@ public class CharacterStats : MonoBehaviourPun
 
         //drop all player loot now that dead:
         OnDeathCallback += playerManager.DropEverything;
+
+        OnDeathCallback += PlayDeathNoise;
     }
 
     private void Update()
@@ -301,8 +303,6 @@ public class CharacterStats : MonoBehaviourPun
                 OnDeathCallback();
             }
             
-            //die locally
-            //AnimateAndSetDeath();
         }
     }
 
@@ -348,6 +348,21 @@ public class CharacterStats : MonoBehaviourPun
         //set player to dead
         playerManager.SetDead( true );
 
+    }
+
+    /// <summary>
+    /// Play death noise using the player manager's audio src.
+    /// </summary>
+    private void PlayDeathNoise()
+    {
+        if(PhotonNetwork.IsConnected)
+        {
+            photonView.RPC("PlayOrCreateAudioSource", RpcTarget.All, AudioManager.dieAudioClipName);
+        }
+        else
+        {
+            playerManager.PlayOrCreateAudioSource(AudioManager.dieAudioClipName);
+        }
     }
 
     #endregion
