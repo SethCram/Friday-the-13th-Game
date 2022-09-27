@@ -31,6 +31,9 @@ public class AudioManager : MonoBehaviour
     public const string unequipAudioClipName = "Unequip";
     public const string pickupAudioClipName = "Pickup";
     public const string dropAudioClipName= "Drop";
+    public const string hurtAudioClipName = "Hurt";
+    public const string dieAudioClipName = "Die";
+    public const string gameOverAudioClipName = "Game Over";
 
     public AudioMixerGroup outputAudioMixerGroup;
 
