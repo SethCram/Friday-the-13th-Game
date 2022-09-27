@@ -122,7 +122,7 @@ public class CharacterCombat : MonoBehaviourPun
                         damageDealt = myStats.statDict["Melee"].GetValue() + weapon.damage;
 
                         //do damage w/ melee weapon
-                        hitStats.TakeDamage(damageDealt);
+                        hitStats.TakeHit(damageDealt);
 
                         return;
                     }
@@ -133,7 +133,7 @@ public class CharacterCombat : MonoBehaviourPun
                         damageDealt = myStats.statDict["Ranged"].GetValue() + weapon.damage;
 
                         //do damage w/ ranged weapon
-                        hitStats.TakeDamage(damageDealt);
+                        hitStats.TakeHit(damageDealt);
 
                         return;
                     }
@@ -165,7 +165,7 @@ public class CharacterCombat : MonoBehaviourPun
 
         //dealing dmg w / punches:
         damageDealt = myStats.statDict["Unarmed"].GetValue() + 1;       //added 1 just incase no unarmed stat, so will actually deal "some" damage
-        hitStats.TakeDamage(damageDealt);
+        hitStats.TakeHit(damageDealt);
     }
 
     //delay damage to allow attack anim to play out partially:

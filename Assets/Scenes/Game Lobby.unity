@@ -3889,36 +3889,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1468959856976471778, guid: d4b1a143a9b89314d9ddd567e4b728c7,
-        type: 3}
-      propertyPath: soundsArr.Array.data[10].clip
-      value: 
-      objectReference: {fileID: 8300000, guid: 2375dadc4293d3f4380b59887ce8416b, type: 3}
-    - target: {fileID: 1468959856976471778, guid: d4b1a143a9b89314d9ddd567e4b728c7,
-        type: 3}
-      propertyPath: soundsArr.Array.data[10].name
-      value: Slice
-      objectReference: {fileID: 0}
-    - target: {fileID: 1468959856976471778, guid: d4b1a143a9b89314d9ddd567e4b728c7,
-        type: 3}
-      propertyPath: soundsArr.Array.data[10].pitch
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1468959856976471778, guid: d4b1a143a9b89314d9ddd567e4b728c7,
-        type: 3}
-      propertyPath: soundsArr.Array.data[10].volume
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1468959856976471778, guid: d4b1a143a9b89314d9ddd567e4b728c7,
-        type: 3}
-      propertyPath: soundsArr.Array.data[10].spatialBlend
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1468959856976471778, guid: d4b1a143a9b89314d9ddd567e4b728c7,
-        type: 3}
-      propertyPath: soundsArr.Array.data[10].maxHearingDistance
-      value: 25
-      objectReference: {fileID: 0}
     - target: {fileID: 5262028603132888097, guid: d4b1a143a9b89314d9ddd567e4b728c7,
         type: 3}
       propertyPath: m_RootOrder

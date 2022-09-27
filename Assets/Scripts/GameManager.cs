@@ -62,10 +62,6 @@ public class GameManager : MonoBehaviourPun
 
     #endregion Enums + Related Fields
 
-    //music vars
-    private bool musicShouldPlay = true;
-    private AudioSource audioSrc;
-
     //game success or failure 
     private bool lostGame = false;
     private bool wonGame = false;
@@ -73,10 +69,12 @@ public class GameManager : MonoBehaviourPun
     public bool localPlayerSpawned { set; private get; } = false;
     private int prevCounselorCount = 0;
     private bool gameReady = false;
-    private bool checkingIfPlayersLeft = false;
     private bool customPropsSet = false;
 
     public bool localPlayerIsJason = false;
+
+    [HideInInspector]
+    public bool gameOver = false;
 
     #region Custom Prop Fields
 
@@ -268,13 +266,14 @@ public class GameManager : MonoBehaviourPun
 
     private void Update()
     {
-
+        /*
         //stop playing music if it should stop:
         if (musicShouldPlay == false)
         {
             //audioSrc.Stop();
             audioSrc.Pause();
         }
+        */
 
         //run state code every frame
         switch (_state) 
@@ -291,13 +290,14 @@ public class GameManager : MonoBehaviourPun
 
                 break;
             case State.PLAY:
-                //if we're the master client and not checking players left yet
-                if (PhotonNetwork.IsMasterClient && !checkingIfPlayersLeft)
-                {
-                    //check players left every _ secs
-                    StartCoroutine(CheckIfPlayersLeft(checkIfPlayersLeftInterval));
 
-                    checkingIfPlayersLeft = true;
+                //if the game turns into game over
+                if(gameOver)
+                {
+                    Debug.Log("Game state changed to game over.");
+
+                    //switch to game over state
+                    SwitchState(State.GAMEOVER);
                 }
 
                 //alow player control
@@ -307,6 +307,7 @@ public class GameManager : MonoBehaviourPun
                 break;
             case State.GAMEOVER:
                 //revoke player control
+
                 break;
             case State.LOADLEVEL:
                 //revoke player control
@@ -487,11 +488,17 @@ public class GameManager : MonoBehaviourPun
                 //SwitchState(State.LOADLEVEL);
                 break;
             case State.PLAY:
+                if (PhotonNetwork.IsMasterClient)
+                {
+                    //check players left every _ secs
+                    StartCoroutine(CheckIfPlayersLeft(checkIfPlayersLeftInterval));
+                }
                 break;
             case State.LOADLEVEL:
 
                 break;
             case State.GAMEOVER:
+                PlayGameOverAudio();
                 //panelGameOver.SetActive(true);
                 break;
             case State.PAUSE:
@@ -513,6 +520,10 @@ public class GameManager : MonoBehaviourPun
             case State.INIT:
                 break;
             case State.PLAY:
+                if( PhotonNetwork.IsMasterClient)
+                {
+                    StopCoroutine(CheckIfPlayersLeft(checkIfPlayersLeftInterval));
+                }
                 break;
             case State.LOADLEVEL:
                 break;
@@ -797,6 +808,7 @@ public class GameManager : MonoBehaviourPun
     /// <summary>
     /// Broadcast game over to everyone, 
     ///  using given params and custom props to communicate correctly. 
+    /// Plays game over audio for everyone.
     /// </summary>
     /// <param name="jasonLost"></param>
     /// <param name="jasonWon"></param>
@@ -869,6 +881,17 @@ public class GameManager : MonoBehaviourPun
                 Debug.LogError("Player isn't Jason or Counselor.");
             }
         }
+    }
+
+    /// <summary>
+    /// Play game over audio locally or over network. //RPC callable.
+    /// </summary>
+    //[PunRPC]
+    private void PlayGameOverAudio()
+    {
+        Debug.Log("Play game over audio.");
+
+        AudioManager.instance.Play(AudioManager.gameOverAudioClipName);
     }
 
     /// <summary>

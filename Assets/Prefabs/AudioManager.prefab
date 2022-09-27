@@ -125,5 +125,29 @@ MonoBehaviour:
     maxHearingDistance: 25
     loop: 0
     source: {fileID: 0}
+  - name: Die
+    clip: {fileID: 8300000, guid: b6010f8de97e5764fa75a0de86d768a5, type: 3}
+    volume: 1
+    pitch: 1
+    spatialBlend: 1
+    maxHearingDistance: 50
+    loop: 0
+    source: {fileID: 0}
+  - name: Hurt
+    clip: {fileID: 8300000, guid: 0ea160298537dd34a9835b4fda794796, type: 3}
+    volume: 1
+    pitch: 1
+    spatialBlend: 1
+    maxHearingDistance: 40
+    loop: 0
+    source: {fileID: 0}
+  - name: Game Over
+    clip: {fileID: 8300000, guid: b4b8e51c65996644492582e44da3c117, type: 3}
+    volume: 1
+    pitch: 1
+    spatialBlend: 0
+    maxHearingDistance: 9000
+    loop: 1
+    source: {fileID: 0}
   outputAudioMixerGroup: {fileID: 24300002, guid: a279699fa98e4bc408a4470e7e8988f0,
     type: 2}

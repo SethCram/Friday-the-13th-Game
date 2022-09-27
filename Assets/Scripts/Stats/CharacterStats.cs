@@ -73,6 +73,8 @@ public class CharacterStats : MonoBehaviourPun
 
         //drop all player loot now that dead:
         OnDeathCallback += playerManager.DropEverything;
+
+        OnDeathCallback += PlayDeathNoise;
     }
 
     private void Update()
@@ -88,7 +90,7 @@ public class CharacterStats : MonoBehaviourPun
         if (Input.GetKeyDown(KeyCode.T))
         {
             //test taking dmg
-            TakeDamage(5);
+            TakeHit(5);
         }
         if(Input.GetKeyDown(KeyCode.K))
         {
@@ -217,8 +219,11 @@ public class CharacterStats : MonoBehaviourPun
     #region Pain Methods
 
 
-    //take damage based on enemy atk and my def:
-    public void TakeDamage(int dmgDealt)
+    /// <summary>
+    /// play hit noise and take damage
+    /// </summary>
+    /// <param name="dmgDealt"></param>
+    public void TakeHit(int dmgDealt)
     {
         bool notSupposedToTakeDmg;
 
@@ -236,16 +241,26 @@ public class CharacterStats : MonoBehaviourPun
 
         if (PhotonNetwork.IsConnected)
         {
+            //play hurt audio
+            photonView.RPC("PlayOrCreateAudioSource", RpcTarget.All, AudioManager.hurtAudioClipName);
+
             //tell all of these clients to take dmg
             photonView.RPC("RPC_TakeDamage", RpcTarget.Others, dmgDealt);
         }
         else
         {
+            //play hurt audio
+            playerManager.PlayOrCreateAudioSource(AudioManager.hurtAudioClipName);
+
             //take dmg locally
             RPC_TakeDamage( dmgDealt );
         }
     }
 
+    /// <summary>
+    /// Animate and apply damage. 
+    /// </summary>
+    /// <param name="dmgDealt"></param>
     [PunRPC]
     public void RPC_TakeDamage( int dmgDealt )
     {
@@ -288,8 +303,6 @@ public class CharacterStats : MonoBehaviourPun
                 OnDeathCallback();
             }
             
-            //die locally
-            AnimateAndSetDeath();
         }
     }
 
@@ -335,6 +348,21 @@ public class CharacterStats : MonoBehaviourPun
         //set player to dead
         playerManager.SetDead( true );
 
+    }
+
+    /// <summary>
+    /// Play death noise using the player manager's audio src.
+    /// </summary>
+    private void PlayDeathNoise()
+    {
+        if(PhotonNetwork.IsConnected)
+        {
+            photonView.RPC("PlayOrCreateAudioSource", RpcTarget.All, AudioManager.dieAudioClipName);
+        }
+        else
+        {
+            playerManager.PlayOrCreateAudioSource(AudioManager.dieAudioClipName);
+        }
     }
 
     #endregion
