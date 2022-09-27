@@ -302,7 +302,7 @@ public class CharacterStats : MonoBehaviourPun
             }
             
             //die locally
-            AnimateAndSetDeath();
+            //AnimateAndSetDeath();
         }
     }
 
