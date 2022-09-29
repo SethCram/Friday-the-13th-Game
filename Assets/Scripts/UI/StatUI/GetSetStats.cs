@@ -45,6 +45,9 @@ public class GetSetStats : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        //disable paused UI: 
+        pausedUICanvas.SetActive(false);
+
         //disable player control
         playerManager.DisablePlayerControl();
 
@@ -80,6 +83,30 @@ public class GetSetStats : MonoBehaviour
             }
 
         }
+    }
+
+    /// <summary>
+    /// On enable, disabled pause UI and player control.
+    /// </summary>
+    private void OnEnable()
+    {
+        //disable paused UI: 
+        pausedUICanvas.SetActive(false);
+
+        //disable player control
+        playerManager.DisablePlayerControl();
+    }
+
+    /// <summary>
+    /// On disable, enable pause UI and player control.
+    /// </summary>
+    private void OnDisable()
+    {
+        //enable paused UI: 
+        pausedUICanvas.SetActive(true);
+
+        //enable player cntrl
+        playerManager.EnablePlayerControl();
     }
 
     // Update is called once per frame
@@ -141,10 +168,10 @@ public class GetSetStats : MonoBehaviour
         }
 
         //enable player cntrl
-        playerManager.EnablePlayerControl();
+        //playerManager.EnablePlayerControl();
 
         //enable paused UI: (needed to get pause menu working for some reason)
-        pausedUICanvas.SetActive(true);
+        //pausedUICanvas.SetActive(true);
 
         //destroy our stats setting UI:
         //Destroy(gameObject);

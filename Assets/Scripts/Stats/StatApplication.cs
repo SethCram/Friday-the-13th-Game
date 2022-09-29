@@ -97,6 +97,8 @@ public class StatApplication : MonoBehaviour
 
             case "Perception":
 
+                //Debug.Log($"Preception is {statVal}");
+
                 //if perception too low for either minimap
                 if (statVal < minIconMinimap && statVal < minRealMinimap)
                 {
@@ -105,6 +107,7 @@ public class StatApplication : MonoBehaviour
 
                     break;
                 }
+                //if perception high enough for a minimap
                 else
                 {
                     //make sure minimap outline active

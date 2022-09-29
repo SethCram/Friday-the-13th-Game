@@ -98,11 +98,9 @@ public class PlayerManager : MonoBehaviourPunCallbacks
         //sub methods to on respawn callback
         OnRespawnCallback += RespawnPlayer;
         OnRespawnCallback += EnableInteractability;
-    }
-
-    private void Update()
-    {
-
+        //OnRespawnCallback += DisableBotMostUI;
+        OnRespawnCallback += DisableHealthBarUI;
+        OnRespawnCallback += DisableMinimapUI;
     }
 
     /// <summary>
@@ -717,6 +715,16 @@ public class PlayerManager : MonoBehaviourPunCallbacks
         deactivatingView.gameObject.SetActive(false);
 
         Debug.Log(deactivatingView.gameObject.name + " set deactive");
+    }
+
+    private void DisableHealthBarUI()
+    {
+        overlayUI.healthSlider.gameObject.SetActive(false);
+    }
+
+    private void DisableMinimapUI()
+    {
+        overlayUI.minimap.SetActive(false);
     }
 
     /// <summary>
