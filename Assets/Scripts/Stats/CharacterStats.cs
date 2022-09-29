@@ -75,6 +75,8 @@ public class CharacterStats : MonoBehaviourPun
         OnDeathCallback += playerManager.DropEverything;
 
         OnDeathCallback += PlayDeathNoise;
+
+        OnDeathCallback += DisableInteractability;
     }
 
     private void Update()
@@ -126,6 +128,11 @@ public class CharacterStats : MonoBehaviourPun
             overlayUI.UpdateHealthSlider(maxHP, currHP);
         }
 
+    }
+
+    private void DisableInteractability()
+    {
+        GetComponent<PlayerButtons>().interactableInaccesible = true;
     }
 
     #region Number Methods

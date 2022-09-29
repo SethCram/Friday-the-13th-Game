@@ -460,7 +460,7 @@ public class EquipmentManager : MonoBehaviourPun
         //set spawn pnt right in front of player, and up a bit bc otherwise spawns in ground:
         Vector3 spawnPnt = transform.position + inFrontOfPlayer + Vector3.up;
 
-        //if bag not empty
+        //if equip not empty
         if (currEquipment != null && currEquipment.Length != 0)
         {
             // for each item

@@ -57,12 +57,6 @@ public class Interactable : MonoBehaviourPunCallbacks
 
         //init list of transforms:
         interactablePlayers = new List<Transform>();
-
-        //add audio source as cached one and overwrite cached one
-        //audioSource = gameObject.AddComponent<AudioSource>(audioSource);
-        //AudioSource addedAudioSrc = gameObject.AddComponent<AudioSource>(audioSource);
-        //play audio source once added
-        //addedAudioSrc.Play();
     }
 
     private void Update()
@@ -86,12 +80,33 @@ public class Interactable : MonoBehaviourPunCallbacks
                 //player not deleted
                 else
                 {
+                    /*
+                    if (PhotonNetwork.IsConnected && !photonView.IsMine)
+                    {
+                        return;
+                    }
+                    */
+
+                    /*
+                    //if local play or networked and my photon view
+                    if(!PhotonNetwork.IsConnected || (PhotonNetwork.IsConnected && photonView.IsMine) )
+                    {
+                        //if choose to interact
+                        if (Input.GetButtonDown("Interact"))
+                        {
+                            //interact
+                            Interact(player);
+                        }
+                    }
+                    */
+
                     if (player.GetComponent<PlayerButtons>().playerInteract)
                     {
                         Interact(player);
 
                         //could add a private 'interacted' bool to make sure only 1 player picks up item, if becomes a problem 
                     }
+                   
                 }
             }
         }

@@ -60,6 +60,9 @@ public class PlayerManager : MonoBehaviourPunCallbacks
 
     public Dictionary<string, AudioSource> playerAudioSrcDict = new Dictionary<string, AudioSource>();
 
+    //event for w/ player respawns:
+    public System.Action OnRespawnCallback;
+
     #endregion
 
     #region Unity Methods
@@ -91,6 +94,10 @@ public class PlayerManager : MonoBehaviourPunCallbacks
 
         characterAnimator = GetComponent<CharacterAnimator>();
         characterStats = GetComponent<CharacterStats>();
+
+        //sub methods to on respawn callback
+        OnRespawnCallback += RespawnPlayer;
+        OnRespawnCallback += EnableInteractability;
     }
 
     private void Update()
@@ -107,8 +114,16 @@ public class PlayerManager : MonoBehaviourPunCallbacks
         //if should tele player
         if( teleportPlayer )
         {
-            //respawn player 
-            RespawnPlayer();
+
+            //if any methods sub'd
+            if(OnRespawnCallback != null)
+            {
+                //invoke callback
+                OnRespawnCallback();
+            }
+
+            //dont teleport player again
+            SetTeleportPlayer(false);
         }
     }
 
@@ -131,6 +146,11 @@ public class PlayerManager : MonoBehaviourPunCallbacks
     public void SetTeleportPlayer( bool shouldTeleport)
     {
         teleportPlayer = shouldTeleport;
+    }
+
+    private void EnableInteractability()
+    {
+        GetComponent<PlayerButtons>().interactableInaccesible = false;
     }
 
     #endregion
@@ -388,9 +408,6 @@ public class PlayerManager : MonoBehaviourPunCallbacks
     {
         //teleport to spectator spawn
         transform.position = spectatorSpawn;
-
-        //dont teleport player again
-        SetTeleportPlayer(false);
 
         //stop animing dead player
         characterAnimator.SetAnimDead(false);

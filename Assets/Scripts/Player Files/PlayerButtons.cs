@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
+using JetBrains.Annotations;
 
 public class PlayerButtons : MonoBehaviourPun
 {
@@ -10,13 +11,19 @@ public class PlayerButtons : MonoBehaviourPun
 
     [HideInInspector]
     public bool playerInteract = false;
-        //public bool openInventory = false;
-        //public bool openOptions = false;
+    //public bool openInventory = false;
+    //public bool openOptions = false;
+
+    public bool interactableInaccesible 
+    { 
+        get; 
+        set; 
+    } = false;
 
     // Update is called once per frame
     void Update()
     {
-        if(PhotonNetwork.IsConnected && !photonView.IsMine)
+        if((PhotonNetwork.IsConnected && !photonView.IsMine) || interactableInaccesible)
         {
             return;
         }
@@ -67,4 +74,5 @@ public class PlayerButtons : MonoBehaviourPun
         }
     }
     */
+
 }
