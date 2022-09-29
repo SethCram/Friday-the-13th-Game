@@ -43,11 +43,16 @@ public class StatApplication : MonoBehaviour
     [HideInInspector]
     public OverlayUI overlayUI;
 
+    [HideInInspector]
+    CharacterStats charStats;
+
     #endregion
 
     // Start is called before the first frame update
     void Start()
     {
+        charStats = GetComponent<CharacterStats>();
+
         //calc run and jmp range tween upper and lower limit:
         runDifference = runUpperLimit - runLowerLimit;
         jmpDifference = jmpUpperLimit - jmpLowerLimit;
@@ -186,9 +191,11 @@ public class StatApplication : MonoBehaviour
                 lastSetBulkStat = statVal;
 
                 //explicitly spawn numbers when bulk changes
-                GetComponent<CharacterStats>().SpawnNumbers(playerStats.maxHealth, playerStats.currHealth);
-                
-                // GetComponent<CharacterStats>().OnHealthChangedCallback(playerStats.maxHealth, playerStats.currHealth);
+                //GetComponent<CharacterStats>().SpawnNumbers(playerStats.maxHealth, playerStats.currHealth);
+                //GetComponent<CharacterStats>().OnHealthChangedCallback(playerStats.maxHealth, playerStats.currHealth);
+
+                //tell char stats that bulk was changed
+                charStats.InvokeCallback_OnHealthChangedCallback();
 
                 break;
 
