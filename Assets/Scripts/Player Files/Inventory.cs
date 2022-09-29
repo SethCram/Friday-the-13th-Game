@@ -232,8 +232,10 @@ public class Inventory : MonoBehaviour
         }
     }
 
-    //drop all items in invetory, true when done
-    public bool DropInventory()
+    /// <summary>
+    /// Drop all items in invetory, and remove them from the inventory list.
+    /// </summary>
+    public void DropInventory()
     {
         //set vector as right in front of which way player facing: 
         Vector3 inFrontOfPlayer = transform.forward.normalized; //use '.forwar' to get player's local coord syst, and normalized bc we only need direction not magnitude
@@ -245,12 +247,18 @@ public class Inventory : MonoBehaviour
         if (bagList.Count != 0)
         {
             // for each item
-            foreach (Item item in bagList)
+            //foreach (Item item in bagList)
+            for(int i = 0; i < bagList.Count; i++)
             {
+                Item item = bagList[i];
+
                 Debug.LogWarning(item.name + " lost, so recreated.");
 
                 //recreate item
                 DropInventoryItem(item.itemPickup, spawnPnt);
+
+                //rm from our list
+                RemoveItemFromInventoryList(item);
             }
         }
 
@@ -258,17 +266,23 @@ public class Inventory : MonoBehaviour
         if (tinyList.Count != 0)
         {
             // for each item
-            foreach (Item item in tinyList)
+            //foreach (Item item in tinyList)
+            for(int i = 0; i < tinyList.Count; i++)
             {
+                Item item = tinyList[i];
+
                 Debug.LogWarning(item.name + " lost.");
 
                 //recreate item
                 DropInventoryItem(item.itemPickup, spawnPnt);
+
+                //rm from our list
+                RemoveItemFromInventoryList(item);
             }
         }
-
-        return true;
     }
+
+
 
     #endregion Drop Methods
 

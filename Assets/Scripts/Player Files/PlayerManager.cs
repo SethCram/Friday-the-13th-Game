@@ -334,14 +334,25 @@ public class PlayerManager : MonoBehaviourPunCallbacks
         Debug.Log("successfully destroyed network gameobj w/ delay");
     }    
 
-    //drop all equipment and inventory items
+    /// <summary>
+    /// Repeatedly drop inventory and unequip items until everything is unequipt.
+    /// </summary>
     public void DropEverything()
-    {        
-        //wait till drop all inventory
-        while(!inventory.DropInventory());
+    {
+        
+        do
+        {
+            //Drop all inventory
+            inventory.DropInventory();
+        
+        //while haven't unequip all equipment yet
+        } while (!equipmentManager.UnequipAll());
 
-        //wait till drop all equipment
-        while(!equipmentManager.DropEquipment() );
+        //Drop all inventory
+        inventory.DropInventory();
+
+        //Drop all inventory (not sure why need this one too)
+        inventory.DropInventory();
 
         Debug.Log("All items dropped in " + GameManager.Instance.currentScene.ToString());
     }
