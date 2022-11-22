@@ -159,6 +159,12 @@ public class GetSetStats : MonoBehaviour
             Stat currStat = playerStats.allStats[i];
 
             currStat.baseValue = int.Parse(combinedStatArray[i].statValue.text);
+
+            if( currStat.name == "Bulk")
+            {
+                // init curr health as maxed out
+                playerStats.currHealth = playerStats.baseHealth + (applyStats.hp_per_bulk * currStat.baseValue);
+            }
             
             applyStats.onStatChangedCallback.Invoke(currStat);
         }

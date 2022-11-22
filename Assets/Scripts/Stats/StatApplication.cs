@@ -31,7 +31,7 @@ public class StatApplication : MonoBehaviour
     //for calcing player health:
     public int hp_per_bulk = 5;       //bc each bulk pnt worth a specified number of hp
     private int bulkDifference; 
-    private int lastSetBulkStat = 0;
+    //private int lastSetBulkStat = 0;
 
     //for dif minimap usage reqs
     public int minIconMinimap = 4;
@@ -180,15 +180,13 @@ public class StatApplication : MonoBehaviour
                 playerStats.maxHealth = playerStats.baseHealth + (hp_per_bulk * statVal);
 
                 //calc bulk dif ((+) if increased, (-) if decreased):
-                bulkDifference = statVal - lastSetBulkStat;
-
+                //bulkDifference = statVal - lastSetBulkStat;
                 //set curr hp to itself + or - the difference;
                 // only need to do this when player first spawns in
-                // otherwise, player's hp shouldnt change based on armor?
-                playerStats.currHealth += hp_per_bulk * bulkDifference;
-
+                // otherwise, player's hp shouldnt change based on armor
+                //playerStats.currHealth += hp_per_bulk * bulkDifference;
                 //set what the prev bulk stat is for w/ we call this method again:
-                lastSetBulkStat = statVal;
+                //lastSetBulkStat = statVal;
 
                 //explicitly spawn numbers when bulk changes
                 //GetComponent<CharacterStats>().SpawnNumbers(playerStats.maxHealth, playerStats.currHealth);
