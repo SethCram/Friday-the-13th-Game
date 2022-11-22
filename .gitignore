@@ -79,3 +79,6 @@ crashlytics-build.properties
 
 #ignore local code coverage runs
 /CodeCoverage/
+
+#ignore mac files
+.DS_Store

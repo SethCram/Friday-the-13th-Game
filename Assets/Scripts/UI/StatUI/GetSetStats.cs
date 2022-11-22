@@ -159,12 +159,8 @@ public class GetSetStats : MonoBehaviour
             Stat currStat = playerStats.allStats[i];
 
             currStat.baseValue = int.Parse(combinedStatArray[i].statValue.text);
-
-            //if curr stat not 0, signify this stat is being changed and call aprop methods:
-            if(currStat.baseValue != 0)
-            {
-                applyStats.onStatChangedCallback.Invoke(currStat);
-            }
+            
+            applyStats.onStatChangedCallback.Invoke(currStat);
         }
 
         //enable player cntrl

@@ -683,7 +683,7 @@ public class PlayerManager : MonoBehaviourPunCallbacks
         //if txt showing and overlay UI set
         if( overlayUI != null ) // && state == true)
         {
-            Debug.Log("interact msg: " + msg);
+            //debug: Debug.Log("interact msg: " + msg);
 
             //make sure correct message shown
             overlayUI.interactTxt.text = msg;
