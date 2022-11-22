@@ -45,6 +45,9 @@ public class GetSetStats : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        //disable paused UI: 
+        pausedUICanvas.SetActive(false);
+
         //disable player control
         playerManager.DisablePlayerControl();
 
@@ -80,6 +83,30 @@ public class GetSetStats : MonoBehaviour
             }
 
         }
+    }
+
+    /// <summary>
+    /// On enable, disabled pause UI and player control.
+    /// </summary>
+    private void OnEnable()
+    {
+        //disable paused UI: 
+        pausedUICanvas.SetActive(false);
+
+        //disable player control
+        playerManager.DisablePlayerControl();
+    }
+
+    /// <summary>
+    /// On disable, enable pause UI and player control.
+    /// </summary>
+    private void OnDisable()
+    {
+        //enable paused UI: 
+        pausedUICanvas.SetActive(true);
+
+        //enable player cntrl
+        playerManager.EnablePlayerControl();
     }
 
     // Update is called once per frame
@@ -133,18 +160,20 @@ public class GetSetStats : MonoBehaviour
 
             currStat.baseValue = int.Parse(combinedStatArray[i].statValue.text);
 
-            //if curr stat not 0, signify this stat is being changed and call aprop methods:
-            if(currStat.baseValue != 0)
+            if( currStat.name == "Bulk")
             {
-                applyStats.onStatChangedCallback.Invoke(currStat);
+                // init curr health as maxed out
+                playerStats.currHealth = playerStats.baseHealth + (applyStats.hp_per_bulk * currStat.baseValue);
             }
+            
+            applyStats.onStatChangedCallback.Invoke(currStat);
         }
 
         //enable player cntrl
-        playerManager.EnablePlayerControl();
+        //playerManager.EnablePlayerControl();
 
         //enable paused UI: (needed to get pause menu working for some reason)
-        pausedUICanvas.SetActive(true);
+        //pausedUICanvas.SetActive(true);
 
         //destroy our stats setting UI:
         //Destroy(gameObject);

@@ -60,6 +60,9 @@ public class PlayerManager : MonoBehaviourPunCallbacks
 
     public Dictionary<string, AudioSource> playerAudioSrcDict = new Dictionary<string, AudioSource>();
 
+    //event for w/ player respawns:
+    public System.Action OnRespawnCallback;
+
     #endregion
 
     #region Unity Methods
@@ -91,11 +94,13 @@ public class PlayerManager : MonoBehaviourPunCallbacks
 
         characterAnimator = GetComponent<CharacterAnimator>();
         characterStats = GetComponent<CharacterStats>();
-    }
 
-    private void Update()
-    {
-
+        //sub methods to on respawn callback
+        OnRespawnCallback += RespawnPlayer;
+        OnRespawnCallback += EnableInteractability;
+        //OnRespawnCallback += DisableBotMostUI;
+        OnRespawnCallback += DisableHealthBarUI;
+        OnRespawnCallback += DisableMinimapUI;
     }
 
     /// <summary>
@@ -107,8 +112,16 @@ public class PlayerManager : MonoBehaviourPunCallbacks
         //if should tele player
         if( teleportPlayer )
         {
-            //respawn player 
-            RespawnPlayer();
+
+            //if any methods sub'd
+            if(OnRespawnCallback != null)
+            {
+                //invoke callback
+                OnRespawnCallback();
+            }
+
+            //dont teleport player again
+            SetTeleportPlayer(false);
         }
     }
 
@@ -131,6 +144,11 @@ public class PlayerManager : MonoBehaviourPunCallbacks
     public void SetTeleportPlayer( bool shouldTeleport)
     {
         teleportPlayer = shouldTeleport;
+    }
+
+    private void EnableInteractability()
+    {
+        GetComponent<PlayerButtons>().interactableInaccesible = false;
     }
 
     #endregion
@@ -314,14 +332,25 @@ public class PlayerManager : MonoBehaviourPunCallbacks
         Debug.Log("successfully destroyed network gameobj w/ delay");
     }    
 
-    //drop all equipment and inventory items
+    /// <summary>
+    /// Repeatedly drop inventory and unequip items until everything is unequipt.
+    /// </summary>
     public void DropEverything()
-    {        
-        //wait till drop all inventory
-        while(!inventory.DropInventory());
+    {
+        
+        do
+        {
+            //Drop all inventory
+            inventory.DropInventory();
+        
+        //while haven't unequip all equipment yet
+        } while (!equipmentManager.UnequipAll());
 
-        //wait till drop all equipment
-        while(!equipmentManager.DropEquipment() );
+        //Drop all inventory
+        inventory.DropInventory();
+
+        //Drop all inventory (not sure why need this one too)
+        inventory.DropInventory();
 
         Debug.Log("All items dropped in " + GameManager.Instance.currentScene.ToString());
     }
@@ -388,9 +417,6 @@ public class PlayerManager : MonoBehaviourPunCallbacks
     {
         //teleport to spectator spawn
         transform.position = spectatorSpawn;
-
-        //dont teleport player again
-        SetTeleportPlayer(false);
 
         //stop animing dead player
         characterAnimator.SetAnimDead(false);
@@ -657,7 +683,7 @@ public class PlayerManager : MonoBehaviourPunCallbacks
         //if txt showing and overlay UI set
         if( overlayUI != null ) // && state == true)
         {
-            Debug.Log("interact msg: " + msg);
+            //debug: Debug.Log("interact msg: " + msg);
 
             //make sure correct message shown
             overlayUI.interactTxt.text = msg;
@@ -689,6 +715,16 @@ public class PlayerManager : MonoBehaviourPunCallbacks
         deactivatingView.gameObject.SetActive(false);
 
         Debug.Log(deactivatingView.gameObject.name + " set deactive");
+    }
+
+    private void DisableHealthBarUI()
+    {
+        overlayUI.healthSlider.gameObject.SetActive(false);
+    }
+
+    private void DisableMinimapUI()
+    {
+        overlayUI.minimap.SetActive(false);
     }
 
     /// <summary>

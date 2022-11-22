@@ -190,7 +190,7 @@ public class ItemPickup : Interactable //this class is now derived from/a child 
         //if this is our photon view: (dont need to re-create our own obj since we leaving)
         if (photonView.IsMine)
         {
-            Debug.Log("Didnt re-create item bc its our photon view.");
+            //deubg: Debug.Log("Didnt re-create item bc its our photon view.");
 
             return;
         }
@@ -198,7 +198,7 @@ public class ItemPickup : Interactable //this class is now derived from/a child 
         //if no players left in room: (dont need?)
         if (PhotonNetwork.CountOfPlayers <= 0)
         {
-            Debug.Log("Didnt re-create item bc players in room = " + PhotonNetwork.CountOfPlayers);
+            //deubg: Debug.Log("Didnt re-create item bc players in room = " + PhotonNetwork.CountOfPlayers);
             return;
         }
 

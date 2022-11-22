@@ -168,7 +168,11 @@ public class EquipmentManager : MonoBehaviourPun
         }
     }
 
-    //equip the default equip with the passed in equipment slot:
+    /// <summary>
+    /// Equip the default equip with the passed in equipment slot.
+    /// If no default equip found, none equipt.
+    /// </summary>
+    /// <param name="equipSlot"></param>
     public void EquipDefaultItem(EquipmentSlot equipSlot)
     {
         foreach (Equipment equipmentPiece in defaultEquipment)
@@ -178,6 +182,10 @@ public class EquipmentManager : MonoBehaviourPun
             if (equipmentPiece.equipSlot.CompareTo(equipSlot) == 0)
             {
                 Equip(equipmentPiece);
+            }
+            else
+            {
+                Debug.LogWarning($"No default equipment equipt for slot {equipSlot.ToString()}");
             }
         }
     }
@@ -284,15 +292,38 @@ public class EquipmentManager : MonoBehaviourPun
         return oldEquip;
     }
 
-    //unequip all curr equipment:
-    public void UnequipAll()
+    /// <summary>
+    /// Unequip all curr equipment, return true if successful.
+    /// If false, all equipment unequipped till fail.
+    /// Every unequip piece replaced with default equip.
+    /// </summary>
+    /// <returns></returns>
+    public bool UnequipAll()
     {
+        //walk thru all curr equip
         for (int i = 0; i < currEquipment.Length; i++) //loop thru all equipment slots
         {
-            Unequip(i);    //false bc not swapping equip
+            //if curr equip filled and isn't a default item
+            if(currEquipment[i] != null && currEquipment[i].isDefaultItem != true)
+            {
+                //unequip curr equip
+                Equipment unequiptEquip = Unequip(i);
+
+                //if took something off
+                if (unequiptEquip != null)
+                {
+                    //equip a default equip piece in its place
+                    EquipDefaultItem(unequiptEquip.equipSlot);
+                }
+                //if couldn't unequip curr equip
+                else
+                {
+                    return false;
+                }
+            }
         }
 
-        EquipAllDefaultItems(); //equipts default items regardless of if all items were able to successfully unequip
+        return true;
     }
 
     #endregion Unequip Methods
@@ -421,65 +452,4 @@ public class EquipmentManager : MonoBehaviourPun
 
     #endregion
 
-    #region Drop Methods
-
-    //drops item over photon network
-    private void DropEquippedItem(GameObject spawnObj, Vector3 spawnPnt)
-    {
-
-        //if photon network connected:
-        if (PhotonNetwork.IsConnected)
-        {
-            /*
-            //create only 1 obj regardless of player count:
-            PhotonNetwork.InstantiateRoomObject(numberModels[digit].name,
-                spawnPoint,
-                numberModels[digit].transform.rotation);
-            */
-
-            //create an obj for every new player joining, when they load in:
-            PhotonNetwork.Instantiate(spawnObj.name, spawnPnt, spawnObj.transform.rotation);
-
-            Debug.Log("Should have instantiated " + spawnObj.name);
-
-        }
-        //local gameplay
-        else
-        {
-            //locally create item
-            Instantiate(spawnObj, spawnPnt, spawnObj.transform.rotation);
-        }
-    }
-
-    //drop all items in equip manager, true when done
-    public bool DropEquipment()
-    {
-        //set vector as right in front of which way player facing: 
-        Vector3 inFrontOfPlayer = transform.forward.normalized; //use '.forwar' to get player's local coord syst, and normalized bc we only need direction not magnitude
-
-        //set spawn pnt right in front of player, and up a bit bc otherwise spawns in ground:
-        Vector3 spawnPnt = transform.position + inFrontOfPlayer + Vector3.up;
-
-        //if bag not empty
-        if (currEquipment != null && currEquipment.Length != 0)
-        {
-            // for each item
-            foreach (Item item in currEquipment)
-            {
-                //only drop non-default items
-                if(item != null && !item.isDefaultItem)
-                {
-                    Debug.LogWarning(item.name + " lost, so recreated.");
-
-                    //recreate item
-                    DropEquippedItem(item.itemPickup, spawnPnt);
-                }
-                
-            }
-        }
-
-        return true;
-    }
-
-    #endregion Drop Methods
 }

@@ -75,6 +75,8 @@ public class CharacterStats : MonoBehaviourPun
         OnDeathCallback += playerManager.DropEverything;
 
         OnDeathCallback += PlayDeathNoise;
+
+        OnDeathCallback += DisableInteractability;
     }
 
     private void Update()
@@ -126,6 +128,23 @@ public class CharacterStats : MonoBehaviourPun
             overlayUI.UpdateHealthSlider(maxHP, currHP);
         }
 
+    }
+
+    private void DisableInteractability()
+    {
+        GetComponent<PlayerButtons>().interactableInaccesible = true;
+    }
+
+    /// <summary>
+    /// Invokes the OnHealthChanged callback using CharacterStats.cs private health vars if any methods sub'd.
+    /// </summary>
+    public void InvokeCallback_OnHealthChangedCallback()
+    {
+        //health changed event:
+        if (OnHealthChangedCallback != null)
+        {
+            OnHealthChangedCallback(maxHealth, currHealth);
+        }
     }
 
     #region Number Methods
@@ -288,10 +307,7 @@ public class CharacterStats : MonoBehaviourPun
         Debug.LogWarning(transform.name + " takes " + damageTaken + " damage.");
 
         //health changed event:
-        if (OnHealthChangedCallback != null)
-        {
-            OnHealthChangedCallback(maxHealth, currHealth);
-        }
+        InvokeCallback_OnHealthChangedCallback();
 
         //if no more hp
         if (currHealth <= 0)
