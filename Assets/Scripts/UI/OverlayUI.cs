@@ -161,6 +161,12 @@ public class OverlayUI : MonoBehaviour
             //delete fill amt
             fillAmt.SetActive(false);
         }
+        //if HP reset
+        else if( currHP == maxHP)
+        {
+            //show fill amt
+            fillAmt.SetActive(true);
+        }
 
         //update filled amt (float casts needed)
         healthSlider.value = (float)currHP / (float)maxHP;
