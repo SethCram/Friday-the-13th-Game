@@ -1108,8 +1108,15 @@ public class GameManager : MonoBehaviourPun
 
     public void HideGameIntroPanel()
     {
-        //deactivate game intro panel
-        gameIntro.gameIntroPanel.SetActive(false);
+        if(gameIntro != null)
+        {
+            //deactivate game intro panel
+            gameIntro.gameIntroPanel.SetActive(false); //breaks test
+        }
+        else
+        {
+            Debug.LogWarning("game intro field null so can't disable game intro panel");
+        }
     }
 
     public void ShowGameIntroPanel()

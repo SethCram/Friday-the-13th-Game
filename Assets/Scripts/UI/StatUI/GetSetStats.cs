@@ -102,11 +102,28 @@ public class GetSetStats : MonoBehaviour
     /// </summary>
     private void OnDisable()
     {
-        //enable paused UI: 
-        pausedUICanvas.SetActive(true);
+        if(pausedUICanvas != null)
+        {
+            //enable paused UI: 
+            pausedUICanvas.SetActive(true); //loading into game lobby fails here
+        }
+        else
+        {
+            Debug.LogWarning("paused ui null so can't be set active");
+        }
+
 
         //enable player cntrl
-        playerManager.EnablePlayerControl();
+        if(playerManager != null)
+        {
+           //enable player cntrl
+            playerManager.EnablePlayerControl(); 
+        }
+        else
+        {
+            Debug.LogWarning("player manager null so can't enable player control");
+        }
+
     }
 
     // Update is called once per frame

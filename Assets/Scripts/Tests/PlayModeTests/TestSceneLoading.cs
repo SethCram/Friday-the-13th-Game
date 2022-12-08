@@ -14,6 +14,8 @@ namespace Tests
     {
         int MAX_FRAMES_WAIT = 20000;
 
+        System.Random rnd = new System.Random();
+
         #region Unity Tests
 
         //[UnityTest]
@@ -129,7 +131,7 @@ namespace Tests
             CreateAndJoinRooms createAndJoinRooms = FindObjectOfType<CreateAndJoinRooms>();
 
             //simulate user entering room name
-            createAndJoinRooms.createInput.text = "generic room name";
+            createAndJoinRooms.createInput.text = "generic room name" + rnd.NextDouble().ToString(); //to avoid same named rooms being created in runtime error
 
             //simulate user pressing Create btn
             createAndJoinRooms.CreateRoom();
