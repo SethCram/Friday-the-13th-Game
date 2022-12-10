@@ -14,6 +14,8 @@ public class ThirdPersonMovement : MonoBehaviour
     public PhotonView photonView;   //*********init in inspector***
     public PlayerManager playerManager;
 
+    private PlayerStats playerStats;
+
     //cam following player:     (drop)
     public Transform playerCam;
 
@@ -79,6 +81,11 @@ public class ThirdPersonMovement : MonoBehaviour
     public float deadRadius = 0.01f;
     public float deadHeight = 0.4f;
 
+    //stamina vars
+    public int jumpStaminaCost = 50;
+    public int atkStaminaCost = 20;
+    public int dodgeStaminaCost = 5;
+
     #endregion
 
     #region Unity Methods
@@ -87,6 +94,7 @@ public class ThirdPersonMovement : MonoBehaviour
     void Start()
     {
         controller = GetComponent<CharacterController>();
+        playerStats = GetComponent<PlayerStats>();
 
         //store curr collider settings:
         ogCenter = controller.center;
@@ -224,6 +232,8 @@ public class ThirdPersonMovement : MonoBehaviour
         //reset 'jump' command:
         jump = false;
 
+        bool staminaChanged = false;
+
         //if grounded, check if want  to run or crouch:
         if (isGrounded)
         {
@@ -305,23 +315,61 @@ public class ThirdPersonMovement : MonoBehaviour
             {
                 //checks: print("Curr time: " + Time.time); print("Time jumped at: " + jumpTime);
 
-                Jump();
+                //if enough stamina left, jump
+                int newCurrStamina = playerStats.currStamina - jumpStaminaCost;
+                if( newCurrStamina >= 0 )
+                {
+                    playerStats.currStamina = newCurrStamina;
+
+                    staminaChanged = true;
+
+                    Jump();
+                }
             } 
             //if pressed an attack button:
-            else if(Input.GetButtonDown("Attack0"))
+            else if(Input.GetButtonDown("Attack0") || Input.GetButtonDown("Attack1"))
             {
-                //activate the 0th attack anim:
-                combat.ActivateAttack(0);  
-            }
-            else if(Input.GetButtonDown("Attack1"))
-            {
-                //activate the 1st attack anim:
-                combat.ActivateAttack(1);
+                //if enough stamina left, attack with chosen atk
+                int newCurrStamina = playerStats.currStamina - atkStaminaCost;
+                if( newCurrStamina >= 0)
+                {
+                    playerStats.currStamina = newCurrStamina;
+
+                    staminaChanged = true;
+
+                    //if atk0
+                    if(Input.GetButtonDown("Attack0"))
+                    {
+                        //activate the 0th attack anim:
+                        combat.ActivateAttack(0);  
+                    }
+                    //if atk1
+                    else
+                    {
+                        //activate the 1st attack anim:
+                        combat.ActivateAttack(1);
+                    }
+                }
             }
             else if(Input.GetButtonDown("Dodge"))
             {
-                Dodge();
+                //if enough stamina left, dodge
+                int newCurrStamina = playerStats.currStamina - dodgeStaminaCost;
+                if (newCurrStamina >= 0)
+                {
+                    playerStats.currStamina = newCurrStamina;
+
+                    staminaChanged = true;
+
+                    Dodge();
+                }
             }
+        }
+    
+        //if stamina changed, activate callback
+        if(staminaChanged)
+        {
+            playerStats.InvokeCallback_OnStaminaChangedCallback();
         }
     }
 
