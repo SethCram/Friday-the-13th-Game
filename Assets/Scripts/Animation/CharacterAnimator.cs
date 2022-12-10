@@ -37,6 +37,8 @@ public class CharacterAnimator : MonoBehaviour
     public PhotonView photonView;
     private bool dying = false;
 
+    public float speedPercent = 0;
+
     //private bool groundedPreviously = false;
     //private bool landing = false;
 
@@ -97,8 +99,7 @@ public class CharacterAnimator : MonoBehaviour
 
         previousPos = transform.position;
 
-        //transition tween idle and walking:
-        float speedPercent;
+        //transition tween idle and walking thru speedPercent
 
         //set 'speedPercent' based on whether crouched or not:
         if (movement.crouched)

@@ -105,7 +105,7 @@ public class ThirdPersonMovement : MonoBehaviour
         charSpeed = walkSpeed;
     }
 
-    // Update is called once per frame
+    // Update is called once per frame (movement should be in fixed update not update???)
     void Update()
     {
         //if this obj isnt mine and we connected to the photon network:
@@ -231,7 +231,7 @@ public class ThirdPersonMovement : MonoBehaviour
     {
         //reset 'jump' command:
         jump = false;
-        
+
         //if grounded, check if want  to run or crouch:
         if (isGrounded)
         {
@@ -242,14 +242,33 @@ public class ThirdPersonMovement : MonoBehaviour
             {
                 Crouch();
             }
-            //Running- set char speed to 'runSpeed':
-            else if (Input.GetButton("Run")) //'Fire3' = axis for left shift, (mouse 2?), and controller something
+            //if run btn
+            else if (Input.GetButton("Run")) //'Fire3' = axis for left shift, (mouse 2?), and controller something //transform.position != prevPos
             {
-                //Debug.Log("Started Running");
+                //moved + stamina left
+                if( charAnimator.speedPercent > 0 && playerStats.currStamina > 0)
+                {
+                    //if not degening stamina, start immediately
+                    if(playerStats.degenStaminaCoroutineInstance == null)
+                    {
+                        playerStats.StartStaminaDegen();
+                    }
 
-                charSpeed = runSpeed;
+                    //Debug.Log("Started Running");
 
-                running = true;
+                    charSpeed = runSpeed;
+
+                    running = true;
+                }
+                //not moving or cant use stamina
+                else
+                {
+                    playerStats.StartStaminaRegen();
+
+                    charSpeed = walkSpeed; // unnecessary?
+
+                    running = false;
+                }
             }
             //if not running or crouching, char's speed is its walking speed:
             else
@@ -278,10 +297,12 @@ public class ThirdPersonMovement : MonoBehaviour
             }
         }
 
-        //stop running if run button released:
+        //stop running + stamina degen if run button released
         if(Input.GetButtonUp("Run"))
         {
             //check: Debug.Log("Stopped running");
+
+            playerStats.StartStaminaRegen();
 
             charSpeed = walkSpeed;
 
@@ -375,6 +396,8 @@ public class ThirdPersonMovement : MonoBehaviour
 
             //normalized so never greater than 1:
             moveDirection = moveDirection.normalized;
+
+            //print("apply movement");
 
             //tell player controller to move in this direction:
             controller.Move(moveDirection * charSpeed * Time.deltaTime); //mult by 'Time.deltaTime' to make it framerate independant (bc we in update() and not fixedupdate())
