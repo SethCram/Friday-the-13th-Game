@@ -231,9 +231,7 @@ public class ThirdPersonMovement : MonoBehaviour
     {
         //reset 'jump' command:
         jump = false;
-
-        bool staminaChanged = false;
-
+        
         //if grounded, check if want  to run or crouch:
         if (isGrounded)
         {
@@ -310,33 +308,19 @@ public class ThirdPersonMovement : MonoBehaviour
         //if currently grounded and didn't jump w/ crouched, can jump or attack or dodge:
         if (isGrounded && !crouched)
         {
-            //if pressed the button and jump cooldown is up:
-            if (Input.GetButtonDown("Jump") ) //&& Time.time - jumpTime > jumpCooldown)
+            //if pressed the button + enough stamina left  //and jump cooldown is up:
+            if (Input.GetButtonDown("Jump") && playerStats.UseStamina(atkStaminaCost) ) //&& Time.time - jumpTime > jumpCooldown)
             {
                 //checks: print("Curr time: " + Time.time); print("Time jumped at: " + jumpTime);
 
-                //if enough stamina left, jump
-                int newCurrStamina = playerStats.currStamina - jumpStaminaCost;
-                if( newCurrStamina >= 0 )
-                {
-                    playerStats.currStamina = newCurrStamina;
-
-                    staminaChanged = true;
-
-                    Jump();
-                }
+                Jump();
             } 
             //if pressed an attack button:
             else if(Input.GetButtonDown("Attack0") || Input.GetButtonDown("Attack1"))
             {
                 //if enough stamina left, attack with chosen atk
-                int newCurrStamina = playerStats.currStamina - atkStaminaCost;
-                if( newCurrStamina >= 0)
+                if( playerStats.UseStamina(atkStaminaCost))
                 {
-                    playerStats.currStamina = newCurrStamina;
-
-                    staminaChanged = true;
-
                     //if atk0
                     if(Input.GetButtonDown("Attack0"))
                     {
@@ -351,25 +335,11 @@ public class ThirdPersonMovement : MonoBehaviour
                     }
                 }
             }
-            else if(Input.GetButtonDown("Dodge"))
+            //if btn + enough stamina left, dodge
+            else if(Input.GetButtonDown("Dodge") && playerStats.UseStamina(dodgeStaminaCost))
             {
-                //if enough stamina left, dodge
-                int newCurrStamina = playerStats.currStamina - dodgeStaminaCost;
-                if (newCurrStamina >= 0)
-                {
-                    playerStats.currStamina = newCurrStamina;
-
-                    staminaChanged = true;
-
-                    Dodge();
-                }
+                Dodge();
             }
-        }
-    
-        //if stamina changed, activate callback
-        if(staminaChanged)
-        {
-            playerStats.InvokeCallback_OnStaminaChangedCallback();
         }
     }
 

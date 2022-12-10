@@ -19,6 +19,8 @@ public class CharacterStats : MonoBehaviourPun
     public int currStamina; 
     public int baseStamina = 50; //never changes for this char
 
+    public float staminaRegenRate = 0.5f;
+
     //public float deathAnimDelay = 2f; //time it takes for death anim to play out
 
     //all character stats filled from inspector here:
@@ -47,6 +49,11 @@ public class CharacterStats : MonoBehaviourPun
 
     //event for w/ player death:
     public System.Action OnDeathCallback;
+
+    public WaitForSeconds regenStaminaTick = new WaitForSeconds(0.2f);
+    public float regenStaminaDelay = 2;
+
+    private Coroutine regenStaminaCoroutineInstance;
 
     #endregion
 
@@ -118,6 +125,14 @@ public class CharacterStats : MonoBehaviourPun
         
     }
 
+    /// <summary>
+    /// Frame independant stamina restore
+    /// </summary>
+    private void FixedUpdate()
+    {
+        
+    }
+
     #endregion
 
     /// <summary>
@@ -126,6 +141,59 @@ public class CharacterStats : MonoBehaviourPun
     public void SetHealthToMax()
     {
         currHealth = maxHealth;
+    }
+
+    /// <summary>
+    /// Try to use passed in amt of stamina and returns whether successful or not.
+    /// </summary>
+    /// <param name="staminaAmt"></param>
+    /// <returns></returns>
+    public bool UseStamina(int staminaAmt)
+    {
+        //if enough stamina left, rm it
+        int newCurrStamina = currStamina - staminaAmt;
+        if( newCurrStamina >= 0)
+        {
+            currStamina = newCurrStamina;
+
+            InvokeCallback_OnStaminaChangedCallback();
+
+            //if already regening stamina, stop
+            if( regenStaminaCoroutineInstance != null)
+            {
+                StopCoroutine(regenStaminaCoroutineInstance);
+            }
+
+            //start regening stamina w/ delay
+            regenStaminaCoroutineInstance = StartCoroutine(RegenStaminaCoroutine());
+
+            return true;
+        }
+
+        //if not enough stamina left, dont use any
+        return false;
+    }
+
+    /// <summary>
+    /// After regenStaminaDelay, start regening stamina per regenStaminaTick
+    /// </summary>
+    /// <returns></returns>
+    private IEnumerator RegenStaminaCoroutine()
+    {
+        yield return new WaitForSeconds(regenStaminaDelay);
+
+        while(currStamina < maxStamina)
+        {
+            currStamina += 1; //maxStamina / 100;
+
+            InvokeCallback_OnStaminaChangedCallback();
+
+            yield return regenStaminaTick;
+        }
+
+        //clear regen stamina coroutine bc no longer regening stamina
+        regenStaminaCoroutineInstance = null;
+
     }
 
     //call overlay UI health slider to update it

@@ -30,6 +30,8 @@ public class OverlayUI : MonoBehaviour
     public PlayerManager playerManager;
     private bool startedGame = false;
 
+    private int prevStamina = 100;
+
     #endregion
 
     #region Unity
@@ -169,6 +171,15 @@ public class OverlayUI : MonoBehaviour
     //update stamina slider using Stamina changed event
     public void UpdateStaminaSlider(int maxStamina, int currStamina)
     {
+        //if stamina being increased from 0
+        if(prevStamina == 0 && currStamina > 0 )
+        {
+            //enable stamina fill amt
+            staminaFillAmt.SetActive(true);
+        }
+
+        prevStamina = currStamina;
+
         print("Update stamina slider");
 
         UpdateAnySlider(staminaSlider, staminaRatio, staminaFillAmt, currStamina, maxStamina);
@@ -186,7 +197,7 @@ public class OverlayUI : MonoBehaviour
         else if( currAmt == maxAmt)
         {
             //show fill amt
-            hpFillAmt.SetActive(true);
+            fillAmt.SetActive(true);
         }
 
         //update filled amt (float casts needed)
