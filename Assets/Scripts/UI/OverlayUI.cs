@@ -14,10 +14,15 @@ public class OverlayUI : MonoBehaviour
     public TMP_Text interactTxt;
     public GameObject minimap;
 
-    //for slider
+    //for hp slider
     public Slider healthSlider;
     public TMP_Text healthRatio;
-    public GameObject fillAmt;
+    public GameObject hpFillAmt;
+
+    //for stamina slider
+    public Slider staminaSlider;
+    public TMP_Text staminaRatio;
+    public GameObject staminaFillAmt;
 
     //for starting game
     public Toggle voteToggle;
@@ -39,6 +44,9 @@ public class OverlayUI : MonoBehaviour
 
         //start w/ health slider off
         healthSlider.gameObject.SetActive(false);
+
+        //start w/ stamina slider off
+        staminaSlider.gameObject.SetActive(false);
 
         //if not game lobby scene
         if( GameManager.Instance.currentScene != GameManager.CurrentScene.GAME_LOBBY)
@@ -155,24 +163,37 @@ public class OverlayUI : MonoBehaviour
     {
         print("Update HP slider");
 
-        //if no HP left
-        if( currHP <= 0)
+        UpdateAnySlider(healthSlider, healthRatio, hpFillAmt, currHP, maxHP);
+    }
+
+    //update stamina slider using Stamina changed event
+    public void UpdateStaminaSlider(int maxStamina, int currStamina)
+    {
+        print("Update stamina slider");
+
+        UpdateAnySlider(staminaSlider, staminaRatio, staminaFillAmt, currStamina, maxStamina);
+    }
+
+    private void UpdateAnySlider(Slider slider, TMP_Text ratioText, GameObject fillAmt, int currAmt, int maxAmt)
+    {
+        //if no amt left
+        if( currAmt <= 0)
         {
             //delete fill amt
             fillAmt.SetActive(false);
         }
-        //if HP reset
-        else if( currHP == maxHP)
+        //if reset
+        else if( currAmt == maxAmt)
         {
             //show fill amt
-            fillAmt.SetActive(true);
+            hpFillAmt.SetActive(true);
         }
 
         //update filled amt (float casts needed)
-        healthSlider.value = (float)currHP / (float)maxHP;
+        slider.value = (float)currAmt / (float)maxAmt;
 
         //update ratio text
-        healthRatio.text = currHP + "/" + maxHP;
+        ratioText.text = currAmt + "/" + maxAmt;
     }
 
     #endregion

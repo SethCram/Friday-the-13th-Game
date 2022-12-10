@@ -15,6 +15,10 @@ public class CharacterStats : MonoBehaviourPun
     public int currHealth; //{ get; private set; } (needs to be settable from 'StatApplications' for bulk stat //can only set thru this class, but can be retrieved by any class 
     public int baseHealth = 50; //never changes for this char
 
+    public int maxStamina = 50; //not a stat bc don't want it affected by modifiers
+    public int currStamina; 
+    public int baseStamina = 50; //never changes for this char
+
     //public float deathAnimDelay = 2f; //time it takes for death anim to play out
 
     //all character stats filled from inspector here:
@@ -22,6 +26,9 @@ public class CharacterStats : MonoBehaviourPun
 
     //event for w/ health changes (max and curr health needed):
     public event System.Action<int, int> OnHealthChangedCallback; //example of an 'event' that takes multiple args, should update healthUI w/ ever called
+
+    //event for w/ stamina changes
+    public event System.Action<int, int> OnStaminaChangedCallback;
 
     //declare a dict of index type string and return type Stat:
     public Dictionary<string, Stat> statDict;
@@ -66,6 +73,9 @@ public class CharacterStats : MonoBehaviourPun
 
         //update health slider using HP changed event
         OnHealthChangedCallback += CallHealthSlider;
+
+        //update stamina slider using stamina changed event
+        OnStaminaChangedCallback += CallStaminaSlider;
 
         //sub methods to death callback
 
@@ -119,13 +129,25 @@ public class CharacterStats : MonoBehaviourPun
     }
 
     //call overlay UI health slider to update it
-    public void CallHealthSlider(int maxHP, int currHP)
+    private void CallHealthSlider(int maxHP, int currHP) //was previously public for some reason?
     {
         //if local play or my player
         if(!PhotonNetwork.IsConnected || photonView.IsMine)
         {
             //update hp slider
             overlayUI.UpdateHealthSlider(maxHP, currHP);
+        }
+
+    }
+
+    //call overlay UI stamina slider to update it
+    private void CallStaminaSlider(int maxStamina, int currStamina)
+    {
+        //if local play or my player
+        if(!PhotonNetwork.IsConnected || photonView.IsMine)
+        {
+            //update stamina slider
+            overlayUI.UpdateStaminaSlider(maxStamina, currStamina);
         }
 
     }
@@ -144,6 +166,18 @@ public class CharacterStats : MonoBehaviourPun
         if (OnHealthChangedCallback != null)
         {
             OnHealthChangedCallback(maxHealth, currHealth);
+        }
+    }
+
+    /// <summary>
+    /// Invokes the OnStaminaChanged callback using CharacterStats.cs private stamina vars if any methods sub'd.
+    /// </summary>
+    public void InvokeCallback_OnStaminaChangedCallback()
+    {
+        //health changed event:
+        if (OnStaminaChangedCallback != null)
+        {
+            OnStaminaChangedCallback(maxStamina, currStamina);
         }
     }
 

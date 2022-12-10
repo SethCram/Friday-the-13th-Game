@@ -100,6 +100,7 @@ public class PlayerManager : MonoBehaviourPunCallbacks
         OnRespawnCallback += EnableInteractability;
         //OnRespawnCallback += DisableBotMostUI;
         OnRespawnCallback += DisableHealthBarUI;
+        OnRespawnCallback += DisableStaminaBarUI;
         OnRespawnCallback += DisableMinimapUI;
     }
 
@@ -720,6 +721,11 @@ public class PlayerManager : MonoBehaviourPunCallbacks
     private void DisableHealthBarUI()
     {
         overlayUI.healthSlider.gameObject.SetActive(false);
+    }
+
+    private void DisableStaminaBarUI()
+    {
+        overlayUI.staminaSlider.gameObject.SetActive(false);
     }
 
     private void DisableMinimapUI()

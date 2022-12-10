@@ -30,8 +30,10 @@ public class StatApplication : MonoBehaviour
 
     //for calcing player health:
     public int hp_per_bulk = 5;       //bc each bulk pnt worth a specified number of hp
-    private int bulkDifference; 
+    private int bulkDifference;
     //private int lastSetBulkStat = 0;
+
+    public int stamina_per_point = 5;
 
     //for dif minimap usage reqs
     public int minIconMinimap = 4;
@@ -40,6 +42,10 @@ public class StatApplication : MonoBehaviour
 
     //for hp bar usage
     public int minHealthBar = 5;
+
+    //for stamina bar usage
+    public int minStaminaBar = 6;
+
     [HideInInspector]
     public OverlayUI overlayUI;
 
@@ -201,6 +207,24 @@ public class StatApplication : MonoBehaviour
                 break;
 
             case "Agility":
+
+                playerStats.maxStamina = playerStats.baseStamina + (stamina_per_point * statVal);
+
+                //if have enough points for stamina bar
+                if( statVal >= minStaminaBar)
+                {
+                    //activate it
+                    overlayUI.staminaSlider.gameObject.SetActive(true);
+                }
+                else
+                {
+                    //deactivate it
+                    overlayUI.staminaSlider.gameObject.SetActive(false);
+                }
+
+                //tell char stats that stamina was changed
+                charStats.InvokeCallback_OnStaminaChangedCallback();
+
                 break;
 
             case "Unarmed":

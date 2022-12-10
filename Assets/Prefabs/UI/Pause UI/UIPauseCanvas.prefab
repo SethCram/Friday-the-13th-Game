@@ -932,7 +932,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: 198, y: 4.3}
+  m_AnchoredPosition: {x: 198, y: -20}
   m_SizeDelta: {x: 350, y: 400}
   m_Pivot: {x: 0.50000006, y: 0.5}
 --- !u!222 &3443580890097473754
@@ -5088,6 +5088,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5514810632655455694, guid: ba6d5a6a8e56fb64c94546c2c1734bbd,
+        type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: OptionsMenu, Scripts
+      objectReference: {fileID: 0}
+    - target: {fileID: 5514810632921631378, guid: ba6d5a6a8e56fb64c94546c2c1734bbd,
+        type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: OptionsMenu, Scripts
       objectReference: {fileID: 0}
     - target: {fileID: 5514810632929662112, guid: ba6d5a6a8e56fb64c94546c2c1734bbd,
         type: 3}

@@ -177,10 +177,16 @@ public class GetSetStats : MonoBehaviour
 
             currStat.baseValue = int.Parse(combinedStatArray[i].statValue.text);
 
-            if( currStat.name == "Bulk")
+            
+            if( currStat.name == "Bulk") //cant do in application script bc don't want currhp/currstamina reset to max every update
             {
                 // init curr health as maxed out
                 playerStats.currHealth = playerStats.baseHealth + (applyStats.hp_per_bulk * currStat.baseValue);
+            }
+            else if( currStat.name == "Agility")
+            {
+                // init curr Stamina as maxed out
+                playerStats.currStamina = playerStats.baseStamina + (applyStats.stamina_per_point * currStat.baseValue);
             }
             
             applyStats.onStatChangedCallback.Invoke(currStat);
