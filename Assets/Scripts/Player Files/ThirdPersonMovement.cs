@@ -23,9 +23,9 @@ public class ThirdPersonMovement : MonoBehaviour
     public bool cutMotionControls = false; //invert w/ UI opened/closed callback invoked
 
     //different speeds:
-    public float crouchSpeed = 2f;
-    public float walkSpeed = 5f;
-    public float runSpeed = 7f; //ranges tween 7 and 12
+    public float crouchSpeed = 1f; //2
+    public float walkSpeed = 2f; //4
+    public float runSpeed = 4f; //ranges tween 7 and 12
     private float charSpeed;
 
     //time taken to smooth out turning:
@@ -398,6 +398,8 @@ public class ThirdPersonMovement : MonoBehaviour
             moveDirection = moveDirection.normalized;
 
             //print("apply movement");
+
+            print(charSpeed);
 
             //tell player controller to move in this direction:
             controller.Move(moveDirection * charSpeed * Time.deltaTime); //mult by 'Time.deltaTime' to make it framerate independant (bc we in update() and not fixedupdate())

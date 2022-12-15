@@ -19,13 +19,22 @@ public class StatApplication : MonoBehaviour
     public int statMax = 10;
 
     //for calcing running speed:
-    private float runLowerLimit = 7;
-    private float runUpperLimit = 12;
+    private float runLowerLimit = 3; //7
+    private float runUpperLimit = 6; //12
     private float runDifference;
 
+    //for calcing walking speed
+    private float walkLowerLimit = 2;
+    private float walkUpperLimit = 4;
+    private float walkDifference;
+
+    private float crouchSpeedLowerLimit = 1;
+    private float crouchSpeedUpperLimit = 2;
+    private float crouchSpeedDifference;
+
     //for calcing jump height:
-    private float jmpLowerLimit = 1;
-    private float jmpUpperLimit = 3;
+    private float jmpLowerLimit = 0.5f; //1
+    private float jmpUpperLimit = 1.5f; //3
     private float jmpDifference;
 
     //for calcing player health:
@@ -62,6 +71,13 @@ public class StatApplication : MonoBehaviour
         //calc run and jmp range tween upper and lower limit:
         runDifference = runUpperLimit - runLowerLimit;
         jmpDifference = jmpUpperLimit - jmpLowerLimit;
+        walkDifference = walkUpperLimit - walkLowerLimit;
+        crouchSpeedDifference = crouchSpeedUpperLimit - crouchSpeedLowerLimit;
+
+        //init movement vals (odesn't work?)
+        movement.walkSpeed = walkLowerLimit;
+        movement.runSpeed = runLowerLimit;
+        movement.crouchSpeed = crouchSpeedLowerLimit;
 
         //sub method for w/ stat changes:
         onStatChangedCallback += ApplyChangedStat;
@@ -82,11 +98,15 @@ public class StatApplication : MonoBehaviour
 
             case "Running":
 
-                //find additional run speed to add:
+                //find additional run/walk/crouch speed to add:
                 float addedRunSpeed = (statVal / (float)statMax) * runDifference;   //dont do float arith w/ an int or it'll approx
+                float addedWalkSpeed = (statVal / (float)statMax) * walkDifference;
+                float addedCrouchSpeed = (statVal / (float)statMax) * crouchSpeedDifference;
 
-                //set additional run speed:
+                //set additional run/walk/crouch speed:
                 movement.runSpeed = runLowerLimit + addedRunSpeed;
+                movement.walkSpeed = walkLowerLimit + addedWalkSpeed;
+                movement.crouchSpeed = crouchSpeedLowerLimit + addedCrouchSpeed;
 
                 break;
 

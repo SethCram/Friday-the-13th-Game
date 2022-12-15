@@ -701,8 +701,8 @@ MonoBehaviour:
   playerCam: {fileID: 6269342325880267029, guid: 6297942edde43f14292cb9d132b31388,
     type: 3}
   cutMotionControls: 0
-  crouchSpeed: 2
-  walkSpeed: 5
+  crouchSpeed: 1
+  walkSpeed: 2
   runSpeed: 7
   turnSmoothTime: 0.3
   groundCheck: {fileID: 7413788013866913897}
