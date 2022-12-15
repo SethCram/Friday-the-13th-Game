@@ -14,6 +14,8 @@ public class ThirdPersonMovement : MonoBehaviour
     public PhotonView photonView;   //*********init in inspector***
     public PlayerManager playerManager;
 
+    private PlayerStats playerStats;
+
     //cam following player:     (drop)
     public Transform playerCam;
 
@@ -79,6 +81,11 @@ public class ThirdPersonMovement : MonoBehaviour
     public float deadRadius = 0.01f;
     public float deadHeight = 0.4f;
 
+    //stamina vars
+    public int jumpStaminaCost = 50;
+    public int atkStaminaCost = 20;
+    public int dodgeStaminaCost = 5;
+
     #endregion
 
     #region Unity Methods
@@ -87,6 +94,7 @@ public class ThirdPersonMovement : MonoBehaviour
     void Start()
     {
         controller = GetComponent<CharacterController>();
+        playerStats = GetComponent<PlayerStats>();
 
         //store curr collider settings:
         ogCenter = controller.center;
@@ -97,7 +105,7 @@ public class ThirdPersonMovement : MonoBehaviour
         charSpeed = walkSpeed;
     }
 
-    // Update is called once per frame
+    // Update is called once per frame (movement should be in fixed update not update???)
     void Update()
     {
         //if this obj isnt mine and we connected to the photon network:
@@ -234,14 +242,33 @@ public class ThirdPersonMovement : MonoBehaviour
             {
                 Crouch();
             }
-            //Running- set char speed to 'runSpeed':
-            else if (Input.GetButton("Run")) //'Fire3' = axis for left shift, (mouse 2?), and controller something
+            //if run btn
+            else if (Input.GetButton("Run")) //'Fire3' = axis for left shift, (mouse 2?), and controller something //transform.position != prevPos
             {
-                //Debug.Log("Started Running");
+                //moved + stamina left
+                if( charAnimator.speedPercent > 0 && playerStats.currStamina > 0)
+                {
+                    //if not degening stamina, start immediately
+                    if(playerStats.degenStaminaCoroutineInstance == null)
+                    {
+                        playerStats.StartStaminaDegen();
+                    }
 
-                charSpeed = runSpeed;
+                    //Debug.Log("Started Running");
 
-                running = true;
+                    charSpeed = runSpeed;
+
+                    running = true;
+                }
+                //not moving or cant use stamina
+                else
+                {
+                    playerStats.StartStaminaRegen();
+
+                    charSpeed = walkSpeed; // unnecessary?
+
+                    running = false;
+                }
             }
             //if not running or crouching, char's speed is its walking speed:
             else
@@ -270,10 +297,12 @@ public class ThirdPersonMovement : MonoBehaviour
             }
         }
 
-        //stop running if run button released:
+        //stop running + stamina degen if run button released
         if(Input.GetButtonUp("Run"))
         {
             //check: Debug.Log("Stopped running");
+
+            playerStats.StartStaminaRegen();
 
             charSpeed = walkSpeed;
 
@@ -300,25 +329,35 @@ public class ThirdPersonMovement : MonoBehaviour
         //if currently grounded and didn't jump w/ crouched, can jump or attack or dodge:
         if (isGrounded && !crouched)
         {
-            //if pressed the button and jump cooldown is up:
-            if (Input.GetButtonDown("Jump") ) //&& Time.time - jumpTime > jumpCooldown)
+            //if pressed the button + enough stamina left  //and jump cooldown is up:
+            if (Input.GetButtonDown("Jump") && playerStats.UseStamina(atkStaminaCost) ) //&& Time.time - jumpTime > jumpCooldown)
             {
                 //checks: print("Curr time: " + Time.time); print("Time jumped at: " + jumpTime);
 
                 Jump();
             } 
             //if pressed an attack button:
-            else if(Input.GetButtonDown("Attack0"))
+            else if(Input.GetButtonDown("Attack0") || Input.GetButtonDown("Attack1"))
             {
-                //activate the 0th attack anim:
-                combat.ActivateAttack(0);  
+                //if enough stamina left, attack with chosen atk
+                if( playerStats.UseStamina(atkStaminaCost))
+                {
+                    //if atk0
+                    if(Input.GetButtonDown("Attack0"))
+                    {
+                        //activate the 0th attack anim:
+                        combat.ActivateAttack(0);  
+                    }
+                    //if atk1
+                    else
+                    {
+                        //activate the 1st attack anim:
+                        combat.ActivateAttack(1);
+                    }
+                }
             }
-            else if(Input.GetButtonDown("Attack1"))
-            {
-                //activate the 1st attack anim:
-                combat.ActivateAttack(1);
-            }
-            else if(Input.GetButtonDown("Dodge"))
+            //if btn + enough stamina left, dodge
+            else if(Input.GetButtonDown("Dodge") && playerStats.UseStamina(dodgeStaminaCost))
             {
                 Dodge();
             }
@@ -357,6 +396,8 @@ public class ThirdPersonMovement : MonoBehaviour
 
             //normalized so never greater than 1:
             moveDirection = moveDirection.normalized;
+
+            //print("apply movement");
 
             //tell player controller to move in this direction:
             controller.Move(moveDirection * charSpeed * Time.deltaTime); //mult by 'Time.deltaTime' to make it framerate independant (bc we in update() and not fixedupdate())

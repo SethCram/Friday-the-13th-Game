@@ -19,6 +19,8 @@ public class CharacterStats : MonoBehaviourPun
     public int currStamina; 
     public int baseStamina = 50; //never changes for this char
 
+    public float staminaRegenRate = 0.5f;
+
     //public float deathAnimDelay = 2f; //time it takes for death anim to play out
 
     //all character stats filled from inspector here:
@@ -47,6 +49,13 @@ public class CharacterStats : MonoBehaviourPun
 
     //event for w/ player death:
     public System.Action OnDeathCallback;
+
+    public WaitForSeconds regenStaminaTick = new WaitForSeconds(0.2f);
+    public float regenStaminaDelay = 2;
+
+    public Coroutine degenStaminaCoroutineInstance;
+    public Coroutine regenStaminaCoroutineInstance;
+    public WaitForSeconds degenStaminaTick = new WaitForSeconds(0.2f);
 
     #endregion
 
@@ -118,15 +127,17 @@ public class CharacterStats : MonoBehaviourPun
         
     }
 
+    /// <summary>
+    /// Frame independant stamina restore
+    /// </summary>
+    private void FixedUpdate()
+    {
+        
+    }
+
     #endregion
 
-    /// <summary>
-    /// sets current HP to max HP
-    /// </summary>
-    public void SetHealthToMax()
-    {
-        currHealth = maxHealth;
-    }
+    #region Health Methods
 
     //call overlay UI health slider to update it
     private void CallHealthSlider(int maxHP, int currHP) //was previously public for some reason?
@@ -138,23 +149,6 @@ public class CharacterStats : MonoBehaviourPun
             overlayUI.UpdateHealthSlider(maxHP, currHP);
         }
 
-    }
-
-    //call overlay UI stamina slider to update it
-    private void CallStaminaSlider(int maxStamina, int currStamina)
-    {
-        //if local play or my player
-        if(!PhotonNetwork.IsConnected || photonView.IsMine)
-        {
-            //update stamina slider
-            overlayUI.UpdateStaminaSlider(maxStamina, currStamina);
-        }
-
-    }
-
-    private void DisableInteractability()
-    {
-        GetComponent<PlayerButtons>().interactableInaccesible = true;
     }
 
     /// <summary>
@@ -170,6 +164,180 @@ public class CharacterStats : MonoBehaviourPun
     }
 
     /// <summary>
+    /// sets current HP to max HP
+    /// </summary>
+    public void SetHealthToMax()
+    {
+        currHealth = maxHealth;
+    }
+
+    #endregion Health Methods
+
+    #region Stamina Methods
+
+    /// <summary>
+    /// Try to use passed in amt of stamina and returns whether successful or not and start regen.
+    /// </summary>
+    /// <param name="staminaAmt"></param>
+    /// <returns></returns>
+    public bool UseStamina(int staminaAmt)
+    {
+        //if enough stamina left, rm it
+        int newCurrStamina = currStamina - staminaAmt;
+        if( newCurrStamina >= 0)
+        {
+            currStamina = newCurrStamina;
+
+            InvokeCallback_OnStaminaChangedCallback();
+
+            //if couldn't stop stamina degen bc none occuring, start stamina regen
+            if(!StopStaminaDegen())
+            {
+                StartStaminaRegen();
+            }
+
+            return true;
+        }
+
+        //if not enough stamina left, dont use any
+        return false;
+    }
+
+    /// <summary>
+    /// After regenStaminaDelay, start regening stamina per regenStaminaTick
+    /// </summary>
+    /// <returns></returns>
+    private IEnumerator RegenStaminaCoroutine()
+    {
+        //do initial dely of regening
+        yield return new WaitForSeconds(regenStaminaDelay);
+
+        //while curr stamina in bounds
+        while(currStamina < maxStamina)
+        {
+
+            currStamina += 1; //maxStamina / 100;
+
+            //update UI
+            InvokeCallback_OnStaminaChangedCallback();
+
+            //wait a little
+            yield return regenStaminaTick;
+        }
+
+        //clear regen stamina coroutine bc no longer regening stamina
+        regenStaminaCoroutineInstance = null;
+
+    }
+
+    private IEnumerator DegenStaminaCoroutine(float delay = 0)
+    {
+        yield return new WaitForSeconds(delay);
+
+        //while curr stamina in bounds
+        while(currStamina > 0)
+        {
+            //decr stamina
+            currStamina -= 1;
+
+            //update UI
+            InvokeCallback_OnStaminaChangedCallback();
+
+            //wait a little
+            yield return degenStaminaTick;
+        }
+
+        //clear stamina coroutine bc no longer degening stamina
+        degenStaminaCoroutineInstance = null;
+    }
+
+    /// <summary>
+    /// Return whether stamina degen able to start thru stopping any existing stamina changing + starting degen.
+    /// </summary>
+    /// <returns></returns>
+    public bool StartStaminaDegen(float delay = 0)
+    {
+        if( currStamina >= 0)
+        {
+            //if already changing stamina, stop
+            if( degenStaminaCoroutineInstance != null)
+            {
+                StopCoroutine(degenStaminaCoroutineInstance);
+            }
+            if( regenStaminaCoroutineInstance != null)
+            {
+                StopCoroutine(regenStaminaCoroutineInstance);
+                regenStaminaCoroutineInstance = null;
+            }
+
+            //start degening stamina w/ optional delay
+            degenStaminaCoroutineInstance = StartCoroutine(DegenStaminaCoroutine(delay: delay));
+
+            return true;
+        }
+
+        //if not enough stamina left, dont use any
+        return false;
+    }
+
+    /// <summary>
+    /// Stops stamina degen if possible and returns result.
+    /// </summary>
+    /// <returns></returns>
+    public bool StopStaminaDegen()
+    {
+        //if already changing stamina, stop
+        if( degenStaminaCoroutineInstance != null)
+        {
+            StopCoroutine(degenStaminaCoroutineInstance);
+            degenStaminaCoroutineInstance = null;
+
+            return true;
+        }
+
+        return false;
+    }
+
+    /// <summary>
+    /// Start regenerating stamina thru stopping any existing stamina changing + starting regen.
+    /// </summary>
+    public bool StartStaminaRegen()
+    {
+        if( maxStamina > currStamina)
+        {
+            //if already changing stamina, stop
+            if( regenStaminaCoroutineInstance != null)
+            {
+                StopCoroutine(regenStaminaCoroutineInstance);
+            }
+            if( degenStaminaCoroutineInstance != null)
+            {
+                StopCoroutine(degenStaminaCoroutineInstance);
+                degenStaminaCoroutineInstance = null;
+            }
+
+            //start regening stamina w/ delay
+            regenStaminaCoroutineInstance = StartCoroutine(RegenStaminaCoroutine());
+
+            return true;
+        }
+
+        return false;
+    }
+
+    //call overlay UI stamina slider to update it
+    private void CallStaminaSlider(int maxStamina, int currStamina)
+    {
+        //if local play or my player
+        if(!PhotonNetwork.IsConnected || photonView.IsMine)
+        {
+            //update stamina slider
+            overlayUI.UpdateStaminaSlider(maxStamina, currStamina);
+        }
+
+    }
+
+    /// <summary>
     /// Invokes the OnStaminaChanged callback using CharacterStats.cs private stamina vars if any methods sub'd.
     /// </summary>
     public void InvokeCallback_OnStaminaChangedCallback()
@@ -179,6 +347,13 @@ public class CharacterStats : MonoBehaviourPun
         {
             OnStaminaChangedCallback(maxStamina, currStamina);
         }
+    }
+
+    #endregion Stamina Methods
+
+    private void DisableInteractability()
+    {
+        GetComponent<PlayerButtons>().interactableInaccesible = true;
     }
 
     #region Number Methods
