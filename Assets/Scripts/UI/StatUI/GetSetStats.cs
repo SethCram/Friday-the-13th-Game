@@ -183,7 +183,7 @@ public class GetSetStats : MonoBehaviour
                 // init curr health as maxed out
                 playerStats.currHealth = playerStats.baseHealth + (applyStats.hp_per_bulk * currStat.baseValue);
             }
-            else if( currStat.name == "Agility")
+            else if( currStat.name == "Endurance")
             {
                 // init curr Stamina as maxed out
                 playerStats.currStamina = playerStats.baseStamina + (applyStats.stamina_per_point * currStat.baseValue);

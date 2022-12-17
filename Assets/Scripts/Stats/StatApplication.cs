@@ -226,7 +226,7 @@ public class StatApplication : MonoBehaviour
             case "Stealth":
                 break;
 
-            case "Agility":
+            case "Endurance":
 
                 playerStats.maxStamina = playerStats.baseStamina + (stamina_per_point * statVal);
 

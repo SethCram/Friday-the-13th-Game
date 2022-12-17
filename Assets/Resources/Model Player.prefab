@@ -769,7 +769,7 @@ MonoBehaviour:
     baseValue: 0
   - name: Stealth
     baseValue: 0
-  - name: Agility
+  - name: Endurance
     baseValue: 0
   - name: Unarmed
     baseValue: 0
