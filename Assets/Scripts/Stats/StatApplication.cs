@@ -20,16 +20,16 @@ public class StatApplication : MonoBehaviour
 
     //for calcing running speed:
     private float runLowerLimit = 3; //7
-    private float runUpperLimit = 6; //12
+    private float runUpperLimit = 3.5f; //12
     private float runDifference;
 
     //for calcing walking speed
-    private float walkLowerLimit = 2;
-    private float walkUpperLimit = 4;
+    private float walkLowerLimit = 2f;
+    private float walkUpperLimit = 2.5f;
     private float walkDifference;
 
     private float crouchSpeedLowerLimit = 1;
-    private float crouchSpeedUpperLimit = 2;
+    private float crouchSpeedUpperLimit = 1.5f;
     private float crouchSpeedDifference;
 
     //for calcing jump height:
