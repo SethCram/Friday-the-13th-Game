@@ -19,10 +19,6 @@ public class CharacterStats : MonoBehaviourPun
     public int currStamina; 
     public int baseStamina = 50; //never changes for this char
 
-    public float staminaRegenRate = 0.5f;
-
-    //public float deathAnimDelay = 2f; //time it takes for death anim to play out
-
     //all character stats filled from inspector here:
     public Stat[] allStats; //for setting stat names on character creation screen, and stat vals from it
 
@@ -50,11 +46,12 @@ public class CharacterStats : MonoBehaviourPun
     //event for w/ player death:
     public System.Action OnDeathCallback;
 
-    public WaitForSeconds regenStaminaTick = new WaitForSeconds(0.2f);
-    public float regenStaminaDelay = 2;
+    //more stamina related vars
+    public WaitForSeconds regenStaminaTick = new WaitForSeconds(10); //0.2f
+    public WaitForSeconds regenStaminaDelay = new WaitForSeconds(10); //2
 
     public Coroutine degenStaminaCoroutineInstance;
-    public Coroutine regenStaminaCoroutineInstance;
+    private Coroutine regenStaminaCoroutineInstance;
     public WaitForSeconds degenStaminaTick = new WaitForSeconds(0.2f);
 
     #endregion
@@ -210,7 +207,7 @@ public class CharacterStats : MonoBehaviourPun
     private IEnumerator RegenStaminaCoroutine()
     {
         //do initial dely of regening
-        yield return new WaitForSeconds(regenStaminaDelay);
+        yield return regenStaminaDelay;
 
         //while curr stamina in bounds
         while(currStamina < maxStamina)

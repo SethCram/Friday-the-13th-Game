@@ -27,7 +27,8 @@ public class StatApplication : MonoBehaviour
     private float walkLowerLimit = 2f;
     private float walkUpperLimit = 2.5f;
     private float walkDifference;
-
+    
+    //for calcing crouching speed
     private float crouchSpeedLowerLimit = 1;
     private float crouchSpeedUpperLimit = 1.5f;
     private float crouchSpeedDifference;
@@ -37,10 +38,17 @@ public class StatApplication : MonoBehaviour
     private float jmpUpperLimit = 1.5f; //3
     private float jmpDifference;
 
+    //stamina regen calc
+    private float regenStaminaDelayLowerLimit = 1.5f;
+    private float regenStaminaDelayUpperLimit = 2.5f;
+    private float regenStaminaDelayDifference;
+    private float regenStaminaTickLowerLimit = 0.15f;
+    private float regenStaminaTickUpperLimit = 0.25f;
+    private float regenStaminaTickDifference;
+
     //for calcing player health:
     public int hp_per_bulk = 5;       //bc each bulk pnt worth a specified number of hp
     private int bulkDifference;
-    //private int lastSetBulkStat = 0;
 
     public int stamina_per_point = 5;
 
@@ -68,16 +76,22 @@ public class StatApplication : MonoBehaviour
     {
         charStats = GetComponent<CharacterStats>();
 
-        //calc run and jmp range tween upper and lower limit:
+        //calc range tween upper and lower limit:
         runDifference = runUpperLimit - runLowerLimit;
         jmpDifference = jmpUpperLimit - jmpLowerLimit;
         walkDifference = walkUpperLimit - walkLowerLimit;
         crouchSpeedDifference = crouchSpeedUpperLimit - crouchSpeedLowerLimit;
+        regenStaminaDelayDifference = regenStaminaDelayUpperLimit - regenStaminaDelayLowerLimit;
+        regenStaminaTickDifference = regenStaminaTickUpperLimit - regenStaminaTickLowerLimit;
 
-        //init movement vals (odesn't work?)
+        //init movement vars 
         movement.walkSpeed = walkLowerLimit;
         movement.runSpeed = runLowerLimit;
         movement.crouchSpeed = crouchSpeedLowerLimit;
+
+        //init player regen stamina vars
+        playerStats.regenStaminaDelay = new WaitForSeconds(regenStaminaDelayUpperLimit);
+        playerStats.regenStaminaTick = new WaitForSeconds(regenStaminaTickUpperLimit);
 
         //sub method for w/ stat changes:
         onStatChangedCallback += ApplyChangedStat;
@@ -236,6 +250,14 @@ public class StatApplication : MonoBehaviour
             
             case "Dexterity":
                 //vary stamina restore speed and delay by new dexterity stat
+
+                float subtractedRegenStaminaDelay = (statVal / (float)statMax) * regenStaminaDelayDifference;
+                float subtractedRegenStaminaTick = (statVal / (float)statMax) * regenStaminaTickDifference;
+
+                print($"regen stamina tick = {regenStaminaTickUpperLimit - subtractedRegenStaminaTick}, regen stamina delay = {regenStaminaDelayUpperLimit - subtractedRegenStaminaDelay}");
+                playerStats.regenStaminaDelay = new WaitForSeconds(regenStaminaDelayUpperLimit - subtractedRegenStaminaDelay);
+                playerStats.regenStaminaTick = new WaitForSeconds(regenStaminaTickUpperLimit - subtractedRegenStaminaTick);
+
                 break;
             case "Unarmed":
                 //dont need section

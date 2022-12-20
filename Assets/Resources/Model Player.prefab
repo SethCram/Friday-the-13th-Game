@@ -745,7 +745,6 @@ MonoBehaviour:
   maxStamina: 50
   currStamina: 0
   baseStamina: 50
-  staminaRegenRate: 0.5
   allStats:
   - name: Melee
     baseValue: 0

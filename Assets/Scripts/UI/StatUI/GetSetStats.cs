@@ -191,7 +191,9 @@ public class GetSetStats : MonoBehaviour
                 // init curr Stamina as maxed out
                 playerStats.currStamina = playerStats.baseStamina + (applyStats.stamina_per_point * currStat.baseValue);
             }
-            
+
+            print(currStat.name);
+
             applyStats.onStatChangedCallback.Invoke(currStat);
         }
 

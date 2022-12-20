@@ -401,8 +401,7 @@ public class ThirdPersonMovement : MonoBehaviour
             moveDirection = moveDirection.normalized;
 
             //print("apply movement");
-
-            print(charSpeed);
+            //print($"char speed = {charSpeed}");
 
             //tell player controller to move in this direction:
             controller.Move(moveDirection * charSpeed * Time.deltaTime); //mult by 'Time.deltaTime' to make it framerate independant (bc we in update() and not fixedupdate())
