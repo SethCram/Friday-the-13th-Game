@@ -701,8 +701,8 @@ MonoBehaviour:
   playerCam: {fileID: 6269342325880267029, guid: 6297942edde43f14292cb9d132b31388,
     type: 3}
   cutMotionControls: 0
-  crouchSpeed: 2
-  walkSpeed: 5
+  crouchSpeed: 1
+  walkSpeed: 2
   runSpeed: 7
   turnSmoothTime: 0.3
   groundCheck: {fileID: 7413788013866913897}
@@ -745,13 +745,12 @@ MonoBehaviour:
   maxStamina: 50
   currStamina: 0
   baseStamina: 50
-  staminaRegenRate: 0.5
   allStats:
   - name: Melee
     baseValue: 0
   - name: Ranged
     baseValue: 0
-  - name: Running
+  - name: Speed
     baseValue: 0
   - name: Climbing
     baseValue: 0
@@ -763,13 +762,13 @@ MonoBehaviour:
     baseValue: 0
   - name: Paranoia
     baseValue: 0
-  - name: Communication
+  - name: Dexterity
     baseValue: 0
   - name: Bulk
     baseValue: 0
   - name: Stealth
     baseValue: 0
-  - name: Agility
+  - name: Endurance
     baseValue: 0
   - name: Unarmed
     baseValue: 0

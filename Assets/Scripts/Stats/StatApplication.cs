@@ -19,19 +19,36 @@ public class StatApplication : MonoBehaviour
     public int statMax = 10;
 
     //for calcing running speed:
-    private float runLowerLimit = 7;
-    private float runUpperLimit = 12;
+    private float runLowerLimit = 3; //7
+    private float runUpperLimit = 3.5f; //12
     private float runDifference;
 
+    //for calcing walking speed
+    private float walkLowerLimit = 2f;
+    private float walkUpperLimit = 2.5f;
+    private float walkDifference;
+    
+    //for calcing crouching speed
+    private float crouchSpeedLowerLimit = 1;
+    private float crouchSpeedUpperLimit = 1.5f;
+    private float crouchSpeedDifference;
+
     //for calcing jump height:
-    private float jmpLowerLimit = 1;
-    private float jmpUpperLimit = 3;
+    private float jmpLowerLimit = 0.5f; //1
+    private float jmpUpperLimit = 1.5f; //3
     private float jmpDifference;
+
+    //stamina regen calc
+    private float regenStaminaDelayLowerLimit = 1.5f;
+    private float regenStaminaDelayUpperLimit = 2.5f;
+    private float regenStaminaDelayDifference;
+    private float regenStaminaTickLowerLimit = 0.15f;
+    private float regenStaminaTickUpperLimit = 0.25f;
+    private float regenStaminaTickDifference;
 
     //for calcing player health:
     public int hp_per_bulk = 5;       //bc each bulk pnt worth a specified number of hp
     private int bulkDifference;
-    //private int lastSetBulkStat = 0;
 
     public int stamina_per_point = 5;
 
@@ -59,9 +76,22 @@ public class StatApplication : MonoBehaviour
     {
         charStats = GetComponent<CharacterStats>();
 
-        //calc run and jmp range tween upper and lower limit:
+        //calc range tween upper and lower limit:
         runDifference = runUpperLimit - runLowerLimit;
         jmpDifference = jmpUpperLimit - jmpLowerLimit;
+        walkDifference = walkUpperLimit - walkLowerLimit;
+        crouchSpeedDifference = crouchSpeedUpperLimit - crouchSpeedLowerLimit;
+        regenStaminaDelayDifference = regenStaminaDelayUpperLimit - regenStaminaDelayLowerLimit;
+        regenStaminaTickDifference = regenStaminaTickUpperLimit - regenStaminaTickLowerLimit;
+
+        //init movement vars 
+        movement.walkSpeed = walkLowerLimit;
+        movement.runSpeed = runLowerLimit;
+        movement.crouchSpeed = crouchSpeedLowerLimit;
+
+        //init player regen stamina vars
+        playerStats.regenStaminaDelay = new WaitForSeconds(regenStaminaDelayUpperLimit);
+        playerStats.regenStaminaTick = new WaitForSeconds(regenStaminaTickUpperLimit);
 
         //sub method for w/ stat changes:
         onStatChangedCallback += ApplyChangedStat;
@@ -80,13 +110,17 @@ public class StatApplication : MonoBehaviour
             case "Ranged":
                 break;
 
-            case "Running":
+            case "Speed":
 
-                //find additional run speed to add:
+                //find additional run/walk/crouch speed to add:
                 float addedRunSpeed = (statVal / (float)statMax) * runDifference;   //dont do float arith w/ an int or it'll approx
+                float addedWalkSpeed = (statVal / (float)statMax) * walkDifference;
+                float addedCrouchSpeed = (statVal / (float)statMax) * crouchSpeedDifference;
 
-                //set additional run speed:
+                //set additional run/walk/crouch speed:
                 movement.runSpeed = runLowerLimit + addedRunSpeed;
+                movement.walkSpeed = walkLowerLimit + addedWalkSpeed;
+                movement.crouchSpeed = crouchSpeedLowerLimit + addedCrouchSpeed;
 
                 break;
 
@@ -185,19 +219,6 @@ public class StatApplication : MonoBehaviour
                 //max hp set to base hp w/ added amt calced from bulk stat:
                 playerStats.maxHealth = playerStats.baseHealth + (hp_per_bulk * statVal);
 
-                //calc bulk dif ((+) if increased, (-) if decreased):
-                //bulkDifference = statVal - lastSetBulkStat;
-                //set curr hp to itself + or - the difference;
-                // only need to do this when player first spawns in
-                // otherwise, player's hp shouldnt change based on armor
-                //playerStats.currHealth += hp_per_bulk * bulkDifference;
-                //set what the prev bulk stat is for w/ we call this method again:
-                //lastSetBulkStat = statVal;
-
-                //explicitly spawn numbers when bulk changes
-                //GetComponent<CharacterStats>().SpawnNumbers(playerStats.maxHealth, playerStats.currHealth);
-                //GetComponent<CharacterStats>().OnHealthChangedCallback(playerStats.maxHealth, playerStats.currHealth);
-
                 //tell char stats that bulk was changed
                 charStats.InvokeCallback_OnHealthChangedCallback();
 
@@ -206,7 +227,7 @@ public class StatApplication : MonoBehaviour
             case "Stealth":
                 break;
 
-            case "Agility":
+            case "Endurance":
 
                 playerStats.maxStamina = playerStats.baseStamina + (stamina_per_point * statVal);
 
@@ -226,7 +247,18 @@ public class StatApplication : MonoBehaviour
                 charStats.InvokeCallback_OnStaminaChangedCallback();
 
                 break;
+            
+            case "Dexterity":
+                //vary stamina restore speed and delay by new dexterity stat
 
+                float subtractedRegenStaminaDelay = (statVal / (float)statMax) * regenStaminaDelayDifference;
+                float subtractedRegenStaminaTick = (statVal / (float)statMax) * regenStaminaTickDifference;
+
+                print($"regen stamina tick = {regenStaminaTickUpperLimit - subtractedRegenStaminaTick}, regen stamina delay = {regenStaminaDelayUpperLimit - subtractedRegenStaminaDelay}");
+                playerStats.regenStaminaDelay = new WaitForSeconds(regenStaminaDelayUpperLimit - subtractedRegenStaminaDelay);
+                playerStats.regenStaminaTick = new WaitForSeconds(regenStaminaTickUpperLimit - subtractedRegenStaminaTick);
+
+                break;
             case "Unarmed":
                 //dont need section
                 break;

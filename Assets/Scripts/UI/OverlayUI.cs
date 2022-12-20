@@ -163,7 +163,7 @@ public class OverlayUI : MonoBehaviour
     //update health slider using HP changed event
     public void UpdateHealthSlider(int maxHP, int currHP)
     {
-        print("Update HP slider");
+        //print("Update HP slider");
 
         UpdateAnySlider(healthSlider, healthRatio, hpFillAmt, currHP, maxHP);
     }
@@ -180,7 +180,7 @@ public class OverlayUI : MonoBehaviour
 
         prevStamina = currStamina;
 
-        print("Update stamina slider");
+        //print("Update stamina slider");
 
         UpdateAnySlider(staminaSlider, staminaRatio, staminaFillAmt, currStamina, maxStamina);
     }

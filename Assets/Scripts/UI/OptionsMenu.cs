@@ -38,7 +38,7 @@ public class OptionsMenu : MonoBehaviour
        //set toggle to current state of game
         fullscreenToggle.isOn = Screen.fullScreen;
 
-        Debug.Log("Options menu awake called");
+        //Debug.Log("Options menu awake called");
 
         //if not first time setting volume:
         if (PlayerPrefs.GetFloat(volName, -1) != -1)
