@@ -22,10 +22,13 @@ public class ThirdPersonMovement : MonoBehaviour
     [HideInInspector]
     public bool cutMotionControls = false; //invert w/ UI opened/closed callback invoked
 
-    //different speeds:
-    public float crouchSpeed = 1f; //2
-    public float walkSpeed = 2f; //4
-    public float runSpeed = 4f; //ranges tween 7 and 12
+    //different speeds: (inited in StatApplication.cs)
+    [HideInInspector]
+    public float crouchSpeed = 0; 
+    [HideInInspector]
+    public float walkSpeed = 0; 
+    [HideInInspector]
+    public float runSpeed = 0; 
     private float charSpeed;
 
     //time taken to smooth out turning:

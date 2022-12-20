@@ -96,7 +96,7 @@ public class StatApplication : MonoBehaviour
             case "Ranged":
                 break;
 
-            case "Running":
+            case "Speed":
 
                 //find additional run/walk/crouch speed to add:
                 float addedRunSpeed = (statVal / (float)statMax) * runDifference;   //dont do float arith w/ an int or it'll approx
@@ -205,19 +205,6 @@ public class StatApplication : MonoBehaviour
                 //max hp set to base hp w/ added amt calced from bulk stat:
                 playerStats.maxHealth = playerStats.baseHealth + (hp_per_bulk * statVal);
 
-                //calc bulk dif ((+) if increased, (-) if decreased):
-                //bulkDifference = statVal - lastSetBulkStat;
-                //set curr hp to itself + or - the difference;
-                // only need to do this when player first spawns in
-                // otherwise, player's hp shouldnt change based on armor
-                //playerStats.currHealth += hp_per_bulk * bulkDifference;
-                //set what the prev bulk stat is for w/ we call this method again:
-                //lastSetBulkStat = statVal;
-
-                //explicitly spawn numbers when bulk changes
-                //GetComponent<CharacterStats>().SpawnNumbers(playerStats.maxHealth, playerStats.currHealth);
-                //GetComponent<CharacterStats>().OnHealthChangedCallback(playerStats.maxHealth, playerStats.currHealth);
-
                 //tell char stats that bulk was changed
                 charStats.InvokeCallback_OnHealthChangedCallback();
 
@@ -246,7 +233,10 @@ public class StatApplication : MonoBehaviour
                 charStats.InvokeCallback_OnStaminaChangedCallback();
 
                 break;
-
+            
+            case "Dexterity":
+                //vary stamina restore speed and delay by new dexterity stat
+                break;
             case "Unarmed":
                 //dont need section
                 break;

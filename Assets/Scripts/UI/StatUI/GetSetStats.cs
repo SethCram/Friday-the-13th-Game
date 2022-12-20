@@ -12,8 +12,11 @@ public class GetSetStats : MonoBehaviour
     #region Variables 
 
     //set in ui initer:
+    [HideInInspector]
     public GameObject pausedUICanvas;
+    [HideInInspector]
     public StatApplication applyStats;
+    [HideInInspector]
     public PlayerManager playerManager;
 
     //total number text:
@@ -32,7 +35,7 @@ public class GetSetStats : MonoBehaviour
 
     //use this to set actual player stats:
     public int[] statVals;
-
+    [HideInInspector]
     public PlayerStats playerStats; //used to set Stat names, and fill player stat vals  (init w/ created?)
 
     //arr of not yet implemented stats: (filled in inspector)

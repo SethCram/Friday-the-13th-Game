@@ -751,7 +751,7 @@ MonoBehaviour:
     baseValue: 0
   - name: Ranged
     baseValue: 0
-  - name: Running
+  - name: Speed
     baseValue: 0
   - name: Climbing
     baseValue: 0
@@ -763,7 +763,7 @@ MonoBehaviour:
     baseValue: 0
   - name: Paranoia
     baseValue: 0
-  - name: Communication
+  - name: Dexterity
     baseValue: 0
   - name: Bulk
     baseValue: 0
