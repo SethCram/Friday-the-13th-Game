@@ -266,8 +266,12 @@ public class ThirdPersonMovement : MonoBehaviour
                 //not moving or cant use stamina
                 else
                 {
-                    playerStats.StartStaminaRegen();
-
+                    //if not already regenning stamina, start regening
+                    if(playerStats.regenStaminaCoroutineInstance == null)
+                    {
+                       playerStats.StartStaminaRegen(); 
+                    }
+                    
                     charSpeed = walkSpeed; // unnecessary?
 
                     running = false;
@@ -305,7 +309,11 @@ public class ThirdPersonMovement : MonoBehaviour
         {
             //check: Debug.Log("Stopped running");
 
-            playerStats.StartStaminaRegen();
+            //if not already regenning stamina, start regening
+            if(playerStats.regenStaminaCoroutineInstance == null)
+            {
+                playerStats.StartStaminaRegen(); 
+            }
 
             charSpeed = walkSpeed;
 

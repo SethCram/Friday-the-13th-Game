@@ -51,7 +51,7 @@ public class CharacterStats : MonoBehaviourPun
     public WaitForSeconds regenStaminaDelay = new WaitForSeconds(10); //2
 
     public Coroutine degenStaminaCoroutineInstance;
-    private Coroutine regenStaminaCoroutineInstance;
+    public Coroutine regenStaminaCoroutineInstance;
     public WaitForSeconds degenStaminaTick = new WaitForSeconds(0.2f);
 
     #endregion
@@ -302,7 +302,7 @@ public class CharacterStats : MonoBehaviourPun
     {
         if( maxStamina > currStamina)
         {
-            //if already changing stamina, stop
+            //if already changing stamina, stop curr regen
             if( regenStaminaCoroutineInstance != null)
             {
                 StopCoroutine(regenStaminaCoroutineInstance);
