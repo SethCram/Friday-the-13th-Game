@@ -36,7 +36,7 @@ public class CharacterAnimator : MonoBehaviour
 
     public PhotonView photonView;
     private bool dying = false;
-
+    [HideInInspector]
     public float speedPercent = 0;
 
     //private bool groundedPreviously = false;

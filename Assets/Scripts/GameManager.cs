@@ -112,7 +112,7 @@ public class GameManager : MonoBehaviourPun
     /*
      * Summary: Singleton definition of GameManager instance. 
      *          //Persistent across scenes and used by other classes.
-     *          Created when needed.
+     *          //Created when needed.
      * 
      */
     public static GameManager Instance
@@ -123,7 +123,7 @@ public class GameManager : MonoBehaviourPun
             {
                 //find instance in scene
                 instance = FindObjectOfType<GameManager>();
-
+                /*
                 //if no instance in scene
                 if (instance == null)
                 {
@@ -138,6 +138,7 @@ public class GameManager : MonoBehaviourPun
                     //make sure not destroyed w/ change scenes
                     //DontDestroyOnLoad(mnger);
                 }
+                */
             }
             return instance;
         }
@@ -1202,9 +1203,9 @@ public class GameManager : MonoBehaviourPun
     public bool TagIsPlayableCharacter(string tag)
     {
         //return if tagged w/ jason or counselor or player
-        return (GameManager.Instance.TagIsCounselor(tag)
-            || GameManager.Instance.TagIsJason(tag)
-            || GameManager.Instance.TagIsPlayer(tag));
+        return (TagIsCounselor(tag)
+            || TagIsJason(tag)
+            || TagIsPlayer(tag));
     }
 
     #endregion Tag Methods
