@@ -104,10 +104,10 @@ public class StatApplication : MonoBehaviour
         minIconMinimap = Random.Range(1, 4);
         minRealMinimap = Random.Range(6, 9);
 
-        print($"min hp bar = {minHealthBar}");
-        print($"min stamina bar = {minStaminaBar}");
-        print($"min icon minimap = {minIconMinimap}");
-        print($"min real minimap = {minRealMinimap}");
+        print($"min hp bar = {minHealthBar} (Paranoia)");
+        print($"min stamina bar = {minStaminaBar} (Endurance)");
+        print($"min icon minimap = {minIconMinimap} (Perception)");
+        print($"min real minimap = {minRealMinimap} (Perception)");
     }
 
     //called everytime a stat is changed:
@@ -267,7 +267,8 @@ public class StatApplication : MonoBehaviour
                 float subtractedRegenStaminaDelay = (statVal / (float)statMax) * regenStaminaDelayDifference;
                 float subtractedRegenStaminaTick = (statVal / (float)statMax) * regenStaminaTickDifference;
 
-                print($"regen stamina tick = {regenStaminaTickUpperLimit - subtractedRegenStaminaTick}, regen stamina delay = {regenStaminaDelayUpperLimit - subtractedRegenStaminaDelay}");
+                //print($"regen stamina tick = {regenStaminaTickUpperLimit - subtractedRegenStaminaTick}, regen stamina delay = {regenStaminaDelayUpperLimit - subtractedRegenStaminaDelay}");
+                
                 playerStats.regenStaminaDelay = new WaitForSeconds(regenStaminaDelayUpperLimit - subtractedRegenStaminaDelay);
                 playerStats.regenStaminaTick = new WaitForSeconds(regenStaminaTickUpperLimit - subtractedRegenStaminaTick);
 

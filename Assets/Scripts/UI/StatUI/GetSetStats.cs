@@ -192,8 +192,6 @@ public class GetSetStats : MonoBehaviour
                 playerStats.currStamina = playerStats.baseStamina + (applyStats.stamina_per_point * currStat.baseValue);
             }
 
-            print(currStat.name);
-
             applyStats.onStatChangedCallback.Invoke(currStat);
         }
 
