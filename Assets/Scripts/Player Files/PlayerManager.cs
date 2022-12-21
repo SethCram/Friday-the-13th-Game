@@ -165,6 +165,9 @@ public class PlayerManager : MonoBehaviourPunCallbacks
                     material.color = Color.black;
                 } 
             }
+
+            //change bounds modifier for stat application
+            GetComponent<StatApplication>().SetBoundModifier(1.5f);
         }
     }
 

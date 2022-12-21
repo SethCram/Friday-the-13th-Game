@@ -52,7 +52,7 @@ public class CharacterStats : MonoBehaviourPun
 
     public Coroutine degenStaminaCoroutineInstance;
     public Coroutine regenStaminaCoroutineInstance;
-    public WaitForSeconds degenStaminaTick = new WaitForSeconds(0.2f);
+    public WaitForSeconds degenStaminaTick = new WaitForSeconds(0.5f);
 
     #endregion
 

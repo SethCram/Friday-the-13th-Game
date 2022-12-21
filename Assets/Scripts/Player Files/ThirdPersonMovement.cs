@@ -85,7 +85,7 @@ public class ThirdPersonMovement : MonoBehaviour
     public float deadHeight = 0.4f;
 
     //stamina vars
-    public int jumpStaminaCost = 50;
+    public int jumpStaminaCost = 10;
     public int atkStaminaCost = 20;
     public int dodgeStaminaCost = 5;
 
@@ -341,7 +341,7 @@ public class ThirdPersonMovement : MonoBehaviour
         if (isGrounded && !crouched)
         {
             //if pressed the button + enough stamina left  //and jump cooldown is up:
-            if (Input.GetButtonDown("Jump") && playerStats.UseStamina(atkStaminaCost) ) //&& Time.time - jumpTime > jumpCooldown)
+            if (Input.GetButtonDown("Jump") && playerStats.UseStamina(jumpStaminaCost) ) //&& Time.time - jumpTime > jumpCooldown)
             {
                 //checks: print("Curr time: " + Time.time); print("Time jumped at: " + jumpTime);
 
