@@ -123,7 +123,7 @@ public class GameManager : MonoBehaviourPun
             {
                 //find instance in scene
                 instance = FindObjectOfType<GameManager>();
-                /*
+
                 //if no instance in scene
                 if (instance == null)
                 {
@@ -138,7 +138,6 @@ public class GameManager : MonoBehaviourPun
                     //make sure not destroyed w/ change scenes
                     //DontDestroyOnLoad(mnger);
                 }
-                */
             }
             return instance;
         }

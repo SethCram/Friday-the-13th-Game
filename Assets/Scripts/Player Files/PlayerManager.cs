@@ -251,11 +251,8 @@ public class PlayerManager : MonoBehaviourPunCallbacks
 
         ResumeMotionControls();
 
-        if(GameManager.Instance != null)
-        {
-            //lock cursor and make invisible:
-            GameManager.Instance.LockCursor();
-        }
+        //lock cursor and make invisible:
+        GameManager.Instance.LockCursor();
     }
 
     //dont let player control character + unlock cursor:
