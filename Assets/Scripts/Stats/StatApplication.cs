@@ -53,15 +53,17 @@ public class StatApplication : MonoBehaviour
     public int stamina_per_point = 5;
 
     //for dif minimap usage reqs
-    public int minIconMinimap = 4;
-    public int minRealMinimap = 7;
+    public int minIconMinimap; //4
+    public int minRealMinimap; //7
     public Cam_Instantiator cam_Instantiator;
 
     //for hp bar usage
-    public int minHealthBar = 5;
+    public int minHealthBar; //5
 
     //for stamina bar usage
-    public int minStaminaBar = 6;
+    public int minStaminaBar; //6
+
+    //Random rnd = new Random();
 
     [HideInInspector]
     public OverlayUI overlayUI;
@@ -95,6 +97,17 @@ public class StatApplication : MonoBehaviour
 
         //sub method for w/ stat changes:
         onStatChangedCallback += ApplyChangedStat;
+
+        //randomly init min for UI
+        minHealthBar = Random.Range(1, 9);
+        minStaminaBar = Random.Range(1, 9);
+        minIconMinimap = Random.Range(1, 4);
+        minRealMinimap = Random.Range(6, 9);
+
+        print($"min hp bar = {minHealthBar} (Paranoia)");
+        print($"min stamina bar = {minStaminaBar} (Endurance)");
+        print($"min icon minimap = {minIconMinimap} (Perception)");
+        print($"min real minimap = {minRealMinimap} (Perception)");
     }
 
     //called everytime a stat is changed:
@@ -254,7 +267,8 @@ public class StatApplication : MonoBehaviour
                 float subtractedRegenStaminaDelay = (statVal / (float)statMax) * regenStaminaDelayDifference;
                 float subtractedRegenStaminaTick = (statVal / (float)statMax) * regenStaminaTickDifference;
 
-                print($"regen stamina tick = {regenStaminaTickUpperLimit - subtractedRegenStaminaTick}, regen stamina delay = {regenStaminaDelayUpperLimit - subtractedRegenStaminaDelay}");
+                //print($"regen stamina tick = {regenStaminaTickUpperLimit - subtractedRegenStaminaTick}, regen stamina delay = {regenStaminaDelayUpperLimit - subtractedRegenStaminaDelay}");
+                
                 playerStats.regenStaminaDelay = new WaitForSeconds(regenStaminaDelayUpperLimit - subtractedRegenStaminaDelay);
                 playerStats.regenStaminaTick = new WaitForSeconds(regenStaminaTickUpperLimit - subtractedRegenStaminaTick);
 
