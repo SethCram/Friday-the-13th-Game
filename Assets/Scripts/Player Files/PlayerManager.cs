@@ -131,7 +131,7 @@ public class PlayerManager : MonoBehaviourPunCallbacks
     #region Setters
 
     /// <summary>
-    /// Used to sync player tag over RPC.
+    /// Used to sync player tag over RPC. Also applies jason changes.
     /// </summary>
     /// <param name="tagName"></param>
     [PunRPC]
@@ -140,6 +140,32 @@ public class PlayerManager : MonoBehaviourPunCallbacks
         Debug.Log($"Tag set to {tagName}");
 
         tag = tagName;
+
+        if(tagName == GameManager.JASON_TAG)
+        {
+            //change jason skin color
+            //equipmentManager.playerMesh.material.color = Color.green;
+
+            //change mesh mats colors
+            var meshRenderers = GetComponentsInChildren<MeshRenderer>(includeInactive: true);
+            foreach(var meshRenderer in meshRenderers)
+            {
+                foreach(var material in meshRenderer.materials)
+                {
+                    material.color = Color.black;
+                } 
+            }
+
+            //change skinned mesh mats colors
+            var skinnedMeshRenderers = GetComponentsInChildren<SkinnedMeshRenderer>(includeInactive: true);
+            foreach(var meshRenderer in skinnedMeshRenderers)
+            {
+                foreach(var material in meshRenderer.materials)
+                {
+                    material.color = Color.black;
+                } 
+            }
+        }
     }
 
     public void SetTeleportPlayer( bool shouldTeleport)
@@ -222,8 +248,11 @@ public class PlayerManager : MonoBehaviourPunCallbacks
 
         ResumeMotionControls();
 
-        //lock cursor and make invisible:
-        GameManager.Instance.LockCursor();
+        if(GameManager.Instance != null)
+        {
+            //lock cursor and make invisible:
+            GameManager.Instance.LockCursor();
+        }
     }
 
     //dont let player control character + unlock cursor:
