@@ -93,21 +93,6 @@ public class Inventory : MonoBehaviour
 
     #endregion Add to Stack
 
-    /*
-    private void StoreDropItems()
-    {
-        //stor drop items on destroy
-        dropItemsOnDestroys = FindObjectsOfType<DropItemsOnDestroy>();
-    }
-    
-
-        //check if any inventories needa be destroyed 
-        private void Update()
-    {
-        
-    }
-    */
-
     #region List Methods
 
     //add item to inventory list by verifying that it's not a default item and there's enough room:

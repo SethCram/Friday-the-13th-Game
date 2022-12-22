@@ -34,7 +34,7 @@ public class StatApplication : MonoBehaviour
     private float crouchSpeedDifference;
 
     //for calcing jump height:
-    private float jmpLowerLimit = 0.5f; //1
+    private float jmpLowerLimit = 0.8f; //1
     private float jmpUpperLimit = 1.5f; //3
     private float jmpDifference;
 
@@ -63,7 +63,7 @@ public class StatApplication : MonoBehaviour
     //for stamina bar usage
     public int minStaminaBar; //6
 
-    //Random rnd = new Random();
+    public float boundModifier = 1;
 
     [HideInInspector]
     public OverlayUI overlayUI;
@@ -78,13 +78,8 @@ public class StatApplication : MonoBehaviour
     {
         charStats = GetComponent<CharacterStats>();
 
-        //calc range tween upper and lower limit:
-        runDifference = runUpperLimit - runLowerLimit;
-        jmpDifference = jmpUpperLimit - jmpLowerLimit;
-        walkDifference = walkUpperLimit - walkLowerLimit;
-        crouchSpeedDifference = crouchSpeedUpperLimit - crouchSpeedLowerLimit;
-        regenStaminaDelayDifference = regenStaminaDelayUpperLimit - regenStaminaDelayLowerLimit;
-        regenStaminaTickDifference = regenStaminaTickUpperLimit - regenStaminaTickLowerLimit;
+        //make sure diffs init'd
+        SetBoundModifier(boundModifier);
 
         //init movement vars 
         movement.walkSpeed = walkLowerLimit;
@@ -108,6 +103,37 @@ public class StatApplication : MonoBehaviour
         print($"min stamina bar = {minStaminaBar} (Endurance)");
         print($"min icon minimap = {minIconMinimap} (Perception)");
         print($"min real minimap = {minRealMinimap} (Perception)");
+    }
+
+    /// <summary>
+    /// Sets bound modifier but also calcs difference tween bounds
+    /// </summary>
+    /// <param name="newBoundModifier"></param>
+    public void SetBoundModifier(float newBoundModifier)
+    {
+        boundModifier = newBoundModifier;
+
+        //change all bounds by the bounds modifier
+        runLowerLimit *= boundModifier;
+        runUpperLimit *= boundModifier;
+        walkLowerLimit *= boundModifier;
+        walkUpperLimit *= boundModifier;
+        crouchSpeedLowerLimit *= boundModifier;
+        crouchSpeedUpperLimit *= boundModifier;
+        jmpLowerLimit *= boundModifier;
+        jmpUpperLimit *= boundModifier;
+        regenStaminaDelayLowerLimit /= boundModifier;
+        regenStaminaDelayUpperLimit /= boundModifier;
+        regenStaminaTickLowerLimit /= boundModifier;
+        regenStaminaDelayUpperLimit /= boundModifier;
+
+        //calc range tween upper and lower limit:
+        runDifference = runUpperLimit - runLowerLimit;
+        jmpDifference = jmpUpperLimit - jmpLowerLimit;
+        walkDifference = walkUpperLimit - walkLowerLimit;
+        crouchSpeedDifference = crouchSpeedUpperLimit - crouchSpeedLowerLimit;
+        regenStaminaDelayDifference = regenStaminaDelayUpperLimit - regenStaminaDelayLowerLimit;
+        regenStaminaTickDifference = regenStaminaTickUpperLimit - regenStaminaTickLowerLimit;
     }
 
     //called everytime a stat is changed:
