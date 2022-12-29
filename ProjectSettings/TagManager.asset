@@ -9,6 +9,7 @@ TagManager:
   - Enemy
   - Jason
   - Counselor
+  - LobbyLevel
   layers:
   - Default
   - TransparentFX
@@ -25,8 +26,8 @@ TagManager:
   - Minimap
   - Grass
   - Sand
-  - 
-  - 
+  - IgnorePlayer
+  - Player
   - 
   - 
   - 

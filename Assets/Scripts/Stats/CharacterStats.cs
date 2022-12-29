@@ -413,7 +413,7 @@ public class CharacterStats : MonoBehaviourPun
                     numberModels[digit].transform.rotation); //use preset rot
             }
 
-            //print(transform.rotation.ToString());
+            print(transform.rotation.ToString());
 
             //create new pos to spawn nxt number at
             offset += numSpacing;
