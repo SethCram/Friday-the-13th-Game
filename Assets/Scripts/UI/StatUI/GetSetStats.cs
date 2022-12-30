@@ -101,10 +101,18 @@ public class GetSetStats : MonoBehaviour
     }
 
     /// <summary>
-    /// On disable, enable pause UI and player control.
+    /// On disable (not on destroy), enable pause UI and player control.
     /// </summary>
     private void OnDisable()
     {
+        //if stats UI gameobject about to be destroyed (bc not yet enabled), return
+        if(this.enabled)
+        {
+            Debug.Log("Returned bc stats UI gameobject being destroyed, not disabled.");
+
+            return;
+        }
+
         if(pausedUICanvas != null)
         {
             //enable paused UI: 
@@ -115,11 +123,10 @@ public class GetSetStats : MonoBehaviour
             Debug.LogWarning("paused ui null so can't be set active");
         }
 
-
         //enable player cntrl
         if(playerManager != null)
         {
-           //enable player cntrl
+            //enable player cntrl
             playerManager.EnablePlayerControl(); 
         }
         else
