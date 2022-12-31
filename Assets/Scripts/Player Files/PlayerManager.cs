@@ -69,6 +69,9 @@ public class PlayerManager : MonoBehaviourPunCallbacks
 
     private void Awake()
     {
+        //ignore layer collision tween default (player) layer and "ignore player" layer
+        Physics.IgnoreLayerCollision(layer1: 0, layer2: 15, ignore: true);
+
         //if my photon view or not online
         if(photonView.IsMine || !PhotonNetwork.IsConnected)
         {
