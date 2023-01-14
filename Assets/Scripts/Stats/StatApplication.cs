@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Photon.Pun;
 using UnityEngine;
 
 public class StatApplication : MonoBehaviour
@@ -68,6 +69,9 @@ public class StatApplication : MonoBehaviour
     private float minSlopeLimit = 30;
     private float maxSlopeLimit = 50;
 
+    private float minStepOffset = 0.3f;
+    private float maxStepOffset = 0.7f;
+
     [HideInInspector]
     public OverlayUI overlayUI;
 
@@ -80,6 +84,12 @@ public class StatApplication : MonoBehaviour
     void Start()
     {
         charStats = GetComponent<CharacterStats>();
+
+        //if offline, modify player
+        if(!PhotonNetwork.IsConnected)
+        {
+            boundModifier *= 2;
+        }
 
         //make sure diffs init'd
         SetBoundModifier(boundModifier);
@@ -172,6 +182,8 @@ public class StatApplication : MonoBehaviour
                 movement.jumpHeight = jmpLowerLimit + addedJumpHeight;
 
                 movement.groundedSlopeLimit = minSlopeLimit + CalculateAdditionalAmount(statVal, minSlopeLimit, maxSlopeLimit);
+
+                movement.walkingStepOffset = minStepOffset + CalculateAdditionalAmount(statVal, minStepOffset, maxStepOffset);
 
                 break;
 
