@@ -100,7 +100,7 @@ public class StatApplication : MonoBehaviour
         minRealMinimap = Random.Range(6, 9);
 
         print($"min hp bar = {minHealthBar} (Paranoia)");
-        print($"min stamina bar = {minStaminaBar} (Endurance)");
+        print($"min stamina bar = {minStaminaBar} (Paranoia)");
         print($"min icon minimap = {minIconMinimap} (Perception)");
         print($"min real minimap = {minRealMinimap} (Perception)");
     }
@@ -247,6 +247,18 @@ public class StatApplication : MonoBehaviour
                     //deactivate it
                     overlayUI.healthSlider.gameObject.SetActive(false);
                 }
+
+                //if have enough points for stamina bar
+                if( statVal >= minStaminaBar)
+                {
+                    //activate it
+                    overlayUI.staminaSlider.gameObject.SetActive(true);
+                }
+                else
+                {
+                    //deactivate it
+                    overlayUI.staminaSlider.gameObject.SetActive(false);
+                }
                 
                 break;
 
@@ -269,18 +281,6 @@ public class StatApplication : MonoBehaviour
             case "Endurance":
 
                 playerStats.maxStamina = playerStats.baseStamina + (stamina_per_point * statVal);
-
-                //if have enough points for stamina bar
-                if( statVal >= minStaminaBar)
-                {
-                    //activate it
-                    overlayUI.staminaSlider.gameObject.SetActive(true);
-                }
-                else
-                {
-                    //deactivate it
-                    overlayUI.staminaSlider.gameObject.SetActive(false);
-                }
 
                 //tell char stats that stamina was changed
                 charStats.InvokeCallback_OnStaminaChangedCallback();

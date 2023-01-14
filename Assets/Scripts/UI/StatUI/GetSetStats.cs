@@ -106,7 +106,7 @@ public class GetSetStats : MonoBehaviour
     private void OnDisable()
     {
         //if stats UI gameobject about to be destroyed (bc not yet enabled), return
-        if(this.enabled)
+        if(this.isActiveAndEnabled)
         {
             Debug.Log("Returned bc stats UI gameobject being destroyed, not disabled.");
 
