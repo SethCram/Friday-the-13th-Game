@@ -54,7 +54,7 @@ public class ThirdPersonMovement : MonoBehaviour
     //private float jumpTime;
 
     //grounded reset for after jumping:
-    public float groundedSlopeLimit = 45;
+    public float groundedSlopeLimit = 30;
 
     //reset for after jumping and crouching:
     public float walkingStepOffset = 0.4f;

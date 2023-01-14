@@ -65,6 +65,9 @@ public class StatApplication : MonoBehaviour
 
     public float boundModifier = 1;
 
+    private float minSlopeLimit = 30;
+    private float maxSlopeLimit = 50;
+
     [HideInInspector]
     public OverlayUI overlayUI;
 
@@ -136,6 +139,12 @@ public class StatApplication : MonoBehaviour
         regenStaminaTickDifference = regenStaminaTickUpperLimit - regenStaminaTickLowerLimit;
     }
 
+    private float CalculateAdditionalAmount(float statVal, float lowerLimit, float upperLimit)
+    {
+        //find additional amt to add
+        return (statVal / (float)statMax) * (upperLimit - lowerLimit);
+    }
+
     //called everytime a stat is changed:
     private void ApplyChangedStat(Stat statChanged)
     {
@@ -170,6 +179,8 @@ public class StatApplication : MonoBehaviour
 
                 //set additional jmp height:
                 movement.jumpHeight = jmpLowerLimit + addedJumpHeight;
+
+                movement.groundedSlopeLimit = minSlopeLimit + CalculateAdditionalAmount(statVal, minSlopeLimit, maxSlopeLimit);
 
                 break;
 
