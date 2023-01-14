@@ -129,14 +129,6 @@ public class StatApplication : MonoBehaviour
         regenStaminaDelayUpperLimit /= boundModifier;
         regenStaminaTickLowerLimit /= boundModifier;
         regenStaminaDelayUpperLimit /= boundModifier;
-
-        //calc range tween upper and lower limit:
-        runDifference = runUpperLimit - runLowerLimit;
-        jmpDifference = jmpUpperLimit - jmpLowerLimit;
-        walkDifference = walkUpperLimit - walkLowerLimit;
-        crouchSpeedDifference = crouchSpeedUpperLimit - crouchSpeedLowerLimit;
-        regenStaminaDelayDifference = regenStaminaDelayUpperLimit - regenStaminaDelayLowerLimit;
-        regenStaminaTickDifference = regenStaminaTickUpperLimit - regenStaminaTickLowerLimit;
     }
 
     private float CalculateAdditionalAmount(float statVal, float lowerLimit, float upperLimit)
@@ -161,9 +153,9 @@ public class StatApplication : MonoBehaviour
             case "Speed":
 
                 //find additional run/walk/crouch speed to add:
-                float addedRunSpeed = (statVal / (float)statMax) * runDifference;   //dont do float arith w/ an int or it'll approx
-                float addedWalkSpeed = (statVal / (float)statMax) * walkDifference;
-                float addedCrouchSpeed = (statVal / (float)statMax) * crouchSpeedDifference;
+                float addedRunSpeed = CalculateAdditionalAmount(statVal, runLowerLimit, runUpperLimit);   //dont do float arith w/ an int or it'll approx
+                float addedWalkSpeed = CalculateAdditionalAmount(statVal, walkLowerLimit, walkUpperLimit);
+                float addedCrouchSpeed = CalculateAdditionalAmount(statVal, crouchSpeedLowerLimit, crouchSpeedUpperLimit);
 
                 //set additional run/walk/crouch speed:
                 movement.runSpeed = runLowerLimit + addedRunSpeed;
@@ -175,8 +167,7 @@ public class StatApplication : MonoBehaviour
             case "Climbing":
 
                 //find additional jmp height to add:
-                float addedJumpHeight = (statVal / (float)statMax) * jmpDifference;   //dont do float arith w/ an int or it'll approx
-
+                float addedJumpHeight = CalculateAdditionalAmount(statVal, jmpLowerLimit, jmpUpperLimit);   //dont do float arith w/ an int or it'll approx
                 //set additional jmp height:
                 movement.jumpHeight = jmpLowerLimit + addedJumpHeight;
 
@@ -301,8 +292,8 @@ public class StatApplication : MonoBehaviour
             case "Dexterity":
                 //vary stamina restore speed and delay by new dexterity stat
 
-                float subtractedRegenStaminaDelay = (statVal / (float)statMax) * regenStaminaDelayDifference;
-                float subtractedRegenStaminaTick = (statVal / (float)statMax) * regenStaminaTickDifference;
+                float subtractedRegenStaminaDelay = CalculateAdditionalAmount(statVal, regenStaminaDelayLowerLimit, regenStaminaDelayUpperLimit);
+                float subtractedRegenStaminaTick = CalculateAdditionalAmount(statVal, regenStaminaTickLowerLimit, regenStaminaTickUpperLimit);
 
                 //print($"regen stamina tick = {regenStaminaTickUpperLimit - subtractedRegenStaminaTick}, regen stamina delay = {regenStaminaDelayUpperLimit - subtractedRegenStaminaDelay}");
                 
