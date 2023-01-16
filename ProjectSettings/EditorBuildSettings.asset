@@ -18,6 +18,9 @@ EditorBuildSettings:
     path: Assets/Scenes/Game Lobby.unity
     guid: 8b15caf28b1714941b4b2615af76f32e
   - enabled: 1
+    path: Assets/Scenes/Desert style demo/Gas Station.unity
+    guid: d4b3976ce675fe942ad58768c4a9993f
+  - enabled: 1
     path: Assets/Scenes/Game.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
   m_configObjects: {}

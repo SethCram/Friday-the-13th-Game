@@ -56,7 +56,7 @@ public class GameManager : MonoBehaviourPun
     private bool _isSwitchingState;
 
     //scene tracking vars
-    public enum CurrentScene { MAIN_MENU, LOADING, LOBBY, GAME_LOBBY, GAME };
+    public enum CurrentScene { MAIN_MENU, LOADING, LOBBY, GAME_LOBBY, GAS_STATION, GAME };
     public CurrentScene currentScene { private set; get; }
     private string currSceneName;
 
@@ -100,6 +100,7 @@ public class GameManager : MonoBehaviourPun
     public const string LOADING_SCENE_NAME = "Loading";
     public const string LOBBY_SCENE_NAME = "Lobby";
     public const string GAME_LOBBY_SCENE_NAME = "Game Lobby";
+    public const string GAS_STATION_NAME = "Gas Station";
     public const string GAME_SCENE_NAME = "Game";
     #endregion Scene Names
 
@@ -187,6 +188,10 @@ public class GameManager : MonoBehaviourPun
         else if (SameString_IgnoreCase(currSceneName, GAME_LOBBY_SCENE_NAME))
         {
             currentScene = CurrentScene.GAME_LOBBY;
+        }
+        else if (SameString_IgnoreCase(currSceneName, GAS_STATION_NAME))
+        {
+            currentScene = CurrentScene.GAS_STATION;
         }
         else if (SameString_IgnoreCase(currSceneName, GAME_SCENE_NAME))
         {
