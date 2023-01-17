@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &9193607472483048462
+--- !u!1 &3341736528833657734
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,37 +8,37 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 6355892348421818012}
-  - component: {fileID: 1985958395186329484}
+  - component: {fileID: 3341736528833657732}
+  - component: {fileID: 3341736528833657733}
   m_Layer: 0
-  m_Name: FencesPrefab
+  m_Name: Wire Fence Prefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &6355892348421818012
+--- !u!4 &3341736528833657732
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9193607472483048462}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 39.14, y: 1.829071, z: 20.139982}
+  m_GameObject: {fileID: 3341736528833657734}
+  m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1985958395186329484
+  m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
+--- !u!114 &3341736528833657733
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9193607472483048462}
+  m_GameObject: {fileID: 3341736528833657734}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5ee1359076689fb429e33ad9b17c5484, type: 3}
@@ -46,12 +46,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   FencePoints: []
   FencePrefabs:
-  - {fileID: 942762337184432749, guid: b9c7a183a7a2e004cb24435cb080a708, type: 3}
-  PostPrefab: {fileID: 4053396113723301936, guid: cab90c40ab6e48540b863bd64860e39a,
+  - {fileID: 4158486984302932535, guid: 74a03d6afe8a3eb4a9a38b29d6b2cdaa, type: 3}
+  PostPrefab: {fileID: 8818384289722582929, guid: d65f04551a0d7d84d9b63d1646fd26e8,
     type: 3}
-  FenceEndOffset: {x: 0, y: 0, z: 1.25}
+  FenceEndOffset: {x: 0, y: 0, z: 0}
   FenceRotation: 0
-  FenceLength: 2.5
+  FenceLength: 2
   FenceScale: {x: 1, y: 1, z: 1}
   CompleteLoop: 0
   ObjectMode: 0
