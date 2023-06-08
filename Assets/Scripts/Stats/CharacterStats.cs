@@ -469,8 +469,8 @@ public class CharacterStats : MonoBehaviourPun
             //play hurt audio
             photonView.RPC("PlayOrCreateAudioSource", RpcTarget.All, AudioManager.hurtAudioClipName);
 
-            //tell all of these clients to take dmg
-            photonView.RPC("RPC_TakeDamage", RpcTarget.Others, dmgDealt);
+            //take dmg
+            photonView.RPC("RPC_TakeDamage", RpcTarget.All, dmgDealt);
         }
         else
         {
