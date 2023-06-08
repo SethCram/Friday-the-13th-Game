@@ -43,7 +43,7 @@ public class PlayerManager : MonoBehaviourPunCallbacks
     //respawn/death vars
     private bool dead = false;
     private bool teleportPlayer = false;
-    public Vector3 spectatorSpawn = new Vector3(0, 500, 0);
+    private Vector3 respawnPoint;
     private bool prevDead = false;
     private const string winText = "Congratulations, You Win!";
     private const string loseText = "You Lose";
@@ -105,6 +105,9 @@ public class PlayerManager : MonoBehaviourPunCallbacks
         OnRespawnCallback += DisableHealthBarUI;
         OnRespawnCallback += DisableStaminaBarUI;
         OnRespawnCallback += DisableMinimapUI;
+
+        //set respawn point to initial spawn point & high enough not to miss the platform below 
+        respawnPoint = transform.position + new Vector3(0, 500, 0);
     }
 
     /// <summary>
@@ -449,7 +452,7 @@ public class PlayerManager : MonoBehaviourPunCallbacks
     private void RespawnPlayer()
     {
         //teleport to spectator spawn
-        transform.position = spectatorSpawn;
+        transform.position = respawnPoint;
 
         //stop animing dead player
         characterAnimator.SetAnimDead(false);
@@ -496,7 +499,7 @@ public class PlayerManager : MonoBehaviourPunCallbacks
     }
 
     /// <summary>
-    /// show death screen w/ generic death txt
+    /// show death screen w/ generic death txt (nobody wins or loses)
     /// </summary>
     public void GenericDeathScreen()
     {

@@ -13580,6 +13580,75 @@ Transform:
   m_Father: {fileID: 738120680}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &589705774
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 7160377759674203409, guid: 18cb033dbd3e549449aa80459b8de209,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 17
+      objectReference: {fileID: 0}
+    - target: {fileID: 7160377759674203409, guid: 18cb033dbd3e549449aa80459b8de209,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -188.9819
+      objectReference: {fileID: 0}
+    - target: {fileID: 7160377759674203409, guid: 18cb033dbd3e549449aa80459b8de209,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -445
+      objectReference: {fileID: 0}
+    - target: {fileID: 7160377759674203409, guid: 18cb033dbd3e549449aa80459b8de209,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 203.87195
+      objectReference: {fileID: 0}
+    - target: {fileID: 7160377759674203409, guid: 18cb033dbd3e549449aa80459b8de209,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7160377759674203409, guid: 18cb033dbd3e549449aa80459b8de209,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7160377759674203409, guid: 18cb033dbd3e549449aa80459b8de209,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7160377759674203409, guid: 18cb033dbd3e549449aa80459b8de209,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7160377759674203409, guid: 18cb033dbd3e549449aa80459b8de209,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7160377759674203409, guid: 18cb033dbd3e549449aa80459b8de209,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7160377759674203409, guid: 18cb033dbd3e549449aa80459b8de209,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7160377759674203413, guid: 18cb033dbd3e549449aa80459b8de209,
+        type: 3}
+      propertyPath: m_Name
+      value: DeathTrigger
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 18cb033dbd3e549449aa80459b8de209, type: 3}
 --- !u!1 &592103092
 GameObject:
   m_ObjectHideFlags: 0

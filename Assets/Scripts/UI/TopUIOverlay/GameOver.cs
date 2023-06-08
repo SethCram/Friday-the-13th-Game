@@ -16,8 +16,6 @@ public class GameOver : MonoBehaviour
     public Transform player; //fill in UI instantiator
     private PlayerManager playerManager;
 
-    //public Vector3 spectatorSpawn = new Vector3(0, 500, 0);
-
     // Start is called before the first frame update
     void Start()
     {
@@ -29,17 +27,17 @@ public class GameOver : MonoBehaviour
             playerManager = player.GetComponent<PlayerManager>();
         }
 
-        //if in game lobby scene:
-        if (GameManager.Instance.currentScene == GameManager.CurrentScene.GAME_LOBBY)
-        {
-            //set btn to respawn 
-            afterDeathActionBtnTxtObj.text = "RESPAWN";
-        }
         //if in game scene:
-        else if (GameManager.Instance.currentScene == GameManager.CurrentScene.GAME)
+        if (GameManager.Instance.currentScene == GameManager.CurrentScene.GAME)
         {
             //set btn to spectate
             afterDeathActionBtnTxtObj.text = "SPECTATE";
+        }
+        //if not in game scene:
+        else
+        {
+            //set btn to respawn 
+            afterDeathActionBtnTxtObj.text = "RESPAWN";
         }
 
     }

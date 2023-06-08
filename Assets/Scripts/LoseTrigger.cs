@@ -42,8 +42,8 @@ public class LoseTrigger : MonoBehaviour
                 }
             }
         }
-        //if in game lobby scene
-        else if (GameManager.Instance.currentScene == GameManager.CurrentScene.GAME_LOBBY)
+        //if not in game scene
+        else
         {
             //show generic death screen 
             playerManager.GenericDeathScreen();
