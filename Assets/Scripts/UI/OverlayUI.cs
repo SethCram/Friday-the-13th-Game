@@ -50,8 +50,9 @@ public class OverlayUI : MonoBehaviour
         //start w/ stamina slider off
         staminaSlider.gameObject.SetActive(false);
 
-        //if not game lobby scene
-        if( GameManager.Instance.currentScene != GameManager.CurrentScene.GAME_LOBBY)
+        //if not game lobby or gas station scene
+        if( GameManager.Instance.currentScene != GameManager.CurrentScene.GAME_LOBBY && 
+            GameManager.Instance.currentScene != GameManager.CurrentScene.GAS_STATION )
         {
             //inactivate vote overlay
             voteToggle.gameObject.SetActive(false);
@@ -61,51 +62,52 @@ public class OverlayUI : MonoBehaviour
     
     private void Update()
     {
-        //if started game already or not in game lobby
-        if ( startedGame || 
-            GameManager.Instance.currentScene != GameManager.CurrentScene.GAME_LOBBY)
-        {
-            //Debug.Log("Game already started");
 
-            //dont allow voting
-            return;
-        }
+        Debug.Log($"startedGame: {startedGame}");
 
-        //if press V
-        if (Input.GetKeyDown(key: KeyCode.V))
-        {
-
-            VoteToggleAndIncrStartVotes();
-        }
-
-        //if online
-        if (PhotonNetwork.IsConnected)
-        {
-            //if all players voted to start
-            if (GameManager.Instance.startVotes >= PhotonNetwork.CurrentRoom.PlayerCount)
+        //if havent started loading game yet and in game lobby/gas station scene
+        if(!startedGame && 
+                (GameManager.Instance.currentScene != GameManager.CurrentScene.GAME_LOBBY ||
+                GameManager.Instance.currentScene != GameManager.CurrentScene.GAS_STATION)
+        ) {
+            //if player pressed V
+            if (Input.GetKeyDown(key: KeyCode.V))
             {
-                //Start game for everyone
-                //Debug.LogError("Should start game.");
-
-                //advance scene
-                playerManager.AdvanceScene();
-                
-                startedGame = true;
+                //Contribute or rescind a vote
+                VoteToggleAndIncrStartVotes();
             }
-        }
-        //if local
-        else
-        {
-            //if voted to start
-            if (GameManager.Instance.startVotes >= 1)
-            {
-                //Start game locally
-                //Debug.LogError("Should start game.");
-                    
-                //load next scene
-                playerManager.AdvanceScene();
 
-                startedGame = true;
+            //if online
+            if (PhotonNetwork.IsConnected)
+            {
+                //if all players voted to start
+                if (GameManager.Instance.startVotes >= PhotonNetwork.CurrentRoom.PlayerCount)
+                {
+                    //Start game for everyone
+                    //Debug.LogError("Should start game.");
+
+                    //advance scene
+                    playerManager.AdvanceScene();
+
+                    //dont allow further voting on this scene
+                    startedGame = true;
+                }
+            }
+            //if local
+            else
+            {
+                //if voted to start
+                if (GameManager.Instance.startVotes >= 1)
+                {
+                    //Start game locally
+                    //Debug.LogError("Should start game.");
+                        
+                    //load next scene
+                    playerManager.AdvanceScene();
+
+                    //dont allow further voting on this scene
+                    startedGame = true;
+                }
             }
         }
     }
@@ -115,7 +117,7 @@ public class OverlayUI : MonoBehaviour
     #region Update UI
 
     /// <summary>
-    /// Toggle the vote check box and incr # of votes to start the game.
+    /// Toggle the vote check box and incr/decr # of votes to start the game.
     /// </summary>
     public void VoteToggleAndIncrStartVotes()
     {
