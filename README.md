@@ -1,8 +1,10 @@
 # Friday-the-13th-Game
 
 Leverages Photon to network various clients together and enable a cohesive multiplayer experience.
-Automates testing, building, and deployment through effective CI/CD pipelines built with Github Actions. 
+Automates testing, building, and deployment through effective CI/CD pipelines built with Github Actions.
+Implements a variety of skills that affect gameplay. 
 
+![Friday the 13th Game](/images/FT13.PNG)
 
 - Originally developed in Unity 2019.4.18f1, upgraded to Unity 2021.3.10f1
 - Installers:
