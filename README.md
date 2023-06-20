@@ -1,5 +1,9 @@
 # Friday-the-13th-Game
 
+Leverages Photon to network various clients together and enable a cohesive multiplayer experience.
+Automates testing, building, and deployment through effective CI/CD pipelines built with Github Actions. 
+
+
 - Originally developed in Unity 2019.4.18f1, upgraded to Unity 2021.3.10f1
 - Installers:
   - Windows - https://drive.google.com/drive/folders/1i6F2dqvD8U0xZqfzCu2hpUOF9-6r4ZE8?usp=sharing
